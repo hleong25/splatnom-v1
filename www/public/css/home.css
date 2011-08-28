@@ -1,0 +1,25 @@
+div#search
+{
+    text-align: center;
+}
+
+div#new_menus
+{
+    margin-top: 1em;
+}
+
+div.new_added
+{
+    margin: 1em;
+}
+
+div.new_added a
+{
+    color: inherit;
+}
+
+div.new_added img.new_img
+{
+    width: 120px;
+    height: 120px;
+}

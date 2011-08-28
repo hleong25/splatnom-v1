@@ -1,0 +1,31 @@
+div#new_menu
+{
+    width: 500px;
+}
+
+span#msg
+{
+    color: black;
+    font-size: 2em;
+}
+
+fieldset#menu_files
+{
+    border: 1px solid black; 
+    padding: 5px;
+}
+
+input.file
+{
+    width: 100%;
+}
+
+input.site_menu
+{
+    width: 400px;
+}
+
+input#btnAddMore
+{
+    margin-top: 1em;
+}

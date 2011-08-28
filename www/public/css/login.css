@@ -1,0 +1,18 @@
+form#login
+{
+    text-align: center;
+}
+form#login input.txt
+{
+    width: 150px;
+}
+div#msg
+{
+    height: 1em;
+    font-size: 0.7em;
+    text-align: center;
+}
+div#msg span
+{
+    color: red;
+}
