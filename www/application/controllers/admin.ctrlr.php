@@ -111,7 +111,21 @@ class AdminController
         $this->set('staging_id', $id);
         $this->set('site', $menu_data['site']);
         $this->set('imgs', $menu_data['imgs']);
+        $this->set('info', array());
         $this->set('post', $_POST);
         
+    }
+    
+    function staging_postHours($post_hours)
+    {
+        $hours = array();
+        
+        foreach ($post_hours as $idx => $hrs)
+        {
+            if ($idx == '@id')
+                continue;
+        }
+        
+        return $hours;
     }
 }
