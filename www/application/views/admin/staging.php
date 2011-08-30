@@ -1,0 +1,62 @@
+<form id="staging" enctype="multipart/form-data" method="post" action="/admin/staging/<?php echo $staging_id; ?>" onsubmit="return js_admin.formOnSubmit(this);">
+<div class="pg" style="text-align: right;">
+    <input type="button" value="Refresh" onclick="location.href='/admin/staging/<?php echo $staging_id; ?>'"/>
+    <br/>
+    <span>Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</span>
+    <br/>
+    <br/>
+</div>
+<div class="pg">
+    <div class="heading onToggle">Information</div>
+    <div class="data toggle">
+        <span>staging id: </span><span><?php echo $staging_id; ?></span>
+        <br/>
+        <span>website: </span><a href="http://<?php echo $site; ?>" target="_blank"><?php echo $site; ?></a>
+        <br/>
+        <div class="new_imgs">
+        <?php
+            foreach ($imgs as $img)
+            {
+                $img_link = "/ws/getimage/{$img}";
+                echo<<<EOHTML
+                    <a href="$img_link" target="_blank"><img class="menu" src="$img_link" /></a>
+EOHTML;
+            }
+        ?>
+        </div>
+    </div>
+    
+<input type="submit" value="Submit"/>
+</div>
+<div class="pg">
+    <div class="heading onToggle">Business Information</div>
+    <div class="data toggle">
+        <input class="jq_watermark" type="text" name="info_name" title="Name of the place"/>
+        <br/>
+        <input class="jq_watermark" type="text" name="info_addy1" title="Address or Intersection 1"/>
+        <input class="jq_watermark" type="text" name="info_addy2" title="Address or Intersection 2"/>
+        <br/>
+        <input class="jq_watermark" type="text" name="info_city" title="City"/>
+        <input class="jq_watermark" type="text" name="info_state" title="State"/>
+        <input class="jq_watermark" type="text" name="info_zip" title="Zip"/>
+        <br/>
+        <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"></textarea>
+        <br/>
+        <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"></textarea>
+    </div>
+</div>
+<div class="pg menu template">
+    <div class="heading onToggle">Menu <span class="menu_name"></span></div>
+    <div class="data toggle">
+        <input class="jq_watermark menu_name" type="text" name="menu[@id][name]" title="Menu name" onchange="js_admin.menuNameOnChange(this);" />
+        <br/>
+        <div class="menu_group">
+            
+        </div>
+    </div>
+    <div class="controller toggle">
+        controllers
+    </div>
+</div>
+</form>
+<div class="pg"><br/><br/><pre><?php var_export($post); ?></pre></div>

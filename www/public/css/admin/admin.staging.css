@@ -1,0 +1,32 @@
+img.menu{
+
+    width: 100px;
+    height: 100px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+div.heading{
+    
+    font-size: 18px;
+    background-color: silver;
+    width: 100%;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    margin-bottom: 3px;
+}
+div.data{
+    
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+textarea.phone_numbers,
+textarea.hours{
+    
+    width: 300px;
+}
