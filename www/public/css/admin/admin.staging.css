@@ -30,3 +30,19 @@ textarea.hours{
     
     width: 300px;
 }
+div.menu div.data{
+    
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-left-color: silver;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+div.menu_group{
+    
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-left-color: silver;
+    margin-left: 5px;
+    padding-left: 5px;
+}
