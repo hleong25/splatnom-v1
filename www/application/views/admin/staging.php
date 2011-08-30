@@ -50,18 +50,15 @@ EOHTML;
     <div class="data toggle">
         <input class="" type="hidden" name="menu[]" value="@menu_name@"/>
         <input class="jq_watermark menu_name" type="text" name="menu[]" title="Menu name (ie. Lunch)" onchange="js_admin.menuNameOnChange(this);" />
-        <input class="" type="hidden" name="menu[]" value="@/menu_name@"/>
         <br/>
         <div class="menu_group">
             <input class="" type="hidden" name="menu[]" value="@name_group@"/>
             <input class="jq_watermark " type="text" name="menu[]" title="Group (ie. Appetizers)" />
-            <input class="" type="hidden" name="menu[]" value="@/name_group@"/>
             <div class="menu_item">
                 <input class="" type="hidden" name="menu[]" value="@group_items@"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Item"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Price"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Notes"/>
-                <input class="" type="hidden" name="menu[]" value="@/group_items@"/>
             </div>
         </div>
     </div>
