@@ -110,8 +110,8 @@ EOHTML;
                                 <option value="12" >12</option>
                             </select>
                             <select name="hours[@id][close_time2]">
-                                <option value="PM" >PM</option>
                                 <option value="AM" >AM</option>
+                                <option value="PM" selected>PM</option>
                             </select>
                         </td>
                     </tr>
@@ -124,11 +124,14 @@ EOHTML;
         <input type="button" value="Add more times" onclick="js_admin.addMoreTimeOnClick();" />
     </div>
 </div>
-<div class="pg menu">
+<div class="pg menu template">
     <div class="heading onToggle">Menu <span class="menu_name"></span></div>
     <div class="data toggle">
-        <input class="jq_watermark menu_name" type="text" name="menu[@id][name]" title="Menu name"/>
+        <input class="jq_watermark menu_name" type="text" name="menu[@id][name]" title="Menu name" onchange="js_admin.menuNameOnChange(this);" />
         <br/>
+        <div class="menu_group">
+            
+        </div>
     </div>
     <div class="controller toggle">
         controllers

@@ -3,6 +3,7 @@ var js_admin = {
 onDocReady: function ()
 {
     js_admin.initToggleDiv();
+    
 },
 
 initToggleDiv: function()
@@ -50,6 +51,19 @@ addMoreTimeOnClick: function()
     {
         tbody.append(tr_hours.clone().removeClass('template'));
     }
+},
+
+menuNameOnChange: function(input)
+{
+    input = $(input);
+    var name = input.val();
+    
+    input
+        .parents('div.menu')
+        .find('div.heading > span.menu_name')
+        .text(name)
+    ;
+    
 }
 
 };
