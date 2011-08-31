@@ -25,8 +25,9 @@ EOHTML;
         ?>
         </div>
     </div>
-    
-<input type="submit" value="Submit"/>
+    <input type="submit" value="Submit"/>
+    <br/>
+    <br/>
 </div>
 <div class="pg">
     <div class="heading onToggle">Business Information</div>
@@ -44,6 +45,7 @@ EOHTML;
         <br/>
         <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"></textarea>
     </div>
+    <br/>
 </div>
 <div class="pg menu">
     <div class="heading onToggle">Menu <span class="menu_name"></span>
@@ -51,12 +53,15 @@ EOHTML;
     <div class="controller">
         <input type="button" value="Add menu" onclick="js_admin.addNewMenu(this);" />
         <input type="button" value="Remove menu" onclick="js_admin.removeNewMenu(this);" />
+        <br/>
+        <br/>
     </div>
     <div class="data toggle">
         <input type="hidden" name="menu[]" value="@menu@"/>
         <input class="jq_watermark" type="text" name="menu[]" title="Group (ie. Appetizers)" onchange="js_admin.menuNameOnChange(this);" />
         <br/>
         <input class="jq_watermark" type="text" name="menu[]" title="Group notes" />
+        <br/>
         <br/>
         <div class="subheading onToggle">Menu items</div>
         <div class="menu_group toggle">
