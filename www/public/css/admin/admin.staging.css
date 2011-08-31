@@ -18,6 +18,18 @@ div.heading{
     padding-top: 3px;
     margin-bottom: 3px;
 }
+div.subheading{
+    
+    font-size: 14px;
+    background-color: silver;
+    width: 100%;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
 div.data{
     
     padding-right: 3px;
