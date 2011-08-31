@@ -71,6 +71,7 @@ EOHTML;
         </div>
     </div>
     <input type="hidden" name="menu[]" value="@end_of_menu@"/>
+    <br/>
 </div>
 </form>
 <div class="pg"><br/><br/><pre><?php var_export($post); ?></pre></div>

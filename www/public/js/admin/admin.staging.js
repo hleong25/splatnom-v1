@@ -8,10 +8,26 @@ onDocReady: function ()
 
 initToggleDiv: function()
 {
-    $('div.onToggle').click(function()
-    {
-        $(this).siblings('div.toggle').toggle();
-    });
+    $('div.onToggle')
+        .click
+            (
+                function()
+                {
+                    $(this).siblings('div.toggle').toggle();
+                }
+            )
+        .hover
+            (
+                function() //handlerIn
+                {
+                    $(this).css('cursor', 'pointer');
+                },
+                function() //handlerOut
+                {
+                    $(this).css('cursor', 'auto');
+                }
+            )
+    ;
 },
 
 formOnSubmit: function(form)
@@ -57,14 +73,21 @@ addNewMenu: function(elem)
                 .attr('data-jq-watermark', '')
                 .watermark()
                 .end()
-                
+            .end()
+        
+        .find('span.menu_name')
+            .text('')
             .end()
         
         .find('input:text')
             // user friendly... go to the first input
             .first()
-            .focus()
+                .focus()
+                .end()
+            .end()
     ;
+    
+    js_admin.initToggleDiv();
 },
 
 
