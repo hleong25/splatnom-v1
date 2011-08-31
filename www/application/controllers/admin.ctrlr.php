@@ -108,7 +108,7 @@ class AdminController
             return;
         }
         
-        $this->set('post', $_POST);
+        $this->set('post', isset($_POST) ? $_POST : array());
         
         $this->set('staging_id', $id);
         $this->set('site', $menu_data['site']);

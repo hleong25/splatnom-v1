@@ -33,6 +33,81 @@ menuNameOnChange: function(input)
     
 },
 
+addNewMenu: function(elem)
+{
+    var objThis = $(elem).parents('div.menu');
+    
+    var clone_obj = objThis
+        .clone()
+        .insertAfter(objThis)
+        
+        .find('div.menu_item')
+            // remove all but one menu item
+            .not(':first')
+                .remove()
+                .end()
+            .end()
+        
+        .find('input:text')
+            // reset the fields
+            .val('')
+            
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+                
+            .end()
+        
+        .find('input:text')
+            // user friendly... go to the first input
+            .first()
+            .focus()
+    ;
+},
+
+
+removeNewMenu: function(elem)
+{
+    var objThis = $(elem).parents('div.menu');
+    
+    if (objThis.siblings('div.menu').length == 0)
+    {
+        // just reset it...
+        objThis
+            .find('div.menu_item')
+                // remove all but one menu item
+                .not(':first')
+                    .remove()
+                    .end()
+                .end()
+
+            .find('input:text')
+                // reset the fields
+                .val('')
+
+                // reset the watermark
+                .filter('.jq_watermark')
+                    .attr('data-jq-watermark', '')
+                    .watermark()
+                    .end()
+
+                .end()
+
+            .find('input:text')
+                // user friendly... go to the first input
+                .first()
+                .focus()
+        ;
+    }
+    else
+    {
+        // remove it...
+        objThis.remove();
+    }
+},
+
 addNewMenuItem: function(elem)
 {
     var objThis = $(elem).parent('div.menu_item');
@@ -79,6 +154,11 @@ removeNewMenuItem: function(elem)
                     .end()
 
                 .end()
+                
+            .find('input:text')
+                // user friendly... go to the first input
+                .first()
+                .focus()
         ;
     }
     else

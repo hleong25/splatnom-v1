@@ -46,9 +46,14 @@ EOHTML;
     </div>
 </div>
 <div class="pg menu">
-    <div class="heading onToggle">Menu <span class="menu_name"></span></div>
+    <div class="heading onToggle">Menu <span class="menu_name"></span>
+    </div>
+    <div class="controller">
+        <input type="button" value="Add menu" onclick="js_admin.addNewMenu(this);" />
+        <input type="button" value="Remove menu" onclick="js_admin.removeNewMenu(this);" />
+    </div>
     <div class="data toggle">
-        <input class="" type="hidden" name="menu[]" value="@menu_group@"/>
+        <input type="hidden" name="menu[]" value="@menu@"/>
         <input class="jq_watermark" type="text" name="menu[]" title="Group (ie. Appetizers)" onchange="js_admin.menuNameOnChange(this);" />
         <br/>
         <input class="jq_watermark" type="text" name="menu[]" title="Group notes" />
@@ -56,7 +61,7 @@ EOHTML;
         <div class="subheading onToggle">Menu items</div>
         <div class="menu_group toggle">
             <div class="menu_item">
-                <input class="" type="hidden" name="menu[]" value="@group_items@"/>
+                <input type="hidden" name="menu[]" value="@item@"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Item"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Price"/>
                 <input class="jq_watermark" type="text" name="menu[]" title="Notes"/>
@@ -65,9 +70,7 @@ EOHTML;
             </div>
         </div>
     </div>
-</div>
-<div class="pg controller">
-    controllers
+    <input type="hidden" name="menu[]" value="@end_of_menu@"/>
 </div>
 </form>
 <div class="pg"><br/><br/><pre><?php var_export($post); ?></pre></div>
