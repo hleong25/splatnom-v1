@@ -38,7 +38,7 @@ addNewMenuItem: function(elem)
     var objThis = $(elem).parent('div.menu_item');
     
     var clone_obj = objThis
-        .clone(true)
+        .clone()
         .insertAfter(objThis)
         
         .find('input:text')
@@ -52,6 +52,11 @@ addNewMenuItem: function(elem)
                 .end()
                 
             .end()
+        
+        .find('input:text')
+            // user friendly... go to the first input
+            .first()
+            .focus()
     ;
 },
 
