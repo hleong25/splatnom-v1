@@ -2,37 +2,26 @@ var js_admin = {
 
 onDocReady: function ()
 {
-    js_admin.initToggleDiv();
-    
+    // empty
 },
 
-initToggleDiv: function()
+toggleOnClick: function(elem)
 {
-    $('div.onToggle')
-        .click
-            (
-                function()
-                {
-                    $(this).siblings('div.toggle').toggle();
-                }
-            )
-        .hover
-            (
-                function() //handlerIn
-                {
-                    $(this).css('cursor', 'pointer');
-                },
-                function() //handlerOut
-                {
-                    $(this).css('cursor', 'auto');
-                }
-            )
-    ;
+    $(elem).siblings('div.toggle').toggle();
+},
+
+toggleOnHoverIn: function(elem)
+{
+    $(elem).css('cursor', 'pointer');
+},
+
+toggleOnHoverOut: function(elem)
+{
+    $(elem).css('cursor', 'auto');
 },
 
 formOnSubmit: function(form)
 {
-    
     return true;
 },
 
@@ -54,7 +43,7 @@ addNewMenu: function(elem)
     var objThis = $(elem).parents('div.menu');
     
     var clone_obj = objThis
-        .clone()
+        .clone(false)
         .insertAfter(objThis)
         
         .find('div.menu_item')
@@ -86,8 +75,6 @@ addNewMenu: function(elem)
                 .end()
             .end()
     ;
-    
-    js_admin.initToggleDiv();
 },
 
 
@@ -136,7 +123,7 @@ addNewMenuItem: function(elem)
     var objThis = $(elem).parent('div.menu_item');
     
     var clone_obj = objThis
-        .clone()
+        .clone(false)
         .insertAfter(objThis)
         
         .find('input:text')
