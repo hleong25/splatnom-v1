@@ -108,25 +108,91 @@ class AdminController
             return;
         }
         
-        $this->set('post', isset($_POST) ? $_POST : array());
-        
         $this->set('staging_id', $id);
         $this->set('site', $menu_data['site']);
         $this->set('imgs', $menu_data['imgs']);
         $this->set('info', array());
         
+        $menus = isset($_POST['menu']) ? $_POST['menu'] : array();
+        $menus = $this->parsePostStagingMenu($menus);
+        $menus = $this->validateStagingMenu($menus);
+        $this->set('menus', $menus);
+        
+        $this->set('dbg', 
+            array(
+                'post' => isset($_POST) ? $_POST : array(),
+                'menus' => $menus,
+            )
+        );
     }
     
-    function staging_postHours($post_hours)
+    function parsePostStagingMenu($postMenu)
     {
-        $hours = array();
+        $menuCollection = array();
+        $menu = array();
         
-        foreach ($post_hours as $idx => $hrs)
+        for ($ii = 0, $jj = count($postMenu); $ii < $jj; $ii++)
         {
-            if ($idx == '@id')
-                continue;
+            switch ($postMenu[$ii])
+            {
+                case '@menu@':
+                    $menu = array(
+                        'name' => $postMenu[++$ii],
+                        'notes' => $postMenu[++$ii],
+                    );
+                    break;
+                case '@item@':
+                    $menu['items'][] = array(
+                        'item' => $postMenu[++$ii],
+                        'price' => $postMenu[++$ii],
+                        'notes' => $postMenu[++$ii],
+                    );
+                    break;
+                case '@end_of_menu@':
+                    $menuCollection[] = $menu;
+                    break;
+            }
         }
         
-        return $hours;
+        return $menuCollection;
+    }
+    
+    function validateStagingMenu($menus)
+    {
+        if (empty($menus))
+            $menus[] = array();
+        
+        foreach ($menus as $idx_menu => &$menu)
+        {
+            if (!isset($menu['name']))
+                $menu['name'] = '';
+
+            if (!isset($menu['notes']))
+                $menu['notes'] = '';
+
+            if (empty($menu['items']))
+                $menu['items'][] = array();
+
+            foreach ($menu['items'] as $idx_item => &$item)
+            {
+                if (empty($item))
+                    $item = array(
+                        'item' => '',
+                        'price' => '',
+                        'notes' => '',
+                    );
+
+                if (!isset($item['item']))
+                    $item['item'] = '';
+
+                if (!isset($item['price']))
+                    $item['price'] = '';
+
+                if (!isset($item['notes']))
+                    $item['notes'] = '';
+            }
+        }
+        
+        return $menus;
     }
 }

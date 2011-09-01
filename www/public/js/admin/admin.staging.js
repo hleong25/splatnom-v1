@@ -102,13 +102,14 @@ removeNewMenu: function(elem)
                     .attr('data-jq-watermark', '')
                     .watermark()
                     .end()
-
                 .end()
 
             .find('input:text')
                 // user friendly... go to the first input
                 .first()
-                .focus()
+                    .focus()
+                    .end()
+                .end()
         ;
     }
     else
@@ -135,13 +136,14 @@ addNewMenuItem: function(elem)
                 .attr('data-jq-watermark', '')
                 .watermark()
                 .end()
-                
             .end()
         
         .find('input:text')
             // user friendly... go to the first input
             .first()
-            .focus()
+                .focus()
+                .end()
+            .end()
     ;
 },
 
@@ -168,7 +170,9 @@ removeNewMenuItem: function(elem)
             .find('input:text')
                 // user friendly... go to the first input
                 .first()
-                .focus()
+                    .focus()
+                    .end()
+                .end()
         ;
     }
     else
