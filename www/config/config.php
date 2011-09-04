@@ -39,6 +39,8 @@ function getSiteName()
         'foodbook',
         'menum',
         'yumenu',
+        'menubyte',
+        'bytemenu',
     );
     
     $size = count($names);
