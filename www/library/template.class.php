@@ -37,6 +37,10 @@ class Template
     
     function init()
     {
+        global $get_url;
+
+        $this->set('myurl', $get_url);
+
         $this->addCss('reset');
         $this->addCss('default');
         
