@@ -223,6 +223,7 @@ class AdminController
         }
         
         $this->set('pending_id', $id);
+        $this->set('err_msg', empty($_GET['err_msg']) ? '' : $_GET['err_msg']);
         $this->set('site', $menu_data['site']);
         $this->set('imgs', $menu_data['imgs']);
         $this->set('search_arg', array('name'=>'', 'location'=>''));
@@ -262,15 +263,17 @@ class AdminController
         }
 
         $menu = new MenuModel();
-        $menu_data = $menu->getPendingMenu($id);
-        
-        if ($menu_data === false)
+        $new_menu = $menu->pendingMenuApproved($id);
+        if ($new_menu === false)
         {
-            redirect('/admin/pendingmenu_list');
+            $msg = '&err_msg=failed';
+            redirect('/admin/pending_menu/'.$id.'/'.$msg);
             return;
         }
-
-
-
+        else
+        {
+            redirect('/menu/metadata/'.$new_menu);
+            return;
+        }
     }
 }

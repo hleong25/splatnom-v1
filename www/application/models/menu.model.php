@@ -29,7 +29,7 @@ EOQ;
 
         $query =<<<EOQ
             INSERT INTO tblPendingMenuImages (
-                    Pendingmenu_id,
+                    pendingmenu_id,
                     file_img
                     )
             VALUES (
@@ -336,5 +336,50 @@ EOQ;
             $menu['imgs'][] = $img['file_img'];
         
         return $menu;
+    }
+
+    function pendingMenuApproved($pending_id)
+    {
+        $pending_menu = $this->getPendingMenu($pending_id);
+        if ($pending_menu == false)
+            return false;
+
+        $this->beginTransaction();
+
+        $query =<<<EOQ
+            SELECT id, menu_status
+            FROM vMenuStatus
+EOQ;
+        
+        $rst = $this->query($query);
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
+        $cacheMenuStatus = array();
+        foreach ($rows as $row)
+            $cacheMenuStatus[$row['menu_status']] = $row['id'];
+ 
+        if (empty($cacheMenuStatus['new'])) return false;
+
+        $query =<<<EOQ
+            INSERT INTO tblMenu(
+                mode_id,
+                site_addy
+            ) 
+            VALUES (
+                :mode_id,
+                :site
+            )
+EOQ;
+
+        $params = array(':mode_id'=>$cacheMenuStatus['new'], ':site'=>$pending_menu['site']);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $menu_id = $this->lastInsertId();
+
+        logit($menu_id);
+
+
+        return false;
     }
 }

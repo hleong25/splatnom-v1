@@ -46,5 +46,8 @@ EOHTML;
         <input type="button" value="New Menu Approve!!!" onclick="location.href='/admin/transfer_menu/<?php echo $pending_id; ?>'" />
         <input type="button" value="Cancel" onclick="location.href='/<?php echo $myurl; ?>'"/>
     </div>
+    <div class="msg">
+        <span class="err"><?php echo $err_msg; ?></span>
+    </div>
 </div>
-
+<div class="pg"><pre><?php var_export($_GET); ?></pre></div>
