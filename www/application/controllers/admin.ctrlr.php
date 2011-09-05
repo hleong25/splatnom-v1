@@ -88,116 +88,116 @@ class AdminController
         $user->setUserPermissions($user_id, $settings['permissions']);
     }
     
-    function onAction_staging($id = null)
-    {
-        if (empty($id) || ($id < 0))
-        {
-            $this->m_bRender = false;
-            redirect('/admin/pendingmenu_list');
-            return;
-        }
-        $this->addCss('admin/admin.staging');
-        $this->addJs('admin/admin.staging');
+    //function onAction_staging($id = null)
+    //{
+        //if (empty($id) || ($id < 0))
+        //{
+            //$this->m_bRender = false;
+            //redirect('/admin/pendingmenu_list');
+            //return;
+        //}
+        //$this->addCss('admin/admin.staging');
+        //$this->addJs('admin/admin.staging');
         
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        //$this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         
-        $menu = new MenuModel();
-        $menu_data = $menu->getNewMenu($id);
+        //$menu = new MenuModel();
+        //$menu_data = $menu->getNewMenu($id);
         
-        if ($menu_data === false)
-        {
-            $this->m_bRender = false;
-            redirect('/admin/pendingmenu_list');
-            return;
-        }
+        //if ($menu_data === false)
+        //{
+            //$this->m_bRender = false;
+            //redirect('/admin/pendingmenu_list');
+            //return;
+        //}
         
-        $this->set('staging_id', $id);
-        $this->set('site', $menu_data['site']);
-        $this->set('imgs', $menu_data['imgs']);
-        $this->set('info', array());
+        //$this->set('staging_id', $id);
+        //$this->set('site', $menu_data['site']);
+        //$this->set('imgs', $menu_data['imgs']);
+        //$this->set('info', array());
         
-        $menus = isset($_POST['menu']) ? $_POST['menu'] : array();
-        $menus = $this->parsePostStagingMenu($menus);
-        $menus = $this->validateStagingMenu($menus);
-        $this->set('menus', $menus);
+        //$menus = isset($_POST['menu']) ? $_POST['menu'] : array();
+        //$menus = $this->parsePostStagingMenu($menus);
+        //$menus = $this->validateStagingMenu($menus);
+        //$this->set('menus', $menus);
         
-        $this->set('dbg', 
-            array(
-                'post' => isset($_POST) ? $_POST : array(),
-                'menus' => $menus,
-            )
-        );
-    }
+        //$this->set('dbg', 
+            //array(
+                //'post' => isset($_POST) ? $_POST : array(),
+                //'menus' => $menus,
+            //)
+        //);
+    //}
     
-    function parsePostStagingMenu($postMenu)
-    {
-        $menuCollection = array();
-        $menu = array();
+    //function parsePostStagingMenu($postMenu)
+    //{
+        //$menuCollection = array();
+        //$menu = array();
         
-        for ($ii = 0, $jj = count($postMenu); $ii < $jj; $ii++)
-        {
-            switch ($postMenu[$ii])
-            {
-                case '@menu@':
-                    $menu = array(
-                        'name' => $postMenu[++$ii],
-                        'notes' => $postMenu[++$ii],
-                    );
-                    break;
-                case '@item@':
-                    $menu['items'][] = array(
-                        'item' => $postMenu[++$ii],
-                        'price' => $postMenu[++$ii],
-                        'notes' => $postMenu[++$ii],
-                    );
-                    break;
-                case '@end_of_menu@':
-                    $menuCollection[] = $menu;
-                    break;
-            }
-        }
+        //for ($ii = 0, $jj = count($postMenu); $ii < $jj; $ii++)
+        //{
+            //switch ($postMenu[$ii])
+            //{
+                //case '@menu@':
+                    //$menu = array(
+                        //'name' => $postMenu[++$ii],
+                        //'notes' => $postMenu[++$ii],
+                    //);
+                    //break;
+                //case '@item@':
+                    //$menu['items'][] = array(
+                        //'item' => $postMenu[++$ii],
+                        //'price' => $postMenu[++$ii],
+                        //'notes' => $postMenu[++$ii],
+                    //);
+                    //break;
+                //case '@end_of_menu@':
+                    //$menuCollection[] = $menu;
+                    //break;
+            //}
+        //}
         
-        return $menuCollection;
-    }
+        //return $menuCollection;
+    //}
     
-    function validateStagingMenu($menus)
-    {
-        if (empty($menus))
-            $menus[] = array();
+    //function validateStagingMenu($menus)
+    //{
+        //if (empty($menus))
+            //$menus[] = array();
         
-        foreach ($menus as $idx_menu => &$menu)
-        {
-            if (!isset($menu['name']))
-                $menu['name'] = '';
+        //foreach ($menus as $idx_menu => &$menu)
+        //{
+            //if (!isset($menu['name']))
+                //$menu['name'] = '';
 
-            if (!isset($menu['notes']))
-                $menu['notes'] = '';
+            //if (!isset($menu['notes']))
+                //$menu['notes'] = '';
 
-            if (empty($menu['items']))
-                $menu['items'][] = array();
+            //if (empty($menu['items']))
+                //$menu['items'][] = array();
 
-            foreach ($menu['items'] as $idx_item => &$item)
-            {
-                if (empty($item))
-                    $item = array(
-                        'item' => '',
-                        'price' => '',
-                        'notes' => '',
-                    );
+            //foreach ($menu['items'] as $idx_item => &$item)
+            //{
+                //if (empty($item))
+                    //$item = array(
+                        //'item' => '',
+                        //'price' => '',
+                        //'notes' => '',
+                    //);
 
-                if (!isset($item['item']))
-                    $item['item'] = '';
+                //if (!isset($item['item']))
+                    //$item['item'] = '';
 
-                if (!isset($item['price']))
-                    $item['price'] = '';
+                //if (!isset($item['price']))
+                    //$item['price'] = '';
 
-                if (!isset($item['notes']))
-                    $item['notes'] = '';
-            }
-        }
+                //if (!isset($item['notes']))
+                    //$item['notes'] = '';
+            //}
+        //}
         
-        return $menus;
-    }
+        //return $menus;
+    //}
 
     function onAction_pending_menu($id = null)
     {
