@@ -41,6 +41,3 @@ EOHTML;
     </span>
     </div>
 </div>
-<form id="pending" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" > 
-    <input type="submit" value="Submit"/>
-</form>
