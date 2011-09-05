@@ -3,59 +3,59 @@
 class MenuModel
     extends Model
 {
-    //function saveNewMenu($addy)
-    //{
-        ///*
-            //select * 
-            //from tblNewMenu menu
-            //left join tblNewMenuImages menu_img on menu.id = menu_img.newmenu_id
-         //*/
-        
-        //$this->beginTransaction();
-        
-        //$query =<<<EOQ
-            //INSERT INTO tblNewMenu (
-                //site_addy
-            //)
-            //VALUES (
-                //:site
-            //)
-//EOQ;
-        
-        //$prepare = $this->prepareAndExecute($query, array(':site' => $addy), __FILE__, __LINE__);
-        //if (!$prepare) return false;
-        
-        //$new_id = $this->lastInsertId();
-        
-        //$query =<<<EOQ
-            //INSERT INTO tblNewMenuImages (
-                //newmenu_id,
-                //file_img
-            //)
-            //VALUES (
-                //:new_id,
-                //:file_img
-            //)
-//EOQ;
-        
-        //$prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        //if (!$prepare) return false;
-        
-        //$new_menu_img = array(':new_id' => $new_id, ':file_img' => '');
-        //$files = handle_upload_files();
-        
-        //foreach ($files as $img)
-        //{
-            //$new_menu_img[':file_img'] = $img;
-            
-            //$rst = $this->execute_log($prepare, $new_menu_img, __FILE__, __LINE__);
-        //}
-        
-        //$this->commit();
-        
-        //return true;
-    //}
-    
+    function saveNewMenu($addy)
+    {
+        /*
+           select * 
+           from tblPendingMenu menu
+           left join tblPendingMenuImages menu_img on menu.id = menu_img.pendingmenu_id
+         */
+
+        $this->beginTransaction();
+
+        $query =<<<EOQ
+            INSERT INTO tblPendingMenu (
+                    site_addy
+                    )
+            VALUES (
+                    :site
+                   )
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':site' => $addy), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $new_id = $this->lastInsertId();
+
+        $query =<<<EOQ
+            INSERT INTO tblPendingMenuImages (
+                    Pendingmenu_id,
+                    file_img
+                    )
+            VALUES (
+                    :new_id,
+                    :file_img
+                   )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $new_menu_img = array(':new_id' => $new_id, ':file_img' => '');
+        $files = handle_upload_files();
+
+        foreach ($files as $img)
+        {
+            $new_menu_img[':file_img'] = $img;
+
+            $rst = $this->execute_log($prepare, $new_menu_img, __FILE__, __LINE__);
+        }
+
+        $this->commit();
+
+        return true;
+    }
+
     //function createNew($info)
     //{
         //$this->beginTransaction();
@@ -208,7 +208,7 @@ EOQ;
                 id, 
                 file_img
             FROM tblPendingMenuImages
-            WHERE newmenu_id = :id
+            WHERE pendingmenu_id = :id
 EOQ;
         
         $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);

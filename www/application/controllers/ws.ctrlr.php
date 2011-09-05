@@ -68,7 +68,7 @@ class WsController
         
         $id = $_POST['id'];
         $menu = new MenuModel();
-        $bPurged = $menu->purgeNewMenu($id);
+        $bPurged = $menu->purgePendingMenu($id);
         
         if (!$bPurged)
             $this->set('json', array('status'=>false, 'msg'=>'Purge failed'));

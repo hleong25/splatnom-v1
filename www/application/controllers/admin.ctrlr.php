@@ -25,8 +25,8 @@ class AdminController
             }
         }
         
-        $this->addCss('admin/admin.newmenu.list');
-        $this->addJs('admin/admin.newmenu.list');
+        $this->addCss('admin/admin.pendingmenu.list');
+        $this->addJs('admin/admin.pendingmenu.list');
         
         $this->set('new_menus', $menu->getPendingMenus());
     }
