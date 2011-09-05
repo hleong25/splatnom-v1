@@ -36,7 +36,8 @@ EOHTML;
         </form>
         <span class="search_result">
             <?php
-                echo 'Search resulted in '.count($search_rst).' rows.';
+                if (isset($search_rst))
+                    echo 'Search resulted in '.count($search_rst).' rows.';
             ?>
     </span>
     </div>
