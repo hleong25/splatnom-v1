@@ -8,24 +8,27 @@ class AdminController
         $this->addCss('admin/admin.main');
         $this->addJs('admin/admin.main');
         
-        $this->set('cnt_new_menus', $this->Admin->getNewMenuCount());
+        $menu = new MenuModel();
+
+        $this->set('cnt_pending_menus', $menu->getPendingMenuCount());
     }
     
-    function onAction_newmenu_list($action = null, $id = null)
+    function onAction_pendingmenu_list($action = null, $id = null)
     {
+        $menu = new MenuModel();
+
         if (!empty($action) && (!empty($id)))
         {
             if ($action === 'purge')
             {
-                $menu = new MenuModel();
-                $bPurged = $menu->purgeNewMenu($id);
+                $bPurged = $menu->purgePendingMenu($id);
             }
         }
         
         $this->addCss('admin/admin.newmenu.list');
         $this->addJs('admin/admin.newmenu.list');
         
-        $this->set('new_menus', $this->Admin->getNewMenus());
+        $this->set('new_menus', $menu->getPendingMenus());
     }
     
     function onAction_find_user()
@@ -90,7 +93,7 @@ class AdminController
         if (empty($id) || ($id < 0))
         {
             $this->m_bRender = false;
-            redirect('/admin/newmenu_list');
+            redirect('/admin/pendingmenu_list');
             return;
         }
         $this->addCss('admin/admin.staging');
@@ -104,7 +107,7 @@ class AdminController
         if ($menu_data === false)
         {
             $this->m_bRender = false;
-            redirect('/admin/newmenu_list');
+            redirect('/admin/pendingmenu_list');
             return;
         }
         
@@ -201,7 +204,7 @@ class AdminController
         if (empty($id) || ($id < 0))
         {
             $this->m_bRender = false;
-            redirect('/admin/newmenu_list');
+            redirect('/admin/pendingmenu_list');
             return;
         }
         $this->addCss('admin/admin.pending.menu');
@@ -210,12 +213,12 @@ class AdminController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
  
         $menu = new MenuModel();
-        $menu_data = $menu->getNewMenu($id);
+        $menu_data = $menu->getPendingMenu($id);
         
         if ($menu_data === false)
         {
             $this->m_bRender = false;
-            redirect('/admin/newmenu_list');
+            redirect('/admin/pendingmenu_list');
             return;
         }
         
@@ -245,6 +248,29 @@ class AdminController
 
                 break;
         }
+
+    }
+
+    function onAction_transfer_menu($id = null)
+    {
+        $this->m_bRender = false;
+
+        if (empty($id) || ($id < 0))
+        {
+            redirect('/admin/pendingmenu_list');
+            return;
+        }
+
+        $menu = new MenuModel();
+        $menu_data = $menu->getPendingMenu($id);
+        
+        if ($menu_data === false)
+        {
+            redirect('/admin/pendingmenu_list');
+            return;
+        }
+
+
 
     }
 }

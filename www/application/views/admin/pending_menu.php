@@ -6,8 +6,6 @@
 <div class="pg pg_bottom">
     <div class="heading">Information</div>
     <div class="data">
-        <span>url: </span><span><?php echo $myurl; ?></span>
-        <br/>
          <span>pending id: </span><span><?php echo $pending_id; ?></span>
         <br/>
         <span>website: </span><a href="http://<?php echo $site; ?>" target="_blank"><?php echo $site; ?></a>
@@ -39,6 +37,14 @@ EOHTML;
                 if (isset($search_rst))
                     echo 'Search resulted in '.count($search_rst).' rows.';
             ?>
-    </span>
+        </span>
     </div>
 </div>
+<div class="pg pg_bottom">
+    <div class="heading">&nbsp;</div>
+    <div class="data">
+        <input type="button" value="New Menu Approve!!!" onclick="location.href='/admin/transfer_menu/<?php echo $pending_id; ?>'" />
+        <input type="button" value="Cancel" onclick="location.href='/<?php echo $myurl; ?>'"/>
+    </div>
+</div>
+
