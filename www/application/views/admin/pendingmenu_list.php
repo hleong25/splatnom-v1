@@ -26,7 +26,7 @@
                     <td>{$editing}</td>
                     <td><a href="http://{$site}">{$site}</a></td>
                     <td>{$menu['cnt_imgs']}</td>
-                    <td><a href="/admin/pending_menu/{$id}">Pending</a></td>
+                    <td><a href="/admin/pending_menu/{$id}">View</a></td>
                     <td><a href="/admin/pendingmenu_list/purge/{$id}" onclick="return js_admin.remove_row({$id}, '{$row_id}');">Remove</a></td>
                 </tr>
 EOHTML;
