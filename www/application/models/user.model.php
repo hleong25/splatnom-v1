@@ -104,7 +104,7 @@ EOQ;
             SELECT
                 p.permission,
                 NOT ISNULL(up.user_id) AS 'Assigned'
-            FROM tblPermissions p
+            FROM vPermissions p
             LEFT JOIN tblUserPermissions up ON up.permission_id = p.id AND up.user_id = :id
 EOQ;
         
@@ -127,7 +127,7 @@ EOQ;
         
         $query =<<<EOQ
             SELECT id, permission
-            FROM tblPermissions
+            FROM vPermissions
 EOQ;
         
         $rst = $this->query($query);
@@ -166,7 +166,7 @@ EOQ;
                 ':perm_id' => $cachePerms[$key]
             );
             
-            $rst = $prepare->execute_log($p, __FILE__, __LINE__);
+            $rst = $this->execute_log($prepare, $p, __FILE__, __LINE__);
         }
         
         $this->commit();
