@@ -195,4 +195,56 @@ class AdminController
         
         return $menus;
     }
+
+    function onAction_pending_menu($id = null)
+    {
+        if (empty($id) || ($id < 0))
+        {
+            $this->m_bRender = false;
+            redirect('/admin/newmenu_list');
+            return;
+        }
+        $this->addCss('admin/admin.pending.menu');
+        $this->addJs('admin/admin.pending.menu');
+        
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+ 
+        $menu = new MenuModel();
+        $menu_data = $menu->getNewMenu($id);
+        
+        if ($menu_data === false)
+        {
+            $this->m_bRender = false;
+            redirect('/admin/newmenu_list');
+            return;
+        }
+        
+        $this->set('pending_id', $id);
+        $this->set('site', $menu_data['site']);
+        $this->set('imgs', $menu_data['imgs']);
+        $this->set('search_arg', array('name'=>'', 'location'=>''));
+        //$this->set('search_rst', array());
+
+        if (empty($_POST['action']))
+            return;
+
+        switch ($_POST['action'])
+        {
+            case 'search':
+                // TODO: do custom search
+                $search_arg = array(
+                    'name' => $_POST['name'],
+                    'location' => $_POST['location'],
+                );
+
+                $search_rst = array(
+                );
+
+                $this->set('search_arg', $search_arg);
+                $this->set('search_rst', $search_rst);
+
+                break;
+        }
+
+    }
 }
