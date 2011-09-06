@@ -7,8 +7,8 @@ class LoginController
     {
         global $get_url;
 
-        $this->addCss('login');
-        $this->addJs('login');
+        $this->addCss('login/login');
+        $this->addJs('login/login');
         
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         
