@@ -19,9 +19,11 @@ class TemplateControllerHelper
         {
             global $get_url;
             
+            $goto_url = '&goto='.$get_url;
+
             // not logged in
             $links[] = array('css' => 'nav new_user', 'lbl' => 'register', 'lnk' => 'user/register');
-            $links[] = array('css' => 'nav login', 'lbl' => 'login', 'lnk' => "login/main/{$get_url}");
+            $links[] = array('css' => 'nav login', 'lbl' => 'login', 'lnk' => "login/main{$goto_url}");
         }
         else
         {

@@ -5,10 +5,8 @@ class LoginController
 {
     function onAction_main()
     {
-//        $return_url = func_get_args();
-//        $url = implode('/', $return_url);
-//        $this->set('url', $url);
-        
+        global $get_url;
+
         $this->addCss('login');
         $this->addJs('login');
         
@@ -17,6 +15,11 @@ class LoginController
         $this->set('username', '');
         $this->set('msg', '');
         
+        $goto_url = '';
+        if (!empty($_GET['goto']))
+            $goto_url = $_GET['goto'];
+        $this->set('goto_url', 'goto='.$goto_url);
+
         if (!empty($_POST))
         {
             $sess_id = $this->Login->tryLogin($_POST['lu'], $_POST['lp']);
@@ -27,10 +30,10 @@ class LoginController
                 
                 $this->m_bRender = false;
                 
-//                if (empty($_POST['from_url']))
+                if (($goto_url == $get_url) || empty($goto_url))
                     redirect('/home/main');
-//                else
-//                    redirect('/'.$_POST['from_url']);
+                else 
+                    redirect('/'.$goto_url);
             }
             else
             {
