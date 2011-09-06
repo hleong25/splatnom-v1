@@ -5,6 +5,13 @@ class UserController
 {
     function onAction_register()
     {
+        if (!empty($_SESSION['id']))
+        {
+            $this->m_bRender = false;
+            redirect('/home/main');
+            return;
+        }
+
         $this->addCss('user/user.register');
         $this->addJs('user/user.register');
         
@@ -53,6 +60,7 @@ class UserController
             $this->m_bRender = false;
             $_SESSION['id'] = $new_id;
             redirect('/home/main');
+            return;
         }
     }
     

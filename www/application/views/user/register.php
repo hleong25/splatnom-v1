@@ -1,5 +1,9 @@
+<?php
+if (!empty($_SESSION['id']))
+    return;
+?>
 <div class="pg">
-    <form id="new_user" enctype="multipart/form-data" method="post" action="/user/register">
+    <form id="new_user" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>">
         <input class="jq_watermark username" type="text" name="username" title="Username" value="<?php echo $username; ?>"/><br/>
         <input class="jq_watermark password" type="password" name="password" title="Password" value=""/><br/>
         <input type="submit" value="Register!" />
