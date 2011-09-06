@@ -227,7 +227,6 @@ class AdminController
         $this->set('site', $menu_data['site']);
         $this->set('imgs', $menu_data['imgs']);
         $this->set('search_arg', array('name'=>'', 'location'=>''));
-        //$this->set('search_rst', array());
 
         if (empty($_POST['action']))
             return;
