@@ -1,8 +1,11 @@
 <?php
 
-function logit($obj)
+function logit($obj, $file=null, $line=null)
 {
-    error_log(var_export($obj, true));
+    $from = "";
+    if (!empty($file) && !empty($line))
+        $from = "({$file}:{$line}): ";
+    error_log($from.var_export($obj, true));
 }
 
 function redirect($location)
@@ -76,7 +79,7 @@ function handle_upload_files_helper($bFakeTransfer, $tmp_name, $name)
     for ($ii = 0, $jj = 5; $ii < $jj; $ii++) 
     {
         // this will retry up to 5 times to get a unique filename
-        $unique_id = date('ymdHis') . uniqid();
+        $unique_id = date('ymdHisu') . uniqid();
         $short_id = base_convert($unique_id, 10, 36); // 0-9,a-z
         $new_filename = "menu_{$short_id}.{$file_ext}";
         $uploaded_file = OS_UPLOAD_PATH . DS . $new_filename;

@@ -340,6 +340,12 @@ EOQ;
 
     function pendingMenuApproved($pending_id)
     {
+        /*
+            select * 
+            from tblMenu m
+            left join tblMenuImages mi on m.id = mi.menu_id
+        */
+
         $pending_menu = $this->getPendingMenu($pending_id);
         if ($pending_menu == false)
             return false;
@@ -377,9 +383,64 @@ EOQ;
 
         $menu_id = $this->lastInsertId();
 
-        logit($menu_id);
+        $query =<<<EOQ
+            INSERT INTO tblMenuImages(
+                menu_id,
+                file_img
+            ) VALUES (
+                :menu_id,
+                :file_img
+            )
+EOQ;
 
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+        
+        $rst = $prepare->bindValue(':menu_id', $menu_id);
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
 
-        return false;
+        foreach ($pending_menu['imgs'] as $file_img)
+        {
+            $rst = $prepare->bindValue(':file_img', $file_img);
+            if (!$rst)
+            {
+                $this->log_dberr($rst, __FILE__, __LINE__);
+                return false;
+            }
+
+            $rst = $prepare->execute();
+            if (!$rst)
+            {
+                $this->log_dberr($rst, __FILE__, __LINE__);
+                return false;
+            }
+        }
+
+        $this->commit();
+
+        // move pending images to menu directory
+        $menu_img_path = OS_MENU_PATH . DS . $menu_id;
+        if (mkdir($menu_img_path) == false)
+        {
+            logit("Failed to create menu directory: {$menu_img_path}", __FILE__, __LINE__);
+            return false;
+        }
+
+        foreach ($pending_menu['imgs'] as $file_img)
+        {
+            $file_src = OS_UPLOAD_PATH . DS . $file_img;
+            $file_dst = $menu_img_path . DS . $file_img;
+            
+            @rename($file_src, $file_dst);
+        }
+
+        // it's all good now... let's purge the pending info...
+        $this->purgePendingMenu($pending_id);
+
+        return $menu_id;
     }
 }

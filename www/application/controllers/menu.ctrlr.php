@@ -57,4 +57,10 @@ class MenuController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         
     }
+
+    function onAction_metadata($id=null)
+    {
+        
+    }
+
 }

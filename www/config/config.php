@@ -16,7 +16,9 @@ define('OS_PATH_PUBLIC',        ROOT . DS . 'public');
 define('OS_UPLOAD_PATH',        '/home/custom_code/www.uploads');
 define('OS_DEFAULT_NO_IMAGE',   ROOT . DS . 'public' .  DS . '/img/noimage.jpg');
 
-define('OS_PURGE_PATH',        '/home/custom_code/www.purge');
+define('OS_PURGE_PATH',         '/home/custom_code/www.purge');
+
+define('OS_MENU_PATH',          '/home/custom_code/www.menus');
 
 define('WEB_PATH_CSS',      DS . 'css');
 define('WEB_PATH_JS',       DS . 'js');
