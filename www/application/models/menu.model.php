@@ -341,8 +341,10 @@ EOQ;
     function pendingMenuApproved($pending_id)
     {
         /*
-            select * 
+            select 
+                m.id, m.ts, vs.menu_status, m.site_addy, mi.*
             from tblMenu m
+            left join vMenuStatus vs on m.mode_id = vs.id
             left join tblMenuImages mi on m.id = mi.menu_id
         */
 
