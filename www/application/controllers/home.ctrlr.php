@@ -13,5 +13,10 @@ class HomeController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         
         $this->set('recently_added', $this->Home->getNewlyAddedMenus());
+
+        if (getPermissions('metadata'))
+        {
+            $this->set('need_metadata', $this->Home->getMenuNeedsMetadata());
+        }
     }
 }

@@ -99,3 +99,19 @@ function handle_upload_files_helper($bFakeTransfer, $tmp_name, $name)
 
     return $new_filename;
 }
+
+function getPermissions($key=null)
+{
+    $perms = array();
+
+    if (isset($_SESSION['perms']) && !empty($_SESSION['perms']))
+        $perms = $_SESSION['perms'];
+
+    if ($key === null)
+        return $perms;
+
+    if (array_key_exists($key, $perms))
+        return $perms[$key];
+    else
+        return false;
+}
