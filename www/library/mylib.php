@@ -8,12 +8,6 @@ function logit($obj, $file=null, $line=null)
     error_log($from.var_export($obj, true));
 }
 
-function redirect($location)
-{
-    header("Location: {$location}");
-    logit('!!! obsolete redirect !!!! - '.$location);
-}
-
 function g_redirect($location)
 {
     header("Location: {$location}");

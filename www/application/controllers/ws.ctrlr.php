@@ -43,7 +43,7 @@ class WsController
             // do some actions...
 
             // finally... redirect to main page
-            redirect('/');
+            $this->redirect('/');
         }
     }
 
