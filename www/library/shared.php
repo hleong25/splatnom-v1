@@ -66,7 +66,7 @@ function callHook ()
         case 'index.php':
             $get_url = 'home/main';
     }
-    
+
     $urlArray = array();
     $urlArray = explode("/", $get_url);
 
@@ -78,7 +78,7 @@ function callHook ()
 
     $name = ucwords(trim($name));
     $ctrl = $name . 'Controller';
-    
+
     if (!class_exists($ctrl))
     {
         error_log("Class '$ctrl' does not exists");
@@ -86,21 +86,21 @@ function callHook ()
     else
     {
         // load user permissions if needed
-        if ( (isset($_SESSION['id']) === true) && 
+        if ( (isset($_SESSION['id']) === true) &&
              (isset($_SESSION['perms']) === false) )
         {
             $user = new UserModel();
             $_SESSION['perms'] = $user->getUserPermission($_SESSION['id']);
         }
-        
+
         // make sure admin pages are only accessed by admins
-        if ((strtolower($name) == 'admin') && 
+        if ((strtolower($name) == 'admin') &&
             (!isset($_SESSION['perms']) || ($_SESSION['perms']['admin'] != true)))
         {
-            redirect('/home/main');
+            g_redirect('/home/main');
             return;
         }
-        
+
         $dispatch = new $ctrl($name, $action);
         if (method_exists($ctrl, $action))
         {
@@ -118,17 +118,17 @@ function strEndsWith($haystack, $needle, &$parsed)
 {
     $hslen = strlen($haystack);
     $nlen = strlen($needle);
-    
-    if ($nlen > $hslen) 
+
+    if ($nlen > $hslen)
         return false;
-    
+
     $idx = substr_compare($haystack, $needle, -$nlen, true);
-    
+
     if ($idx !== 0)
         return false;
-    
+
     $parsed = substr($haystack, 0, ($hslen - $nlen));
-    
+
     return true;
 }
 
@@ -138,7 +138,7 @@ function __autoload ($className)
     $clsName = strtolower($className);
     $load_file = false;
     $base_name = false;
-    
+
     if ((strcmp($clsName, 'controller') === 0) ||
         (strcmp($clsName, 'model') === 0) ||
         (strcmp($clsName, 'template') === 0))
@@ -153,19 +153,19 @@ function __autoload ($className)
     {
         $load_file = ROOT . DS . 'application' . DS . 'models' . DS . $base_name . '.model.php';
     }
-    
+
     if (!$load_file)
     {
         error_log("__autoload failed with '{$className}'");
         return;
     }
-    
+
     if (!file_exists($load_file))
     {
         error_log("Controller file '{$load_file}' does not exists for class '{$className}'");
         return;
     }
-    
+
     require_once($load_file);
 }
 

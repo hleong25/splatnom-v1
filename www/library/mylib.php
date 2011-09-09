@@ -11,8 +11,13 @@ function logit($obj, $file=null, $line=null)
 function redirect($location)
 {
     header("Location: {$location}");
+    logit('!!! obsolete redirect !!!! - '.$location);
 }
 
+function g_redirect($location)
+{
+    header("Location: {$location}");
+}
 
 function handle_upload_files($bFakeTransfer = false) 
 {
