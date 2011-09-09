@@ -448,7 +448,57 @@ EOQ;
     
     function getMenu($id)
     {
-        
+        $menu = array();
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            SELECT
+                site_addy
+            FROM tblMenu
+            WHERE id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $info = $prepare->fetch(PDO::FETCH_ASSOC);
+        if (empty($info)) return false;
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $menu['site'] = $info['site_addy'];
+        if (stristr($info['site_addy'], 'http://'))
+        {
+            // if PHP >= 5.3 then do
+            // $menu['site'] = stristr($info['site_addy'], 'http://', true)
+
+            $menu['site'] = substr($info['site_addy'], 7);
+        }
+
+        if (stristr($info['site_addy'], 'https://'))
+        {
+            // if PHP >= 5.3 then do
+            // $menu['site'] = stristr($info['site_addy'], 'https://', true)
+
+            $menu['site'] = substr($info['site_addy'], 8);
+        }
+
+        $query =<<<EOQ
+            SELECT
+                file_img
+            FROM tblMenuImages
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $menu['imgs'] = array();
+        foreach ($imgs as $img)
+            $menu['imgs'][] = $img['file_img'];
+
+        return $menu;
     }
 
 }

@@ -20,7 +20,7 @@ $toggleEvent .= 'onmouseout="js_menu.toggleOnHoverOut(this); "';
         <?php
             foreach ($imgs as $img)
             {
-                $img_link = "/ws/getimage/{$img}";
+                $img_link = "/ws/getimage/{$id}@{$img}";
                 echo<<<EOHTML
                     <a href="$img_link" target="_blank"><img class="menu" src="$img_link" /></a>
 EOHTML;
