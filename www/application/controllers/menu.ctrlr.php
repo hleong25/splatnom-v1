@@ -89,12 +89,12 @@ class MenuController
         //$menus = $this->validateStagingMenu($menus);
         $this->set('menus', $menus);
 
-        //$this->set('dbg',
-            //array(
-                //'post' => isset($_POST) ? $_POST : array(),
+        $this->set('dbg',
+            array(
+                'post' => isset($_POST) ? $_POST : array(),
                 //'menus' => $menus,
-            //)
-        //);
+            )
+        );
     }
 
 }
