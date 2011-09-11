@@ -16,9 +16,6 @@ class UserController
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
-        $this->set('username', '');
-        $this->set('err_msg', false);
-
         if (empty($_POST) || empty($_POST['username']))
         {
             return;

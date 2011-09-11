@@ -38,10 +38,6 @@ class AdminController
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
-        // default values
-        $this->set('query_user', '');
-        $this->set('query_result', null);
-
         if (empty($_GET) || empty($_GET['query_user']))
             return;
 

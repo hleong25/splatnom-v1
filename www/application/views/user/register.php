@@ -1,6 +1,12 @@
 <?php
 if (!empty($_SESSION['id']))
     return;
+
+$params = array(
+    'username'=>'',
+    'err_msg'=>false,
+);
+extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
     <form id="new_user" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>">
@@ -12,10 +18,10 @@ if (!empty($_SESSION['id']))
 <?php
 if ($err_msg !== false)
 {
-?>
-<div class="pg error_msg">
-    <span><?php echo $err_msg; ?></span>
-</div>
-<?php
+    echo<<<EOHTML
+        <div class="pg error_msg">
+            <span>{$err_msg}</span>
+        </div>
+EOHTML;
 } // if ($err_msg !== false)
 ?>

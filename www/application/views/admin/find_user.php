@@ -1,3 +1,10 @@
+<?php
+$params = array(
+    'query_user' => '', 
+    'query_result' => null,
+);
+extract($params, EXTR_SKIP);
+?>
 <div id="search_user" class="pg">
     <form id="search_user" enctype="multipart/form-data" method="get" action="/admin/find_user">
         <input class="jq_watermark query_user" type="text" name="query_user" title="Username or Email address" value="<?php echo $query_user; ?>"/>

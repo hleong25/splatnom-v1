@@ -12,9 +12,6 @@ class LoginController
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
-        $this->set('username', '');
-        $this->set('msg', '');
-
         $goto_url = '';
         if (!empty($_GET['goto']))
             $goto_url = $_GET['goto'];
@@ -27,8 +24,6 @@ class LoginController
             if ($sess_id !== false)
             {
                 $_SESSION['id'] = $sess_id;
-
-                $this->m_bRender = false;
 
                 if (($goto_url == $get_url) || empty($goto_url))
                     $this->redirect('/home/main');
@@ -47,7 +42,6 @@ class LoginController
 
     function onAction_end()
     {
-        $this->m_bRender = false;
         session_destroy();
         $this->redirect('/home/main');
     }
