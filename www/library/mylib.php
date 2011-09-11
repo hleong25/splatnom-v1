@@ -13,6 +13,21 @@ function g_redirect($location)
     header("Location: {$location}");
 }
 
+function varExists($keys, $defaultValue)
+{
+    $vars = array();
+    foreach ($keys as $key)
+    {
+        if (!isset($$key))
+        {
+            logit("{$key} not set");
+            $vars[$key] = $defaultValue;
+        }
+    }
+
+    extract($vars);
+}
+
 function handle_upload_files($bFakeTransfer = false) 
 {
     if (empty($_FILES))

@@ -29,25 +29,14 @@ define('PASSCODE_TROJAN',   'locomotion');
 function getSiteName()
 {
     // TODO: live server should not have this...
-    
+
     $names = array(
-        'menulicious',
-        '<span style="color: black;">red</span><span>basil</span>',
-        'socialmenu',
-        'fooding',
-        'menufood',
-        'foodmenu',
         'foodify',
-        'foodbook',
-        'menum',
-        'yumenu',
-        'menubyte',
-        'bytemenu',
     );
-    
+
     $size = count($names);
-    
+
     $rndIdx = rand() % $size;
-    
+
     return $names[$rndIdx];
 }
