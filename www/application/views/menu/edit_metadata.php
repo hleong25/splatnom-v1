@@ -17,6 +17,17 @@ $params = array(
 extract($params, EXTR_SKIP);
 
 ?>
+<?php
+if (getPermissions('admin')) {
+?>
+<div class="pg">
+    <div class="heading">Admin control</div>
+    <div class="data">
+        <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
+    </div>
+    <hr />
+</div>
+<?php } // if (getPermissions('admin')) ?>
 <form id="staging" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>

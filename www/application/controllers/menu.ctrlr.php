@@ -73,7 +73,7 @@ class MenuController
         $menu = $this->Menu;
         $menu_data = $menu->getMenu($id);
 
-        if (empty($menu_data)) //$menu_data === false)
+        if (empty($menu_data))
         {
             $this->redirect('/home/main');
             return;
@@ -95,6 +95,26 @@ class MenuController
                 //'menus' => $menus,
             )
         );
+    }
+
+    function onAction_purge($id)
+    {
+        if (empty($id) || ($id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        if ($this->Menu->purgeMenu($id))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+        else
+        {
+            $this->redirect('/menu/edit_metadata/'.$id);
+            return;
+        }
     }
 
 }

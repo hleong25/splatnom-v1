@@ -445,7 +445,7 @@ EOQ;
 
         return $menu_id;
     }
-    
+
     function getMenu($id)
     {
         $menu = array();
@@ -499,6 +499,22 @@ EOQ;
             $menu['imgs'][] = $img['file_img'];
 
         return $menu;
+    }
+
+    function purgeMenu($id)
+    {
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            UPDATE tblMenu
+            SET mode_id = (SELECT id FROM vMenuStatus WHERE menu_status = 'purge')
+            WHERE id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
     }
 
 }
