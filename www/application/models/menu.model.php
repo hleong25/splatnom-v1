@@ -517,4 +517,65 @@ EOQ;
         return true;
     }
 
+    function getMenuInfo($id)
+    {
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            SELECT
+                name,
+                addy1, addy2,
+                city, state, zip,
+                numbers,
+                hours
+            FROM tblInfo_us
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $row = array_shift($rst);
+        return $row;
+    }
+
+    function updateMenuInfo($info)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblInfo_us
+            (
+                menu_id,
+                name,
+                addy1, addy2,
+                city, state, zip,
+                numbers,
+                hours
+            )
+            VALUES
+            (
+                :id,
+                :name,
+                :addy1, :addy2,
+                :city, :state, :zip,
+                :numbers,
+                :hours
+            )
+            ON DUPLICATE KEY UPDATE
+                name = :u_name,
+                addy1 = :u_addy1,
+                addy2 = :u_addy2,
+                city = :u_city,
+                state = :u_state,
+                zip = :u_zip,
+                numbers = :u_numbers,
+                hours = :u_hours
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $info, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
+    }
+
 }

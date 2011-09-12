@@ -79,15 +79,61 @@ class MenuController
             return;
         }
 
+        $err_msgs = array();
+
         $this->set('id', $id);
         $this->set('site', $menu_data['site']);
         $this->set('imgs', $menu_data['imgs']);
-        $this->set('info', array());
+
+        $info_params = array(
+                'info_name' => 'name',
+                'info_addy1' => 'addy1',
+                'info_addy2' => 'addy2',
+                'info_city' => 'city',
+                'info_state' => 'state',
+                'info_zip' => 'zip',
+                'info_numbers' => 'numbers',
+                'info_hours' => 'hours',
+            );
+
+        if (!empty($_POST))
+        {
+            // business info
+            $info = array('id'=>$id);
+            foreach ($info_params as $post_key => $sql_key)
+            {
+                if (!isset($_POST[$post_key]))
+                    continue;
+
+                $val = $_POST[$post_key];
+
+                $this->set($post_key, $val);
+
+                $info[":{$sql_key}"] = $val;
+                $info[":u_{$sql_key}"] = $val;
+            }
+
+            if (!$this->Menu->updateMenuInfo($info))
+                $err_msgs[] = 'Failed to update info.';
+        }
+        else
+        {
+            $info = $this->Menu->getMenuInfo($id);
+            foreach ($info_params as $post_key => $sql_key)
+            {
+                if (!isset($info[$sql_key]))
+                    continue;
+
+                $this->set($post_key, $info[$sql_key]);
+            }
+        }
 
         $menus = isset($_POST['menu']) ? $_POST['menu'] : array();
         //$menus = $this->parsePostStagingMenu($menus);
         //$menus = $this->validateStagingMenu($menus);
         $this->set('menus', $menus);
+
+        $this->set('err_msgs', $err_msgs);
 
         $this->set('dbg',
             array(
@@ -99,7 +145,7 @@ class MenuController
 
     function onAction_purge($id)
     {
-        if (empty($id) || ($id < 0))
+        if (empty($id) || ($id < 0) || !getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;

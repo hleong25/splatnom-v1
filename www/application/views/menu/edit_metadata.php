@@ -4,6 +4,7 @@ $toggleEvent .= 'onmouseover="js_menu.toggleOnHoverIn(this); "';
 $toggleEvent .= 'onmouseout="js_menu.toggleOnHoverOut(this); "';
 
 $params = array(
+    'err_msgs' => array(),
     'info_name' => '',
     'info_addy1' => '',
     'info_addy2' => '',
@@ -33,6 +34,12 @@ if (getPermissions('admin')) {
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>
     <span>Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</span>
+</div>
+<div class="pg pg_bottom err_msgs">
+<?php
+    $errs = implode('<br/>', $err_msgs);
+    echo $errs;
+?>
 </div>
 <div class="pg pg_bottom">
     <div class="heading onToggle" <?php echo $toggleEvent; ?>>Information</div>

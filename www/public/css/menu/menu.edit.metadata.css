@@ -1,6 +1,10 @@
 div.pg_bottom{
     margin-bottom: 10px;
 }
+div.err_msgs{
+    color: red;
+    text-align: center;
+}
 img.menu{
     width: 100px;
     height: 100px;
