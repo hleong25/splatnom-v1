@@ -629,4 +629,90 @@ EOQ;
 
         return true;
     }
+
+    function getSection($menu_id)
+    {
+        $query =<<<EOQ
+            SELECT *
+            FROM tblMenuSection
+            WHERE menu_id = :menu_id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':menu_id'=>$menu_id), __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $sections = array();
+
+        foreach ($rst as $row)
+        {
+            $section_id = $row['section_id'];
+            $name = $row['name'];
+            $notes = $row['notes'];
+
+            $sections[$section_id] = array(
+                'name' => $name,
+                'notes' => $notes,
+            );
+        }
+
+        return $sections;
+    }
+
+    function getMetadata($menu_id, $sections)
+    {
+        $query =<<<EOQ
+            SELECT *
+            FROM tblMenuMetadata
+            WHERE menu_id = :menu_id
+            AND section_id = :section_id
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $mdts = array();
+        foreach ($sections as $section_id => $section_info)
+        {
+            $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+            $rsts[] = $prepare->bindValue(':section_id', $section_id);
+
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+
+            // copy the section info
+            $mdts[$section_id] = $section_info;
+
+            $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row)
+            {
+                $ordinal_id = $row['ordinal_id'];
+                $label = $row['label'];
+                $price = $row['price'];
+                $notes = $row['notes'];
+
+                // create the menus metadata
+                $mdts[$section_id]['items'][] = array(
+                    'item' => $label,
+                    'price' => $price,
+                    'notes' => $notes,
+                );
+            }
+        }
+
+        return $mdts;
+    }
 }

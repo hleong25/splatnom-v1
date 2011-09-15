@@ -238,9 +238,12 @@ class MenuController
     {
         $menu = $this->Menu;
         $imgs = $menu->getMenuImgs($id);
+        $sections = $menu->getSection($id);
+        $mdts = $menu->getMetadata($id, $sections);
 
         $this->set('info', $info);
         $this->set('imgs', $imgs);
+        $this->set('mdts', $mdts);
 
     }
 
