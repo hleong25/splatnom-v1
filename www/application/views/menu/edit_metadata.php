@@ -45,7 +45,7 @@ if (getPermissions('admin')) {
     <hr />
 </div>
 <?php } // if (getPermissions('admin')) ?>
-<form id="staging" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
+<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>
