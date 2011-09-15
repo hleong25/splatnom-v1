@@ -71,13 +71,29 @@ class MenuController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
         $menu = $this->Menu;
-        $menu_data = $menu->getMenu($id);
+        $menu_info = $menu->getMenuInfo($id);
 
-        if (empty($menu_data))
+        if (empty($menu_info))
         {
             $this->redirect('/home/main');
             return;
         }
+
+        // it's in the database... let's continue
+
+        $this->set('id', $id);
+
+        if (empty($_POST))
+        {
+            $this->edit_metadata_onInit($id, $menu_info);
+        }
+        else
+        {
+            $this->set('dbg', $_POST);
+            $this->edit_metadata_onPost($id);
+        }
+
+        return;
 
         $err_msgs = array();
 
@@ -138,9 +154,94 @@ class MenuController
         $this->set('dbg',
             array(
                 'post' => isset($_POST) ? $_POST : array(),
-                //'menus' => $menus,
+                'menus' => $menus,
             )
         );
+    }
+
+    function edit_metadata_onPost($id)
+    {
+        $menu = $this->Menu;
+
+        $info_params = array(
+                'info_name' => 'name',
+                'info_addy1' => 'addy1',
+                'info_addy2' => 'addy2',
+                'info_city' => 'city',
+                'info_state' => 'state',
+                'info_zip' => 'zip',
+                'info_numbers' => 'numbers',
+                'info_hours' => 'hours',
+            );
+
+        $info = array();
+        $info_save = array('id'=>$id);
+        foreach ($info_params as $post_key => $sql_key)
+        {
+            if (!isset($_POST[$post_key]))
+                continue;
+
+            $val = $_POST[$post_key];
+
+            $this->set($post_key, $val);
+
+            $info[$sql_key] = $val;
+            $info_save[":{$sql_key}"] = $val;
+            $info_save[":u_{$sql_key}"] = $val;
+        }
+
+        $info['site_addy'] = 'www.not_done.com';
+
+        $this->set('info', $info);
+        if (!$menu->updateMenuInfo($info_save))
+            $err_msgs[] = 'Failed to update info.';
+
+        $imgs = $menu->getMenuImgs($id);
+        $this->set('imgs', $imgs);
+
+        $post_mdts = $_POST['mdt'];
+
+        $mdts = array();
+        $mdt = array();
+
+        for ($ii = 0, $jj = count($post_mdts); $ii < $jj; $ii++)
+        {
+            switch ($post_mdts[$ii])
+            {
+                case '@mdt@':
+                    $mdt = array(
+                        'name' => $post_mdts[++$ii],
+                        'notes' => $post_mdts[++$ii],
+                    );
+                    break;
+                case '@item@':
+                    $mdt['items'][] = array(
+                        'item' => $post_mdts[++$ii],
+                        'price' => $post_mdts[++$ii],
+                        'notes' => $post_mdts[++$ii],
+                    );
+                    break;
+                case '@end_of_mdt@':
+                    $mdts[] = $mdt;
+                    break;
+            }
+        }
+
+        $this->set('dbg', $mdts);
+        $this->set('mdts', $mdts);
+        if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
+            $err_msgs[] = 'Failed to save menu data';
+
+    }
+
+    function edit_metadata_onInit($id, &$info)
+    {
+        $menu = $this->Menu;
+        $imgs = $menu->getMenuImgs($id);
+
+        $this->set('info', $info);
+        $this->set('imgs', $imgs);
+
     }
 
     function onAction_purge($id)

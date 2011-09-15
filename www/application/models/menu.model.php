@@ -56,91 +56,6 @@ EOQ;
         return true;
     }
 
-    //function createNew($info)
-    //{
-        //$this->beginTransaction();
-
-        //$query = <<<EOQ
-            //INSERT INTO tblPlaceContact(
-                //name,
-                //addy1, addy2,
-                //city, state, zip,
-                //phone
-            //)
-            //VALUES (
-                //:name,
-                //:addy1, :addy2,
-                //:city, :state, :zip,
-                //:phone
-            //)
-//EOQ;
-
-        //$prepare = $this->prepareAndExecute($query, $info, __FILE__, __LINE__);
-        //if (!$prepare) return false;
-
-        //$this->commit();
-
-        //$new_id = $this->lastInsertId();
-        //return $new_id;
-    //}
-
-    //function saveUploadedImages($new_id)
-    //{
-        //$this->beginTransaction();
-
-        //$query =<<<EOQ
-            //INSERT INTO tblPlaceImages(
-                //place_id,
-                //file_img
-            //)
-            //VALUES (
-                //:id,
-                //:img
-            //)
-//EOQ;
-
-        //$prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        //if (!$prepare) return false;
-
-        //$files = handle_upload_files();
-        ////logit($files);
-
-        //$params = array (
-            //':id' => $new_id,
-            //':img' => ''
-        //);
-
-        //foreach ($files as $img)
-        //{
-            //$params[':img'] = $img;
-
-            //$rst = $this->execute_log($prepare, $params, __FILE__, __LINE__);
-        //}
-
-        //$this->commit();
-
-        //return true;
-    //}
-
-    //function getMenu($id)
-    //{
-        //$query =<<<EOQ
-            //SELECT
-                //name,
-                //addy1, addy2,
-                //city, state, zip,
-                //phone,
-                //modified
-            //FROM tblPlaceContact
-            //WHERE id = :id
-//EOQ;
-
-        //$prepare = $this->prepareAndExecute($query, array(':id' => $id), __FILE__, __LINE__);
-        //if (!$prepare) return false;
-
-        //return $prepare->fetch(PDO::FETCH_ASSOC);
-    //}
-
     function getPendingMenuCount()
     {
         $query =<<<EOQ
@@ -446,61 +361,6 @@ EOQ;
         return $menu_id;
     }
 
-    function getMenu($id)
-    {
-        $menu = array();
-        $menu_id = array(':id' => $id);
-
-        $query =<<<EOQ
-            SELECT
-                site_addy
-            FROM tblMenu
-            WHERE id = :id
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $info = $prepare->fetch(PDO::FETCH_ASSOC);
-        if (empty($info)) return false;
-        $prepare->closeCursor();
-        unset($prepare);
-
-        $menu['site'] = $info['site_addy'];
-        if (stristr($info['site_addy'], 'http://'))
-        {
-            // if PHP >= 5.3 then do
-            // $menu['site'] = stristr($info['site_addy'], 'http://', true)
-
-            $menu['site'] = substr($info['site_addy'], 7);
-        }
-
-        if (stristr($info['site_addy'], 'https://'))
-        {
-            // if PHP >= 5.3 then do
-            // $menu['site'] = stristr($info['site_addy'], 'https://', true)
-
-            $menu['site'] = substr($info['site_addy'], 8);
-        }
-
-        $query =<<<EOQ
-            SELECT
-                file_img
-            FROM tblMenuImages
-            WHERE menu_id = :id
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $menu['imgs'] = array();
-        foreach ($imgs as $img)
-            $menu['imgs'][] = $img['file_img'];
-
-        return $menu;
-    }
-
     function purgeMenu($id)
     {
         $menu_id = array(':id' => $id);
@@ -536,8 +396,30 @@ EOQ;
         if (!$prepare) return false;
 
         $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $row = array_shift($rst);
-        return $row;
+        $info = array_shift($rst);
+
+        $info['site_addy'] = 'www.not_done.com';
+
+        if (!empty($info['site_addy']))
+        {
+            if (stristr($info['site_addy'], 'http://'))
+            {
+                // if PHP >= 5.3 then do
+                // $menu['site'] = stristr($info['site_addy'], 'http://', true)
+
+                $info['site_addy'] = substr($info['site_addy'], 7);
+            }
+
+            if (stristr($info['site_addy'], 'https://'))
+            {
+                // if PHP >= 5.3 then do
+                // $menu['site'] = stristr($info['site_addy'], 'https://', true)
+
+                $info['site_addy'] = substr($info['site_addy'], 8);
+            }
+        }
+
+        return $info;
     }
 
     function updateMenuInfo($info)
@@ -578,4 +460,173 @@ EOQ;
         return true;
     }
 
+    function getMenuImgs($id)
+    {
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            SELECT
+                file_img
+            FROM tblMenuImages
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        $imgs = array();
+        foreach ($menu_imgs as $img)
+            $imgs[] = $img['file_img'];
+
+        return $imgs;
+    }
+
+    function updateMenuSectionAndMetadata($id, $datas)
+    {
+        $this->beginTransaction();
+
+        if (!$this->truncateMetadata($id))
+            return false;
+
+        if (!$this->truncateSection($id))
+            return false;
+
+        if (!$this->insertSection($id, $datas))
+            return false;
+
+        if (!$this->insertMetadata($id, $datas))
+            return false;
+
+        $this->commit();
+        return true;
+    }
+
+    function truncateSection($id)
+    {
+        $query =<<<EOQ
+            DELETE FROM tblMenuSection WHERE menu_id = :id;
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
+    }
+
+    function truncateMetadata($id)
+    {
+        $query =<<<EOQ
+            DELETE FROM tblMenuMetadata WHERE menu_id = :id;
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
+    }
+
+    function insertSection($id, $datas)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuSection
+            (
+                menu_id,
+                section_id,
+                name,
+                notes
+            )
+            VALUES
+            (
+                :menu_id,
+                :section_id,
+                :name,
+                :notes
+            )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($datas as $idx_section => $section)
+        {
+            $rsts[] = $prepare->bindValue(':menu_id', $id);
+            $rsts[] = $prepare->bindValue(':section_id', $idx_section);
+            $rsts[] = $prepare->bindValue(':name', $section['name']);
+            $rsts[] = $prepare->bindValue(':notes', $section['notes']);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
+
+        return true;
+    }
+
+    function insertMetadata($id, $datas)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuMetadata
+            (
+                menu_id,
+                section_id,
+                ordinal_id,
+                label,
+                price,
+                notes
+            )
+            VALUES
+            (
+                :menu_id,
+                :section_id,
+                :ordinal_id,
+                :label,
+                :price,
+                :notes
+            )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($datas as $idx_section => $section)
+        {
+            $rsts[] = $prepare->bindValue(':menu_id', $id);
+            $rsts[] = $prepare->bindValue(':section_id', $idx_section);
+
+            foreach ($section['items'] as $idx_mdt => $mdt)
+            {
+                $rsts[] = $prepare->bindValue(':ordinal_id', $idx_mdt);
+                $rsts[] = $prepare->bindValue(':label', $mdt['item']);
+                $rsts[] = $prepare->bindValue(':price', $mdt['price']);
+                $rsts[] = $prepare->bindValue(':notes', $mdt['notes']);
+
+                $rsts[] = $prepare->execute();
+            }
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
+
+        return true;
+    }
 }
