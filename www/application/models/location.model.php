@@ -69,7 +69,10 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                *
+                latitude, longitude,
+                `postal code` AS zip,
+                city, `state code1` AS state,
+                distance
             FROM
             (
                 {$query_distance}

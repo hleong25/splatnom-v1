@@ -164,6 +164,9 @@ class AdminController
         $dbg['post'] = $_POST;
         $dbg['get'] = $_GET;
 
+        $this->addCss('admin/admin.location');
+        //$this->addJs('admin/admin.location');
+
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
         $param = false;
@@ -203,7 +206,7 @@ class AdminController
                 $this->set('q_radius', $radius);
 
                 $nearby = $loc->getNearByLatLong($lat, $long, $radius);
-                $dbg['nearby'] = $nearby;
+                $this->set('nearby_query', $nearby);
 
                 break;
         }

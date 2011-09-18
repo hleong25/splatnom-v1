@@ -3,7 +3,8 @@ $params = array(
     'q_zip'=>'',
     'q_lat'=>'',
     'q_long'=>'',
-    'q_radius'=>'10',
+    'q_radius'=>'2',
+    'nearby_query'=>array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -21,5 +22,34 @@ extract($params, EXTR_SKIP);
         <input class="jq_watermark" type="text" name="radius" title="Radius" value="<?php echo $q_radius; ?>"/>
         <input type="submit" value="Search lat/long" />
     </form>
+    <?php if (!empty($nearby_query)) { ?>
+    <table id="latlong">
+        <thead>
+            <td>latitude</td>
+            <td>longitude</td>
+            <td>zip</td>
+            <td>city</td>
+            <td>state</td>
+            <td>distance</td>
+        </thead>
+        <tbody>
+        <?php
+            foreach ($nearby_query as $row)
+            {
+                echo<<<EOHTML
+                <tr>
+                    <td>{$row['latitude']}</td>
+                    <td>{$row['longitude']}</td>
+                    <td>{$row['zip']}</td>
+                    <td>{$row['city']}</td>
+                    <td>{$row['state']}</td>
+                    <td>{$row['distance']}</td>
+                </tr>
+EOHTML;
+            }
+        ?>
+        </tbody>
+    </table>
+    <?php } // if (!empty($nearby_query)) ?>
 </div>
 <div class="pg dbg"><pre><?php var_export($dbg); ?></pre></div>
