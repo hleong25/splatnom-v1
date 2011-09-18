@@ -158,4 +158,57 @@ class AdminController
         }
     }
 
+    function onAction_location($opt=null)
+    {
+        $dbg = array();
+        $dbg['post'] = $_POST;
+        $dbg['get'] = $_GET;
+
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+
+        $param = false;
+
+        if (empty($_GET))
+            return;
+
+        $param = $_GET;
+
+        $loc = new LocationModel();
+
+        switch ($opt)
+        {
+            case 'zip':
+                $zip = $param['zip'];
+                $this->set('q_zip', $zip);
+
+                $latlong = $loc->getLatLongByZip($zip);
+
+                if (!$latlong)
+                    break;
+
+                $lat = $latlong['latitude'];
+                $long = $latlong['longitude'];
+
+                $this->set('q_lat', $lat);
+                $this->set('q_long', $long);
+
+                break;
+            case 'latlong':
+                $lat = $param['lat'];
+                $long = $param['long'];
+                $radius = $param['radius'];
+
+                $this->set('q_lat', $lat);
+                $this->set('q_long', $long);
+                $this->set('q_radius', $radius);
+
+                $nearby = $loc->getNearByLatLong($lat, $long, $radius);
+                $dbg['nearby'] = $nearby;
+
+                break;
+        }
+
+        $this->set('dbg', $dbg);
+    }
+
 }
