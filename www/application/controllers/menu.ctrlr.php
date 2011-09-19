@@ -140,8 +140,6 @@ class MenuController
             $info_save[":u_{$sql_key}"] = $val;
         }
 
-        //$info['latlong'] = $_POST['info_latlong'];
-
         $info['site_addy'] = 'www.not_done.com';
 
         $this->set('info', $info);
