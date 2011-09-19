@@ -1,6 +1,7 @@
 <?php
 $params = array(
     'q_zip'=>'',
+    'q_citystate'=>'',
     'q_lat'=>'',
     'q_long'=>'',
     'q_radius'=>'2',
@@ -13,6 +14,12 @@ extract($params, EXTR_SKIP);
     <form id="byzip" enctype="multipart/form-data" method="get" action="/admin/location/zip">
         <input class="jq_watermark" type="text" name="zip" title="Zip code" value="<?php echo $q_zip; ?>"/>
         <input type="submit" value="Search zip code" />
+    </form>
+</div>
+<div class="pg">
+    <form id="bycitystate" enctype="multipart/form-data" method="get" action="/admin/location/citystate">
+        <input class="jq_watermark" type="text" name="citystate" title="City, State" value="<?php echo $q_citystate; ?>"/>
+        <input type="submit" value="Search city/state" />
     </form>
 </div>
 <div class="pg">

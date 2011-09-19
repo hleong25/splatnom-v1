@@ -196,6 +196,29 @@ class AdminController
                 $this->set('q_long', $long);
 
                 break;
+            case 'citystate':
+                $citystate = $param['citystate'];
+                $this->set('q_citystate', $citystate);
+
+                $citystate = $loc->parseCityState($citystate);
+                if (!$citystate)
+                    break;
+
+                $city = $citystate['city'];
+                $state = $citystate['state'];
+
+                $latlong = $loc->getLatLongByCityState($city, $state);
+
+                if (!$latlong)
+                    break;
+
+                $lat = $latlong['latitude'];
+                $long = $latlong['longitude'];
+
+                $this->set('q_lat', $lat);
+                $this->set('q_long', $long);
+
+                break;
             case 'latlong':
                 $lat = $param['lat'];
                 $long = $param['long'];

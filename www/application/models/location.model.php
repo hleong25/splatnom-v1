@@ -22,6 +22,40 @@ EOQ;
         return $row;
     }
 
+    function parseCityState($citystate)
+    {
+        $split = explode(',', $citystate);
+        $n_split = count($split);
+        if ($n_split < 2)
+            return false;
+
+        $city = trim($split[$n_split -2]);
+        $state = trim($split[$n_split -1]);
+
+        return array('city'=>$city, 'state'=>$state);
+    }
+
+    function getLatLongByCityState($city, $state)
+    {
+        $query =<<<EOQ
+            SELECT
+                AVG(DISTINCT latitude) AS latitude,
+                AVG(DISTINCT longitude) AS longitude
+            FROM tblLocation_us
+            WHERE `country code` = 'US'
+            AND `place name` = :city
+            AND `state code1` = :state
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':city'=>$city, ':state'=>$state), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $row = array_shift($rows);
+        return $row;
+
+    }
+
     function getNearByLatLong($lat, $long, $nearByRadius)
     {
         // radius of earth
