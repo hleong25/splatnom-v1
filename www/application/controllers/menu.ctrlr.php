@@ -89,74 +89,8 @@ class MenuController
         }
         else
         {
-            $this->set('dbg', $_POST);
             $this->edit_metadata_onPost($id);
         }
-
-        return;
-
-        $err_msgs = array();
-
-        $this->set('id', $id);
-        $this->set('site', $menu_data['site']);
-        $this->set('imgs', $menu_data['imgs']);
-
-        $info_params = array(
-                'info_name' => 'name',
-                'info_addy1' => 'addy1',
-                'info_addy2' => 'addy2',
-                'info_city' => 'city',
-                'info_state' => 'state',
-                'info_zip' => 'zip',
-                'info_numbers' => 'numbers',
-                'info_hours' => 'hours',
-            );
-
-        if (!empty($_POST))
-        {
-            // business info
-            $info = array('id'=>$id);
-            foreach ($info_params as $post_key => $sql_key)
-            {
-                if (!isset($_POST[$post_key]))
-                    continue;
-
-                $val = $_POST[$post_key];
-
-                $this->set($post_key, $val);
-
-                $info[":{$sql_key}"] = $val;
-                $info[":u_{$sql_key}"] = $val;
-            }
-
-            if (!$this->Menu->updateMenuInfo($info))
-                $err_msgs[] = 'Failed to update info.';
-        }
-        else
-        {
-            $info = $this->Menu->getMenuInfo($id);
-            foreach ($info_params as $post_key => $sql_key)
-            {
-                if (!isset($info[$sql_key]))
-                    continue;
-
-                $this->set($post_key, $info[$sql_key]);
-            }
-        }
-
-        $menus = isset($_POST['menu']) ? $_POST['menu'] : array();
-        //$menus = $this->parsePostStagingMenu($menus);
-        //$menus = $this->validateStagingMenu($menus);
-        $this->set('menus', $menus);
-
-        $this->set('err_msgs', $err_msgs);
-
-        $this->set('dbg',
-            array(
-                'post' => isset($_POST) ? $_POST : array(),
-                'menus' => $menus,
-            )
-        );
     }
 
     function edit_metadata_onPost($id)
@@ -165,14 +99,30 @@ class MenuController
 
         $info_params = array(
                 'info_name' => 'name',
-                'info_addy1' => 'addy1',
-                'info_addy2' => 'addy2',
-                'info_city' => 'city',
-                'info_state' => 'state',
-                'info_zip' => 'zip',
+                'info_notes' => 'notes',
+                'info_address' => 'address',
+                'info_latitude' => 'latitude',
+                'info_longitude' => 'longitude',
                 'info_numbers' => 'numbers',
                 'info_hours' => 'hours',
             );
+
+        // parse lat/long if needed
+        if (!empty($_POST['info_latlong']))
+        {
+            $latlong = $_POST['info_latlong'];
+
+            $lat = 0;
+            $long = 0;
+
+            $n = sscanf($latlong, '(%f, %f)', $lat, $long);
+
+            if ($n === 2)
+            {
+                $_POST['info_latitude'] = $lat;
+                $_POST['info_longitude'] = $long;
+            }
+        }
 
         $info = array();
         $info_save = array('id'=>$id);
@@ -189,6 +139,8 @@ class MenuController
             $info_save[":{$sql_key}"] = $val;
             $info_save[":u_{$sql_key}"] = $val;
         }
+
+        //$info['latlong'] = $_POST['info_latlong'];
 
         $info['site_addy'] = 'www.not_done.com';
 
@@ -227,7 +179,6 @@ class MenuController
             }
         }
 
-        $this->set('dbg', $mdts);
         $this->set('mdts', $mdts);
         if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
             $err_msgs[] = 'Failed to save menu data';

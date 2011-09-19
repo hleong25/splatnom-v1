@@ -384,8 +384,9 @@ EOQ;
         $query =<<<EOQ
             SELECT
                 name,
-                addy1, addy2,
-                city, state, zip,
+                notes,
+                address,
+                latitude, longitude,
                 numbers,
                 hours
             FROM tblInfo_us
@@ -429,8 +430,9 @@ EOQ;
             (
                 menu_id,
                 name,
-                addy1, addy2,
-                city, state, zip,
+                notes,
+                address,
+                latitude, longitude,
                 numbers,
                 hours
             )
@@ -438,18 +440,18 @@ EOQ;
             (
                 :id,
                 :name,
-                :addy1, :addy2,
-                :city, :state, :zip,
+                :notes,
+                :address,
+                :latitude, :longitude,
                 :numbers,
                 :hours
             )
             ON DUPLICATE KEY UPDATE
                 name = :u_name,
-                addy1 = :u_addy1,
-                addy2 = :u_addy2,
-                city = :u_city,
-                state = :u_state,
-                zip = :u_zip,
+                notes = :u_notes,
+                address = :u_address,
+                latitude = :u_latitude,
+                longitude = :u_longitude,
                 numbers = :u_numbers,
                 hours = :u_hours
 EOQ;

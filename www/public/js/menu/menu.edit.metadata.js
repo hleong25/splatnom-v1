@@ -187,6 +187,25 @@ removeNewMenuItem: function(elem)
         // remove it...
         objThis.remove();
     }
+},
+
+googleSearchAddress: function()
+{
+    // javascript:void(prompt('',gApplication.getMap().getCenter()));
+
+    var txtAddress = $('textarea[name="info_address"]').val();
+    var params = $.param({
+            'sourceid': 'chrome',
+            'ie': 'UTF-8',
+            'q': txtAddress
+    });
+
+    //var url = 'http://www.google.com/search?' + params;
+    var url = 'http://maps.google.com/maps?' + params;
+
+    var map_window = window.open(url);
+
+    return false;
 }
 
 }

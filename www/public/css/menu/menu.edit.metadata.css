@@ -40,6 +40,7 @@ div.data{
     padding-bottom: 3px;
     padding-top: 3px;
 }
+textarea.address,
 textarea.phone_numbers,
 textarea.hours{
     width: 300px;

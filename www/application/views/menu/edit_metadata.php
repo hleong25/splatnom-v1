@@ -15,11 +15,10 @@ $params_mdts[] = array(
 
 $params_info = array(
     'name'=>'',
-    'addy1'=>'',
-    'addy2'=>'',
-    'city'=>'',
-    'state'=>'',
-    'zip'=>'',
+    'notes'=>'',
+    'address'=>'',
+    'latitude'=>0,
+    'longitude'=>0,
     'numbers'=>'',
     'hours'=>'',
 );
@@ -37,15 +36,16 @@ extract($params, EXTR_SKIP);
 <?php
 if (getPermissions('admin')) {
 ?>
+<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
 <div class="pg">
     <div class="heading">Admin control</div>
     <div class="data">
+        <input type="submit" value="Save Menu"/>
         <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
     </div>
     <hr />
 </div>
 <?php } // if (getPermissions('admin')) ?>
-<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>
@@ -76,19 +76,22 @@ EOHTML;
         ?>
         </div>
     </div>
-    <input type="submit" value="Submit"/>
 </div>
 <div class="pg pg_bottom">
     <div class="heading onToggle" <?php echo $toggleEvent; ?>>Business Information</div>
     <div class="data toggle">
         <input class="jq_watermark" type="text" name="info_name" title="Name of the place" value="<?php echo $info['name']; ?>"/>
         <br/>
-        <input class="jq_watermark" type="text" name="info_addy1" title="Address or Intersection 1" value="<?php echo $info['addy1']; ?>"/>
-        <input class="jq_watermark" type="text" name="info_addy2" title="Address or Intersection 2" value="<?php echo $info['addy2']; ?>"/>
+        <input class="jq_watermark" type="text" name="info_notes" title="Notes" value="<?php echo $info['notes']; ?>"/>
         <br/>
-        <input class="jq_watermark" type="text" name="info_city" title="City" value="<?php echo $info['city']; ?>"/>
-        <input class="jq_watermark" type="text" name="info_state" title="State" value="<?php echo $info['state']; ?>"/>
-        <input class="jq_watermark" type="text" name="info_zip" title="Zip" value="<?php echo $info['zip']; ?>"/>
+        <textarea class="jq_watermark address" rows="5"  name="info_address" title="Address"><?php echo $info['address']; ?></textarea>
+        <input type="button" value="Google search address" onclick="return js_menu.googleSearchAddress();" />
+        <br/>
+        <input class="jq_watermark" type="text" name="info_latlong" title="Parse Lat/Long" value=""/>
+        <input class="jq_watermark" type="text" style="width: 400px;" title="javascript get lat long" value="javascript:void(prompt('',gApplication.getMap().getCenter()));"/>
+        <br/>
+        <input class="jq_watermark" type="text" name="info_latitude" title="Latitude" value="<?php echo $info['latitude']; ?>"/>
+        <input class="jq_watermark" type="text" name="info_longitude" title="Longitude" value="<?php echo $info['longitude']; ?>"/>
         <br/>
         <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"><?php echo $info['numbers']; ?></textarea>
         <br/>
