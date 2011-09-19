@@ -36,7 +36,7 @@ EOHTML;
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>
     <div class="data">
-        <table id="metadata">
+        <table class="tblDefault">
             <thead>
                 <td>id</td>
                 <td>timestamp</td>

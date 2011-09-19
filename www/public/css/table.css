@@ -1,6 +1,5 @@
-table#lstmenu
+table.tblDefault
 {
-
     border-right-style: solid;
     border-left-style: solid;
     border-bottom-style: solid;
@@ -11,16 +10,14 @@ table#lstmenu
     border-top-width: 1px;
 }
 
-table#lstmenu thead td
+table.tblDefault thead td
 {
-    
     font-weight: bold;
     background-color: silver;
 }
 
-table#lstmenu td
+table.tblDefault td
 {
-    
     border-right-style: solid;
     border-left-style: solid;
     border-bottom-style: solid;
@@ -34,3 +31,4 @@ table#lstmenu td
     padding-bottom: 4px;
     padding-top: 4px;
 }
+

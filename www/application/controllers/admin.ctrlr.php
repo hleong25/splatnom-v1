@@ -25,8 +25,10 @@ class AdminController
             }
         }
 
-        $this->addCss('admin/admin.pendingmenu.list');
+        //$this->addCss('admin/admin.pendingmenu.list');
         $this->addJs('admin/admin.pendingmenu.list');
+
+        $this->addCss('table');
 
         $this->set('new_menus', $menu->getPendingMenus());
     }
@@ -35,6 +37,8 @@ class AdminController
     {
         $this->addCss('admin/admin.find.user');
         $this->addJs('admin/admin.find.user');
+
+        $this->addCss('table');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
@@ -164,8 +168,10 @@ class AdminController
         $dbg['post'] = $_POST;
         $dbg['get'] = $_GET;
 
-        $this->addCss('admin/admin.location');
+        //$this->addCss('admin/admin.location');
         //$this->addJs('admin/admin.location');
+
+        $this->addCss('table');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 

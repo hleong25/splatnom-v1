@@ -40,37 +40,3 @@ div.heading
     padding-top: 3px;
     margin-bottom: 3px;
 }
-
-table#metadata
-{
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-}
-
-table#metadata thead td
-{
-    font-weight: bold;
-    background-color: silver;
-}
-
-table#metadata td
-{
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-    padding-right: 4px;
-    padding-left: 4px;
-    padding-bottom: 4px;
-    padding-top: 4px;
-}

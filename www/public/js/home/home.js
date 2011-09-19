@@ -6,9 +6,9 @@ onDocReady: function ()
         target:         '#results',
         beforeSubmit:   js_home.funcPreSearch
     });
-    
+
     js_home.loadSettings();
-    
+
     $('form#searchit input[name="query"]').focus();
 },
 
@@ -18,9 +18,9 @@ loadSettings: function ()
         .filter('input[name="query"]')
             .val($.cookie('search_query'))
             .change()
-        
+
         .end()
-        
+
         .filter('input[name="location"]')
             .val($.cookie('search_loc'))
             .change()
@@ -34,7 +34,7 @@ saveSettings: function ()
 },
 
 funcPreSearch: function ()
-{ 
+{
     js_home.saveSettings();
     return true;
 }

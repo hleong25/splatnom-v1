@@ -1,5 +1,5 @@
 <div class="pg">
-    <table id="lstmenu">
+    <table class="tblDefault">
         <thead>
             <td>id</td>
             <td>timestamp</td>
@@ -16,7 +16,7 @@
                 $row_id = "row_{$id}";
                 $ts = date("m.d.y G:i:s", strtotime($menu["ts"]));
                 $site = $menu['site_addy'];
-                
+
                 echo<<<EOHTML
                 <tr id="{$row_id}">
                     <td>{$id}</td>

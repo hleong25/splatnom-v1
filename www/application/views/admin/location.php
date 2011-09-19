@@ -30,7 +30,7 @@ extract($params, EXTR_SKIP);
         <input type="submit" value="Search lat/long" />
     </form>
     <?php if (!empty($nearby_query)) { ?>
-    <table id="latlong">
+    <table class="tblDefault">
         <thead>
             <td>latitude</td>
             <td>longitude</td>

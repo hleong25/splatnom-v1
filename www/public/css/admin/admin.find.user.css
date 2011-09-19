@@ -3,39 +3,3 @@ input.query_user
     width: 350px;
 }
 
-table#user_results
-{
-
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-}
-
-table#user_results thead td
-{
-    
-    font-weight: bold;
-    background-color: silver;
-}
-
-table#user_results td
-{
-    
-    border-right-style: solid;
-    border-left-style: solid;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
-    padding-right: 4px;
-    padding-left: 4px;
-    padding-bottom: 4px;
-    padding-top: 4px;
-}

@@ -1,6 +1,6 @@
 <?php
 $params = array(
-    'query_user' => '', 
+    'query_user' => '',
     'query_result' => null,
 );
 extract($params, EXTR_SKIP);
@@ -12,7 +12,7 @@ extract($params, EXTR_SKIP);
     </form>
 </div>
 <br/>
-<?php 
+<?php
 if ($query_result !== null)
 {
 ?>
@@ -20,7 +20,7 @@ if ($query_result !== null)
     <span>Searching for '<?php echo $query_user; ?>' returned <?php echo count($query_result); ?> results.</span>
     <br/>
     <br/>
-    <table id="user_results">
+    <table class="tblDefault">
         <thead>
             <td>id</td>
             <td>username</td>
@@ -32,7 +32,7 @@ if ($query_result !== null)
             {
                 $id = $row['id'];
                 $name = $row['username'];
-                
+
                 echo<<<EOHTML
                 <tr>
                     <td>{$id}</td>
@@ -47,6 +47,6 @@ EOHTML;
         </tbody>
     </table>
 </div>
-<?php 
+<?php
 } // if ($query_result === null)
 ?>
