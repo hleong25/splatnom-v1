@@ -201,6 +201,47 @@ googleSearchAddress: function()
     var map_window = window.open(url, 'gmaps');
 
     return false;
+},
+
+hideAll: function()
+{
+    $('div.pg > div.toggle').hide();
+},
+
+showAll: function()
+{
+    $('div.pg > div.toggle').show();
+},
+
+moveMenu: function(elem, position)
+{
+    var objThis = $(elem).parents('div.menu');
+    var node = null;
+
+    if (position > 0)
+    {
+        // move down
+        node = objThis.next('div.menu');
+
+        if (node == 0)
+            return;
+
+        objThis.insertAfter(node);
+    }
+
+    if (position < 0)
+    {
+        // move up
+        node = objThis.prev('div.menu');
+
+        if (node == 0)
+            return;
+
+        objThis.insertBefore(node);
+    }
+
+    //$('html, body').animate({scrollTop: objThis.offset().top}, 0);
+
 }
 
 }

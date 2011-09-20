@@ -42,6 +42,8 @@ if (getPermissions('admin')) {
     <div class="data">
         <input type="submit" value="Save Menu"/>
         <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
+        <input type="button" value="Hide all sections" onclick="js_menu.hideAll();" />
+        <input type="button" value="Show all sections" onclick="js_menu.showAll();" />
     </div>
     <hr />
 </div>
@@ -101,7 +103,12 @@ EOHTML;
 </div>
 <?php foreach ($mdts as $idx => $mdt) { ?>
 <div class="pg pg_bottom menu">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Menu <span class="menu_name"><?php echo $mdt['name']; ?></span>
+    <div class="menu_ctrl">
+        <input type="button" value="Move up" onclick="js_menu.moveMenu(this, -1);" />
+        <input type="button" value="Move down" onclick="js_menu.moveMenu(this, 1);" />
+    </div>
+    <div class="heading onToggle" <?php echo $toggleEvent; ?>>
+        Menu <span class="menu_name"><?php echo $mdt['name']; ?></span>
     </div>
     <div class="pg_bottom controller toggle">
         <input type="submit" value="Save Menu"/>
