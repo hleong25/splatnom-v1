@@ -103,12 +103,14 @@ EOHTML;
 <div class="pg pg_bottom menu">
     <div class="heading onToggle" <?php echo $toggleEvent; ?>>Menu <span class="menu_name"><?php echo $mdt['name']; ?></span>
     </div>
-    <div class="pg_bottom controller">
+    <div class="pg_bottom controller toggle">
+        <input type="submit" value="Save Menu"/>
         <input type="button" value="Add menu" onclick="js_menu.addNewMenu(this);" />
         <input type="button" value="Remove menu" onclick="js_menu.removeNewMenu(this);" />
     </div>
     <div class="data toggle">
         <div class="pg_bottom group_info">
+            <!-- <?php echo "menu_id={$id} AND section_id={$idx}"; ?> -->
             <input type="hidden" name="mdt[]" value="@mdt@"/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group (ie. Appetizers)" onchange="js_menu.menuNameOnChange(this);" value="<?php echo $mdt['name']; ?>" />
             <br/>
@@ -118,6 +120,7 @@ EOHTML;
         <div class="menu_group toggle">
             <?php foreach ($mdt['items'] as $item_idx => $item) { ?>
             <div class="menu_item">
+                <!-- <?php echo "menu_id={$id} AND section_id={$idx} AND ordinal_id={$item_idx}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@item@"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Item" value="<?php echo $item['item']; ?>"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
@@ -127,6 +130,11 @@ EOHTML;
             </div>
             <?php } // foreach ($mdt['items'] as $item_idx => $item) ?>
         </div>
+    </div>
+    <div class="pg_bottom controller toggle">
+        <input type="submit" value="Save Menu"/>
+        <input type="button" value="Add menu" onclick="js_menu.addNewMenu(this);" />
+        <input type="button" value="Remove menu" onclick="js_menu.removeNewMenu(this);" />
     </div>
     <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
 </div>

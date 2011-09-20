@@ -489,6 +489,9 @@ EOQ;
     {
         $this->beginTransaction();
 
+        // NOTE: this operation is not optimized...
+        // should revisit when things get slow.
+
         if (!$this->truncateMetadata($id))
             return false;
 
