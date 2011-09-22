@@ -76,31 +76,6 @@ EOQ;
 
         $this->commit();
         return $user_id;
-
-        $query =<<<EOQ
-            INSERT INTO tblUsers(
-                username
-            ) VALUES (
-                :username
-            )
-EOQ;
-
-        $params = array(
-            ':username' => $info['username'],
-        );
-
-        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $user_id = $this->lastInsertId();
-
-        $bSetPassword = $this->setUserPassword($user_id, $info['password']);
-        if (!$bSetPassword)
-            return false;
-
-        $this->commit();
-
-        return $user_id;
     }
 
     function setUserPassword($id, $password)
@@ -113,12 +88,15 @@ EOQ;
                 :user_id,
                 :password
             )
-            ON DUPLICATE KEY UPDATE password = :password
+            ON DUPLICATE KEY UPDATE password = :u_password
 EOQ;
+
+        $sha_password = sha1($password);
 
         $params = array(
             ':user_id' => $id,
-            ':password' => sha1($password),
+            ':password' => $sha_password,
+            ':u_password' => $sha_password,
         );
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
@@ -229,5 +207,78 @@ EOQ;
         }
 
         $this->commit();
+    }
+
+    function setUserVerifyCode($id)
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $validation_code = substr(str_shuffle($chars), 0, 20);
+
+        $query =<<<EOQ
+            INSERT INTO tblUserValidation(
+                user_id,
+                validation_code
+            ) VALUES (
+                :user_id,
+                :validation_code
+            ) ON DUPLICATE KEY UPDATE validation_code = :u_validation_code
+EOQ;
+
+        $params = array(
+            ':user_id' => $id,
+            ':validation_code' => $validation_code,
+            ':u_validation_code' => $validation_code,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return $validation_code;
+    }
+
+    function verifyUserCode($id, $code)
+    {
+        $query =<<<EOQ
+            SELECT COUNT(*) AS cnt
+            FROM tblUserValidation
+            WHERE user_id = :user_id
+            AND validation_code = :code
+EOQ;
+
+        $params = array(':user_id'=>$id, ':code'=>$code);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $cnt = $prepare->fetchColumn();
+        if ($cnt == 0)
+            return false;
+
+        $prepare->closeCursor();
+        unset($prepare);
+
+        // since we're here, it's good... so delete it and update the user status
+        $this->beginTransaction();
+
+        $query =<<<EOQ
+            DELETE FROM tblUserValidation
+            WHERE user_id = :user_id
+            AND validation_code = :code
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $query =<<<EOQ
+            UPDATE tblUsers
+            SET status = (SELECT id FROM vUserStatus WHERE user_status = 'validated')
+            WHERE id = :user_id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':user_id'=>$id), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $this->commit();
+        return true;
     }
 }
