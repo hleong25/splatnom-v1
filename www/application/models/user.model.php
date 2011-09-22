@@ -44,11 +44,13 @@ EOQ;
 
         $query =<<<EOQ
             INSERT INTO tblUsers(
+                status,
                 username,
                 email,
                 firstname,
                 lastname
             ) VALUES (
+                (SELECT id FROM vUserStatus WHERE user_status = 'new'),
                 AES_ENCRYPT(:username, '{$aes_key}_username'),
                 AES_ENCRYPT(:email, '{$aes_key}_email'),
                 AES_ENCRYPT(:firstname, '{$aes_key}_firstname'),

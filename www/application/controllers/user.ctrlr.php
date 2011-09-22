@@ -99,8 +99,9 @@ class UserController
         /*
             Setup first user to admin...
 
-            insert into tblUserPermissions(user_id, permission_id)
-            values (:id, (select id from vPermissions where permission='admin'))
+            insert ignore into tblUserPermissions(user_id, permission_id)
+            values ((select id from tblUsers order by id asc limit 1),
+            (select id from vPermissions where permission='admin'))
         */
     }
 
