@@ -112,7 +112,7 @@ class UserController
 
             UPDATE tblUsers
             SET status = (SELECT id FROM vUserStatus WHERE user_status = 'validated')
-            WHERE id = (select id from tblUsers order by id asc limit 1);
+            WHERE id = (SELECT id FROM tblUsers ORDER BY id ASC LIMIT 1);
 
         */
     }
