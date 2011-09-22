@@ -20,11 +20,60 @@ EOQ;
 
     /*
      * @Function addNewUser
-     * @param (mixed array) $info = array('username', 'password')
+     * @param (mixed array) $info = array('firstname', 'lastname', 'email', 'username', 'password')
      */
     function addNewUser($info)
     {
         $this->beginTransaction();
+
+        /*
+            [parameter => max string length]
+            firstname => 30
+            lastname => 30
+            email => 100
+            username => 50
+            password => 100
+
+            [string length => aes length]
+            30  => 46
+            50  => 66
+            100 => 116
+        */
+
+        $aes_key = SQL_AES_KEY;
+
+        $query =<<<EOQ
+            INSERT INTO tblUsers(
+                username,
+                email,
+                firstname,
+                lastname
+            ) VALUES (
+                AES_ENCRYPT(:username, '{$aes_key}_username'),
+                AES_ENCRYPT(:email, '{$aes_key}_email'),
+                AES_ENCRYPT(:firstname, '{$aes_key}_firstname'),
+                AES_ENCRYPT(:lastname, '{$aes_key}_lastname')
+            )
+EOQ;
+
+        $params = array(
+            ':username' => $info['username'],
+            ':email' => $info['email'],
+            ':firstname' => $info['firstname'],
+            ':lastname' => $info['lastname'],
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $user_id = $this->lastInsertId();
+
+        $bSetPassword = $this->setUserPassword($user_id, $info['password']);
+        if (!$bSetPassword)
+            return false;
+
+        $this->commit();
+        return $user_id;
 
         $query =<<<EOQ
             INSERT INTO tblUsers(
@@ -78,8 +127,16 @@ EOQ;
 
     function getUser($id)
     {
+        $aes_key = SQL_AES_KEY;
+
         $query =<<<EOQ
-            SELECT *
+            SELECT
+                id,
+                ts,
+                AES_DECRYPT(username, '{$aes_key}_username') AS username,
+                AES_DECRYPT(email, '{$aes_key}_email') AS email,
+                AES_DECRYPT(firstname, '{$aes_key}_firstname') AS firstname,
+                AES_DECRYPT(lastname, '{$aes_key}_lastname') AS lastname
             FROM tblUsers
             WHERE id = :id
 EOQ;

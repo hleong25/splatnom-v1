@@ -10,6 +10,8 @@ define('DB_NAME',       'menudb');
 define('DB_USERNAME',   'henry');
 define('DB_PASSWORD',   'henry');
 
+define('SQL_AES_KEY',   'tr0nL3g@c4');
+
 define('BASE_PATH', '/.');
 
 define('OS_PATH_PUBLIC',        ROOT . DS . 'public');

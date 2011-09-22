@@ -5,6 +5,8 @@ class UserController
 {
     function onAction_register()
     {
+        // http://thinkdiff.net/mysql/encrypt-mysql-data-using-aes-techniques/
+
         if (!empty($_SESSION['id']))
         {
             $this->redirect('/home/main');
@@ -16,13 +18,58 @@ class UserController
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
-        if (empty($_POST) || empty($_POST['username']))
+        if (empty($_POST))
+            return;
+
+        $params = array(
+            'fname'=>array('lbl'=>'First name', 'length'=>30),
+            'lname'=>array('lbl'=>'Last name', 'length'=>30),
+            'email'=>array('lbl'=>'Email', 'length'=>100),
+            'username'=>array('lbl'=>'Username', 'length'=>50),
+            'password'=>array('lbl'=>'Password', 'length'=>100),
+            'password2'=>array('lbl'=>'Password', 'length'=>100),
+        );
+
+        foreach ($params as $key=>$val)
         {
+            if (empty($_POST[$key]))
+            {
+                $this->set('err_msg', "{$val['lbl']} is empty.");
+                return;
+            }
+
+            if (strlen($_POST[$key]) > $val['length'])
+            {
+                $this->set('err_msg', "{$val['lbl']} is too long.");
+                return;
+            }
+
+            if (($key === 'password') || ($key === 'password2'))
+                continue;
+
+            $this->set($key, $_POST[$key]);
+        }
+
+        $firstname = $_POST['fname'];
+        $lastname = $_POST['lname'];
+        $email = $_POST['email'];
+
+        $username = $_POST['username'];
+        $password1 = $_POST['password'];
+        $password2 = $_POST['password2'];
+
+        if (empty($password1) || empty($password2) ||
+            ($password1 !== $password2))
+        {
+            $this->set('err_msg', 'Passwords does not match');
             return;
         }
 
-        $username = $_POST['username'];
-        $this->set('username', $username);
+        if (strlen($password1) < 4)
+        {
+            $this->set('err_msg', 'Passwords is too short.');
+            return;
+        }
 
         if (!$this->User->isUsernameAvailable($username))
         {
@@ -30,22 +77,13 @@ class UserController
             return;
         }
 
-        if (strlen($username) > 25)
-        {
-            $this->set('err_msg', 'Username is too long');
-            return;
-        }
-
-        if ( strlen($_POST['password']) == 0)
-        {
-            $this->set('err_msg', 'Password sucks!');
-            return;
-        }
-
-        // if its here, then let's add the new user
+        // finally!!  let's add this new user
         $info = array(
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
             'username' => $username,
-            'password' => $_POST['password'],
+            'password' => $password1,
         );
 
         $new_id = $this->User->addNewUser($info);
@@ -57,6 +95,13 @@ class UserController
             $this->redirect('/home/main');
             return;
         }
+
+        /*
+            Setup first user to admin...
+
+            insert into tblUserPermissions(user_id, permission_id)
+            values (:id, (select id from vPermissions where permission='admin'))
+        */
     }
 
 }
