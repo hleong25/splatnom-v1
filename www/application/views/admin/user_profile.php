@@ -11,7 +11,7 @@
     foreach ($permissions as $key => $val)
     {
         $chk = $val ? 'checked' : '';
-        
+
         echo<<<EOHTML
             <input class="chkPerm" type="checkbox" name="perms[]" value="{$key}" {$chk} /><span class="chkPerm">{$key}</span><br/>
 EOHTML;
@@ -24,8 +24,3 @@ EOHTML;
     <input type="reset" value="Reset" />
 </div>
 </form>
-set permissions here
-<br/>
-
-<pre><?php var_export($info); ?></pre>
-<pre><?php var_export($permissions); ?></pre>

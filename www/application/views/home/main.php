@@ -50,7 +50,7 @@ EOHTML;
                 {
                     $id = $row['id'];
                     $ts = $row['ts'];
-                    $site = $row['site_addy'];
+                    $site = $row['links_cnt'];
                     $imgs = $row['imgs_cnt'];
 
                     echo<<<EOHTML

@@ -9,9 +9,10 @@ span#msg
     font-size: 2em;
 }
 
+fieldset#menu_urls,
 fieldset#menu_files
 {
-    border: 1px solid black; 
+    border: 1px solid black;
     padding: 5px;
 }
 

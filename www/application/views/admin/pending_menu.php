@@ -8,7 +8,18 @@
     <div class="data">
          <span>pending id: </span><span><?php echo $pending_id; ?></span>
         <br/>
-        <span>website: </span><a href="http://<?php echo $site; ?>" target="_blank"><?php echo $site; ?></a>
+        <?php
+            foreach ($sites as $site)
+            {
+                if (empty($site))
+                    continue;
+
+                echo<<<EOHTML
+                <span>website: </span><a href="{$site}" target="_blank">{$site}</a>
+                <br/>
+EOHTML;
+            }
+        ?>
         <br/>
         <div class="new_imgs">
         <?php

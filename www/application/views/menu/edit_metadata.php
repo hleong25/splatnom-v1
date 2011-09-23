@@ -64,7 +64,19 @@ if (getPermissions('admin')) {
     <div class="data toggle">
         <span>id: </span><span><?php echo $id; ?></span>
         <br/>
-        <span>website: </span><a href="http://<?php echo $info['site_addy']; ?>" target="_blank"><?php echo $info['site_addy']; ?></a>
+        <?php
+            foreach ($links as $link)
+            {
+                $url = $link['url'];
+                $label = $link['label'];
+                if (empty($label))
+                    $label = $url;
+                echo<<<EOHTML
+                    <span>website: </span><a href="{$url}" target="_blank">{$label}</a>
+                    <br/>
+EOHTML;
+            }
+        ?>
         <br/>
         <div class="new_imgs">
         <?php

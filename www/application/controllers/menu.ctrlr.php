@@ -5,17 +5,25 @@ class MenuController
 {
     function onAction_new()
     {
-        $new_menu_done = !empty($_POST);
-
-        $this->set('new_menu_done', $new_menu_done);
-
         $this->addCss('menu/menu.new');
         $this->addJs('menu/menu.new');
 
-        if ($new_menu_done === true)
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+
+        if (!empty($_POST))
         {
-            $addy = $_POST['site_menu'];
-            $this->Menu->saveNewMenu($addy);
+            $this->set('new_menu_done', true);
+
+            $utils = new UtilsModel();
+
+            $urls = $_POST['url'];
+            foreach ($urls as $idx => $url)
+            {
+                $url = $utils->normalizeUrl($url);
+                $urls[$idx] = $url;
+            }
+
+            $this->Menu->saveNewMenu($urls);
         }
     }
 
@@ -186,13 +194,17 @@ class MenuController
     function edit_metadata_onInit($id, &$info)
     {
         $menu = $this->Menu;
+        $links = $menu->getMenuLinks($id);
         $imgs = $menu->getMenuImgs($id);
         $sections = $menu->getSection($id);
         $mdts = $menu->getMetadata($id, $sections);
 
         $this->set('info', $info);
+        $this->set('links', $links);
         $this->set('imgs', $imgs);
         $this->set('mdts', $mdts);
+
+        $this->set('dbg', $links);
 
     }
 

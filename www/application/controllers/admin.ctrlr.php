@@ -110,7 +110,7 @@ class AdminController
 
         $this->set('pending_id', $id);
         $this->set('err_msg', empty($_GET['err_msg']) ? '' : $_GET['err_msg']);
-        $this->set('site', $menu_data['site']);
+        $this->set('sites', $menu_data['sites']);
         $this->set('imgs', $menu_data['imgs']);
         $this->set('search_arg', array('name'=>'', 'location'=>''));
 
@@ -157,7 +157,7 @@ class AdminController
         }
         else
         {
-            $this->redirect('/menu/metadata/'.$new_menu);
+            $this->redirect('/menu/edit_metadata/'.$new_menu);
             return;
         }
     }

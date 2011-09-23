@@ -1,3 +1,10 @@
+<?php
+$params = array(
+    'new_menu_done' => false,
+);
+
+extract($params, EXTR_SKIP);
+?>
 <div id="new_menu" class="pg">
 <?php
 if ($new_menu_done === false)
@@ -8,7 +15,14 @@ if ($new_menu_done === false)
     <br/>
     <br/>
     <form id="frmNewMenu" enctype="multipart/form-data" method="post" action="/menu/new">
-        <span>Site: </span><input class="site_menu" type="text" name="site_menu"/>
+        <fieldset id="menu_urls">
+            <legend style="padding: 0px 3px;">Web urls</legend>
+            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site1"/>
+            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site2"/>
+            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site3"/>
+            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site4"/>
+            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site5"/>
+        </fieldset>
         <br/>
         <br/>
         <fieldset id="menu_files">

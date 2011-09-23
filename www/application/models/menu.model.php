@@ -3,7 +3,7 @@
 class MenuModel
     extends Model
 {
-    function saveNewMenu($addy)
+    function saveNewMenu($urls)
     {
         /*
            select *
@@ -15,27 +15,43 @@ class MenuModel
 
         $query =<<<EOQ
             INSERT INTO tblPendingMenu (
-                    site_addy
-                    )
+                site_addy1,
+                site_addy2,
+                site_addy3,
+                site_addy4,
+                site_addy5
+            )
             VALUES (
-                    :site
-                   )
+                :url1,
+                :url2,
+                :url3,
+                :url4,
+                :url5
+            )
 EOQ;
 
-        $prepare = $this->prepareAndExecute($query, array(':site' => $addy), __FILE__, __LINE__);
+        $params = array(
+            ':url1' => $urls[0],
+            ':url2' => $urls[1],
+            ':url3' => $urls[2],
+            ':url4' => $urls[3],
+            ':url5' => $urls[4],
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;
 
         $new_id = $this->lastInsertId();
 
         $query =<<<EOQ
             INSERT INTO tblPendingMenuImages (
-                    pendingmenu_id,
-                    file_img
-                    )
+                pendingmenu_id,
+                file_img
+            )
             VALUES (
-                    :new_id,
-                    :file_img
-                   )
+                :new_id,
+                :file_img
+            )
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
@@ -83,23 +99,7 @@ EOQ;
 
         foreach ($rows as $key => $row)
         {
-            $site = $row['site_addy'];
-            if (stristr($site, 'http://'))
-            {
-                // if PHP >= 5.3 then do
-                // $site = stristr($site, 'http://', true)
-
-                $site = substr($site, 7);
-            }
-
-            if (stristr($site, 'https://'))
-            {
-                // if PHP >= 5.3 then do
-                // $site = stristr($site, 'https://', true)
-
-                $site = substr($site, 8);
-            }
-
+            $site = $row['site_addy1'];
             $rows[$key]['site_addy'] = $site;
         }
 
@@ -205,7 +205,11 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                site_addy
+                site_addy1,
+                site_addy2,
+                site_addy3,
+                site_addy4,
+                site_addy5
             FROM tblPendingMenu
             WHERE id = :id
 EOQ;
@@ -218,22 +222,11 @@ EOQ;
         $prepare->closeCursor();
         unset($prepare);
 
-        $menu['site'] = $info['site_addy'];
-        if (stristr($info['site_addy'], 'http://'))
-        {
-            // if PHP >= 5.3 then do
-            // $menu['site'] = stristr($info['site_addy'], 'http://', true)
-
-            $menu['site'] = substr($info['site_addy'], 7);
-        }
-
-        if (stristr($info['site_addy'], 'https://'))
-        {
-            // if PHP >= 5.3 then do
-            // $menu['site'] = stristr($info['site_addy'], 'https://', true)
-
-            $menu['site'] = substr($info['site_addy'], 8);
-        }
+        $menu['sites'][] = $info['site_addy1'];
+        $menu['sites'][] = $info['site_addy2'];
+        $menu['sites'][] = $info['site_addy3'];
+        $menu['sites'][] = $info['site_addy4'];
+        $menu['sites'][] = $info['site_addy5'];
 
         $query =<<<EOQ
             SELECT
@@ -270,35 +263,63 @@ EOQ;
         $this->beginTransaction();
 
         $query =<<<EOQ
-            SELECT id, menu_status
-            FROM vMenuStatus
+            INSERT INTO tblMenu(
+                mode_id
+            )
+            VALUES (
+                (SELECT id FROM vMenuStatus WHERE menu_status='new')
+            )
 EOQ;
 
         $rst = $this->query($query);
-        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
-        $cacheMenuStatus = array();
-        foreach ($rows as $row)
-            $cacheMenuStatus[$row['menu_status']] = $row['id'];
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
 
-        if (empty($cacheMenuStatus['new'])) return false;
+        $menu_id = $this->lastInsertId();
 
         $query =<<<EOQ
-            INSERT INTO tblMenu(
-                mode_id,
-                site_addy
-            )
-            VALUES (
-                :mode_id,
-                :site
+            INSERT IGNORE INTO tblMenuLinks(
+                menu_id,
+                url
+            ) VALUES (
+                :menu_id,
+                :url
             )
 EOQ;
 
-        $params = array(':mode_id'=>$cacheMenuStatus['new'], ':site'=>$pending_menu['site']);
-
-        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $menu_id = $this->lastInsertId();
+        $rst = $prepare->bindValue(':menu_id', $menu_id);
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
+
+        foreach ($pending_menu['sites'] as $url)
+        {
+            if (empty($url))
+                continue;
+
+            $rsts[] = $prepare->bindValue(':url', $url);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
 
         $query =<<<EOQ
             INSERT INTO tblMenuImages(
@@ -322,19 +343,20 @@ EOQ;
 
         foreach ($pending_menu['imgs'] as $file_img)
         {
-            $rst = $prepare->bindValue(':file_img', $file_img);
-            if (!$rst)
+            $rsts[] = $prepare->bindValue(':file_img', $file_img);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
             {
-                $this->log_dberr($rst, __FILE__, __LINE__);
-                return false;
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
             }
 
-            $rst = $prepare->execute();
-            if (!$rst)
-            {
-                $this->log_dberr($rst, __FILE__, __LINE__);
-                return false;
-            }
+            unset($rsts);
         }
 
         $this->commit();
@@ -399,25 +421,17 @@ EOQ;
         $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $info = array_shift($rst);
 
-        $info['site_addy'] = 'www.not_done.com';
-
-        if (!empty($info['site_addy']))
+        if (empty($info))
         {
-            if (stristr($info['site_addy'], 'http://'))
-            {
-                // if PHP >= 5.3 then do
-                // $menu['site'] = stristr($info['site_addy'], 'http://', true)
-
-                $info['site_addy'] = substr($info['site_addy'], 7);
-            }
-
-            if (stristr($info['site_addy'], 'https://'))
-            {
-                // if PHP >= 5.3 then do
-                // $menu['site'] = stristr($info['site_addy'], 'https://', true)
-
-                $info['site_addy'] = substr($info['site_addy'], 8);
-            }
+            $info = array(
+                'name'=>'',
+                'notes'=>'',
+                'address'=>'',
+                'latitude'=>'',
+                'longitude'=>'',
+                'numbers'=>'',
+                'hours'=>''
+            );
         }
 
         return $info;
@@ -460,6 +474,33 @@ EOQ;
         if (!$prepare) return false;
 
         return true;
+    }
+
+    function getMenuLinks($id)
+    {
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            SELECT
+                label,
+                url
+            FROM tblMenuLinks
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $menu_links = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        $links = array();
+        foreach ($menu_links as $link)
+            $links[] = array(
+                'label'=>$link['label'],
+                'url'=>$link['url'],
+            );
+
+        return $links;
     }
 
     function getMenuImgs($id)
