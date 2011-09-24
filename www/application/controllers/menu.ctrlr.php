@@ -172,11 +172,24 @@ class MenuController
                     );
                     break;
                 case '@item@':
-                    $mdt['items'][] = array(
+                    $item = array(
                         'item' => $post_mdts[++$ii],
                         'price' => $post_mdts[++$ii],
                         'notes' => $post_mdts[++$ii],
                     );
+
+                    // parse 'item' for easier input
+                    // format is '{item}@@{price}@@{notes}
+                    if (empty($item['price']) && empty($item['notes']))
+                    {
+                        $parsed = explode('@@', $item['item'], 3);
+
+                        $item['item'] = trim(array_shift($parsed));
+                        $item['price'] = trim(array_shift($parsed));
+                        $item['notes'] = trim(array_shift($parsed));
+                    }
+
+                    $mdt['items'][] = $item;
                     break;
                 case '@end_of_mdt@':
                     $mdts[] = $mdt;

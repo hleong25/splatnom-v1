@@ -2,7 +2,35 @@ var js_menu = {
 
 onDocReady: function()
 {
-    // empty
+    js_menu.keyboardNavigation();
+},
+
+keyboardNavigation: function()
+{
+    $('div.menu_item input[type="text"]')
+        .keyup(function(event){
+                if (event.ctrlKey)
+                {
+                    switch (event.keyCode)
+                    {
+                        case 38: // up
+                        case 40: // down
+                            var objThis = $(this);
+                            var title = objThis.attr('title');
+                            var newThis = null;
+
+                            if (event.keyCode == 38)
+                                newThis = objThis.parents('div.menu_item').prev();
+                            else
+                                newThis = objThis.parents('div.menu_item').next();
+
+                            newThis.find('input[type="text"][title="'+title+'"]').focus();
+
+                            break;
+                    }
+                }
+            })
+    ;
 },
 
 purgeMenu: function(purgeUrl)

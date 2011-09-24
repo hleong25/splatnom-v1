@@ -28,6 +28,7 @@ $params = array(
     'err_msgs' => array(),
     'is_admin' => false,
     'info' => $params_info,
+    'links' => array(),
     'mdts' => $params_mdts,
 );
 
