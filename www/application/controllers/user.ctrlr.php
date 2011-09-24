@@ -135,7 +135,7 @@ EOM;
 
         $this->set('code', $code);
 
-        if (isset($_SESSION['id']))
+        if (UtilsModel::getUserId() !== false)
         {
             $this->set('err_msg', 'You must logout before you can verify your account.');
         }

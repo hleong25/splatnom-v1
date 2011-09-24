@@ -3,22 +3,22 @@
 class TemplateControllerHelper
 {
     private $m_template = null;
-    
+
     function __construct(&$template)
     {
         $this->m_template = &$template;
     }
-    
+
     function setupNav()
     {
         $links = array();
-            
+
         $links[] = array('css' => 'nav ', 'lbl' => 'new menu', 'lnk' => 'menu/new');
-        
-        if (!isset($_SESSION['id']))
+
+        if (!UtilsModel::getUserId())
         {
             global $get_url;
-            
+
             $goto_url = '&goto='.$get_url;
 
             // not logged in
@@ -28,9 +28,9 @@ class TemplateControllerHelper
         else
         {
             // logged in
-            if($_SESSION['perms']['admin'])
+            if(UtilsModel::getPermissions('admin'))
                 $links[] = array('css' => 'nav ', 'lbl' => 'admin', 'lnk' => 'admin/main');
-            
+
             $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => 'login/end');
         }
 
