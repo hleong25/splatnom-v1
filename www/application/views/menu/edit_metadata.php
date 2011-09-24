@@ -26,6 +26,7 @@ $params_info = array(
 $params = array(
     'dbg' => array(),
     'err_msgs' => array(),
+    'is_admin' => false,
     'info' => $params_info,
     'mdts' => $params_mdts,
 );
@@ -34,7 +35,7 @@ extract($params, EXTR_SKIP);
 
 ?>
 <?php
-if (getPermissions('admin')) {
+if ($is_admin) {
 ?>
 <form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
 <div class="pg">
@@ -47,7 +48,7 @@ if (getPermissions('admin')) {
     </div>
     <hr />
 </div>
-<?php } // if (getPermissions('admin')) ?>
+<?php } // if ($is_admin) ?>
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>

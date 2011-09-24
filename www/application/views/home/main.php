@@ -1,3 +1,10 @@
+<?php
+$params = array(
+    'is_metadata' => false,
+);
+
+extract($params, EXTR_SKIP);
+?>
 <div class="pg pg_bottom search">
     <form id="searchit" enctype="multipart/form-data" method="post" action="/ws/search">
         <input class="jq_watermark" type="text" name="query" title="Name of the place"/>
@@ -32,7 +39,7 @@ EOHTML;
 } // else
 ?>
 </div>
-<?php if (getPermissions('metadata')) { ?>
+<?php if ($is_metadata) { ?>
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>
     <div class="data">
@@ -68,4 +75,4 @@ EOHTML;
         </table>
     </div>
 </div>
-<?php } // if (getPermissions('metadata')) ?>
+<?php } // if ($is_metadata) ?>

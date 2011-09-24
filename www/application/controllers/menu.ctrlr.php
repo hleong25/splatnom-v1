@@ -88,6 +88,7 @@ class MenuController
         // it's in the database... let's continue
 
         $this->set('id', $id);
+        $this->set('is_admin', UtilsModel::getPermissions('admin'));
 
         if (empty($_POST))
         {
@@ -208,7 +209,7 @@ class MenuController
 
     function onAction_purge($id)
     {
-        if (empty($id) || ($id < 0) || !getPermissions('admin'))
+        if (empty($id) || ($id < 0) || !UtilsModel::getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;

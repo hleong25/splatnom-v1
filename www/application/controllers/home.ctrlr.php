@@ -16,7 +16,9 @@ class HomeController
 
         $this->set('recently_added', array()); //$this->Home->getNewlyAddedMenus());
 
-        if (getPermissions('metadata'))
+        $bMetadata = UtilsModel::getPermissions('metadata');
+        $this->set('is_metadata', $bMetadata);
+        if ($bMetadata)
         {
             $this->set('need_metadata', $this->Home->getMenuNeedsMetadata());
         }

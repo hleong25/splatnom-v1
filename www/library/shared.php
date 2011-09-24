@@ -97,7 +97,7 @@ function callHook ()
         if ((strtolower($name) == 'admin') &&
             (!isset($_SESSION['perms']) || ($_SESSION['perms']['admin'] != true)))
         {
-            g_redirect('/home/main');
+            UtilsModel::redirect('/home/main');
             return;
         }
 
