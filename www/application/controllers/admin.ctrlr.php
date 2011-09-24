@@ -72,6 +72,11 @@ class AdminController
                 $settings['permissions'] = $_POST['perms'];
 
             $this->handle_profile_update($user, $id, $settings);
+
+            if ($id === UtilsModel::getCurrentUserId())
+            {
+                UtilsModel::clearCurrentPermissions();
+            }
         }
 
         $info = $user->getUser($id);

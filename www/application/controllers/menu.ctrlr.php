@@ -14,12 +14,10 @@ class MenuController
         {
             $this->set('new_menu_done', true);
 
-            $utils = new UtilsModel();
-
             $urls = $_POST['url'];
             foreach ($urls as $idx => $url)
             {
-                $url = $utils->normalizeUrl($url);
+                $url = UtilsModel::normalizeUrl($url);
                 $urls[$idx] = $url;
             }
 

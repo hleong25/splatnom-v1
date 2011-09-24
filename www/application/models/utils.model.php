@@ -1,9 +1,8 @@
 <?php
 
 class UtilsModel
-    extends Model
 {
-    function normalizeUrl($url)
+    static function normalizeUrl($url)
     {
         $url = trim($url);
 
@@ -16,5 +15,25 @@ class UtilsModel
             $url = 'http://'.$url;
 
         return $url;
+    }
+
+    static function getCurrentUserId()
+    {
+        if (!isset($_SESSION['id']))
+            return false;
+
+        return $_SESSION['id'];
+    }
+
+    static function getCurrentPermissions()
+    {
+        if (!$_SESSION['perms'])
+            return false;
+        return $_SESSION['perms'];
+    }
+
+    static function clearCurrentPermissions()
+    {
+        unset($_SESSION['perms']);
     }
 }
