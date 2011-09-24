@@ -137,7 +137,11 @@ EOM;
 
         if (UtilsModel::getUserId() !== false)
         {
-            $this->set('err_msg', 'You must logout before you can verify your account.');
+            // user must be logged off to verify account.
+            global $get_url;
+            session_destroy();
+            $this->redirect($get_url);
+            return;
         }
 
         if (empty($_POST))
