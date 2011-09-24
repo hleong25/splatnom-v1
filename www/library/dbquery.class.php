@@ -34,6 +34,15 @@ class DBQuery
         return true;
     }
 
+    function query_log($query, $file, $lineno)
+    {
+        $rst = $this->query($query);
+        if (!$rst)
+            $this->log_dberr($rst, $file, $lineno);
+
+        return $rst;
+    }
+
     function prepare_log($query, $file, $lineno)
     {
         $prepare = $this->prepare($query);

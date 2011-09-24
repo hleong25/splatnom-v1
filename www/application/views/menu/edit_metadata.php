@@ -159,5 +159,7 @@ EOHTML;
 </div>
 <?php } // foreach ($mdts as $idx => $mdt) ?>
 </form>
-<div class="pg"><br/><br/><pre><?php if (isset($dbg)) var_export($dbg); ?></pre></div>
+<?php if(!empty($dbg)) { ?>
+<div class="pg"><br/><br/><pre><?php var_export($dbg); ?></pre></div>
+<?php } ?>
 

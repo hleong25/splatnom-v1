@@ -202,9 +202,9 @@ class MenuController
         $this->set('info', $info);
         $this->set('links', $links);
         $this->set('imgs', $imgs);
-        $this->set('mdts', $mdts);
 
-        $this->set('dbg', $links);
+        if (!empty($mdts))
+            $this->set('mdts', $mdts);
 
     }
 

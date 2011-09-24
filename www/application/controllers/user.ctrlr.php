@@ -102,19 +102,6 @@ class UserController
             $this->redirect('/home/main');
             return;
         }
-
-        /*
-            Setup first user to admin...
-
-            INSERT IGNORE INTO tblUserPermissions(user_id, permission_id)
-            VALUES ((SELECT id FROM tblUsers ORDER BY id ASC LIMIT 1),
-            (SELECT id FROM vPermissions WHERE permission='admin'));
-
-            UPDATE tblUsers
-            SET status = (SELECT id FROM vUserStatus WHERE user_status = 'validated')
-            WHERE id = (SELECT id FROM tblUsers ORDER BY id ASC LIMIT 1);
-
-        */
     }
 
     function sendVerificationToUser($user, $emailTo, $verifyCode)
