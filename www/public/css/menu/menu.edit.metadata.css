@@ -62,3 +62,6 @@ div.menu_group{
 div.menu_ctrl{
     float: right;
 }
+span.menu_group_info{
+    font-size: small;
+}

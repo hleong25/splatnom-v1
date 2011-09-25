@@ -139,6 +139,7 @@ EOHTML;
         </div>
         <div class="pg_bottom subheading onToggle" <?php echo $toggleEvent; ?>>Menu items</div>
         <div class="menu_group toggle">
+            <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
             <?php foreach ($mdt['items'] as $item_idx => $item) { ?>
             <div class="menu_item">
                 <!-- <?php echo "menu_id={$id} AND section_id={$idx} AND ordinal_id={$item_idx}"; ?> -->
