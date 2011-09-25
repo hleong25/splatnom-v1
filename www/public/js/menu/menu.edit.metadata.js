@@ -2,12 +2,12 @@ var js_menu = {
 
 onDocReady: function()
 {
-    js_menu.keyboardNavigation();
+    js_menu.keyboardNavigation($('div.menu_item input:text'));
 },
 
-keyboardNavigation: function()
+keyboardNavigation: function(inputText)
 {
-    $('div.menu_item input[type="text"]')
+    inputText
         .keyup(function(event){
                 if (event.ctrlKey)
                 {
@@ -110,6 +110,8 @@ addNewMenu: function(elem)
                 .end()
             .end()
     ;
+
+    js_menu.keyboardNavigation(clone_obj.find('div.menu_item input:text'));
 },
 
 
@@ -180,6 +182,8 @@ addNewMenuItem: function(elem)
                 .end()
             .end()
     ;
+
+    js_menu.keyboardNavigation(clone_obj.find('input:text'));
 },
 
 removeNewMenuItem: function(elem)
