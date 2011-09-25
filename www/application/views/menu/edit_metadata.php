@@ -105,10 +105,9 @@ EOHTML;
         <input type="button" value="Google search address" onclick="return js_menu.googleSearchAddress();" />
         <input class="jq_watermark" type="text" style="width: 400px;" title="javascript get lat long" value="javascript:void(prompt('',gApplication.getMap().getCenter()));"/>
         <br/>
-        <input class="jq_watermark" type="text" name="info_latlong" title="Parse Lat/Long" value=""/>
-        <br/>
         <input class="jq_watermark" type="text" name="info_latitude" title="Latitude" value="<?php echo $info['latitude']; ?>"/>
         <input class="jq_watermark" type="text" name="info_longitude" title="Longitude" value="<?php echo $info['longitude']; ?>"/>
+        <span class="latlong_info">If latitude is in (###,###) format, it will parse it to lat/long.</span>
         <br/>
         <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"><?php echo $info['numbers']; ?></textarea>
         <br/>

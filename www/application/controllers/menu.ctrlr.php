@@ -115,9 +115,9 @@ class MenuController
             );
 
         // parse lat/long if needed
-        if (!empty($_POST['info_latlong']))
+        if (!empty($_POST['info_latitude']) && empty($_POST['info_longitude']))
         {
-            $latlong = $_POST['info_latlong'];
+            $latlong = $_POST['info_latitude'];
 
             $lat = 0;
             $long = 0;
