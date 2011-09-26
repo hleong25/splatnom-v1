@@ -399,6 +399,21 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
+                ms.menu_status AS status,
+                NOT ISNULL(m.id) AS selected
+            FROM vMenuStatus ms
+            LEFT JOIN tblMenu m ON m.id = :id AND ms.id = m.mode_id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $status = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $query =<<<EOQ
+            SELECT
                 name,
                 notes,
                 address,
@@ -428,7 +443,22 @@ EOQ;
             );
         }
 
+        $info['status'] = $status;
         return $info;
+    }
+
+    function updateMenu($id, $status)
+    {
+        $query =<<<EOQ
+            UPDATE tblMenu
+            SET mode_id = (SELECT id FROM vMenuStatus WHERE menu_status = :status)
+            WHERE id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':id'=>$id, ':status'=>$status), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
     }
 
     function updateMenuInfo($info)

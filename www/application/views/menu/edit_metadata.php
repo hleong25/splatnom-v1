@@ -14,6 +14,7 @@ $params_mdts[] = array(
 );
 
 $params_info = array(
+    'status'=>array(),
     'name'=>'',
     'notes'=>'',
     'address'=>'',
@@ -46,6 +47,24 @@ if ($is_admin) {
         <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
         <input type="button" value="Hide all sections" onclick="js_menu.hideAll();" />
         <input type="button" value="Show all sections" onclick="js_menu.showAll();" />
+        <br/>
+        <br/>
+        <div class="">
+            <span>Status: </span>
+            <select name="info_status">
+                <?php
+                    foreach ($info['status'] as $status)
+                    {
+                        $label = $status['status'];
+                        $selected = ($status['selected'] == 1) ? 'selected' : '';
+
+                        echo<<<EOHTML
+                            <option value="{$label}" {$selected}>{$label}</option>
+EOHTML;
+                    }
+                ?>
+            </select>
+        </div>
     </div>
     <hr />
 </div>

@@ -96,11 +96,11 @@ class MenuController
         }
         else
         {
-            $this->edit_metadata_onPost($id);
+            $this->edit_metadata_onPost($id, $menu_info);
         }
     }
 
-    function edit_metadata_onPost($id)
+    function edit_metadata_onPost($id, $menu_info)
     {
         $menu = $this->Menu;
 
@@ -143,11 +143,22 @@ class MenuController
 
             $val = $_POST[$post_key];
 
-            $this->set($post_key, $val);
-
             $info[$sql_key] = $val;
             $info_save[":{$sql_key}"] = $val;
             $info_save[":u_{$sql_key}"] = $val;
+        }
+
+        $status = $_POST['info_status'];
+        if (!$menu->updateMenu($id, $status))
+            $err_msgs[] = 'Failed to update menu status.';
+
+        // reuse menu_info['status'] and set the value
+        foreach ($menu_info['status'] as $mi_status)
+        {
+            $info['status'][] = array(
+                'status'=>$mi_status['status'],
+                'selected'=> ($mi_status['status'] == $status) ? 1 : 0,
+            );
         }
 
         $this->set('info', $info);
