@@ -97,12 +97,6 @@ EOQ;
         $rst = $this->query($query);
         $rows = $rst->fetchAll();
 
-        foreach ($rows as $key => $row)
-        {
-            $site = $row['site_addy1'];
-            $rows[$key]['site_addy'] = $site;
-        }
-
         return $rows;
     }
 
@@ -760,5 +754,84 @@ EOQ;
         }
 
         return $mdts;
+    }
+
+    function updateMenuLinks($menu_id, $links)
+    {
+        $query =<<<EOQ
+            UPDATE tblMenuLinks
+            SET keep = 0
+            WHERE menu_id = :menu_id
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, array('menu_id'=>$menu_id), __FILE__, __LINE__);
+        if (!$rst)
+            return false;
+        $rst->closeCursor();
+        unset($rst);
+
+        $query =<<<EOQ
+            INSERT INTO tblMenuLinks(
+                menu_id,
+                url,
+                label,
+                keep
+            )
+            VALUES (
+                :menu_id,
+                :url,
+                :label,
+                1
+            )
+            ON DUPLICATE KEY UPDATE
+                label = :u_label,
+                keep = 1
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $rst = $prepare->bindValue(':menu_id', $menu_id);
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
+
+        foreach ($links as $link)
+        {
+            $rsts[] = $prepare->bindValue(':url', $link['url']);
+            $rsts[] = $prepare->bindValue(':label', $link['label']);
+            $rsts[] = $prepare->bindValue(':u_label', $link['label']);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
+
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $query =<<<EOQ
+            DELETE FROM tblMenuLinks
+            WHERE menu_id = :menu_id
+            AND keep = 0
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, array('menu_id'=>$menu_id), __FILE__, __LINE__);
+        if (!$rst)
+            return false;
+
+        return true;
     }
 }

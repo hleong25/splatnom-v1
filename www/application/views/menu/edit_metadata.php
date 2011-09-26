@@ -62,24 +62,8 @@ if ($is_admin) {
 ?>
 </div>
 <div class="pg pg_bottom">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Information</div>
+    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Images</div>
     <div class="data toggle">
-        <span>id: </span><span><?php echo $id; ?></span>
-        <br/>
-        <?php
-            foreach ($links as $link)
-            {
-                $url = $link['url'];
-                $label = $link['label'];
-                if (empty($label))
-                    $label = $url;
-                echo<<<EOHTML
-                    <span>website: </span><a href="{$url}" target="_blank">{$label}</a>
-                    <br/>
-EOHTML;
-            }
-        ?>
-        <br/>
         <div class="new_imgs">
         <?php
             foreach ($imgs as $img)
@@ -91,6 +75,28 @@ EOHTML;
             }
         ?>
         </div>
+    </div>
+</div>
+<div class="pg pg_bottom">
+    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Links</div>
+    <div class="data toggle">
+        <?php
+            if (empty($links))
+                $links[] = array('url'=>'', 'label'=>'');
+
+            foreach ($links as $link)
+            {
+                echo<<<EOHTML
+                    <div class="link_item">
+                        <input type="hidden" name="link[]" value="@link@"/>
+                        <input class="jq_watermark" type="text" name="link[]" title="Link" value="{$link['url']}"/>
+                        <input class="jq_watermark" type="text" name="link[]" title="Label" value="{$link['label']}"/>
+                        <input type="button" value="Add link" onclick="js_menu.addLink(this);" />
+                        <input type="button" value="Remove link" onclick="js_menu.removeLink(this);" />
+                    </div>
+EOHTML;
+            }
+        ?>
     </div>
 </div>
 <div class="pg pg_bottom">
@@ -123,11 +129,6 @@ EOHTML;
     <div class="heading onToggle" <?php echo $toggleEvent; ?>>
         Menu <span class="menu_name"><?php echo $mdt['name']; ?></span>
     </div>
-    <div class="pg_bottom controller toggle">
-        <input type="submit" value="Save Menu"/>
-        <input type="button" value="Add menu" onclick="js_menu.addNewMenu(this);" />
-        <input type="button" value="Remove menu" onclick="js_menu.removeNewMenu(this);" />
-    </div>
     <div class="data toggle">
         <div class="pg_bottom group_info">
             <!-- <?php echo "menu_id={$id} AND section_id={$idx}"; ?> -->
@@ -136,8 +137,8 @@ EOHTML;
             <br/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?php echo $mdt['notes']; ?>" />
         </div>
-        <div class="pg_bottom subheading onToggle" <?php echo $toggleEvent; ?>>Menu items</div>
-        <div class="menu_group toggle">
+        <div class="pg_bottom subheading">Menu items</div>
+        <div class="menu_group">
             <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
             <?php foreach ($mdt['items'] as $item_idx => $item) { ?>
             <div class="menu_item">
@@ -146,16 +147,16 @@ EOHTML;
                 <input class="jq_watermark" type="text" name="mdt[]" title="Item" value="<?php echo $item['item']; ?>"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
-                <input type="button" value="Add item" onclick="js_menu.addNewMenuItem(this);" />
-                <input type="button" value="Remove item" onclick="js_menu.removeNewMenuItem(this);" />
+                <input type="button" value="Add item" onclick="js_menu.addMenuItem(this);" />
+                <input type="button" value="Remove item" onclick="js_menu.removeMenuItem(this);" />
             </div>
             <?php } // foreach ($mdt['items'] as $item_idx => $item) ?>
         </div>
     </div>
     <div class="pg_bottom controller toggle">
         <input type="submit" value="Save Menu"/>
-        <input type="button" value="Add menu" onclick="js_menu.addNewMenu(this);" />
-        <input type="button" value="Remove menu" onclick="js_menu.removeNewMenu(this);" />
+        <input type="button" value="Add menu" onclick="js_menu.addMenu(this);" />
+        <input type="button" value="Remove menu" onclick="js_menu.removeMenu(this);" />
     </div>
     <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
 </div>

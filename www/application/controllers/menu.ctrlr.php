@@ -104,6 +104,9 @@ class MenuController
     {
         $menu = $this->Menu;
 
+        $imgs = $menu->getMenuImgs($id);
+        $this->set('imgs', $imgs);
+
         $info_params = array(
                 'info_name' => 'name',
                 'info_notes' => 'notes',
@@ -147,20 +150,43 @@ class MenuController
             $info_save[":u_{$sql_key}"] = $val;
         }
 
-        $info['site_addy'] = 'www.not_done.com';
-
         $this->set('info', $info);
         if (!$menu->updateMenuInfo($info_save))
             $err_msgs[] = 'Failed to update info.';
 
-        $imgs = $menu->getMenuImgs($id);
-        $this->set('imgs', $imgs);
+        $post_links = $_POST['link'];
+        $links = array();
+        $link = array();
+        for ($ii = 0, $jj = count($post_links); $ii < $jj; $ii++)
+        {
+            switch ($post_links[$ii])
+            {
+                case '@link@':
+                    $url = UtilsModel::normalizeUrl($post_links[++$ii]);
+                    $label = $post_links[++$ii];
+
+                    $link = array(
+                        'url' => $url,
+                        'label' => $label,
+                    );
+
+                    if (!empty($link['url']))
+                    {
+                        $links[] = $link;
+                    }
+
+                    break;
+            }
+        }
+
+        $this->set('links', $links);
+        if (!$menu->updateMenuLinks($id, $links))
+            $err_msgs[] = 'Failed to save menu links';
+
 
         $post_mdts = $_POST['mdt'];
-
         $mdts = array();
         $mdt = array();
-
         for ($ii = 0, $jj = count($post_mdts); $ii < $jj; $ii++)
         {
             switch ($post_mdts[$ii])

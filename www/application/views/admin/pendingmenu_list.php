@@ -15,13 +15,19 @@
                 $id = $menu['id'];
                 $row_id = "row_{$id}";
                 $ts = date("m.d.y G:i:s", strtotime($menu["ts"]));
-                $site = $menu['site_addy'];
+                $cnt_sites = 0;
+
+                $cnt_sites += !empty($menu['site_addy1']) ? 1 : 0;
+                $cnt_sites += !empty($menu['site_addy2']) ? 1 : 0;
+                $cnt_sites += !empty($menu['site_addy3']) ? 1 : 0;
+                $cnt_sites += !empty($menu['site_addy4']) ? 1 : 0;
+                $cnt_sites += !empty($menu['site_addy5']) ? 1 : 0;
 
                 echo<<<EOHTML
                 <tr id="{$row_id}">
                     <td>{$id}</td>
                     <td>{$ts}</td>
-                    <td><a href="http://{$site}">{$site}</a></td>
+                    <td>{$cnt_sites}</td>
                     <td>{$menu['cnt_imgs']}</td>
                     <td><a href="/admin/pending_menu/{$id}">View</a></td>
                     <td><a href="/admin/pendingmenu_list/purge/{$id}" onclick="return js_admin.remove_row({$id}, '{$row_id}');">Remove</a></td>

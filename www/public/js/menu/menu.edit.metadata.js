@@ -73,7 +73,7 @@ menuNameOnChange: function(input)
 
 },
 
-addNewMenu: function(elem)
+addMenu: function(elem)
 {
     var objThis = $(elem).parents('div.menu');
 
@@ -115,7 +115,7 @@ addNewMenu: function(elem)
 },
 
 
-removeNewMenu: function(elem)
+removeMenu: function(elem)
 {
     var objThis = $(elem).parents('div.menu');
 
@@ -156,7 +156,7 @@ removeNewMenu: function(elem)
     }
 },
 
-addNewMenuItem: function(elem)
+addMenuItem: function(elem)
 {
     var objThis = $(elem).parent('div.menu_item');
 
@@ -186,7 +186,7 @@ addNewMenuItem: function(elem)
     js_menu.keyboardNavigation(clone_obj.find('input:text'));
 },
 
-removeNewMenuItem: function(elem)
+removeMenuItem: function(elem)
 {
     var objThis = $(elem).parent('div.menu_item');
 
@@ -274,6 +274,71 @@ moveMenu: function(elem, position)
 
     //$('html, body').animate({scrollTop: objThis.offset().top}, 0);
 
+},
+
+addLink: function(elem)
+{
+    var objThis = $(elem).parent('div.link_item');
+
+    var clone_obj = objThis
+        .clone(false)
+        .insertAfter(objThis)
+
+        .find('input:text')
+            // reset the fields
+            .val('')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+            .end()
+
+        .find('input:text')
+            // user friendly... go to the first input
+            .first()
+                .focus()
+                .end()
+            .end()
+    ;
+
+    js_menu.keyboardNavigation(clone_obj.find('input:text'));
+},
+
+removeLink: function(elem)
+{
+    var objThis = $(elem).parent('div.link_item');
+
+    if (objThis.siblings('div.link_item').length == 0)
+    {
+        // just reset it...
+        objThis
+            .find('input:text')
+                // reset the fields
+                .val('')
+
+                // reset the watermark
+                .filter('.jq_watermark')
+                    .attr('data-jq-watermark', '')
+                    .watermark()
+                    .end()
+
+                .end()
+
+            .find('input:text')
+                // user friendly... go to the first input
+                .first()
+                    .focus()
+                    .end()
+                .end()
+        ;
+    }
+    else
+    {
+        // remove it...
+        objThis.remove();
+    }
 }
 
 }
