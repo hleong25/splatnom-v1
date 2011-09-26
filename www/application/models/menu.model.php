@@ -758,6 +758,8 @@ EOQ;
 
     function updateMenuLinks($menu_id, $links)
     {
+        $this->beginTransaction();
+
         $query =<<<EOQ
             UPDATE tblMenuLinks
             SET keep = 0
@@ -832,6 +834,7 @@ EOQ;
         if (!$rst)
             return false;
 
+        $this->commit();
         return true;
     }
 }
