@@ -14,7 +14,7 @@ class HomeController
         $this->addJs('jquery.form', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
-        $this->set('recently_added', array()); //$this->Home->getNewlyAddedMenus());
+        $this->set('ready_menus', $this->Home->getReadyMenus());
 
         $bMetadata = UtilsModel::getPermissions('metadata');
         $this->set('is_metadata', $bMetadata);

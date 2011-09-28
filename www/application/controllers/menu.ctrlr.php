@@ -277,4 +277,26 @@ class MenuController
         }
     }
 
+    function onAction_search($location=null, $query=null)
+    {
+        if (!empty($_POST))
+        {
+            global $get_url;
+
+            $p_query = $_POST['query'];
+            $p_location = $_POST['location'];
+
+            $url = "/{$get_url}/{$p_location}/{$p_query}";
+
+            $this->redirect($url);
+            return;
+        }
+
+        $this->addJs('jquery.cookie', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+
+        $this->set('location', $location);
+        $this->set('query', $query);
+
+    }
 }

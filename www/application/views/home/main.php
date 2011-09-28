@@ -6,7 +6,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg pg_bottom search">
-    <form id="searchit" enctype="multipart/form-data" method="post" action="/ws/search">
+    <form id="searchit" enctype="multipart/form-data" method="post" action="/menu/search">
         <input class="jq_watermark" type="text" name="query" title="Name of the place"/>
         <input class="jq_watermark" type="text" name="location" title="Location"/>
         <input type="submit" value="Search" />
@@ -16,27 +16,42 @@ extract($params, EXTR_SKIP);
 </div>
 <div class="pg pg_bottom new_menus">
 <?php
-if (empty($recently_added))
+if (empty($ready_menus))
 {
     echo<<<EOHTML
         <span>No menus added...</span>
         <a href="/menu/new">Click here to help me out!</a>
 EOHTML;
-} // if (empty($recently_added))
-else
+}
+else // if (empty($ready_menus)
 {
-    foreach ($recently_added as $menu)
+    echo<<<EOHTML
+        <table class="tblDefault">
+            <thead>
+                <td>id</td>
+                <td>name</td>
+                <td>address</td>
+            </thead>
+            <tbody>
+EOHTML;
+
+    foreach ($ready_menus as $menu)
     {
         echo<<<EOHTML
-        <div class="new_added">
-            <a href="/menu/show/{$menu['id']}">
-                <img class="new_img" src="/ws/getimage/{$menu['file_img']}" />
-                <span class="new_name">{$menu['name']}</span>
-            </a>
-        </div>
+            <tr>
+                <td>{$menu['id']}</td>
+                <td>{$menu['name']}</td>
+                <td>{$menu['address']}</td>
+            </tr>
 EOHTML;
-    } //foreach ($recently_added as $menus)
-} // else
+    }
+
+    echo<<<EOHTML
+            </tbody>
+        </table>
+EOHTML;
+
+}
 ?>
 </div>
 <?php if ($is_metadata) { ?>

@@ -23,4 +23,22 @@ EOQ;
         return $rows;
     }
 
+    function getReadyMenus()
+    {
+        $query =<<<EOQ
+            SELECT
+                m.id,
+                info.name,
+                info.address
+            FROM tblMenu m
+            INNER JOIN vMenuStatus ms ON ms.menu_status = 'ready' AND m.mode_id = ms.id
+            INNER JOIN tblInfo_us info ON m.id = info.menu_id
+            ORDER BY m.ts
+EOQ;
+
+        $rst = $this->query($query);
+        $rows = $rst->fetchAll();
+        return $rows;
+    }
+
 }
