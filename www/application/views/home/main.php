@@ -3,6 +3,7 @@ $params = array(
     'is_metadata' => false,
     'query' => '',
     'location' => '',
+    'need_metadata'=>false,
 );
 
 extract($params, EXTR_SKIP);
@@ -56,7 +57,7 @@ EOHTML;
 }
 ?>
 </div>
-<?php if ($is_metadata) { ?>
+<?php if ($is_metadata && !empty($need_metadata)) { ?>
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>
     <div class="data">
