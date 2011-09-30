@@ -1,7 +1,3 @@
-div.pg_bottom{
-    
-    margin-bottom: 10px;
-}
 img.menu{
 
     width: 100px;
@@ -12,7 +8,7 @@ img.menu{
     padding-top: 3px;
 }
 div.heading{
-    
+
     font-size: 18px;
     background-color: silver;
     width: 100%;
@@ -23,7 +19,7 @@ div.heading{
     margin-bottom: 3px;
 }
 div.subheading{
-    
+
     font-size: 14px;
     background-color: silver;
     width: 100%;

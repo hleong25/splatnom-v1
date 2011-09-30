@@ -5,6 +5,10 @@
     margin-right: auto;
 }
 
+.pg_bottom{
+    margin-bottom: 10px;
+}
+
 div#header
 {
     padding: 5px;
@@ -27,16 +31,15 @@ div#top_nav
 
 span.lnkspc
 {
-    
 }
 
-a:link, 
+a:link,
 a:visited
 {
-    text-decoration:none; 
+    text-decoration:none;
 }
 
-div#header a:link, 
+div#header a:link,
 div#header a:visited
 {
     color: white;
@@ -49,7 +52,6 @@ div#footer
 
 pre
 {
-    
     font-family: 'Courier New',Courier,monospace;
     text-align: left;
     font-size: 10pt;

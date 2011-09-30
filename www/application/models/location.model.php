@@ -56,7 +56,7 @@ EOQ;
 
     }
 
-    function getNearByLatLong($lat, $long, $nearByRadius)
+    function getLocationsWithinLatLong($lat, $long, $withinRadius)
     {
         // radius of earth
         // miles - 3959
@@ -65,12 +65,12 @@ EOQ;
         $radius_earth = 3959;
 
         // first-cut bounding box (in degrees)
-        $maxLat = $lat + rad2deg($nearByRadius/$radius_earth);
-        $minLat = $lat - rad2deg($nearByRadius/$radius_earth);
+        $maxLat = $lat + rad2deg($withinRadius/$radius_earth);
+        $minLat = $lat - rad2deg($withinRadius/$radius_earth);
 
         // compensate for degrees longitude getting smaller with increasing latitude
-        $maxLong = $long + rad2deg($nearByRadius/$radius_earth/cos(deg2rad($lat)));
-        $minLong = $long - rad2deg($nearByRadius/$radius_earth/cos(deg2rad($lat)));
+        $maxLong = $long + rad2deg($withinRadius/$radius_earth/cos(deg2rad($lat)));
+        $minLong = $long - rad2deg($withinRadius/$radius_earth/cos(deg2rad($lat)));
 
         // convert origin of filter circle to radians
         $lat = deg2rad($lat);
@@ -111,12 +111,73 @@ EOQ;
             (
                 {$query_distance}
             ) AS tblDistance
-            WHERE distance < :nearByRadius
+            WHERE distance < :withinRadius
             ORDER BY distance ASC
 EOQ;
 
         $opts = array(
-            ':nearByRadius'=>$nearByRadius,
+            ':withinRadius'=>$withinRadius,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $opts, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $rst;
+    }
+
+    function getPlacesWithinLatLong($lat, $long, $withinRadius)
+    {
+        // radius of earth
+        // miles - 3959
+        // km - 6371
+
+        $radius_earth = 3959;
+
+        // first-cut bounding box (in degrees)
+        $maxLat = $lat + rad2deg($withinRadius/$radius_earth);
+        $minLat = $lat - rad2deg($withinRadius/$radius_earth);
+
+        // compensate for degrees longitude getting smaller with increasing latitude
+        $maxLong = $long + rad2deg($withinRadius/$radius_earth/cos(deg2rad($lat)));
+        $minLong = $long - rad2deg($withinRadius/$radius_earth/cos(deg2rad($lat)));
+
+        // convert origin of filter circle to radians
+        $lat = deg2rad($lat);
+        $long = deg2rad($long);
+
+        $query_bounds =<<<EOQ
+            SELECT *
+            FROM tblInfo_us
+            WHERE latitude > {$minLat} AND latitude < {$maxLat}
+            AND longitude > {$minLong} AND longitude < {$maxLong}
+EOQ;
+
+        $query_distance =<<<EOQ
+            SELECT
+                *,
+                ACOS(
+                    SIN({$lat})*SIN(RADIANS(latitude)) +
+                    COS({$lat})*COS(RADIANS(latitude)) * COS(RADIANS(longitude) - {$long})
+                ) * {$radius_earth}  AS distance
+            FROM
+            (
+                {$query_bounds}
+            ) AS tblLatLongBounds
+EOQ;
+
+        $query =<<<EOQ
+            SELECT *
+            FROM
+            (
+                {$query_distance}
+            ) AS tblDistance
+            WHERE distance < :withinRadius
+            ORDER BY distance ASC
+EOQ;
+
+        $opts = array(
+            ':withinRadius'=>$withinRadius,
         );
 
         $prepare = $this->prepareAndExecute($query, $opts, __FILE__, __LINE__);

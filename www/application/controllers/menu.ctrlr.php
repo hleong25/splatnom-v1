@@ -295,8 +295,27 @@ class MenuController
         $this->addJs('jquery.cookie', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
+        $this->addCss('table');
+
         $this->set('location', $location);
         $this->set('query', $query);
+
+        $loc = new LocationModel();
+        $latlong = $loc->getLatLongByZip($location);
+        if (empty($latlong))
+        {
+            $this->set('msg', 'No location found');
+            return;
+        }
+
+        $places = $loc->getPlacesWithinLatLong($latlong['latitude'], $latlong['longitude'], 5);
+        if (empty($places))
+        {
+            $this->set('msg', 'No places found');
+            return;
+        }
+
+        $this->set('places', $places);
 
     }
 }

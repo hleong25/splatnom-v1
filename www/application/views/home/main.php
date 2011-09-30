@@ -1,14 +1,16 @@
 <?php
 $params = array(
     'is_metadata' => false,
+    'query' => '',
+    'location' => '',
 );
 
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg pg_bottom search">
     <form id="searchit" enctype="multipart/form-data" method="post" action="/menu/search">
-        <input class="jq_watermark" type="text" name="query" title="Name of the place"/>
-        <input class="jq_watermark" type="text" name="location" title="Location"/>
+        <input class="jq_watermark" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
+        <input class="jq_watermark" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
         <input type="submit" value="Search" />
     </form>
     <div id="results">

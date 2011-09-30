@@ -239,7 +239,7 @@ class AdminController
                 $this->set('q_long', $long);
                 $this->set('q_radius', $radius);
 
-                $nearby = $loc->getNearByLatLong($lat, $long, $radius);
+                $nearby = $loc->getLocationsWithinLatLong($lat, $long, $radius);
                 $this->set('nearby_query', $nearby);
 
                 break;
