@@ -40,11 +40,19 @@ EOHTML;
 
     foreach ($ready_menus as $menu)
     {
+        $menu_id = $menu['id'];
+
+        $link = '<a href="/menu/view/'.$menu_id.'">%s</a>';
+
+        $id = sprintf($link, $menu['id']);
+        $name = sprintf($link, $menu['name']);
+        $address = sprintf($link, $menu['address']);
+
         echo<<<EOHTML
             <tr>
-                <td>{$menu['id']}</td>
-                <td>{$menu['name']}</td>
-                <td>{$menu['address']}</td>
+                <td>{$id}</td>
+                <td>{$name}</td>
+                <td>{$address}</td>
             </tr>
 EOHTML;
     }

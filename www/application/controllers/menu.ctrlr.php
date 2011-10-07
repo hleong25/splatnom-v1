@@ -318,4 +318,47 @@ class MenuController
         $this->set('places', $places);
 
     }
+
+    function onAction_view($id=null)
+    {
+        if ($id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $menu = $this->Menu;
+        $menu_info = $menu->getMenuInfo($id);
+
+        if (empty($menu_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        // it's in the database... let's continue
+
+        $this->set('id', $id);
+
+        $this->edit_metadata_onInit($id, $menu_info);
+
+        $links = $menu->getMenuLinks($id);
+        $imgs = $menu->getMenuImgs($id);
+        $sections = $menu->getSection($id);
+        $mdts = $menu->getMetadata($id, $sections);
+
+        $this->set('info', $menu_info);
+        $this->set('links', $links);
+        $this->set('imgs', $imgs);
+
+        if (!empty($mdts))
+            $this->set('mdts', $mdts);
+
+        $this->set('dbg', array(
+            'info'=>$menu_info,
+            'links'=>$links,
+            'imgs'=>$imgs,
+            'mdts'=>$mdts,
+        ));
+    }
 }

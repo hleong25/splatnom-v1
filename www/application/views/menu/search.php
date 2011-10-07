@@ -41,12 +41,21 @@ EOHTML;
 
     foreach ($places as $place)
     {
+        $menu_id = $place['menu_id'];
         $distance = sprintf('%0.2f', $place['distance']);
+
+        $link = '<a href="/menu/view/'.$menu_id.'">%s</a>';
+
+        $id = sprintf($link, $menu_id);
+        $name = sprintf($link, $place['name']);
+        $address = sprintf($link, $place['address']);
+        $distance = sprintf($link, $distance);
+
         echo<<<EOHTML
             <tr>
-                <td>{$place['menu_id']}</td>
-                <td>{$place['name']}</td>
-                <td>{$place['address']}</td>
+                <td>{$id}</td>
+                <td>{$name}</td>
+                <td>{$address}</td>
                 <td>{$distance}</td>
             </tr>
 EOHTML;
