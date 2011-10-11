@@ -336,6 +336,8 @@ class MenuController
             return;
         }
 
+        $this->addCss('menu/menu.view');
+
         // it's in the database... let's continue
 
         $this->set('id', $id);
@@ -354,7 +356,7 @@ class MenuController
         if (!empty($mdts))
             $this->set('mdts', $mdts);
 
-        $this->set('dbg', array(
+        $this->set('dbg1', array(
             'info'=>$menu_info,
             'links'=>$links,
             'imgs'=>$imgs,

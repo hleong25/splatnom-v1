@@ -23,7 +23,7 @@ extract($params, EXTR_SKIP);
 ?>
 <div class="pg info">
     <div class="name"><?php echo $info['name']; ?></div>
-    <div class="notes"><?php echo nl2br($info['notes']); ?></div>
+    <div class="details"><?php echo nl2br($info['notes']); ?></div>
     <div class="address"><?php echo nl2br($info['address']); ?></div>
     <div class="phone"><?php echo nl2br($info['numbers']); ?></div>
     <div class="hours"><?php echo nl2br($info['hours']); ?></div>
@@ -46,15 +46,18 @@ EOHTML;
 <div class="pg menus">
 <?php foreach ($mdts as $mdt) { ?>
     <div class="menu">
-        <div class="info">
-            <div class="name"><?php echo $mdt['name']; ?></div>
-            <div class="notes"><?php echo $mdt['notes']; ?></div>
+        <div class="info heading">
+            <div class="h_name"><?php echo $mdt['name']; ?></div>
+            <div class="h_notes"><?php echo $mdt['notes']; ?></div>
         </div>
         <div class="items">
         <?php foreach($mdt['items'] as $item) { ?>
-            <div class="item"><?php echo $item['item']; ?></div>
-            <div class="price"><?php echo $item['price']; ?></div>
-            <div class="notes"><?php echo $item['notes']; ?></div>
+            <div class="group">
+                <div class="item"><?php echo $item['item']; ?></div>
+                <div class="price"><?php echo $item['price']; ?></div>
+                <div class="clear"></div>
+                <div class="notes"><?php echo $item['notes']; ?></div>
+            </div>
         <?php } // foreach($mdt['items'] as $item) ?>
         </div>
     </div>

@@ -1,0 +1,40 @@
+div.menu {
+    margin-bottom: 0.5em;
+}
+div.heading{
+    background-color: silver;
+    width: 100%;
+    padding-right: 0.3em;
+    padding-left: 0.3em;
+    padding-bottom: 0.3em;
+    padding-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+div.h_name{
+    font-size: 1.3em;
+    margin-left: 0.1em;
+    margin-bottom: 0.2em;
+}
+div.h_notes{
+    font-size: 0.8em;
+    padding-left: 1em;
+}
+div.group {
+    margin-bottom: 0.2em;
+    padding-left: 0.2em;
+}
+div.item {
+    display: inline;
+    float: left;
+}
+div.price {
+    float: right;
+    font-size: 14px;
+}
+div.notes {
+    font-size: 12px;
+    padding-left: 10px;
+}
+div.clear {
+    clear: both;
+}
