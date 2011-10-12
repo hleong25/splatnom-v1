@@ -1,6 +1,7 @@
 span.info {
     float: left;
-    width: 100px;
+    width: 7em;
+    font-size: 0.8em;
 }
 span.val {
 }
