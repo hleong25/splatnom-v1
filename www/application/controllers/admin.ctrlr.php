@@ -61,6 +61,8 @@ class AdminController
             return;
         }
 
+        $this->addCss('admin/admin.user.profile');
+
         $user = new UserModel();
 
         if (!empty($_POST))

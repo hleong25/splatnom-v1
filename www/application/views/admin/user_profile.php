@@ -1,9 +1,12 @@
-<form id="edit_user" enctype="multipart/form-data" method="post" action="/admin/user_profile/<?php echo $info['id']; ?>">
-<input type="hidden" name="_edit_user" />
 <div class="pg info">
-    <span id="whoami"><?php echo $whoami; ?></span>
+    <div id="id"><span class="info">id</span><span class="val"><?php echo $info['id']; ?></span></div>
+    <div id="username"><span class="info">user name</span><span class="val"><?php echo $info['username']; ?></span></div>
+    <div id="fname"><span class="info">first name</span><span class="val"><?php echo $info['firstname']; ?></span></div>
+    <div id="lname"><span class="info">last name</span><span class="val"><?php echo $info['lastname']; ?></span></div>
+    <div id="email"><span class="info">email</span><span class="val"><?php echo $info['email']; ?></span></div>
 </div>
 <br/>
+<form id="edit_user" enctype="multipart/form-data" method="post" action="/admin/user_profile/<?php echo $info['id']; ?>">
 <div class="pg permissions">
     <span class="heading">User Permissions</span>
     <br/>
