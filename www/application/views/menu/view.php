@@ -87,4 +87,3 @@ EOHTML;
     </div>
 <?php }// foreach ($mdts as $mdt) ?>
 </div>
-<div class="pg dbg"><pre><?php var_export($dbg); ?></pre></div>

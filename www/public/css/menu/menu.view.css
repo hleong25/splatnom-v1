@@ -7,15 +7,14 @@ div.menu {
 div.heading{
     background-color: silver;
     width: 100%;
+    text-align: center;
 }
 div.h_name{
     font-size: 1.3em;
-    padding-left: 0.3em;
     padding-top: 0.3em;
 }
 div.h_notes{
     font-size: 0.8em;
-    padding-left: 1em;
     padding-bottom: 0.6em;
     padding-top: 0.3em;
 }
