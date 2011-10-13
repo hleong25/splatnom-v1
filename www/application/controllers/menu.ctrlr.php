@@ -336,11 +336,14 @@ class MenuController
             return;
         }
 
+        $this->addJs('menu/menu.view');
         $this->addCss('menu/menu.view');
+        $this->addCss('zebra');
 
         // it's in the database... let's continue
 
         $this->set('id', $id);
+        $this->set('is_metadata', UtilsModel::getPermissions('metadata'));
 
         $this->edit_metadata_onInit($id, $menu_info);
 

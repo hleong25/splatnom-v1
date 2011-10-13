@@ -44,6 +44,7 @@ if ($is_admin) {
     <div class="heading">Admin control</div>
     <div class="data">
         <input type="submit" value="Save Menu"/>
+        <input type="button" value="View Menu" onclick="js_menu.view('/menu/view/<?php echo $id; ?>');" />
         <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
         <input type="button" value="Hide all sections" onclick="js_menu.hideAll();" />
         <input type="button" value="Show all sections" onclick="js_menu.showAll();" />

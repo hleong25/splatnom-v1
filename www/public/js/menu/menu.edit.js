@@ -1,5 +1,5 @@
 var js_menu = {
-    
+
 onDocReady: function()
 {
     js_menu.init();
@@ -14,11 +14,11 @@ init: function()
 btnItemAddMore_OnClick: function ()
 {
     var objThis = $(this).parent();
-    
+
     objThis
         .clone(true)
         .insertAfter(objThis)
-        
+
         // reset the watermark
         .find('input.jq_watermark')
             .val('')
@@ -30,7 +30,7 @@ btnItemAddMore_OnClick: function ()
 btnItemRemove_OnClick: function ()
 {
     var objThis = $(this).parent();
-    
+
     if (objThis.siblings('div.item').length == 0)
     {
         // just reset it...
@@ -47,7 +47,7 @@ btnItemRemove_OnClick: function ()
         // remove it...
         objThis.remove();
     }
-    
+
 }
 
 }

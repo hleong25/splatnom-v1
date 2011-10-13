@@ -13,6 +13,7 @@ $params_info = array(
 
 $params = array(
     'dbg' => array(),
+    'is_metadata' => false,
     'info' => $params_info,
     'links' => array(),
     'mdts' => array(),
@@ -20,6 +21,16 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 
+?>
+<?php
+if ($is_metadata)
+{
+    echo<<<EOHTML
+        <div class="pg pg_bottom ismdt">
+            <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/{$id}'" />
+        </div>
+EOHTML;
+}
 ?>
 <div class="pg info">
     <div class="name"><?php echo $info['name']; ?></div>
@@ -51,14 +62,27 @@ EOHTML;
             <div class="h_notes"><?php echo $mdt['notes']; ?></div>
         </div>
         <div class="items">
-        <?php foreach($mdt['items'] as $item) { ?>
-            <div class="group">
-                <div class="item"><?php echo $item['item']; ?></div>
-                <div class="price"><?php echo $item['price']; ?></div>
-                <div class="clear"></div>
-                <div class="notes"><?php echo $item['notes']; ?></div>
-            </div>
-        <?php } // foreach($mdt['items'] as $item) ?>
+        <?php
+            $b_alt = false;
+            foreach ($mdt['items'] as $item)
+            {
+                $b_alt = !$b_alt;
+                $css = $b_alt ? 'zalt' : '';
+                $notes = '';
+
+                if (!empty($item['notes']))
+                    $notes = "<div class=\"notes\">{$item['notes']}</div>";
+
+                echo<<<EOHTML
+                    <div class="group {$css}">
+                        <div class="item">{$item['item']}</div>
+                        <div class="price">{$item['price']}</div>
+                        <div class="clear"></div>
+                        {$notes}
+                    </div>
+EOHTML;
+            }
+        ?>
         </div>
     </div>
 <?php }// foreach ($mdts as $mdt) ?>

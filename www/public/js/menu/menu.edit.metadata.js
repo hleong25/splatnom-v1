@@ -339,6 +339,19 @@ removeLink: function(elem)
         // remove it...
         objThis.remove();
     }
+},
+
+view: function(viewUrl)
+{
+    var bView = confirm('Are you sure you want to quit editting this menu?');
+
+    if (!bView)
+    {
+        return false;
+    }
+
+    location.href = viewUrl;
+
 }
 
 }
