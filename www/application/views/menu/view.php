@@ -32,11 +32,14 @@ if ($is_metadata)
 EOHTML;
 }
 ?>
-<div class="pg info">
+<div class="pg biz_info">
     <div class="name"><?php echo $info['name']; ?></div>
     <div class="details"><?php echo nl2br($info['notes']); ?></div>
+    <br/>
     <div class="address"><?php echo nl2br($info['address']); ?></div>
+    <br/>
     <div class="phone"><?php echo nl2br($info['numbers']); ?></div>
+    <br/>
     <div class="hours"><?php echo nl2br($info['hours']); ?></div>
 </div>
 <div class="pg links">

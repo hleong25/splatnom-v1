@@ -1,6 +1,15 @@
 div.ismdt {
     text-align: right;
 }
+div.biz_info {
+    margin-bottom: 0.5em;
+}
+div.biz_info div.name {
+    font-size: 2em;
+}
+div.links {
+    margin-bottom: 0.5em;
+}
 div.menu {
     margin-bottom: 0.5em;
 }
