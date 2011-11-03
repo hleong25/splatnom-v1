@@ -6,9 +6,9 @@ class MenuController
     function onAction_new()
     {
         $this->addCss('menu/menu.new');
-        $this->addJs('menu/menu.new');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('menu/menu.new');
 
         if (!empty($_POST))
         {
@@ -54,15 +54,6 @@ class MenuController
         $this->set('info', $info);
     }
 
-    function onAction_edit($id = null)
-    {
-        $this->addCss('menu/menu.edit');
-        $this->addJs('menu/menu.edit');
-
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
-
-    }
-
     function onAction_edit_metadata($id=null)
     {
         if (empty($id) || ($id < 0))
@@ -72,9 +63,9 @@ class MenuController
         }
 
         $this->addCss('menu/menu.edit.metadata');
-        $this->addJs('menu/menu.edit.metadata');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('menu/menu.edit.metadata');
 
         $menu = $this->Menu;
         $menu_info = $menu->getMenuInfo($id);

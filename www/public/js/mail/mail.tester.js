@@ -1,8 +1,14 @@
-var js_mail = {
+var js_mail = (function (){
 
-onDocReady: function ()
+init();
+
+return {
+    // empty
+};
+
+function init()
 {
     $('form#mail input[name="to"]').focus();
 }
 
-};
+})();

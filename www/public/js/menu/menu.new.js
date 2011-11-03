@@ -1,16 +1,22 @@
-var js_menu = {
-    
-onDocReady: function()
+var js_menu = (function() {
+
+init();
+
+return {
+    // empty
+};
+
+function init()
 {
-    $('input#btnAddMore').click(js_menu.btnAddMore_OnClick);
-    
+    $('input#btnAddMore').click(btnAddMore_OnClick);
+
     $('form#frmNewMenu')
-        .submit(js_menu.form_OnSubmit)
+        .submit(form_OnSubmit)
         .find('input[name="name"]').focus()
     ;
-},
+}
 
-btnAddMore_OnClick: function ()
+function btnAddMore_OnClick()
 {
     var objThis = $(this);
     objThis
@@ -18,14 +24,14 @@ btnAddMore_OnClick: function ()
         .clone()
         .insertBefore(objThis)
     ;
-},
+}
 
-form_OnSubmit: function ()
+function form_OnSubmit()
 {
-    return js_menu.funcValidateForm();
-},
+    return funcValidateForm();
+}
 
-funcValidateForm: function ()
+function funcValidateForm()
 {
     if ($('input[name="name"]').val().trim().length === 0)
     {
@@ -33,22 +39,22 @@ funcValidateForm: function ()
         $('input[name="name"]').focus();
         return false;
     }
-    
-    var imgs = 
+
+    var imgs =
         $('div.new_img > input[type="file"]')
-            .filter(function(){ 
-                return $(this).val() != ''; 
+            .filter(function(){
+                return $(this).val() != '';
             })
             .length
     ;
-    
+
     if (imgs === 0)
     {
         alert('Need at least one menu');
         return false;
     }
-    
+
     return true;
 }
 
-}
+})();

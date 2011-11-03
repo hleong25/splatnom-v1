@@ -1,8 +1,14 @@
-var js_user = {
+var js_user = (function() {
 
-onDocReady: function ()
+init();
+
+return {
+    // empty
+};
+
+function init()
 {
     $('form#new_user input:first').focus();
 }
 
-};
+})();

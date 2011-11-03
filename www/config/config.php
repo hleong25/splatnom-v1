@@ -2,6 +2,8 @@
 
 /** Configuration Variables **/
 
+define('SITE_NAME', 'splatnom');
+
 define('DEVELOPMENT_ENVIRONMENT',true);
 define('LOG_QUERY', false);
 
@@ -28,17 +30,3 @@ define('WEB_PATH_OTHER',    DS . 'other');
 
 define('PASSCODE_TROJAN',   'locomotion');
 
-function getSiteName()
-{
-    // TODO: live server should not have this...
-
-    $names = array(
-        'foodify',
-    );
-
-    $size = count($names);
-
-    $rndIdx = rand() % $size;
-
-    return $names[$rndIdx];
-}

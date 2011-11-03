@@ -1,8 +1,14 @@
-var js_home = {
+var js_home = (function() {
 
-onDocReady: function ()
+init();
+
+return {
+    // empty
+};
+
+function init()
 {
     $('form#searchit input[name="query"]').focus();
 }
 
-};
+})();

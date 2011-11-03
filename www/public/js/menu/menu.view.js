@@ -1,11 +1,12 @@
-var js_menu = {
+var js_menu = (function() {
 
-onDocReady: function()
-{
-    js_menu.init();
-},
+init();
 
-init: function()
+return {
+    // empty
+};
+
+function init()
 {
     $('div.group')
         .mouseover(function() {
@@ -17,4 +18,4 @@ init: function()
     ;
 }
 
-}
+})();

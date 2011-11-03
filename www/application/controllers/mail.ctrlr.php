@@ -12,9 +12,9 @@ class MailController
     function onAction_tester()
     {
         $this->addCss('mail/mail.tester');
-        $this->addJs('mail/mail.tester');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('mail/mail.tester');
 
         if (empty($_POST))
             return;

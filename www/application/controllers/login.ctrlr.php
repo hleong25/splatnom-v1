@@ -8,9 +8,9 @@ class LoginController
         global $get_url;
 
         $this->addCss('login/login');
-        $this->addJs('login/login');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('login/login');
 
         $goto_url = '';
         if (!empty($_GET['goto']))

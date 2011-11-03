@@ -1,11 +1,36 @@
-var js_menu = {
+var js_menu = (function() {
 
-onDocReady: function()
+init();
+
+return {
+    toggleOnClick: toggleOnClick,
+    toggleOnHoverIn: toggleOnHoverIn,
+    toggleOnHoverOut: toggleOnHoverOut,
+    formOnSubmit: formOnSubmit,
+    view: view,
+    purgeMenu: purgeMenu,
+    hideAll: hideAll,
+    showAll: showAll,
+    addLink: addLink,
+    removeLink: removeLink,
+    googleSearchAddress: googleSearchAddress,
+    moveMenu: moveMenu,
+    menuNameOnChange: menuNameOnChange,
+    addMenuItem: addMenuItem,
+    removeMenuItem: removeMenuItem
+};
+
+function init()
 {
-    js_menu.keyboardNavigation($('div.menu_item input:text'));
-},
+    formOnSubmit();
+}
 
-keyboardNavigation: function(inputText)
+function formOnSubmit()
+{
+    keyboardNavigation($('div.menu_item input:text'));
+}
+
+function keyboardNavigation(inputText)
 {
     inputText
         .keyup(function(event){
@@ -31,9 +56,9 @@ keyboardNavigation: function(inputText)
                 }
             })
     ;
-},
+}
 
-purgeMenu: function(purgeUrl)
+function purgeMenu(purgeUrl)
 {
     var bPurge = confirm('Are you sure you want to purge this menu?');
 
@@ -43,24 +68,24 @@ purgeMenu: function(purgeUrl)
     }
 
     location.href = purgeUrl;
-},
+}
 
-toggleOnClick: function(elem)
+function toggleOnClick(elem)
 {
     $(elem).siblings('div.toggle').toggle();
-},
+}
 
-toggleOnHoverIn: function(elem)
+function toggleOnHoverIn(elem)
 {
     $(elem).css('cursor', 'pointer');
-},
+}
 
-toggleOnHoverOut: function(elem)
+function toggleOnHoverOut(elem)
 {
     $(elem).css('cursor', 'auto');
-},
+}
 
-menuNameOnChange: function(input)
+function menuNameOnChange(input)
 {
     input = $(input);
     var name = input.val();
@@ -71,9 +96,9 @@ menuNameOnChange: function(input)
         .text(name)
     ;
 
-},
+}
 
-addMenu: function(elem)
+function addMenu(elem)
 {
     var objThis = $(elem).parents('div.menu');
 
@@ -111,11 +136,11 @@ addMenu: function(elem)
             .end()
     ;
 
-    js_menu.keyboardNavigation(clone_obj.find('div.menu_item input:text'));
-},
+    keyboardNavigation(clone_obj.find('div.menu_item input:text'));
+}
 
 
-removeMenu: function(elem)
+function removeMenu(elem)
 {
     var objThis = $(elem).parents('div.menu');
 
@@ -154,9 +179,9 @@ removeMenu: function(elem)
         // remove it...
         objThis.remove();
     }
-},
+}
 
-addMenuItem: function(elem)
+function addMenuItem(elem)
 {
     var objThis = $(elem).parent('div.menu_item');
 
@@ -183,10 +208,10 @@ addMenuItem: function(elem)
             .end()
     ;
 
-    js_menu.keyboardNavigation(clone_obj.find('input:text'));
-},
+    keyboardNavigation(clone_obj.find('input:text'));
+}
 
-removeMenuItem: function(elem)
+function removeMenuItem(elem)
 {
     var objThis = $(elem).parent('div.menu_item');
 
@@ -219,9 +244,9 @@ removeMenuItem: function(elem)
         // remove it...
         objThis.remove();
     }
-},
+}
 
-googleSearchAddress: function()
+function googleSearchAddress()
 {
     var txtAddress = $('textarea[name="info_address"]').val();
     var params = $.param({
@@ -233,19 +258,19 @@ googleSearchAddress: function()
     var map_window = window.open(url, 'gmaps');
 
     return false;
-},
+}
 
-hideAll: function()
+function hideAll()
 {
     $('div.pg > div.toggle').hide();
-},
+}
 
-showAll: function()
+function showAll()
 {
     $('div.pg > div.toggle').show();
-},
+}
 
-moveMenu: function(elem, position)
+function moveMenu(elem, position)
 {
     var objThis = $(elem).parents('div.menu');
     var node = null;
@@ -274,9 +299,9 @@ moveMenu: function(elem, position)
 
     //$('html, body').animate({scrollTop: objThis.offset().top}, 0);
 
-},
+}
 
-addLink: function(elem)
+function addLink(elem)
 {
     var objThis = $(elem).parent('div.link_item');
 
@@ -303,10 +328,10 @@ addLink: function(elem)
             .end()
     ;
 
-    js_menu.keyboardNavigation(clone_obj.find('input:text'));
-},
+    keyboardNavigation(clone_obj.find('input:text'));
+}
 
-removeLink: function(elem)
+function removeLink(elem)
 {
     var objThis = $(elem).parent('div.link_item');
 
@@ -339,9 +364,9 @@ removeLink: function(elem)
         // remove it...
         objThis.remove();
     }
-},
+}
 
-view: function(viewUrl)
+function view(viewUrl)
 {
     var bView = confirm('Are you sure you want to quit editting this menu?');
 
@@ -354,4 +379,4 @@ view: function(viewUrl)
 
 }
 
-}
+})();

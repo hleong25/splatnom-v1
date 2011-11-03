@@ -1,17 +1,16 @@
-var js_admin = {
+var js_admin = (function() {
 
-onDocReady: function ()
-{
-    // empty
-},
+return {
+    remove_row: remove_row
+};
 
-remove_row: function(id, row_id)
+function remove_row(id, row_id)
 {
     var confirm_remove = confirm("Are you sure you want to delete id '" + id + "'?");
-    
+
     if (confirm_remove == false)
         return false;
-    
+
     $.post(
         '/ws/purge_pending_menu',
         {'id': id},
@@ -31,8 +30,8 @@ remove_row: function(id, row_id)
         },
         'json'
     );
-        
+
     return false;
 }
 
-};
+})();

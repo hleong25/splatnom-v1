@@ -6,7 +6,6 @@ class AdminController
     function onAction_main()
     {
         $this->addCss('admin/admin.main');
-        $this->addJs('admin/admin.main');
 
         $menu = new MenuModel();
 
@@ -25,22 +24,21 @@ class AdminController
             }
         }
 
-        //$this->addCss('admin/admin.pendingmenu.list');
-        $this->addJs('admin/admin.pendingmenu.list');
-
         $this->addCss('table');
+        //$this->addCss('admin/admin.pendingmenu.list');
+
+        $this->addJs('admin/admin.pendingmenu.list');
 
         $this->set('new_menus', $menu->getPendingMenus());
     }
 
     function onAction_find_user()
     {
-        $this->addCss('admin/admin.find.user');
-        $this->addJs('admin/admin.find.user');
-
         $this->addCss('table');
+        $this->addCss('admin/admin.find.user');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('admin/admin.find.user');
 
         $this->set('query_user', '%');
 
@@ -104,7 +102,6 @@ class AdminController
             return;
         }
         $this->addCss('admin/admin.pending.menu');
-        $this->addJs('admin/admin.pending.menu');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
