@@ -132,6 +132,13 @@ function strEndsWith($haystack, $needle, &$parsed)
     return true;
 }
 
+function scriptExecutionTime()
+{
+    global $__page_start_time;
+    $now = microtime(true);
+    return $now - $__page_start_time;
+}
+
 /** Autoload any classes that are required * */
 function __autoload ($className)
 {
