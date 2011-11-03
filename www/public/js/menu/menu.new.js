@@ -12,7 +12,6 @@ function init()
 
     $('form#frmNewMenu')
         .submit(form_OnSubmit)
-        .find('input[name="name"]').focus()
     ;
 }
 
