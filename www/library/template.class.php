@@ -53,16 +53,38 @@ class Template
         // add colorbox
         $this->addCss('colorbox/colorbox', WEB_PATH_OTHER);
 
-        $this->templateHelper();
+        $this->setupNav();
     }
 
-    function templateHelper()
+    function setupNav()
     {
-        $template_inc = ROOT . DS . 'application' . DS .'controllers/helper/template.ctrlr.php';
-        include_once($template_inc);
+        $links = array();
 
-        $template_inc = new TemplateControllerHelper($this);
-        $template_inc->setupNav();
+        $links[] = array('css' => 'nav ', 'lbl' => 'new menu', 'lnk' => 'menu/new');
+
+        if (!UtilsModel::getUserId())
+        {
+            global $get_url;
+
+            $goto_url = '&goto='.$get_url;
+
+            // not logged in
+            $links[] = array('css' => 'nav new_user', 'lbl' => 'register', 'lnk' => 'user/register');
+            $links[] = array('css' => 'nav login', 'lbl' => 'login', 'lnk' => "login/main{$goto_url}");
+        }
+        else
+        {
+            // logged in
+            if(UtilsModel::getPermissions('admin'))
+                $links[] = array('css' => 'nav ', 'lbl' => 'admin', 'lnk' => 'admin/main');
+
+            $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => 'login/end');
+        }
+
+        foreach ($links as $lnk)
+        {
+            $this->m_nav[] = $lnk;
+        }
     }
 
     /** Set Variables * */
@@ -150,11 +172,6 @@ class Template
         {
             printf('<script type="text/javascript" src="%s.js"></script>', $js);
         }
-    }
-
-    function addNavLinks($lnk)
-    {
-        $this->m_nav[] = $lnk;
     }
 
     function includeNavLinks()
