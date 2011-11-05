@@ -52,12 +52,6 @@ class WsController
         $this->set('query_results', $this->Ws->search());
     }
 
-    function onAction_getimage($img)
-    {
-        $img_file = $this->Ws->getImage($img);
-        $this->set('img_file', $img_file);
-    }
-
     function onAction_purge_pending_menu()
     {
         if (empty($_POST) || !isset($_POST['id']))

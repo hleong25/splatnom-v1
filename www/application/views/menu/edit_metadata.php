@@ -88,7 +88,7 @@ EOHTML;
         <?php
             foreach ($imgs as $img)
             {
-                $img_link = "/ws/getimage/{$id}@{$img}";
+                $img_link = "/images/menu/{$id}/{$img}";
                 echo<<<EOHTML
                     <a href="$img_link" target="_blank"><img class="menu" src="$img_link" /></a>
 EOHTML;
