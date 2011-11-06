@@ -149,6 +149,7 @@ function __autoload ($className)
     if ((strcmp($clsName, 'controller') === 0) ||
         (strcmp($clsName, 'model') === 0) ||
         (strcmp($clsName, 'template') === 0))
+
     {
         $load_file = ROOT . DS . 'library' . DS . $clsName . '.class.php';
     }
@@ -159,6 +160,10 @@ function __autoload ($className)
     else if (strEndsWith($clsName, 'model', $base_name))
     {
         $load_file = ROOT . DS . 'application' . DS . 'models' . DS . $base_name . '.model.php';
+    }
+    else if (strEndsWith($clsName, 'util', $base_name))
+    {
+        $load_file = ROOT . DS . 'application' . DS . 'utils' . DS . $base_name . '.util.php';
     }
 
     if (!$load_file)

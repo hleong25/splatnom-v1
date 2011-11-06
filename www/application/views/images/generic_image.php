@@ -1,5 +1,11 @@
 <?php
 
+$params = array(
+    $thumbnail = false
+);
+
+extract($params, EXTR_SKIP);
+
 // NOTE: image caching
 //       http://drupal.org/node/25977
 //       http://betterexplained.com/articles/how-to-optimize-your-site-with-http-caching/
@@ -33,4 +39,14 @@ header("Content-type: $mime");
 header("Last-Modified: {$modified_date} GMT");
 header('Cache-Control: public');
 
-readfile($img_file);
+if (empty($thumbnail))
+{
+    readfile($img_file);
+}
+else
+{
+    $resize = new ImageresizeUtil($img_file);
+    $resize->resizeImage(100, 100);
+    $resize->saveImage(null);
+}
+

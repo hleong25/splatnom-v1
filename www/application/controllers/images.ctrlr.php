@@ -16,9 +16,20 @@ class ImagesController
         $this->set('img_file', $img_file);
     }
 
+    function onAction_pending_sm($img_id=null)
+    {
+        $this->onAction_pending($img_id);
+        $this->set('thumbnail', true);
+    }
+
     function onAction_menu($menu_id=null, $img_id=null)
     {
         $img_file = $this->Images->getMenuImage($menu_id, $img_id);
         $this->set('img_file', $img_file);
+    }
+    function onAction_menu_sm($menu_id=null, $img_id=null)
+    {
+        $this->onAction_menu($menu_id, $img_id);
+        $this->set('thumbnail', true);
     }
 }
