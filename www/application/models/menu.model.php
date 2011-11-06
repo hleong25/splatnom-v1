@@ -58,7 +58,7 @@ EOQ;
         if (!$prepare) return false;
 
         $new_menu_img = array(':new_id' => $new_id, ':file_img' => '');
-        $files = UtilsModel::handle_upload_files();
+        $files = Util::handle_upload_files();
 
         foreach ($files as $img)
         {
@@ -359,7 +359,7 @@ EOQ;
         $menu_img_path = OS_MENU_PATH . DS . $menu_id;
         if (mkdir($menu_img_path) == false)
         {
-            UtilsModel::logit("Failed to create menu directory: {$menu_img_path}", __FILE__, __LINE__);
+            Util::logit("Failed to create menu directory: {$menu_img_path}", __FILE__, __LINE__);
             return false;
         }
 

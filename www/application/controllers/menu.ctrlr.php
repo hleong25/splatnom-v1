@@ -17,7 +17,7 @@ class MenuController
             $urls = $_POST['url'];
             foreach ($urls as $idx => $url)
             {
-                $url = UtilsModel::normalizeUrl($url);
+                $url = Util::normalizeUrl($url);
                 $urls[$idx] = $url;
             }
 
@@ -79,7 +79,7 @@ class MenuController
         // it's in the database... let's continue
 
         $this->set('id', $id);
-        $this->set('is_admin', UtilsModel::getPermissions('admin'));
+        $this->set('is_admin', Util::getPermissions('admin'));
 
         if (empty($_POST))
         {
@@ -164,7 +164,7 @@ class MenuController
             switch ($post_links[$ii])
             {
                 case '@link@':
-                    $url = UtilsModel::normalizeUrl($post_links[++$ii]);
+                    $url = Util::normalizeUrl($post_links[++$ii]);
                     $label = $post_links[++$ii];
 
                     $link = array(
@@ -250,7 +250,7 @@ class MenuController
 
     function onAction_purge($id)
     {
-        if (empty($id) || ($id < 0) || !UtilsModel::getPermissions('admin'))
+        if (empty($id) || ($id < 0) || !Util::getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;
@@ -334,7 +334,7 @@ class MenuController
         // it's in the database... let's continue
 
         $this->set('id', $id);
-        $this->set('is_metadata', UtilsModel::getPermissions('metadata'));
+        $this->set('is_metadata', Util::getPermissions('metadata'));
 
         $this->edit_metadata_onInit($id, $menu_info);
 

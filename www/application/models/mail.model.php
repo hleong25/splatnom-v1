@@ -26,10 +26,10 @@ class MailModel
 
         $send = $mail->send($to, $headers, $body);
 
-        UtilsModel::logit($send);
+        Util::logit($send);
 
         if ($send !== true)
-            UtilsModel::logit($send);
+            Util::logit($send);
 
         return $send;
     }
@@ -79,7 +79,7 @@ class MailModel
         $send = $mail->send($to, $headers, $body);
 
         if ($send !== true)
-            UtilsModel::logit('Mail error: '.$send->getMessage());
+            Util::logit('Mail error: '.$send->getMessage());
 
         return $send;
     }

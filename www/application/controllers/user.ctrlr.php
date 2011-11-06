@@ -135,7 +135,7 @@ EOM;
 
         $this->set('code', $code);
 
-        if (UtilsModel::getUserId() !== false)
+        if (Util::getUserId() !== false)
         {
             // user must be logged off to verify account.
             global $get_url;

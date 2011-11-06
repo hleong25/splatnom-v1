@@ -15,7 +15,7 @@ class HomeController
 
         $this->set('ready_menus', $this->Home->getReadyMenus());
 
-        $bMetadata = UtilsModel::getPermissions('metadata');
+        $bMetadata = Util::getPermissions('metadata');
         $this->set('is_metadata', $bMetadata);
         if ($bMetadata)
         {

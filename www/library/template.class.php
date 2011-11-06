@@ -62,7 +62,7 @@ class Template
 
         $links[] = array('css' => 'nav ', 'lbl' => 'new menu', 'lnk' => 'menu/new');
 
-        if (!UtilsModel::getUserId())
+        if (!Util::getUserId())
         {
             global $get_url;
 
@@ -75,7 +75,7 @@ class Template
         else
         {
             // logged in
-            if(UtilsModel::getPermissions('admin'))
+            if(Util::getPermissions('admin'))
                 $links[] = array('css' => 'nav ', 'lbl' => 'admin', 'lnk' => 'admin/main');
 
             $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => 'login/end');

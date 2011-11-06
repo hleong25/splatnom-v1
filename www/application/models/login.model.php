@@ -31,7 +31,7 @@ EOQ;
         }
         elseif ($cnt > 1)
         {
-            UtilsModel::logit('!!! Multiple results with username('.$user.') !!!');
+            Util::logit('!!! Multiple results with username('.$user.') !!!');
             return false;
         }
 

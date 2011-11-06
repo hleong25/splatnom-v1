@@ -1,6 +1,6 @@
 <?php
 
-class UtilsModel
+class Util
 {
     function logit($obj, $file=null, $line=null)
     {

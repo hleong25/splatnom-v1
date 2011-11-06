@@ -97,7 +97,7 @@ function callHook ()
         if ((strtolower($name) == 'admin') &&
             (!isset($_SESSION['perms']) || ($_SESSION['perms']['admin'] != true)))
         {
-            UtilsModel::redirect('/home/main');
+            Util::redirect('/home/main');
             return;
         }
 
@@ -163,7 +163,10 @@ function __autoload ($className)
     }
     else if (strEndsWith($clsName, 'util', $base_name))
     {
-        $load_file = ROOT . DS . 'application' . DS . 'utils' . DS . $base_name . '.util.php';
+        if (empty($base_name))
+            $load_file = ROOT . DS . 'application' . DS . 'utils' . DS . 'util.php';
+        else
+            $load_file = ROOT . DS . 'application' . DS . 'utils' . DS . $base_name . '.util.php';
     }
 
     if (!$load_file)
