@@ -1,7 +1,7 @@
 <?php
 
 $params = array(
-    $thumbnail = false
+    'thumbnail' => false
 );
 
 extract($params, EXTR_SKIP);

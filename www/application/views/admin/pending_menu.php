@@ -26,8 +26,9 @@ EOHTML;
             foreach ($imgs as $img)
             {
                 $img_link = "/images/pending/{$img}";
+                $thumbnail_link = "/images/pending_sm/{$img}";
                 echo<<<EOHTML
-                    <a href="$img_link" target="_blank"><img class="menu" src="$img_link" /></a>
+                    <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" /></a>
 EOHTML;
             }
         ?>
