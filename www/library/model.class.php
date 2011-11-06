@@ -19,14 +19,4 @@ class Model
         // empty
 	}
 
-    function query($query)
-    {
-        if (LOG_QUERY)
-            error_log($query);
-
-        $rst = parent::query($query);
-        $rst->setFetchMode(PDO::FETCH_ASSOC);
-
-        return $rst;
-    }
 }
