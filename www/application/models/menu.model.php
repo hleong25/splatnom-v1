@@ -588,6 +588,18 @@ EOQ;
     function truncateMetadata($id)
     {
         $query =<<<EOQ
+            DELETE FROM tblMenuMetadata_Shadow
+            WHERE metadata_id IN (
+                SELECT metadata_id
+                FROM tblMenuMetadata
+                WHERE menu_id = :id
+            )
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $query =<<<EOQ
             DELETE FROM tblMenuMetadata WHERE menu_id = :id;
 EOQ;
 
@@ -643,14 +655,49 @@ EOQ;
         return true;
     }
 
+    function getNewMetadataId()
+    {
+        $loop_cnt = 0;
+        $loop_max = 100;
+        $found = false;
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+        $query =<<<EOQ
+            SElECT COUNT(*) cnt
+            FROM tblMenuMetadata
+            WHERE metadata_id = :metadata_id
+EOQ;
+
+        while ($loop_cnt < $loop_max)
+        {
+            $loop_cnt++;
+
+            $metadata_id = substr(str_shuffle($chars), 0, 40);
+
+            $prepare = $this->prepareAndExecute($query, array(':metadata_id'=>$metadata_id), __FILE__, __LINE__);
+            if (!$prepare) return false;
+
+            $cnt = (int) $prepare->fetchColumn();
+            if ($cnt === 0)
+                return $metadata_id;
+        }
+
+        // something happened... and we failed.
+        Util::logit('Failed to get a metadata_id', __FILE__, __LINE__);
+        return false;
+    }
+
     function insertMetadata($id, $datas)
     {
+        $shadow = array();
+
         $query =<<<EOQ
             INSERT INTO tblMenuMetadata
             (
                 menu_id,
                 section_id,
                 ordinal_id,
+                metadata_id,
                 label,
                 price,
                 notes
@@ -660,6 +707,7 @@ EOQ;
                 :menu_id,
                 :section_id,
                 :ordinal_id,
+                :metadata_id,
                 :label,
                 :price,
                 :notes
@@ -676,6 +724,12 @@ EOQ;
 
             foreach ($section['items'] as $idx_mdt => $mdt)
             {
+                $metadata_id = $this->getNewMetadataId();
+                if (!$metadata_id) return false;
+
+                $shadow[] = array('metadata_id'=>$metadata_id, 'label'=>$mdt['item']);
+
+                $rsts[] = $prepare->bindValue(':metadata_id', $metadata_id);
                 $rsts[] = $prepare->bindValue(':ordinal_id', $idx_mdt);
                 $rsts[] = $prepare->bindValue(':label', $mdt['item']);
                 $rsts[] = $prepare->bindValue(':price', $mdt['price']);
@@ -683,6 +737,48 @@ EOQ;
 
                 $rsts[] = $prepare->execute();
             }
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
+
+        $shadow_ok = $this->insertMetadataShadow($shadow);
+        if (!$shadow_ok) return false;
+
+        return true;
+    }
+
+    function insertMetadataShadow($shadow)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuMetadata_Shadow(
+                metadata_id,
+                label
+            )
+            VALUES (
+                :metadata_id,
+                :label
+            )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($shadow as $row)
+        {
+            $rsts[] = $prepare->bindValue(':metadata_id', $row['metadata_id']);
+            $rsts[] = $prepare->bindValue(':label', $row['label']);
+
+            $rsts[] = $prepare->execute();
 
             // results check..
             foreach ($rsts as $rst)
