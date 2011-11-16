@@ -29,6 +29,15 @@ class TrojanController
             );
         }
 
+        if (!function_exists('json_encode'))
+        {
+            $system[] = array(
+                'req' => 'json_encode/json_decode',
+                'fix' => 'install json support on centos',
+                'hint' => 'pear install json (???) or have PHP >= 5.2.0',
+            );
+        }
+
         if (!empty($system))
         {
             $this->m_bRender = true;

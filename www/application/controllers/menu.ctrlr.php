@@ -25,35 +25,6 @@ class MenuController
         }
     }
 
-    function onAction_show($id = null)
-    {
-        if (!empty($id))
-        {
-            $this->show_menu($id);
-        }
-        else if (!empty($_POST))
-        {
-            //$this->save_new_menu();
-            error_log('onAction_show');
-        }
-        else
-        {
-            // epic fail...
-            $this->redirect('/menu/new');
-            $_SESSION['save_failed_msg'] = 'Epic failed...';
-            $_SESSION['save_failed_data'] = $_POST;
-        }
-
-    }
-
-    function show_menu($id)
-    {
-        $info = $this->Menu->getMenu($id);
-
-        $this->set('menu_id', $id);
-        $this->set('info', $info);
-    }
-
     function onAction_edit_metadata($id=null)
     {
         if (empty($id) || ($id < 0))
@@ -80,10 +51,11 @@ class MenuController
 
         $this->set('id', $id);
         $this->set('is_admin', Util::getPermissions('admin'));
+        $this->set('is_metadata', Util::getPermissions('metadata'));
 
         if (empty($_POST))
         {
-            $this->edit_metadata_onInit($id, $menu_info);
+            $this->get_menu_metadata($id, $menu_info);
         }
         else
         {
@@ -231,7 +203,7 @@ class MenuController
 
     }
 
-    function edit_metadata_onInit($id, &$info)
+    function get_menu_metadata($id, &$info)
     {
         $menu = $this->Menu;
         $links = $menu->getMenuLinks($id);
@@ -336,25 +308,38 @@ class MenuController
         $this->set('id', $id);
         $this->set('is_metadata', Util::getPermissions('metadata'));
 
-        $this->edit_metadata_onInit($id, $menu_info);
+        $this->get_menu_metadata($id, $menu_info);
+    }
 
-        $links = $menu->getMenuLinks($id);
-        $imgs = $menu->getMenuImgs($id);
+    function onAction_export($id=null,$download=null)
+    {
+        if ($id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $menu = $this->Menu;
+        $info = $menu->getMenuInfo($id);
+
+        if (empty($info))
+            return;
+
+        $this->m_bRender = false;
+
         $sections = $menu->getSection($id);
         $mdts = $menu->getMetadata($id, $sections);
 
-        $this->set('info', $menu_info);
-        $this->set('links', $links);
-        $this->set('imgs', $imgs);
+        $export = array(
+            'info' => $info,
+            'sections' => $sections,
+            'metadatas' => $mdts,
+        );
 
-        if (!empty($mdts))
-            $this->set('mdts', $mdts);
+        $file = "menu.{$id}.txt";
 
-        $this->set('dbg1', array(
-            'info'=>$menu_info,
-            'links'=>$links,
-            'imgs'=>$imgs,
-            'mdts'=>$mdts,
-        ));
+        $this->set('export_data', $export);
+        $this->set('download', $download != null);
+        $this->set('file', $file);
     }
 }

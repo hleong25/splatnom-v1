@@ -28,6 +28,7 @@ $params = array(
     'dbg' => array(),
     'err_msgs' => array(),
     'is_admin' => false,
+    'is_metadata' => false,
     'info' => $params_info,
     'links' => array(),
     'mdts' => $params_mdts,
@@ -43,9 +44,21 @@ if ($is_admin) {
 <div class="pg">
     <div class="heading">Admin control</div>
     <div class="data">
-        <input type="submit" value="Save Menu"/>
-        <input type="button" value="View Menu" onclick="js_menu.view('/menu/view/<?php echo $id; ?>');" />
         <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
+        <br/>
+    </div>
+    <br/>
+</div>
+<?php } // if ($is_admin) ?>
+<?php
+if ($is_metadata) {
+?>
+<div class="pg">
+    <div class="heading">Metadata control</div>
+    <div class="data">
+        <input type="submit" value="Save Menu"/>
+        <input type="button" value="Export Menu" onclick="js_menu.export('/menu/export/<?php echo $id; ?>/json');"; />
+        <input type="button" value="View Menu" onclick="js_menu.view('/menu/view/<?php echo $id; ?>');" />
         <input type="button" value="Hide all sections" onclick="js_menu.hideAll();" />
         <input type="button" value="Show all sections" onclick="js_menu.showAll();" />
         <br/>
@@ -69,7 +82,7 @@ EOHTML;
     </div>
     <hr />
 </div>
-<?php } // if ($is_admin) ?>
+<?php } // if ($is_metadata) ?>
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>

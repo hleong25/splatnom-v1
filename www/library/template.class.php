@@ -112,6 +112,13 @@ class Template
 
         $body = ROOT . DS . 'application' . DS . 'views' . DS . $this->m_base_name . DS . $this->m_action . '.php';
 
+        if (!file_exists($body))
+        {
+            Util::logit("Render failed. File not found: {$body}");
+            echo 'Custom 404 error.';
+            return;
+        }
+
         if ($bRender)
         {
             include($header);

@@ -8,6 +8,7 @@ return {
     toggleOnHoverOut: toggleOnHoverOut,
     formOnSubmit: formOnSubmit,
     view: view,
+    export: export,
     purgeMenu: purgeMenu,
     hideAll: hideAll,
     showAll: showAll,
@@ -376,6 +377,19 @@ function view(viewUrl)
     }
 
     location.href = viewUrl;
+
+}
+
+function export(exportUrl)
+{
+    var bView = confirm('Are you sure you want to quit editting this menu?');
+
+    if (!bView)
+    {
+        return false;
+    }
+
+    location.href = exportUrl;
 
 }
 
