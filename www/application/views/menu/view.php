@@ -27,6 +27,7 @@ if ($is_metadata)
 {
     echo<<<EOHTML
         <div class="pg pg_bottom ismdt">
+            <input type="button" value="export menu" onclick="location.href='/menu/export/{$id}/json'" />
             <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/{$id}'" />
         </div>
 EOHTML;
