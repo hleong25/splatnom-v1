@@ -377,6 +377,29 @@ EOQ;
         return $menu_id;
     }
 
+    function createNewMenu()
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenu(
+                mode_id
+            )
+            VALUES (
+                (SELECT id FROM vMenuStatus WHERE menu_status='new')
+            )
+EOQ;
+
+        $rst = $this->query($query);
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
+
+        $menu_id = $this->lastInsertId();
+
+        return $menu_id;
+    }
+
     function purgeMenu($id)
     {
         $menu_id = array(':id' => $id);

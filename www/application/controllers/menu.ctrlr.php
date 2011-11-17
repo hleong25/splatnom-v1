@@ -311,7 +311,7 @@ class MenuController
         $this->get_menu_metadata($id, $menu_info);
     }
 
-    function onAction_export($id=null,$download=null)
+    function onAction_export($id=null,$out=null)
     {
         if ($id == null)
         {
@@ -328,18 +328,87 @@ class MenuController
         $this->m_bRender = false;
 
         $sections = $menu->getSection($id);
+        $links = $menu->getMenuLinks($id);
         $mdts = $menu->getMetadata($id, $sections);
 
         $export = array(
             'info' => $info,
-            'sections' => $sections,
+            'links' => $links,
             'metadatas' => $mdts,
         );
 
         $file = "menu.{$id}.txt";
 
         $this->set('export_data', $export);
-        $this->set('download', $download != null);
+        $this->set('out', $out);
         $this->set('file', $file);
+    }
+
+    function onAction_import()
+    {
+        if (!Util::getPermissions('admin'))
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        if (empty($_POST))
+        {
+            return;
+        }
+        else if (empty($_FILES['import_file']['tmp_name']))
+        {
+            $this->set('err_msg', 'No file to import');
+            return;
+        }
+
+        // if we're here, then there was a file uploaded...
+        $file = $_FILES['import_file']['tmp_name'];
+        $json_data = file_get_contents($file);
+        $json = json_decode($json_data, true);
+
+        $menu = $this->Menu;
+        $new_id = $menu->createNewMenu();
+
+        // import info
+        $info = $json['info'];
+        $q_info = array(
+            ':id' => $new_id,
+            ':name' => $info['name'],
+            ':notes' => $info['notes'],
+            ':address' => $info['address'],
+            ':latitude' => $info['latitude'],
+            ':longitude' => $info['longitude'],
+            ':numbers' => $info['numbers'],
+            ':hours' => $info['hours'],
+        );
+        $import = $menu->updateMenuInfo($q_info);
+        if (!$import)
+        {
+            $this->set('err_msg', 'Failed to import info');
+            return;
+        }
+
+        // import links
+        $links = $json['links'];
+        $q_links = &$links;
+        $import = $menu->updateMenuLinks($new_id, $q_links);
+        if (!$import)
+        {
+            $this->set('err_msg', 'Failed to import links');
+            return;
+        }
+
+        // import metadata
+        $mdts = $json['metadatas'];
+        $q_mdts = &$mdts;
+        $import = $menu->updateMenuSectionAndMetadata($new_id, $q_mdts);
+        if (!$import)
+        {
+            $this->set('err_msg', 'Failed to import menu metadata');
+            return;
+        }
+
+        $this->set('menu_id', $new_id);
     }
 }

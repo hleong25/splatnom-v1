@@ -2,12 +2,12 @@
 $params = array(
     'export_data' => array(),
     'file' => 'menu.txt',
-    'download' => false,
+    'out' => null,
 );
 
 extract($params, EXTR_SKIP);
 
-if ($download)
+if ($out === 'json')
 {
     $data = json_encode($export_data);
     $size = strlen($data);
