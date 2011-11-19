@@ -18,7 +18,8 @@ return {
     moveMenu: moveMenu,
     menuNameOnChange: menuNameOnChange,
     addMenuItem: addMenuItem,
-    removeMenuItem: removeMenuItem
+    removeMenuItem: removeMenuItem,
+    addMenu: addMenu
 };
 
 function init()
@@ -125,6 +126,16 @@ function addMenu(elem)
                 .end()
             .end()
 
+        .find('div.group_info input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
+
+        .find('div.menu_item input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
+
         .find('span.menu_name')
             .text('')
             .end()
@@ -199,6 +210,11 @@ function addMenuItem(elem)
                 .attr('data-jq-watermark', '')
                 .watermark()
                 .end()
+            .end()
+
+        .find('input:hidden')
+            // reset id
+            .last().val('').end()
             .end()
 
         .find('input:text')

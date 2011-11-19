@@ -157,23 +157,29 @@ class MenuController
         if (!$menu->updateMenuLinks($id, $links))
             $err_msgs[] = 'Failed to save menu links';
 
-
         $post_mdts = $_POST['mdt'];
         $mdts = array();
         $mdt = array();
+        $ordinal_section = 0;
+        $ordinal_metadata = 0;
         for ($ii = 0, $jj = count($post_mdts); $ii < $jj; $ii++)
         {
             switch ($post_mdts[$ii])
             {
                 case '@mdt@':
                     $mdt = array(
+                        'section_id' => $post_mdts[++$ii],
+                        'ordinal' => $ordinal_section++,
                         'name' => $post_mdts[++$ii],
                         'notes' => $post_mdts[++$ii],
                     );
+                    $ordinal_metadata = 0;
                     break;
                 case '@item@':
                     $item = array(
-                        'item' => $post_mdts[++$ii],
+                        'metadata_id' => $post_mdts[++$ii],
+                        'ordinal' => $ordinal_metadata++,
+                        'label' => $post_mdts[++$ii],
                         'price' => $post_mdts[++$ii],
                         'notes' => $post_mdts[++$ii],
                     );
@@ -182,9 +188,9 @@ class MenuController
                     // format is '{item}@@{price}@@{notes}
                     if (empty($item['price']) && empty($item['notes']))
                     {
-                        $parsed = explode('@@', $item['item'], 3);
+                        $parsed = explode('@@', $item['label'], 3);
 
-                        $item['item'] = trim(array_shift($parsed));
+                        $item['label'] = trim(array_shift($parsed));
                         $item['price'] = trim(array_shift($parsed));
                         $item['notes'] = trim(array_shift($parsed));
                     }
@@ -197,10 +203,14 @@ class MenuController
             }
         }
 
-        $this->set('mdts', $mdts);
         if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
             $err_msgs[] = 'Failed to save menu data';
 
+        // set the metadata only after it goes through updating...
+        // that way we get the updated IDs
+        $this->set('mdts', $mdts);
+
+        $this->set('dbg', $mdts);
     }
 
     function get_menu_metadata($id, &$info)
@@ -218,6 +228,7 @@ class MenuController
         if (!empty($mdts))
             $this->set('mdts', $mdts);
 
+        $this->set('dbg', $mdts);
     }
 
     function onAction_purge($id)
@@ -368,7 +379,7 @@ class MenuController
         $json = json_decode($json_data, true);
 
         $menu = $this->Menu;
-        $new_id = $menu->createNewMenu();
+        $new_id = $menu->createMenu();
 
         // import info
         $info = $json['info'];

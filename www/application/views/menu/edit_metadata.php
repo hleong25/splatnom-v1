@@ -7,7 +7,8 @@ $params_mdts[] = array(
     'name'=>'',
     'notes'=>'',
     'items'=>array(array(
-        'item'=>'',
+        'metadata_id'=>'',
+        'label'=>'',
         'price'=>'',
         'notes'=>'',
     )),
@@ -154,7 +155,7 @@ EOHTML;
         <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"><?php echo $info['hours']; ?></textarea>
     </div>
 </div>
-<?php foreach ($mdts as $idx => $mdt) { ?>
+<?php foreach ($mdts as $mdt) { ?>
 <div class="pg pg_bottom menu">
     <div class="menu_ctrl">
         <input type="button" value="Move up" onclick="js_menu.moveMenu(this, -1);" />
@@ -165,8 +166,9 @@ EOHTML;
     </div>
     <div class="data toggle">
         <div class="pg_bottom group_info">
-            <!-- <?php echo "menu_id={$id} AND section_id={$idx}"; ?> -->
+            <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
             <input type="hidden" name="mdt[]" value="@mdt@"/>
+            <input type="hidden" name="mdt[]" value="<?php echo $mdt['section_id']; ?>"/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group (ie. Appetizers)" onchange="js_menu.menuNameOnChange(this);" value="<?php echo $mdt['name']; ?>" />
             <br/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?php echo $mdt['notes']; ?>" />
@@ -176,9 +178,10 @@ EOHTML;
             <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
             <?php foreach ($mdt['items'] as $item_idx => $item) { ?>
             <div class="menu_item">
-                <!-- <?php echo "menu_id={$id} AND section_id={$idx} AND ordinal_id={$item_idx}"; ?> -->
+                <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@item@"/>
-                <input class="jq_watermark" type="text" name="mdt[]" title="Item" value="<?php echo $item['item']; ?>"/>
+                <input type="hidden" name="mdt[]" value="<?php echo $item['metadata_id']; ?>"/>
+                <input class="jq_watermark" type="text" name="mdt[]" title="Label" value="<?php echo $item['label']; ?>"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
                 <input class="jq_watermark" type="text" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
                 <input type="button" value="Add item" onclick="js_menu.addMenuItem(this);" />

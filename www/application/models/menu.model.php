@@ -377,7 +377,7 @@ EOQ;
         return $menu_id;
     }
 
-    function createNewMenu()
+    function createMenu()
     {
         $query =<<<EOQ
             INSERT INTO tblMenu(
@@ -416,60 +416,6 @@ EOQ;
         return true;
     }
 
-    function getMenuInfo($id)
-    {
-        $menu_id = array(':id' => $id);
-
-        $query =<<<EOQ
-            SELECT
-                ms.menu_status AS status,
-                NOT ISNULL(m.id) AS selected
-            FROM vMenuStatus ms
-            LEFT JOIN tblMenu m ON m.id = :id AND ms.id = m.mode_id
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $status = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $prepare->closeCursor();
-        unset($prepare);
-
-        $query =<<<EOQ
-            SELECT
-                name,
-                notes,
-                address,
-                latitude, longitude,
-                numbers,
-                hours
-            FROM tblInfo_us
-            WHERE menu_id = :id
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $info = array_shift($rst);
-
-        if (empty($info))
-        {
-            $info = array(
-                'name'=>'',
-                'notes'=>'',
-                'address'=>'',
-                'latitude'=>'',
-                'longitude'=>'',
-                'numbers'=>'',
-                'hours'=>''
-            );
-        }
-
-        $info['status'] = $status;
-        return $info;
-    }
-
     function updateMenu($id, $status)
     {
         $query =<<<EOQ
@@ -487,7 +433,7 @@ EOQ;
     function updateMenuInfo($info)
     {
         $query =<<<EOQ
-            INSERT INTO tblInfo_us
+            INSERT INTO tblMenuInfo_us
             (
                 menu_id,
                 name,
@@ -521,6 +467,60 @@ EOQ;
         if (!$prepare) return false;
 
         return true;
+    }
+
+    function getMenuInfo($id)
+    {
+        $menu_id = array(':id' => $id);
+
+        $query =<<<EOQ
+            SELECT
+                ms.menu_status AS status,
+                NOT ISNULL(m.id) AS selected
+            FROM vMenuStatus ms
+            LEFT JOIN tblMenu m ON m.id = :id AND ms.id = m.mode_id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $status = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $query =<<<EOQ
+            SELECT
+                name,
+                notes,
+                address,
+                latitude, longitude,
+                numbers,
+                hours
+            FROM tblMenuInfo_us
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $info = array_shift($rst);
+
+        if (empty($info))
+        {
+            $info = array(
+                'name'=>'',
+                'notes'=>'',
+                'address'=>'',
+                'latitude'=>'',
+                'longitude'=>'',
+                'numbers'=>'',
+                'hours'=>''
+            );
+        }
+
+        $info['status'] = $status;
+        return $info;
     }
 
     function getMenuLinks($id)
@@ -573,93 +573,50 @@ EOQ;
         return $imgs;
     }
 
-    function updateMenuSectionAndMetadata($id, $datas)
+    function updateMenuSectionAndMetadata($id, &$datas)
     {
         $this->beginTransaction();
 
-        // NOTE: this operation is not optimized...
-        // should revisit when things get slow.
-
-        if (!$this->truncateMetadata($id))
+        $section_ids = array();
+        if (!$this->updateSection($id, $datas, $section_ids))
             return false;
 
-        if (!$this->truncateSection($id))
-            return false;
-
-        if (!$this->insertSection($id, $datas))
-            return false;
-
-        if (!$this->insertMetadata($id, $datas))
+        $metadata_ids = array();
+        if (!$this->updateMetadata($id, $datas, $metadata_ids))
             return false;
 
         $this->commit();
         return true;
     }
 
-    function truncateSection($id)
+    function updateSection($id, &$datas, &$section_ids)
     {
         $query =<<<EOQ
-            DELETE FROM tblMenuSection WHERE menu_id = :id;
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        return true;
-    }
-
-    function truncateMetadata($id)
-    {
-        $query =<<<EOQ
-            DELETE FROM tblMenuMetadata_Shadow
-            WHERE metadata_id IN (
-                SELECT metadata_id
-                FROM tblMenuMetadata
-                WHERE menu_id = :id
-            )
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $query =<<<EOQ
-            DELETE FROM tblMenuMetadata WHERE menu_id = :id;
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, array(':id'=>$id), __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        return true;
-    }
-
-    function insertSection($id, $datas)
-    {
-        $query =<<<EOQ
-            INSERT INTO tblMenuSection
-            (
-                menu_id,
-                section_id,
-                name,
-                notes
-            )
-            VALUES
-            (
-                :menu_id,
-                :section_id,
-                :name,
-                :notes
-            )
+            UPDATE tblMenuSection_new
+            SET
+                ordinal = :ordinal,
+                name = :name,
+                notes = :notes
+            WHERE section_id = :section_id
+            AND menu_id = :menu_id
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        foreach ($datas as $idx_section => $section)
+        $insertSections = array();
+        foreach ($datas as &$section)
         {
+            $section_id = $section['section_id'];
+            $ordinal = $section['ordinal'];
+            $name = $section['name'];
+            $notes = $section['notes'];
+
             $rsts[] = $prepare->bindValue(':menu_id', $id);
-            $rsts[] = $prepare->bindValue(':section_id', $idx_section);
-            $rsts[] = $prepare->bindValue(':name', $section['name']);
-            $rsts[] = $prepare->bindValue(':notes', $section['notes']);
+            $rsts[] = $prepare->bindValue(':section_id', $section_id);
+            $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
+            $rsts[] = $prepare->bindValue(':name', $name);
+            $rsts[] = $prepare->bindValue(':notes', $notes);
             $rsts[] = $prepare->execute();
 
             // results check..
@@ -673,54 +630,174 @@ EOQ;
             }
 
             unset($rsts);
+
+            $rowCnt = $prepare->rowCount();
+            if ($rowCnt === 0)
+                $insertSections[] = &$section;
+            else
+                $section_ids[] = $section_id;
+        }
+
+        if (!empty($insertSections))
+            return $this->insertSection($id, $insertSections, $section_ids);
+
+        return true;
+    }
+
+    function insertSection($id, &$datas, &$section_ids)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuSection_new
+            (
+                menu_id,
+                ordinal,
+                name,
+                notes
+            )
+            VALUES
+            (
+                :menu_id,
+                :ordinal,
+                :name,
+                :notes
+            )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($datas as &$section)
+        {
+            $ordinal = $section['ordinal'];
+            $name = $section['name'];
+            $notes = $section['notes'];
+
+            $rsts[] = $prepare->bindValue(':menu_id', $id);
+            $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
+            $rsts[] = $prepare->bindValue(':name', $name);
+            $rsts[] = $prepare->bindValue(':notes', $notes);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+
+            // grab the new section_id and set it back to the data
+            $section_id = $this->lastInsertId();
+            $section['section_id'] = $section_id;
+            $section_ids[] = $section_id;
         }
 
         return true;
     }
 
-    function getNewMetadataId()
+    function updateMetadata($id, &$datas, &$metadata_ids)
     {
-        $loop_cnt = 0;
-        $loop_max = 100;
-        $found = false;
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
         $query =<<<EOQ
-            SElECT COUNT(*) cnt
-            FROM tblMenuMetadata
+            UPDATE tblMenuMetadata_new
+            SET
+                ordinal = :ordinal,
+                label = :label,
+                price = :price,
+                notes = :notes
             WHERE metadata_id = :metadata_id
+            AND menu_id = :menu_id
+            AND section_id = :section_id
 EOQ;
 
-        while ($loop_cnt < $loop_max)
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $insertMetadatas = array();
+        foreach ($datas as &$section)
         {
-            $loop_cnt++;
+            $section_id = $section['section_id'];
 
-            $metadata_id = substr(str_shuffle($chars), 0, 40);
+            foreach ($section['items'] as &$metadata)
+            {
+                $metadata_id = $metadata['metadata_id'];
+                $ordinal = $metadata['ordinal'];
+                $label = $metadata['label'];
+                $price = $metadata['price'];
+                $notes = $metadata['notes'];
 
-            $prepare = $this->prepareAndExecute($query, array(':metadata_id'=>$metadata_id), __FILE__, __LINE__);
-            if (!$prepare) return false;
+                $rsts[] = $prepare->bindValue(':metadata_id', $metadata_id);
+                $rsts[] = $prepare->bindValue(':menu_id', $id);
+                $rsts[] = $prepare->bindValue(':section_id', $section_id);
+                $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
+                $rsts[] = $prepare->bindValue(':label', $label);
+                $rsts[] = $prepare->bindValue(':price', $price);
+                $rsts[] = $prepare->bindValue(':notes', $notes);
+                $rsts[] = $prepare->execute();
 
-            $cnt = (int) $prepare->fetchColumn();
-            if ($cnt === 0)
-                return $metadata_id;
+                // results check..
+                foreach ($rsts as $rst)
+                {
+                    if (!$rst)
+                    {
+                        $this->log_dberr($rst, __FILE__, __LINE__);
+                        return false;
+                    }
+                }
+
+                unset($rsts);
+
+                $rowCnt = $prepare->rowCount();
+                if ($rowCnt === 0)
+                    $insertMetadatas[$section_id][$ordinal] = &$metadata;
+                else
+                    $metadata_ids[] = $metadata_id;
+            }
         }
 
-        // something happened... and we failed.
-        Util::logit('Failed to get a metadata_id', __FILE__, __LINE__);
-        return false;
+        if (!empty($insertMetadatas))
+            return $this->insertMetadata($id, $insertMetadatas, $metadata_ids);
+
+        return true;
     }
 
-    function insertMetadata($id, $datas)
+    function insertMetadata($id, &$datas, &$metadata_ids)
     {
-        $shadow = array();
-
+        /*
+            $datas = array(
+                [section_id 1] = array(
+                    [metadata ordinal 0] = array(
+                        label, price, notes
+                    )
+                    [metadata ordinal 1] = array(
+                        label, price, notes
+                    )
+                    [metadata ordinal 2] = array(
+                        label, price, notes
+                    )
+                )
+                [section_id 2] = array(
+                    [metadata ordinal 0] = array(
+                        label, price, notes
+                    )
+                    [metadata ordinal 1] = array(
+                        label, price, notes
+                    )
+                    [metadata ordinal 2] = array(
+                        label, price, notes
+                    )
+                )
+            )
+        */
         $query =<<<EOQ
-            INSERT INTO tblMenuMetadata
+            INSERT INTO tblMenuMetadata_new
             (
                 menu_id,
                 section_id,
-                ordinal_id,
-                metadata_id,
+                ordinal,
                 label,
                 price,
                 notes
@@ -729,8 +806,7 @@ EOQ;
             (
                 :menu_id,
                 :section_id,
-                :ordinal_id,
-                :metadata_id,
+                :ordinal,
                 :label,
                 :price,
                 :notes
@@ -740,80 +816,41 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        foreach ($datas as $idx_section => $section)
+        foreach ($datas as $section_id => &$items)
         {
-            $rsts[] = $prepare->bindValue(':menu_id', $id);
-            $rsts[] = $prepare->bindValue(':section_id', $idx_section);
-
-            foreach ($section['items'] as $idx_mdt => $mdt)
+            foreach ($items as &$metadata)
             {
-                $metadata_id = $this->getNewMetadataId();
-                if (!$metadata_id) return false;
+                $ordinal = $metadata['ordinal'];
+                $label = $metadata['label'];
+                $price = $metadata['price'];
+                $notes = $metadata['notes'];
 
-                $shadow[] = array('metadata_id'=>$metadata_id, 'label'=>$mdt['item']);
-
-                $rsts[] = $prepare->bindValue(':metadata_id', $metadata_id);
-                $rsts[] = $prepare->bindValue(':ordinal_id', $idx_mdt);
-                $rsts[] = $prepare->bindValue(':label', $mdt['item']);
-                $rsts[] = $prepare->bindValue(':price', $mdt['price']);
-                $rsts[] = $prepare->bindValue(':notes', $mdt['notes']);
-
+                $rsts[] = $prepare->bindValue(':menu_id', $id);
+                $rsts[] = $prepare->bindValue(':section_id', $section_id);
+                $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
+                $rsts[] = $prepare->bindValue(':label', $label);
+                $rsts[] = $prepare->bindValue(':price', $price);
+                $rsts[] = $prepare->bindValue(':notes', $notes);
                 $rsts[] = $prepare->execute();
-            }
 
-            // results check..
-            foreach ($rsts as $rst)
-            {
-                if (!$rst)
+                // results check..
+                foreach ($rsts as $rst)
                 {
-                    $this->log_dberr($rst, __FILE__, __LINE__);
-                    return false;
+                    if (!$rst)
+                    {
+                        $this->log_dberr($rst, __FILE__, __LINE__);
+                        return false;
+                    }
                 }
+
+                unset($rsts);
+
+                // grab the new metadata_id and set it back to the data
+                $metadata_id = $this->lastInsertId();
+                $metadata['metadata_id'] = $metadata_id;
+                $metadata_ids[] = $metadata_id;
             }
 
-            unset($rsts);
-        }
-
-        $shadow_ok = $this->insertMetadataShadow($shadow);
-        if (!$shadow_ok) return false;
-
-        return true;
-    }
-
-    function insertMetadataShadow($shadow)
-    {
-        $query =<<<EOQ
-            INSERT INTO tblMenuMetadata_Shadow(
-                metadata_id,
-                label
-            )
-            VALUES (
-                :metadata_id,
-                :label
-            )
-EOQ;
-
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        foreach ($shadow as $row)
-        {
-            $rsts[] = $prepare->bindValue(':metadata_id', $row['metadata_id']);
-            $rsts[] = $prepare->bindValue(':label', $row['label']);
-
-            $rsts[] = $prepare->execute();
-
-            // results check..
-            foreach ($rsts as $rst)
-            {
-                if (!$rst)
-                {
-                    $this->log_dberr($rst, __FILE__, __LINE__);
-                    return false;
-                }
-            }
-
-            unset($rsts);
         }
 
         return true;
@@ -823,7 +860,7 @@ EOQ;
     {
         $query =<<<EOQ
             SELECT *
-            FROM tblMenuSection
+            FROM tblMenuSection_new
             WHERE menu_id = :menu_id
 EOQ;
 
@@ -840,7 +877,8 @@ EOQ;
             $name = $row['name'];
             $notes = $row['notes'];
 
-            $sections[$section_id] = array(
+            $sections[] = array(
+                'section_id' => $section_id,
                 'name' => $name,
                 'notes' => $notes,
             );
@@ -853,9 +891,10 @@ EOQ;
     {
         $query =<<<EOQ
             SELECT *
-            FROM tblMenuMetadata
+            FROM tblMenuMetadata_new
             WHERE menu_id = :menu_id
             AND section_id = :section_id
+            ORDER BY ordinal
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
@@ -863,8 +902,10 @@ EOQ;
             return false;
 
         $mdts = array();
-        foreach ($sections as $section_id => $section_info)
+        foreach ($sections as $section_info)
         {
+            $section_id = $section_info['section_id'];
+
             $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
             $rsts[] = $prepare->bindValue(':section_id', $section_id);
 
@@ -888,14 +929,15 @@ EOQ;
             $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row)
             {
-                $ordinal_id = $row['ordinal_id'];
+                $metadata_id = $row['metadata_id'];
                 $label = $row['label'];
                 $price = $row['price'];
                 $notes = $row['notes'];
 
                 // create the menus metadata
                 $mdts[$section_id]['items'][] = array(
-                    'item' => $label,
+                    'metadata_id' => $metadata_id,
+                    'label' => $label,
                     'price' => $price,
                     'notes' => $notes,
                 );
