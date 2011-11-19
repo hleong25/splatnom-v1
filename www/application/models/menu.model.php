@@ -604,6 +604,17 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
+        $query =<<<EOQ
+            UPDATE tblMenuSection_new
+            SET
+                ordinal = -1
+            WHERE section_id = :section_id
+            AND menu_id = :menu_id
+EOQ;
+
+        $prepareHack = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
         $insertSections = array();
         foreach ($datas as &$section)
         {
@@ -612,6 +623,14 @@ EOQ;
             $name = $section['name'];
             $notes = $section['notes'];
 
+            // update the row to be something way different.
+            // NOTE: it's because mysql < 5.3 does not support
+            //       PDO::MYSQL_ATTR_FOUND_ROWS
+            $rsts[] = $prepareHack->bindValue(':menu_id', $id);
+            $rsts[] = $prepareHack->bindValue(':section_id', $section_id);
+            $rsts[] = $prepareHack->execute();
+
+            // now for the real update!
             $rsts[] = $prepare->bindValue(':menu_id', $id);
             $rsts[] = $prepare->bindValue(':section_id', $section_id);
             $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
@@ -716,6 +735,18 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
+        $query =<<<EOQ
+            UPDATE tblMenuMetadata_new
+            SET
+                ordinal = -1
+            WHERE metadata_id = :metadata_id
+            AND menu_id = :menu_id
+            AND section_id = :section_id
+EOQ;
+
+        $prepareHack = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
         $insertMetadatas = array();
         foreach ($datas as &$section)
         {
@@ -729,6 +760,15 @@ EOQ;
                 $price = $metadata['price'];
                 $notes = $metadata['notes'];
 
+                // update the row to be something way different.
+                // NOTE: it's because mysql < 5.3 does not support
+                //       PDO::MYSQL_ATTR_FOUND_ROWS
+                $rsts[] = $prepareHack->bindValue(':metadata_id', $metadata_id);
+                $rsts[] = $prepareHack->bindValue(':menu_id', $id);
+                $rsts[] = $prepareHack->bindValue(':section_id', $section_id);
+                $rsts[] = $prepareHack->execute();
+
+                // now for the real update!
                 $rsts[] = $prepare->bindValue(':metadata_id', $metadata_id);
                 $rsts[] = $prepare->bindValue(':menu_id', $id);
                 $rsts[] = $prepare->bindValue(':section_id', $section_id);
