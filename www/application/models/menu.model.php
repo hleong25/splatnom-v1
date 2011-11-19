@@ -902,6 +902,7 @@ EOQ;
             SELECT *
             FROM tblMenuSection_new
             WHERE menu_id = :menu_id
+            ORDER BY ordinal
 EOQ;
 
         $prepare = $this->prepareAndExecute($query, array(':menu_id'=>$menu_id), __FILE__, __LINE__);

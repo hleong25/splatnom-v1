@@ -79,7 +79,7 @@ EOHTML;
 
                 echo<<<EOHTML
                     <div class="group {$css}">
-                        <div class="item">{$item['item']}</div>
+                        <div class="label">{$item['label']}</div>
                         <div class="price">{$item['price']}</div>
                         <div class="clear"></div>
                         {$notes}
