@@ -19,7 +19,8 @@ return {
     menuNameOnChange: menuNameOnChange,
     addMenuItem: addMenuItem,
     removeMenuItem: removeMenuItem,
-    addMenu: addMenu
+    addMenu: addMenu,
+    removeMenu: removeMenu
 };
 
 function init()

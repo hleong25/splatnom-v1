@@ -581,8 +581,14 @@ EOQ;
         if (!$this->updateSection($id, $datas, $section_ids))
             return false;
 
+        if (!$this->removeUnusedSection($id, $section_ids))
+            return false;
+
         $metadata_ids = array();
         if (!$this->updateMetadata($id, $datas, $metadata_ids))
+            return false;
+
+        if (!$this->removeUnusedMetadata($id, $metadata_ids))
             return false;
 
         $this->commit();
@@ -892,6 +898,58 @@ EOQ;
             }
 
         }
+
+        return true;
+    }
+
+    function removeUnusedSection($id, $section_ids)
+    {
+        $query_in = implode(',', array_fill(0, count($section_ids), '?'));
+        $query =<<<EOQ
+            DELETE FROM tblMenuSection
+            WHERE menu_id = ?
+            AND section_id NOT IN ({$query_in})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->bindValue(1, $id);
+        foreach ($section_ids as $idx => $id)
+        {
+            // bindValue is 1-based
+            $rst = $prepare->bindValue($idx+2, $id);
+            if (!$rst) return false;
+        }
+
+        $rst = $prepare->execute();
+        if (!$rst) return false;
+
+        return true;
+    }
+
+    function removeUnusedMetadata($id, $metadata_ids)
+    {
+        $query_in = implode(',', array_fill(0, count($metadata_ids), '?'));
+        $query =<<<EOQ
+            DELETE FROM tblMenuMetadata
+            WHERE menu_id = ?
+            AND metadata_id NOT IN ({$query_in})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->bindValue(1, $id);
+        foreach ($metadata_ids as $idx => $id)
+        {
+            // bindValue is 1-based
+            $rst = $prepare->bindValue($idx+2, $id);
+            if (!$rst) return false;
+        }
+
+        $rst = $prepare->execute();
+        if (!$rst) return false;
 
         return true;
     }
