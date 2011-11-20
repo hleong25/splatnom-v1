@@ -170,13 +170,6 @@ class AdminController
 
     function onAction_location($opt=null)
     {
-        $dbg = array();
-        $dbg['post'] = $_POST;
-        $dbg['get'] = $_GET;
-
-        //$this->addCss('admin/admin.location');
-        //$this->addJs('admin/admin.location');
-
         $this->addCss('table');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
@@ -231,6 +224,21 @@ class AdminController
                 $this->set('q_long', $long);
 
                 break;
+            case 'address':
+                $address = $param['address'];
+                $this->set('q_address', $address);
+
+                $filter = explode(',', $address);
+                foreach ($filter as &$key)
+                {
+                    $key = trim($key);
+                }
+
+                $locations = $loc->getLocationsByAddress($address, $filter);
+                $this->set('found_locations', $locations);
+
+                break;
+
             case 'latlong':
                 $lat = $param['lat'];
                 $long = $param['long'];
@@ -245,8 +253,6 @@ class AdminController
 
                 break;
         }
-
-        $this->set('dbg', $dbg);
     }
 
 }

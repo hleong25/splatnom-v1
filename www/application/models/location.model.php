@@ -56,6 +56,43 @@ EOQ;
 
     }
 
+    function getLocationsByAddress($address, $state_filters)
+    {
+        $query_in = implode(',', array_fill(0, count($state_filters), '?'));
+        $query =<<<EOQ
+            SELECT * FROM
+            (
+                SELECT
+                    latitude, longitude,
+                    `postal code` AS zip,
+                    `place name` AS city, `state code1` AS state,
+                    MATCH(`state code1`, `place name`) AGAINST(?) AS score
+                FROM tblLocation_us
+                WHERE MATCH(`state code1`, `place name`) AGAINST(?)
+                AND `state code1` IN ({$query_in})
+            ) tblLocations
+            ORDER BY score DESC, zip
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->bindValue(1, $address);
+        $rst = $prepare->bindValue(2, $address);
+
+        foreach ($state_filters as $idx => $filter)
+        {
+            $rst = $prepare->bindValue($idx+3, $filter);
+            if (!$rst) return false;
+        }
+
+        $rst = $prepare->execute();
+        if (!$rst) return false;
+
+        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+
     function getLocationsWithinLatLong($lat, $long, $withinRadius)
     {
         // radius of earth
