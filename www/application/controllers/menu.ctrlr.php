@@ -437,6 +437,16 @@ class MenuController
             return;
         }
 
+        // create menu image directory
+        $menu_img_path = OS_MENU_PATH . DS . $new_id;
+        if (mkdir($menu_img_path) == false)
+        {
+            $err_msg = "Failed to create menu directory: {$menu_img_path}";
+            Util::logit($err_msg, __FILE__, __LINE__);
+            $this->set('err_msg', $err_msg);
+            return false;
+        }
+
         $this->set('menu_id', $new_id);
     }
 

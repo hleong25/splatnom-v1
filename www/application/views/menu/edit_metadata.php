@@ -4,10 +4,12 @@ $toggleEvent .= 'onmouseover="js_menu.toggleOnHoverIn(this); "';
 $toggleEvent .= 'onmouseout="js_menu.toggleOnHoverOut(this); "';
 
 $params_mdts[] = array(
+    'section_id'=>'',
     'name'=>'',
     'notes'=>'',
     'items'=>array(array(
         'metadata_id'=>'',
+        'section_id'=>'',
         'label'=>'',
         'price'=>'',
         'notes'=>'',
