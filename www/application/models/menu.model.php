@@ -592,7 +592,7 @@ EOQ;
     function updateSection($id, &$datas, &$section_ids)
     {
         $query =<<<EOQ
-            UPDATE tblMenuSection_new
+            UPDATE tblMenuSection
             SET
                 ordinal = :ordinal,
                 name = :name,
@@ -605,7 +605,7 @@ EOQ;
         if (!$prepare) return false;
 
         $query =<<<EOQ
-            UPDATE tblMenuSection_new
+            UPDATE tblMenuSection
             SET
                 ordinal = -1
             WHERE section_id = :section_id
@@ -666,7 +666,7 @@ EOQ;
     function insertSection($id, &$datas, &$section_ids)
     {
         $query =<<<EOQ
-            INSERT INTO tblMenuSection_new
+            INSERT INTO tblMenuSection
             (
                 menu_id,
                 ordinal,
@@ -721,7 +721,7 @@ EOQ;
     function updateMetadata($id, &$datas, &$metadata_ids)
     {
         $query =<<<EOQ
-            UPDATE tblMenuMetadata_new
+            UPDATE tblMenuMetadata
             SET
                 ordinal = :ordinal,
                 label = :label,
@@ -736,7 +736,7 @@ EOQ;
         if (!$prepare) return false;
 
         $query =<<<EOQ
-            UPDATE tblMenuMetadata_new
+            UPDATE tblMenuMetadata
             SET
                 ordinal = -1
             WHERE metadata_id = :metadata_id
@@ -833,7 +833,7 @@ EOQ;
             )
         */
         $query =<<<EOQ
-            INSERT INTO tblMenuMetadata_new
+            INSERT INTO tblMenuMetadata
             (
                 menu_id,
                 section_id,
@@ -900,7 +900,7 @@ EOQ;
     {
         $query =<<<EOQ
             SELECT *
-            FROM tblMenuSection_new
+            FROM tblMenuSection
             WHERE menu_id = :menu_id
             ORDER BY ordinal
 EOQ;
@@ -932,7 +932,7 @@ EOQ;
     {
         $query =<<<EOQ
             SELECT *
-            FROM tblMenuMetadata_new
+            FROM tblMenuMetadata
             WHERE menu_id = :menu_id
             AND section_id = :section_id
             ORDER BY ordinal
