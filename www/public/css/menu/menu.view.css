@@ -30,7 +30,7 @@ div.h_notes{
 div.group {
     padding: 0.2em;
 }
-div.item {
+div.label {
     display: inline;
     float: left;
 }

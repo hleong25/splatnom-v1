@@ -964,9 +964,6 @@ EOQ;
 
             unset($rsts);
 
-            // copy the section info
-            $mdts[$section_id] = $section_info;
-
             $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row)
             {
@@ -976,13 +973,15 @@ EOQ;
                 $notes = $row['notes'];
 
                 // create the menus metadata
-                $mdts[$section_id]['items'][] = array(
+                $section_info['items'][] = array(
                     'metadata_id' => $metadata_id,
                     'label' => $label,
                     'price' => $price,
                     'notes' => $notes,
                 );
             }
+
+            $mdts[] = $section_info;
         }
 
         return $mdts;

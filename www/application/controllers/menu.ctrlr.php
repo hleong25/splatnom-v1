@@ -209,8 +209,6 @@ class MenuController
         // set the metadata only after it goes through updating...
         // that way we get the updated IDs
         $this->set('mdts', $mdts);
-
-        $this->set('dbg', $mdts);
     }
 
     function get_menu_metadata($id, &$info)
@@ -227,8 +225,6 @@ class MenuController
 
         if (!empty($mdts))
             $this->set('mdts', $mdts);
-
-        $this->set('dbg', $mdts);
     }
 
     function onAction_purge($id)
@@ -348,11 +344,30 @@ class MenuController
             'metadatas' => $mdts,
         );
 
+        $this->export_normalize($export);
+
         $file = "menu.{$id}.txt";
 
         $this->set('export_data', $export);
         $this->set('out', $out);
         $this->set('file', $file);
+    }
+
+    function export_normalize(&$datas)
+    {
+        // clear status
+        unset($datas['info']['status']);
+
+        // clear the section_id and metadata_id
+        foreach ($datas['metadatas'] as &$mtd)
+        {
+            $mtd['section_id'] = -1;
+
+            foreach ($mtd['items'] as &$item)
+            {
+                $item['metadata_id'] = -1;
+            }
+        }
     }
 
     function onAction_import()
@@ -377,6 +392,8 @@ class MenuController
         $file = $_FILES['import_file']['tmp_name'];
         $json_data = file_get_contents($file);
         $json = json_decode($json_data, true);
+
+        $this->import_normalize($json);
 
         $menu = $this->Menu;
         $new_id = $menu->createMenu();
@@ -421,5 +438,25 @@ class MenuController
         }
 
         $this->set('menu_id', $new_id);
+    }
+
+    function import_normalize(&$datas)
+    {
+        $ordinal_section = 0;
+        $ordinal_item = 0;
+
+        // make sure section_id and metadata_id are -1
+        foreach ($datas['metadatas'] as &$mtd)
+        {
+            $mtd['section_id'] = -1;
+            $mtd['ordinal'] = $ordinal_section++;
+
+            $ordinal_item = 0;
+            foreach ($mtd['items'] as &$item)
+            {
+                $item['metadata_id'] = -1;
+                $item['ordinal'] = $ordinal_item++;
+            }
+        }
     }
 }
