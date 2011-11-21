@@ -278,7 +278,7 @@ class MenuController
             return;
         }
 
-        $places = $loc->getPlacesWithinLatLong($latlong['latitude'], $latlong['longitude'], 5);
+        $places = $loc->getPlacesWithinLatLong($query, $latlong['latitude'], $latlong['longitude'], 10);
         if (empty($places))
         {
             $this->set('msg', 'No places found');

@@ -163,7 +163,7 @@ EOQ;
         return $rst;
     }
 
-    function getPlacesWithinLatLong($lat, $long, $withinRadius)
+    function getPlacesWithinLatLong($user_query, $lat, $long, $withinRadius)
     {
         // radius of earth
         // miles - 3959
@@ -185,9 +185,26 @@ EOQ;
 
         $query_bounds =<<<EOQ
             SELECT *
-            FROM tblInfo_us
+            FROM tblMenuInfo_us
             WHERE latitude > {$minLat} AND latitude < {$maxLat}
             AND longitude > {$minLong} AND longitude < {$maxLong}
+EOQ;
+
+        $query_bounds =<<<EOQ
+            SELECT *
+            FROM (
+                SELECT
+                    info.*,
+                    MATCH(mdt.label) AGAINST(:match1) AS score
+                FROM tblMenu menu
+                INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
+                INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
+                INNER JOIN tblMenuMetadata mdt ON mdt.menu_id = menu.id
+                WHERE info.latitude > {$minLat} AND info.latitude < {$maxLat}
+                AND info.longitude > {$minLong} AND info.longitude < {$maxLong}
+                AND MATCH(mdt.label) AGAINST(:match2)
+                GROUP BY menu.id
+            ) tblPlaces
 EOQ;
 
         $query_distance =<<<EOQ
@@ -214,6 +231,8 @@ EOQ;
 EOQ;
 
         $opts = array(
+            ':match1'=>$user_query,
+            ':match2'=>$user_query,
             ':withinRadius'=>$withinRadius,
         );
 
