@@ -20,13 +20,7 @@ extract($params, EXTR_SKIP);
 </div>
 <div class="pg pg_bottom results">
 <?php
-if (empty($places))
-{
-    echo<<<EOHTML
-        <span>No placesfound...</span>
-EOHTML;
-}
-else // if (empty($places)
+if (!empty($places))
 {
     echo<<<EOHTML
         <table class="tblDefault">
