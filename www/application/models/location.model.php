@@ -195,14 +195,18 @@ EOQ;
             FROM (
                 SELECT
                     info.*,
-                    MATCH(mdt.label) AGAINST(:match1) AS score
+                    MATCH(info.name, info.notes) AGAINST(:match1) AS info_score,
+                    MATCH(mdt.label) AGAINST(:match2) AS mdt_score
                 FROM tblMenu menu
                 INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
                 INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
                 INNER JOIN tblMenuMetadata mdt ON mdt.menu_id = menu.id
                 WHERE info.latitude > {$minLat} AND info.latitude < {$maxLat}
                 AND info.longitude > {$minLong} AND info.longitude < {$maxLong}
-                AND MATCH(mdt.label) AGAINST(:match2)
+                AND (
+                    MATCH(info.name, info.notes) AGAINST(:match3) > 0
+                    OR MATCH(mdt.label) AGAINST(:match4) > 0
+                )
                 GROUP BY menu.id
             ) tblPlaces
 EOQ;
@@ -233,6 +237,8 @@ EOQ;
         $opts = array(
             ':match1'=>$user_query,
             ':match2'=>$user_query,
+            ':match3'=>$user_query,
+            ':match4'=>$user_query,
             ':withinRadius'=>$withinRadius,
         );
 
