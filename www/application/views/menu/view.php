@@ -72,21 +72,21 @@ EOHTML;
             {
                 $b_alt = !$b_alt;
                 $css = $b_alt ? 'zalt' : '';
-                $css_notes = 'notes';
+                $css_empty = empty($item['notes']) ? 'empty' : '';
 
-                if (empty($item['notes']))
-                    $css_notes = "no_notes";
+                $forkit_url = "/menu/forkit/{$id}/{$mdt['section_id']}/{$item['metadata_id']}";
+                $forkit_msg = 'Stick a fork in it if you like this item!';
 
                 echo<<<EOHTML
                     <div class="group {$css}">
                         <div class="g_panel">
-                            <span>panel</span>
+                            <a class="forkit" href="{$forkit_url}"><img src="/images/fork" title="{$forkit_msg}"/></a>
                         </div>
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>
-                            <div class="{$css_notes}">{$item['notes']}</div>
+                            <div class="notes {$css_empty}">{$item['notes']}</div>
                         </div>
                         <div class="clear"></div>
                     </div>

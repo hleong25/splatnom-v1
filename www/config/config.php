@@ -18,7 +18,8 @@ define('BASE_PATH', '/.');
 
 define('OS_PATH_PUBLIC',        ROOT . DS . 'public');
 define('OS_UPLOAD_PATH',        '/home/custom_code/www.uploads');
-define('OS_DEFAULT_NO_IMAGE',   ROOT . DS . 'public' .  DS . '/img/noimage.jpg');
+define('OS_IMAGE_PATH',         ROOT . DS . 'public' .  DS . 'img');
+define('OS_DEFAULT_NO_IMAGE',   OS_IMAGE_PATH . DS . 'noimage.jpg');
 
 define('OS_PURGE_PATH',         '/home/custom_code/www.purge');
 

@@ -471,4 +471,26 @@ class MenuController
             }
         }
     }
+
+    function onAction_forkit($menu_id, $section_id, $item_id)
+    {
+        $this->m_bRender = false;
+
+        $test_fail = $item_id % 2 == 0;
+
+        $data = array();
+
+        if ($test_fail)
+        {
+            $data['status'] = 'error';
+            $data['msg'] = 'some error';
+        }
+        else
+        {
+            $data['status'] = 'forkit';
+        }
+
+
+        $this->set('data', $data);
+    }
 }
