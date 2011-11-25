@@ -30,6 +30,14 @@ div.h_notes{
 div.group {
     padding: 0.2em;
 }
+div.g_panel {
+text-align: right;
+float: left;
+width: 5em;
+margin-left: -5.8em;
+}
+div.g_info {
+}
 div.label {
     display: inline;
     float: left;

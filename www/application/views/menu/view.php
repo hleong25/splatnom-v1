@@ -72,17 +72,23 @@ EOHTML;
             {
                 $b_alt = !$b_alt;
                 $css = $b_alt ? 'zalt' : '';
-                $notes = '';
+                $css_notes = 'notes';
 
-                if (!empty($item['notes']))
-                    $notes = "<div class=\"notes\">{$item['notes']}</div>";
+                if (empty($item['notes']))
+                    $css_notes = "no_notes";
 
                 echo<<<EOHTML
                     <div class="group {$css}">
-                        <div class="label">{$item['label']}</div>
-                        <div class="price">{$item['price']}</div>
+                        <div class="g_panel">
+                            <span>panel</span>
+                        </div>
+                        <div class="g_info">
+                            <div class="label">{$item['label']}</div>
+                            <div class="price">{$item['price']}</div>
+                            <div class="clear"></div>
+                            <div class="{$css_notes}">{$item['notes']}</div>
+                        </div>
                         <div class="clear"></div>
-                        {$notes}
                     </div>
 EOHTML;
             }
