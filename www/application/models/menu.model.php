@@ -1126,4 +1126,121 @@ EOQ;
         $this->commit();
         return true;
     }
+
+    function isValidMetadataId($menu_id, $section_id, $metadata_id)
+    {
+        $query =<<<EOQ
+            SELECT COUNT(*) AS cnt
+            FROM tblMenuMetadata
+            WHERE metadata_id = :metadata_id
+            AND menu_id = :menu_id
+            AND section_id = :section_id
+EOQ;
+
+        $params = array(
+            ':menu_id' => $menu_id,
+            ':section_id' => $section_id,
+            ':metadata_id' => $metadata_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $cnt = (int) $prepare->fetchColumn();
+        if ($cnt === 0)
+        {
+            Util::logit("Metadata id not found. mid({$menu_id}) sid({$section_id}) {$metadata_id}", __FILE__, __LINE__);
+            return false;
+        }
+
+        return true;
+    }
+
+    function forkit($user_id, $menu_id, $section_id, $metadata_id)
+    {
+        $query =<<<EOQ
+            INSERT IGNORE INTO tblMenuForkit
+            (
+                menu_id,
+                section_id,
+                metadata_id,
+                user_id
+            )
+            VALUES
+            (
+                :menu_id,
+                :section_id,
+                :metadata_id,
+                :user_id
+            )
+EOQ;
+
+        $params = array(
+            ':menu_id' => $menu_id,
+            ':section_id' => $section_id,
+            ':metadata_id' => $metadata_id,
+            ':user_id' => $user_id,
+        );
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst)
+            return false;
+
+        return true;
+    }
+
+    function unforkit($user_id, $menu_id, $section_id, $metadata_id)
+    {
+        $query =<<<EOQ
+            DELETE FROM tblMenuForkit
+            WHERE menu_id = :menu_id
+            AND section_id = :section_id
+            AND metadata_id = :metadata_id
+            AND user_id = :user_id
+EOQ;
+
+        $params = array(
+            ':menu_id' => $menu_id,
+            ':section_id' => $section_id,
+            ':metadata_id' => $metadata_id,
+            ':user_id' => $user_id,
+        );
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst)
+            return false;
+
+        return true;
+    }
+
+    function getForkit($user_id, $menu_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                metadata_id
+            FROM tblMenuForkit
+            WHERE menu_id = :menu_id
+            AND user_id = :user_id
+EOQ;
+
+        $params = array(
+            ':user_id' => $user_id,
+            ':menu_id' => $menu_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $metadata_ids = array();
+        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as $row)
+        {
+            $metadata_ids[] = $row['metadata_id'];
+        }
+
+        return $metadata_ids;
+    }
 }

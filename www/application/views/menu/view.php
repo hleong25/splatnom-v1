@@ -17,6 +17,7 @@ $params = array(
     'info' => $params_info,
     'links' => array(),
     'mdts' => array(),
+    'forkit' => array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -75,12 +76,13 @@ EOHTML;
                 $css_empty = empty($item['notes']) ? 'empty' : '';
 
                 $forkit_url = "/menu/forkit/{$id}/{$mdt['section_id']}/{$item['metadata_id']}";
+                $forkit_css = in_array($item['metadata_id'], $forkit) ? 'forkit' : '';
                 $forkit_msg = 'Stick a fork in it if you like this item!';
 
                 echo<<<EOHTML
                     <div class="group {$css}">
                         <div class="g_panel">
-                            <a class="forkit" href="{$forkit_url}"><img src="/images/fork" title="{$forkit_msg}"/></a>
+                            <a class="forkit" href="{$forkit_url}"><img class="{$forkit_css}" src="/images/fork" title="{$forkit_msg}"/></a>
                         </div>
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
