@@ -48,7 +48,8 @@ class Template
         //$this->addJs('jquery-1.6.1.min', WEB_PATH_OTHER);
         //$this->addJs('jquery-1.6.2.min', WEB_PATH_OTHER);
         //$this->addJs('jquery-1.6.3.min', WEB_PATH_OTHER);
-        $this->addJs('jquery-1.7.min', WEB_PATH_OTHER);
+        //$this->addJs('jquery-1.7.min', WEB_PATH_OTHER);
+        $this->addJs('jquery-1.7.1.min', WEB_PATH_OTHER);
 
         // add colorbox
         $this->addCss('colorbox/colorbox', WEB_PATH_OTHER);

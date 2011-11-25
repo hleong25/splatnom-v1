@@ -16,6 +16,15 @@ function init()
             $(this).removeClass('zover');
         })
     ;
+
+    $('a.forkit').click(forkit);
+}
+
+function forkit(elem)
+{
+    elem.preventDefault();
+
+    alert('henry');
 }
 
 })();

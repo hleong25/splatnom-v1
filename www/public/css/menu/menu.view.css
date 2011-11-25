@@ -31,10 +31,11 @@ div.group {
     padding: 0.2em;
 }
 div.g_panel {
-text-align: right;
-float: left;
-width: 5em;
-margin-left: -5.8em;
+    text-align: right;
+    float: left;
+    width: 5em;
+    margin-left: -5.8em;
+    font-size: 0.8em;
 }
 div.g_info {
 }
@@ -52,6 +53,18 @@ div.notes {
     list-style-position: inside;
     padding: 0.3em;
 }
+div.empty {
+    display: block !important;
+}
 div.clear {
     clear: both;
+}
+
+img {
+    opacity: 0.35;
+}
+
+img:hover,
+img.forkit {
+    opacity: 1.0 !important;
 }
