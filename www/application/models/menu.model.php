@@ -1214,18 +1214,20 @@ EOQ;
         return true;
     }
 
-    function getForkit($user_id, $menu_id)
+    function getForkit($menu_id, $user_id)
     {
         $query =<<<EOQ
             SELECT
-                metadata_id
+                section_id,
+                metadata_id,
+                user_id,
+                ts
             FROM tblMenuForkit
             WHERE menu_id = :menu_id
-            AND user_id = :user_id
+            ORDER BY section_id, metadata_id
 EOQ;
 
         $params = array(
-            ':user_id' => $user_id,
             ':menu_id' => $menu_id,
         );
 
@@ -1233,14 +1235,28 @@ EOQ;
         if (!$prepare)
             return false;
 
-        $metadata_ids = array();
+        $forkits = array();
         $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($rows as $row)
         {
-            $metadata_ids[] = $row['metadata_id'];
+            $sid = $row['section_id'];
+            $mid = $row['metadata_id'];
+            $uid = $row['user_id'];
+            $ts = $row['ts'];
+
+            if (!isset($forkits[$sid]))
+                $forkits[$sid] = array();
+
+            if (!isset($forkits[$sid][$mid]))
+                $forkits[$sid][$mid] = array('cnt'=>0, 'me'=>false);
+
+            $forkits[$sid][$mid]['cnt'] += 1;
+
+            if ($uid == $user_id)
+                $forkits[$sid][$mid]['me'] = true;
         }
 
-        return $metadata_ids;
+        return $forkits;
     }
 }

@@ -220,7 +220,7 @@ class MenuController
         $imgs = $menu->getMenuImgs($id);
         $sections = $menu->getSection($id);
         $mdts = $menu->getMetadata($id, $sections);
-        $forkit = $menu->getForkit($user_id, $id);
+        $forkits = $menu->getForkit($id, $user_id);
 
         $this->set('info', $info);
         $this->set('links', $links);
@@ -229,8 +229,8 @@ class MenuController
         if (!empty($mdts))
             $this->set('mdts', $mdts);
 
-        if (!empty($forkit))
-            $this->set('forkit', $forkit);
+        if (!empty($forkits))
+            $this->set('forkits', $forkits);
     }
 
     function onAction_purge($id)
@@ -507,6 +507,41 @@ class MenuController
             else
             {
                 $data['status'] = 'forkit';
+            }
+        }
+
+        $this->set('data', $data);
+    }
+
+    function onAction_unforkit($menu_id, $section_id, $item_id)
+    {
+        $this->m_bRender = false;
+        $data = array();
+
+        $user_id = Util::getUserId();
+        $menu = $this->Menu;
+
+        if (!$user_id)
+        {
+            $data['status'] = 'error';
+            $data['msg'] = 'Not logged in';
+        }
+        else if (!$menu->isValidMetadataId($menu_id, $section_id, $item_id))
+        {
+            $data['status'] = 'error';
+            $data['msg'] = 'Not valid';
+        }
+        else
+        {
+            $forkit = $menu->unforkit($user_id, $menu_id, $section_id, $item_id);
+            if (!$forkit)
+            {
+                $data['status'] = 'error';
+                $data['msg'] = 'Failed to unfork it!';
+            }
+            else
+            {
+                $data['status'] = 'unforkit';
             }
         }
 

@@ -62,9 +62,21 @@ div.clear {
 
 img {
     opacity: 0.35;
+    vertical-align: middle;
 }
 
 img:hover,
 img.forkit {
     opacity: 1.0 !important;
+}
+
+a > span
+{
+    color: black;
+    vertical-align: middle;
+}
+
+a.after
+{
+    display: none;
 }

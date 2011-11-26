@@ -17,7 +17,7 @@ $params = array(
     'info' => $params_info,
     'links' => array(),
     'mdts' => array(),
-    'forkit' => array(),
+    'forkits' => array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -73,22 +73,99 @@ EOHTML;
             {
                 $b_alt = !$b_alt;
                 $css = $b_alt ? 'zalt' : '';
-                $css_empty = empty($item['notes']) ? 'empty' : '';
 
-                $forkit_url = "/menu/forkit/{$id}/{$mdt['section_id']}/{$item['metadata_id']}";
-                $forkit_css = in_array($item['metadata_id'], $forkit) ? 'forkit' : '';
+                $section_id = $mdt['section_id'];
+                $metadata_id = $item['metadata_id'];
+
+                // notes
+                $notes_css = empty($item['notes']) ? 'empty' : '';
+
+                // fork its
                 $forkit_msg = 'Stick a fork in it if you like this item!';
+
+                if (isset($forkits[$section_id][$metadata_id]))
+                {
+                    $forkit = $forkits[$section_id][$metadata_id];
+
+                    if ($forkit['me'])
+                    {
+                        // if this forkit is me... then the "after" is everything before me
+                        $forkit_url = array
+                        (
+                            'now'   => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+                            'after' => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+                        );
+
+                        $forkit_css = array
+                        (
+                            'now'   => 'forkit',
+                            'after' => '',
+                        );
+
+                        $forkit_cnt = array
+                        (
+                            'now'   => $forkit['cnt'],
+                            'after' => $forkit['cnt']-1,
+                        );
+                    }
+                    else
+                    {
+                        // this forkit is not me, so the "after" is everything after me
+                        $forkit_url = array
+                        (
+                            'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+                            'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+                        );
+
+                        $forkit_css = array
+                        (
+                            'now'   => '',
+                            'after' => 'forkit',
+                        );
+
+                        $forkit_cnt = array
+                        (
+                            'now'   => $forkit['cnt'],
+                            'after' => $forkit['cnt']+1,
+                        );
+                    }
+
+                }
+                else
+                {
+                    $forkit_url = array
+                    (
+                        'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+                        'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+                    );
+
+                    $forkit_css = array
+                    (
+                        'now'   => '',
+                        'after' => 'forkit',
+                    );
+
+                    $forkit_cnt = array
+                    (
+                        'now'   => '',
+                        'after' => 1,
+                    );
+                }
+
+                if ($forkit_cnt['after'] < 1)
+                    $forkit_cnt['after'] = '';
 
                 echo<<<EOHTML
                     <div class="group {$css}">
                         <div class="g_panel">
-                            <a class="forkit" href="{$forkit_url}"><img class="{$forkit_css}" src="/images/fork" title="{$forkit_msg}"/></a>
+                            <a class="forkit now" href="{$forkit_url['now']}"><span class="cnt">{$forkit_cnt['now']}</span><img class="{$forkit_css['now']}" src="/images/fork" title="{$forkit_msg}"/></a>
+                            <a class="forkit after" href="{$forkit_url['after']}"><span class="cnt">{$forkit_cnt['after']}</span><img class="{$forkit_css['after']}" src="/images/fork" title="{$forkit_msg}"/></a>
                         </div>
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>
-                            <div class="notes {$css_empty}">{$item['notes']}</div>
+                            <div class="notes {$notes_css}">{$item['notes']}</div>
                         </div>
                         <div class="clear"></div>
                     </div>

@@ -39,20 +39,13 @@ function forkit_success(objThis, data)
     {
         alert(data.msg);
     }
-    else if (data.status === 'forkit')
+    else if ((data.status === 'forkit') || (data.status === 'unforkit'))
+
     {
         objThis
-            .find('img')
-                .addClass('forkit')
-            //.end()
-        ;
-    }
-    else if (data.status === 'unfork')
-    {
-        objThis
-            .find('img')
-                .removeClass('forkit')
-            //.end()
+            .parent()
+            .find('a.forkit')
+                .toggle();
         ;
     }
     else
