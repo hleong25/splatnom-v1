@@ -70,13 +70,12 @@ img.forkit {
     opacity: 1.0 !important;
 }
 
-a > span
+div.forkit > span
 {
-    color: black;
     vertical-align: middle;
 }
 
-a.after
+div.after
 {
     display: none;
 }

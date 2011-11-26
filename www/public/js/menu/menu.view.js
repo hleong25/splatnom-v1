@@ -3,7 +3,7 @@ var js_menu = (function() {
 init();
 
 return {
-    // empty
+    forkit: forkit
 };
 
 function init()
@@ -16,19 +16,14 @@ function init()
             $(this).removeClass('zover');
         })
     ;
-
-    $('a.forkit').click(forkit);
 }
 
-function forkit(elem)
+function forkit(elem, link)
 {
-    var objThis = $(this);
-    var url = objThis.attr('href');
+    var objPanel =  $(elem).parents('div.g_panel');
 
-    elem.preventDefault();
-
-    $.getJSON(url)
-        .success(function(data){forkit_success(objThis, data)})
+    $.getJSON(link)
+        .success(function(data){forkit_success(objPanel, data)})
         .error(function(){alert('Failed to fork it!');})
     ;
 }
@@ -43,8 +38,7 @@ function forkit_success(objThis, data)
 
     {
         objThis
-            .parent()
-            .find('a.forkit')
+            .find('div.forkit')
                 .toggle();
         ;
     }

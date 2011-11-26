@@ -158,8 +158,14 @@ EOHTML;
                 echo<<<EOHTML
                     <div class="group {$css}">
                         <div class="g_panel">
-                            <a class="forkit now" href="{$forkit_url['now']}"><span class="cnt">{$forkit_cnt['now']}</span><img class="{$forkit_css['now']}" src="/images/fork" title="{$forkit_msg}"/></a>
-                            <a class="forkit after" href="{$forkit_url['after']}"><span class="cnt">{$forkit_cnt['after']}</span><img class="{$forkit_css['after']}" src="/images/fork" title="{$forkit_msg}"/></a>
+                            <div class="forkit now">
+                                <span class="cnt">{$forkit_cnt['now']}</span>
+                                <img class="{$forkit_css['now']}" src="/images/fork" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['now']}');"/>
+                            </div>
+                            <div class="forkit after">
+                                <span class="cnt">{$forkit_cnt['after']}</span>
+                                <img class="{$forkit_css['after']}" src="/images/fork" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
+                            </div>
                         </div>
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
