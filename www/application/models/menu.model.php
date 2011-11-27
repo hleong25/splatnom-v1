@@ -451,7 +451,7 @@ EOQ;
         return true;
     }
 
-    function updateMenuInfo($info)
+    function updateMenuInfo($id, $info)
     {
         $query =<<<EOQ
             INSERT INTO tblMenuInfo_us
@@ -484,7 +484,16 @@ EOQ;
                 hours = :u_hours
 EOQ;
 
-        $prepare = $this->prepareAndExecute($query, $info, __FILE__, __LINE__);
+        $params = array();
+        $params[':id'] = $id;
+
+        foreach ($info as $key => $val)
+        {
+            $params[":{$key}"] = $val;
+            $params[":u_{$key}"] = $val;
+        }
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;
 
         return true;

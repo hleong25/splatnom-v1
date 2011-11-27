@@ -98,6 +98,15 @@ EOHTML;
 ?>
 </div>
 <div class="pg pg_bottom">
+    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Import menu</div>
+    <div class="data toggle">
+        <span>Choose the import menu file: </span><input class="file" type="file" name="import_file"/><br/>
+        <input class="chkImport" type="checkbox" name="import_file_opts[]" value="infos"/><span>Overwrite business info</span><br/>
+        <input class="chkImport" type="checkbox" name="import_file_opts[]" value="links"/><span>Append links</span><br/>
+        <input class="chkImport" type="checkbox" name="import_file_opts[]" value="menus"/><span>Append menus</span><br/>
+    </div>
+</div>
+<div class="pg pg_bottom">
     <div class="heading onToggle" <?php echo $toggleEvent; ?>>Images</div>
     <div class="data toggle">
         <div class="new_imgs">

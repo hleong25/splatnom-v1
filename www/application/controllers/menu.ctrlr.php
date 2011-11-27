@@ -53,32 +53,57 @@ class MenuController
         $this->set('is_admin', Util::getPermissions('admin'));
         $this->set('is_metadata', Util::getPermissions('metadata'));
 
+        $import_json = false;
+        if (!empty($_FILES['import_file']['tmp_name']))
+        {
+            // if we're here, then there was a file uploaded...
+            $file = $_FILES['import_file']['tmp_name'];
+            $json_data = file_get_contents($file);
+            $import_json = json_decode($json_data, true);
+
+            $this->import_normalize($import_json);
+        }
+
         if (empty($_POST))
         {
             $this->get_menu_metadata($id, $menu_info);
         }
         else
         {
-            $this->edit_metadata_onPost($id, $menu_info);
+            $this->edit_metadata_onPost($id, $menu_info, $import_json);
         }
     }
 
-    function edit_metadata_onPost($id, $menu_info)
+    function edit_metadata_onPost($id, $menu_info, $import_json)
     {
         $menu = $this->Menu;
 
         $imgs = $menu->getMenuImgs($id);
         $this->set('imgs', $imgs);
 
-        $info_params = array(
-                'info_name' => 'name',
-                'info_notes' => 'notes',
-                'info_address' => 'address',
-                'info_latitude' => 'latitude',
-                'info_longitude' => 'longitude',
-                'info_numbers' => 'numbers',
-                'info_hours' => 'hours',
-            );
+        $bImport_infos = false;
+        $bImport_links = false;
+        $bImport_menus = false;
+
+        foreach ($_POST['import_file_opts'] as $import_opts)
+        {
+            switch ($import_opts)
+            {
+                case 'infos':
+                    $bImport_infos = true;
+                    break;
+                case 'links':
+                    $bImport_links = true;
+                    break;
+                case 'menus':
+                    $bImport_menus = true;
+                    break;
+            }
+        }
+
+        $status = $_POST['info_status'];
+        if (!$menu->updateMenu($id, $status))
+            $err_msgs[] = 'Failed to update menu status.';
 
         // parse lat/long if needed
         if (!empty($_POST['info_latitude']) && empty($_POST['info_longitude']))
@@ -97,25 +122,25 @@ class MenuController
             }
         }
 
-        $info = array();
-        $info_save = array('id'=>$id);
-        foreach ($info_params as $post_key => $sql_key)
+        $info_save = array
+        (
+            'name' => $_POST['info_name'],
+            'notes' => $_POST['info_notes'],
+            'address' => $_POST['info_address'],
+            'latitude' => $_POST['info_latitude'],
+            'longitude' => $_POST['info_longitude'],
+            'numbers' => $_POST['info_numbers'],
+            'hours' => $_POST['info_hours'],
+        );
+
+        if ($bImport_infos)
         {
-            if (!isset($_POST[$post_key]))
-                continue;
-
-            $val = $_POST[$post_key];
-
-            $info[$sql_key] = $val;
-            $info_save[":{$sql_key}"] = $val;
-            $info_save[":u_{$sql_key}"] = $val;
+            // override business info with the imported info
+            $info_save = $import_json['info'];
         }
 
-        $status = $_POST['info_status'];
-        if (!$menu->updateMenu($id, $status))
-            $err_msgs[] = 'Failed to update menu status.';
-
         // reuse menu_info['status'] and set the value
+        $info = $info_save;
         foreach ($menu_info['status'] as $mi_status)
         {
             $info['status'][] = array(
@@ -125,7 +150,7 @@ class MenuController
         }
 
         $this->set('info', $info);
-        if (!$menu->updateMenuInfo($info_save))
+        if (!$menu->updateMenuInfo($id, $info_save))
             $err_msgs[] = 'Failed to update info.';
 
         $post_links = $_POST['link'];
@@ -151,6 +176,12 @@ class MenuController
 
                     break;
             }
+        }
+
+        if ($bImport_links)
+        {
+            $import_links = $import_json['links'];
+            $links = array_merge($links, $import_links);
         }
 
         $this->set('links', $links);
@@ -201,6 +232,12 @@ class MenuController
                     $mdts[] = $mdt;
                     break;
             }
+        }
+
+        if ($bImport_menus)
+        {
+            $import_mdts = $import_json['metadatas'];
+            $mdts = array_merge($mdts, $import_mdts);
         }
 
         if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
