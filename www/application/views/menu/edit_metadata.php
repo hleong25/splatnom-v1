@@ -104,10 +104,17 @@ EOHTML;
         <?php
             foreach ($imgs as $img)
             {
-                $img_link = "/images/menu/{$id}/{$img}";
-                $thumbnail_link = "/images/menu_sm/{$id}/{$img}";
+                $filename = $img['filename'];
+                $width = $img['width'];
+                $height = $img['height'];
+
+                $img_link = "/images/menu/{$id}/{$filename}";
+                $thumbnail_link = "/images/menu_sm/{$id}/{$filename}";
+
+                $thumbnail_size = ImageresizeUtil::resizeDimension($width, $height, 100, 100);
+
                 echo<<<EOHTML
-                    <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" /></a>
+                    <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" width="{$thumbnail_size['width']}" height="{$thumbnail_size['height']}" /></a>
 EOHTML;
             }
         ?>

@@ -46,23 +46,29 @@ EOQ;
         $query =<<<EOQ
             INSERT INTO tblPendingMenuImages (
                 pendingmenu_id,
-                file_img
+                file_img,
+                width,
+                height
             )
             VALUES (
                 :new_id,
-                :file_img
+                :file_img,
+                :width,
+                :height
             )
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $new_menu_img = array(':new_id' => $new_id, ':file_img' => '');
+        $new_menu_img = array(':new_id' => $new_id, ':file_img' => '', ':width' => 0, ':height' => 0);
         $files = Util::handle_upload_files();
 
         foreach ($files as $img)
         {
-            $new_menu_img[':file_img'] = $img;
+            $new_menu_img[':file_img'] = $img['filename'];
+            $new_menu_img[':width'] = $img['width'];
+            $new_menu_img[':height'] = $img['height'];
 
             $rst = $this->execute_log($prepare, $new_menu_img, __FILE__, __LINE__);
         }
@@ -224,7 +230,9 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                file_img
+                file_img,
+                width,
+                height
             FROM tblPendingMenuImages
             WHERE pendingmenu_id = :id
 EOQ;
@@ -235,7 +243,12 @@ EOQ;
         $imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $menu['imgs'] = array();
         foreach ($imgs as $img)
-            $menu['imgs'][] = $img['file_img'];
+            $menu['imgs'][] = array
+            (
+                'filename' => $img['file_img'],
+                'width' => $img['width'],
+                'height' => $img['height'],
+            );
 
         return $menu;
     }
@@ -318,10 +331,14 @@ EOQ;
         $query =<<<EOQ
             INSERT INTO tblMenuImages(
                 menu_id,
-                file_img
+                file_img,
+                width,
+                height
             ) VALUES (
                 :menu_id,
-                :file_img
+                :file_img,
+                :width,
+                :height
             )
 EOQ;
 
@@ -337,7 +354,9 @@ EOQ;
 
         foreach ($pending_menu['imgs'] as $file_img)
         {
-            $rsts[] = $prepare->bindValue(':file_img', $file_img);
+            $rsts[] = $prepare->bindValue(':file_img', $file_img['filename']);
+            $rsts[] = $prepare->bindValue(':width', $file_img['width']);
+            $rsts[] = $prepare->bindValue(':height', $file_img['height']);
             $rsts[] = $prepare->execute();
 
             // results check..
@@ -365,10 +384,12 @@ EOQ;
 
         foreach ($pending_menu['imgs'] as $file_img)
         {
-            $file_src = OS_UPLOAD_PATH . DS . $file_img;
-            $file_dst = $menu_img_path . DS . $file_img;
+            $file_src = OS_UPLOAD_PATH . DS . $file_img['filename'];
+            $file_dst = $menu_img_path . DS . $file_img['filename'];
 
-            @rename($file_src, $file_dst);
+            $rename_ok = @rename($file_src, $file_dst);
+            if (!$rename_ok)
+                Util::logit("Failed to move '{$file_src}' to '{$file_dst}'", __FILE__, __LINE__);
         }
 
         // it's all good now... let's purge the pending info...
@@ -556,7 +577,9 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                file_img
+                file_img,
+                width,
+                height
             FROM tblMenuImages
             WHERE menu_id = :id
 EOQ;
@@ -568,7 +591,12 @@ EOQ;
 
         $imgs = array();
         foreach ($menu_imgs as $img)
-            $imgs[] = $img['file_img'];
+            $imgs[] = array
+            (
+                'filename' => $img['file_img'],
+                'width' => $img['width'],
+                'height' => $img['height'],
+            );
 
         return $imgs;
     }

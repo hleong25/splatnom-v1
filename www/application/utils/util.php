@@ -59,16 +59,16 @@ class Util
         unset($_SESSION['perms']);
     }
 
-    static function handle_upload_files($bFakeTransfer = false)
+    static function handle_upload_files()
     {
         $uploader = new UploadHandler();
-        return $uploader->handle_upload_files($bFakeTransfer);
+        return $uploader->handle_upload_files();
     }
 }
 
 class UploadHandler
 {
-    function handle_upload_files($bFakeTransfer = false)
+    function handle_upload_files()
     {
         if (empty($_FILES))
             return false;
@@ -84,7 +84,7 @@ class UploadHandler
                     if ($file['tmp_name'][$idx] === '')
                         continue;
 
-                    $ret = $this->handle_upload_files_helper($bFakeTransfer, $file['tmp_name'][$idx], $file['name'][$idx]);
+                    $ret = $this->handle_upload_files_helper($file['tmp_name'][$idx], $file['name'][$idx]);
 
                     if ($ret !== false)
                     {
@@ -92,7 +92,7 @@ class UploadHandler
                     }
                     else
                     {
-                        error_log('Failed to handle uploaded file');
+                        Util::logit('Failed to handle uploaded file', __FILE__, __LINE__);
                     }
                 }
             }
@@ -101,7 +101,7 @@ class UploadHandler
                 if ($file['tmp_name'] === '')
                     continue;
 
-                $ret = $this->handle_upload_files_helper($bFakeTransfer, $file['tmp_name'], $file['name']);
+                $ret = $this->handle_upload_files_helper($file['tmp_name'], $file['name']);
 
                 if ($ret !== false)
                 {
@@ -109,7 +109,7 @@ class UploadHandler
                 }
                 else
                 {
-                    error_log('Failed to handle uploaded file');
+                    Util::logit('Failed to handle uploaded file', __FILE__, __LINE__);
                 }
             }
         }
@@ -117,7 +117,7 @@ class UploadHandler
         return $files;
     }
 
-    function handle_upload_files_helper($bFakeTransfer, $tmp_name, $name)
+    function handle_upload_files_helper($tmp_name, $name)
     {
         // TODO: might need to change this to finfo_file
         $mime = mime_content_type($tmp_name);
@@ -147,10 +147,21 @@ class UploadHandler
             // failed to get a unique filename...
             return false;
 
-        if ($bFakeTransfer === false)
-            rename($tmp_name, $uploaded_file);
+        $move_ok = @rename($tmp_name, $uploaded_file);
+        $move_file = false;
+        if ($move_ok)
+        {
+            $img = new ImageresizeUtil($uploaded_file);
 
-        return $new_filename;
+            $move_file = array
+            (
+                'filename' => $new_filename,
+                'width' => $img->getWidth(),
+                'height' => $img->getHeight(),
+            );
+        }
+
+        return $move_file;
     }
 
 

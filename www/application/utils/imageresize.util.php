@@ -33,16 +33,24 @@
 
             private $filename_org;
 
-			function __construct($fileName)
+			function __construct($fileName, $width=0, $height=0)
 			{
-                $this->filename_org = $fileName;
+                if (!empty($fileName))
+                {
+                    $this->filename_org = $fileName;
 
-				// *** Open up the file
-				$this->image = $this->openImage($fileName);
+                    // *** Open up the file
+                    $this->image = $this->openImage($fileName);
 
-			    // *** Get width and height
-			    $this->width  = imagesx($this->image);
-			    $this->height = imagesy($this->image);
+                    // *** Get width and height
+                    $this->width  = imagesx($this->image);
+                    $this->height = imagesy($this->image);
+                }
+                else
+                {
+                    $this->width  = $width;
+                    $this->height = $height;
+                }
 			}
 
 			## --------------------------------------------------------
@@ -93,8 +101,15 @@
 				}
 			}
 
+            public static function resizeDimension($width, $height, $newWidth, $newHeight, $option="auto")
+            {
+                $util = new ImageresizeUtil(null, $width, $height);
+                $size = $util->getDimensions($newWidth, $newHeight, $option);
+                return array('width'=>$size['optimalWidth'], 'height'=>$size['optimalHeight']);
+            }
+
 			## --------------------------------------------------------
-			
+
 			private function getDimensions($newWidth, $newHeight, $option)
 			{
 
@@ -122,8 +137,12 @@
 						$optimalWidth = $optionArray['optimalWidth'];
 						$optimalHeight = $optionArray['optimalHeight'];
 						break;
+                    default:
+						$optimalWidth = 0;
+						$optimalHeight = 0;
+						break;
 				}
-				return array('optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight);
+				return array('optimalWidth' => (int)$optimalWidth, 'optimalHeight' => (int)$optimalHeight);
 			}
 
 			## --------------------------------------------------------
@@ -261,6 +280,9 @@
 
 
 			## --------------------------------------------------------
+
+            public function getWidth()  { return $this->width;  }
+            public function getHeight() { return $this->height; }
 
 		}
 ?>
