@@ -33,10 +33,4 @@ class ImagesController
         $this->onAction_menu($menu_id, $img_id);
         $this->set('thumbnail', true);
     }
-
-    function onAction_fork()
-    {
-        $img_file = OS_IMAGE_PATH . DS . 'cutlery-fork.png';
-        $this->set('img_file', $img_file);
-    }
 }

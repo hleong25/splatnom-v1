@@ -58,6 +58,9 @@ function callHook ()
 {
     global $get_url;
 
+/*
+    NOTE: fixed by .htaccess
+
     // TODO: detect invalid url and fix it
     switch ($get_url)
     {
@@ -66,13 +69,14 @@ function callHook ()
         case 'index.php':
             $get_url = 'home/main';
     }
+*/
 
     $urlArray = array();
     $urlArray = explode("/", $get_url);
 
     $name = $urlArray[0];
     array_shift($urlArray);
-    $action = 'onAction_' . $urlArray[0];
+    $action = 'onAction_' . @$urlArray[0];
     array_shift($urlArray);
     $queryString = $urlArray;
 
