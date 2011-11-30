@@ -63,6 +63,8 @@ div.clear {
 img {
     opacity: 0.35;
     vertical-align: middle;
+    width: 16px;
+    height: 16px;
 }
 
 img:hover,

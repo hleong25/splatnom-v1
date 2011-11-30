@@ -1,10 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine   on
 
-# handle static images
-    RewriteCond     %{REQUEST_URI}      img/            [NC]
-    RewriteRule     ^img/(.*)           public/img/$1   [L]
-
 # handle www.site.com/index.html, index.htm, and index.php
     RewriteRule     ^index\.(html?|php)$        public/home/main    [L]
 
