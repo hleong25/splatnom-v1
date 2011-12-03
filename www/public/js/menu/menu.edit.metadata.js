@@ -3,62 +3,34 @@ var js_menu = (function() {
 init();
 
 return {
-    toggleOnClick: toggleOnClick,
-    toggleOnHoverIn: toggleOnHoverIn,
-    toggleOnHoverOut: toggleOnHoverOut,
-    formOnSubmit: formOnSubmit,
+    purgeMenu: purgeMenu,
     view: view,
     export: export,
-    purgeMenu: purgeMenu,
     hideAll: hideAll,
     showAll: showAll,
-    addLink: addLink,
-    removeLink: removeLink,
     googleSearchAddress: googleSearchAddress,
     moveMenu: moveMenu,
-    menuNameOnChange: menuNameOnChange,
-    addMenuItem: addMenuItem,
-    removeMenuItem: removeMenuItem,
-    addMenu: addMenu,
-    removeMenu: removeMenu
 };
 
 function init()
 {
-    formOnSubmit();
-}
+    $('div.onToggle').live({
+        click: toggle_onClick,
+        mouseover: toggle_onHoverIn,
+        mouseout: toggle_onHoverOut
+    });
 
-function formOnSubmit()
-{
-    keyboardNavigation($('div.menu_item input:text'));
-}
+    $('input:button.link_add').on('click', link_add);
+    $('input:button.link_remove').on('click', link_remove);
 
-function keyboardNavigation(inputText)
-{
-    inputText
-        .keyup(function(event){
-                if (event.ctrlKey)
-                {
-                    switch (event.keyCode)
-                    {
-                        case 38: // up
-                        case 40: // down
-                            var objThis = $(this);
-                            var title = objThis.attr('title');
-                            var newThis = null;
+    $('div.group_info input:text.menu_name').on('change', menuName_onChange);
+    $('div.controller input:button.menu_add').on('click', menu_add);
+    $('div.controller input:button.menu_remove').on('click', menu_remove);
 
-                            if (event.keyCode == 38)
-                                newThis = objThis.parents('div.menu_item').prev();
-                            else
-                                newThis = objThis.parents('div.menu_item').next();
+    $('div.menu_item input:text').on('keyup', keyboardNavigation);
+    $('div.menu_item input:button.menuitem_add').on('click', menuitem_add);
+    $('div.menu_item input:button.menuitem_remove').on('click', menuitem_remove);
 
-                            newThis.find('input[type="text"][title="'+title+'"]').focus();
-
-                            break;
-                    }
-                }
-            })
-    ;
 }
 
 function purgeMenu(purgeUrl)
@@ -71,197 +43,6 @@ function purgeMenu(purgeUrl)
     }
 
     location.href = purgeUrl;
-}
-
-function toggleOnClick(elem)
-{
-    $(elem).siblings('div.toggle').toggle();
-}
-
-function toggleOnHoverIn(elem)
-{
-    $(elem).css('cursor', 'pointer');
-}
-
-function toggleOnHoverOut(elem)
-{
-    $(elem).css('cursor', 'auto');
-}
-
-function menuNameOnChange(input)
-{
-    input = $(input);
-    var name = input.val();
-
-    input
-        .parents('div.menu')
-        .find('div.heading > span.menu_name')
-        .text(name)
-    ;
-
-}
-
-function addMenu(elem)
-{
-    var objThis = $(elem).parents('div.menu');
-
-    var clone_obj = objThis
-        .clone(false)
-        .insertAfter(objThis)
-
-        .find('div.menu_item')
-            // remove all but one menu item
-            .not(':first')
-                .remove()
-                .end()
-            .end()
-
-        .find('input:text')
-            // reset the fields
-            .val('')
-
-            // reset the watermark
-            .filter('.jq_watermark')
-                .attr('data-jq-watermark', '')
-                .watermark()
-                .end()
-            .end()
-
-        .find('div.group_info input:hidden')
-            // reset id
-            .last().val('').end()
-            .end()
-
-        .find('div.menu_item input:hidden')
-            // reset id
-            .last().val('').end()
-            .end()
-
-        .find('span.menu_name')
-            .text('')
-            .end()
-
-        .find('input:text')
-            // user friendly... go to the first input
-            .first()
-                .focus()
-                .end()
-            .end()
-    ;
-
-    keyboardNavigation(clone_obj.find('div.menu_item input:text'));
-}
-
-
-function removeMenu(elem)
-{
-    var objThis = $(elem).parents('div.menu');
-
-    if (objThis.siblings('div.menu').length == 0)
-    {
-        // just reset it...
-        objThis
-            .find('div.menu_item')
-                // remove all but one menu item
-                .not(':first')
-                    .remove()
-                    .end()
-                .end()
-
-            .find('input:text')
-                // reset the fields
-                .val('')
-
-                // reset the watermark
-                .filter('.jq_watermark')
-                    .attr('data-jq-watermark', '')
-                    .watermark()
-                    .end()
-                .end()
-
-            .find('input:text')
-                // user friendly... go to the first input
-                .first()
-                    .focus()
-                    .end()
-                .end()
-        ;
-    }
-    else
-    {
-        // remove it...
-        objThis.remove();
-    }
-}
-
-function addMenuItem(elem)
-{
-    var objThis = $(elem).parent('div.menu_item');
-
-    var clone_obj = objThis
-        .clone(false)
-        .insertAfter(objThis)
-
-        .find('input:text')
-            // reset the fields
-            .val('')
-
-            // reset the watermark
-            .filter('.jq_watermark')
-                .attr('data-jq-watermark', '')
-                .watermark()
-                .end()
-            .end()
-
-        .find('input:hidden')
-            // reset id
-            .last().val('').end()
-            .end()
-
-        .find('input:text')
-            // user friendly... go to the first input
-            .first()
-                .focus()
-                .end()
-            .end()
-    ;
-
-    keyboardNavigation(clone_obj.find('input:text'));
-}
-
-function removeMenuItem(elem)
-{
-    var objThis = $(elem).parent('div.menu_item');
-
-    if (objThis.siblings('div.menu_item').length == 0)
-    {
-        // just reset it...
-        objThis
-            .find('input:text')
-                // reset the fields
-                .val('')
-
-                // reset the watermark
-                .filter('.jq_watermark')
-                    .attr('data-jq-watermark', '')
-                    .watermark()
-                    .end()
-
-                .end()
-
-            .find('input:text')
-                // user friendly... go to the first input
-                .first()
-                    .focus()
-                    .end()
-                .end()
-        ;
-    }
-    else
-    {
-        // remove it...
-        objThis.remove();
-    }
 }
 
 function googleSearchAddress()
@@ -319,12 +100,52 @@ function moveMenu(elem, position)
 
 }
 
-function addLink(elem)
+function view(viewUrl)
 {
-    var objThis = $(elem).parent('div.link_item');
+    var bView = confirm('Are you sure you want to quit editting this menu?');
+
+    if (!bView)
+    {
+        return false;
+    }
+
+    location.href = viewUrl;
+
+}
+
+function export(exportUrl)
+{
+    var bView = confirm('Are you sure you want to quit editting this menu?');
+
+    if (!bView)
+    {
+        return false;
+    }
+
+    location.href = exportUrl;
+}
+
+function toggle_onClick()
+{
+    $(this).siblings('div.toggle').toggle();
+}
+
+function toggle_onHoverIn()
+{
+    $(this).css('cursor', 'pointer');
+}
+
+function toggle_onHoverOut()
+{
+    $(this).css('cursor', 'auto');
+}
+
+function link_add()
+{
+    var objThis = $(this).parent('div.link_item');
 
     var clone_obj = objThis
-        .clone(false)
+        .clone(true)
         .insertAfter(objThis)
 
         .find('input:text')
@@ -345,13 +166,11 @@ function addLink(elem)
                 .end()
             .end()
     ;
-
-    keyboardNavigation(clone_obj.find('input:text'));
 }
 
-function removeLink(elem)
+function link_remove()
 {
-    var objThis = $(elem).parent('div.link_item');
+    var objThis = $(this).parent('div.link_item');
 
     if (objThis.siblings('div.link_item').length == 0)
     {
@@ -384,30 +203,198 @@ function removeLink(elem)
     }
 }
 
-function view(viewUrl)
+function menuName_onChange()
 {
-    var bView = confirm('Are you sure you want to quit editting this menu?');
+    input = $(this);
+    var name = input.val();
 
-    if (!bView)
-    {
-        return false;
-    }
-
-    location.href = viewUrl;
-
+    input
+        .parents('div.menu')
+        .find('div.heading > span.menu_name')
+        .text(name)
+    ;
 }
 
-function export(exportUrl)
+function menu_add()
 {
-    var bView = confirm('Are you sure you want to quit editting this menu?');
+    var objThis = $(this).parents('div.menu');
 
-    if (!bView)
+    var clone_obj = objThis
+        .clone(true)
+        .insertAfter(objThis)
+
+        .find('div.menu_item')
+            // remove all but one menu item
+            .not(':first')
+                .remove()
+                .end()
+            .end()
+
+        .find('input:text')
+            // reset the fields
+            .val('')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+            .end()
+
+        .find('div.group_info input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
+
+        .find('div.menu_item input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
+
+        .find('span.menu_name')
+            .text('')
+            .end()
+
+        .find('input:text')
+            // user friendly... go to the first input
+            .first()
+                .focus()
+                .end()
+            .end()
+    ;
+}
+
+function menu_remove()
+{
+    var objThis = $(this).parents('div.menu');
+
+    if (objThis.siblings('div.menu').length == 0)
     {
-        return false;
+        // just reset it...
+        objThis
+            .find('div.menu_item')
+                // remove all but one menu item
+                .not(':first')
+                    .remove()
+                    .end()
+                .end()
+
+            .find('input:text')
+                // reset the fields
+                .val('')
+
+                // reset the watermark
+                .filter('.jq_watermark')
+                    .attr('data-jq-watermark', '')
+                    .watermark()
+                    .end()
+                .end()
+
+            .find('input:text')
+                // user friendly... go to the first input
+                .first()
+                    .focus()
+                    .end()
+                .end()
+        ;
     }
+    else
+    {
+        // remove it...
+        objThis.remove();
+    }
+}
 
-    location.href = exportUrl;
+function keyboardNavigation(event)
+{
+    if (event.ctrlKey)
+    {
+        switch (event.keyCode)
+        {
+            case 38: // up
+            case 40: // down
+                var objThis = $(this);
+                var title = objThis.attr('title');
+                var newThis = null;
 
+                if (event.keyCode == 38)
+                    newThis = objThis.parents('div.menu_item').prev();
+                else
+                    newThis = objThis.parents('div.menu_item').next();
+
+                newThis.find('input[type="text"][title="'+title+'"]').focus();
+
+                break;
+        }
+    }
+}
+
+function menuitem_add()
+{
+    var objThis = $(this).parent('div.menu_item');
+
+    var clone_obj = objThis
+        .clone(true)
+        .insertAfter(objThis)
+
+        .find('input:text')
+            // reset the fields
+            .val('')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+            .end()
+
+        .find('input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
+
+        .find('input:text')
+            // user friendly... go to the first input
+            .first()
+                .focus()
+                .end()
+            .end()
+    ;
+}
+
+function menuitem_remove()
+{
+    var objThis = $(this).parent('div.menu_item');
+
+    if (objThis.siblings('div.menu_item').length == 0)
+    {
+        // just reset it...
+        objThis
+            .find('input:text')
+                // reset the fields
+                .val('')
+
+                // reset the watermark
+                .filter('.jq_watermark')
+                    .attr('data-jq-watermark', '')
+                    .watermark()
+                    .end()
+
+                .end()
+
+            .find('input:text')
+                // user friendly... go to the first input
+                .first()
+                    .focus()
+                    .end()
+                .end()
+        ;
+    }
+    else
+    {
+        // remove it...
+        objThis.remove();
+    }
 }
 
 })();

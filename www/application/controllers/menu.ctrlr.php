@@ -85,19 +85,22 @@ class MenuController
         $bImport_links = false;
         $bImport_menus = false;
 
-        foreach ($_POST['import_file_opts'] as $import_opts)
+        if (isset($_POST['import_file_opts']))
         {
-            switch ($import_opts)
+            foreach ($_POST['import_file_opts'] as $import_opts)
             {
-                case 'infos':
-                    $bImport_infos = true;
-                    break;
-                case 'links':
-                    $bImport_links = true;
-                    break;
-                case 'menus':
-                    $bImport_menus = true;
-                    break;
+                switch ($import_opts)
+                {
+                    case 'infos':
+                        $bImport_infos = true;
+                        break;
+                    case 'links':
+                        $bImport_links = true;
+                        break;
+                    case 'menus':
+                        $bImport_menus = true;
+                        break;
+                }
             }
         }
 

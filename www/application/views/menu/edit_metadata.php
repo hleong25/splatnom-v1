@@ -1,8 +1,4 @@
 <?php
-$toggleEvent  = 'onclick="js_menu.toggleOnClick(this); "';
-$toggleEvent .= 'onmouseover="js_menu.toggleOnHoverIn(this); "';
-$toggleEvent .= 'onmouseout="js_menu.toggleOnHoverOut(this); "';
-
 $params_mdts[] = array(
     'section_id'=>'',
     'name'=>'',
@@ -43,7 +39,7 @@ extract($params, EXTR_SKIP);
 <?php
 if ($is_admin) {
 ?>
-<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" onsubmit="return js_menu.formOnSubmit(this);">
+<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" >
 <div class="pg">
     <div class="heading">Admin control</div>
     <div class="data">
@@ -98,7 +94,7 @@ EOHTML;
 ?>
 </div>
 <div class="pg pg_bottom">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Import menu</div>
+    <div class="heading onToggle">Import menu</div>
     <div class="data toggle">
         <span>Choose the import menu file: </span><input class="file" type="file" name="import_file"/><br/>
         <input class="chkImport" type="checkbox" name="import_file_opts[]" value="infos"/><span>Overwrite business info</span><br/>
@@ -107,7 +103,7 @@ EOHTML;
     </div>
 </div>
 <div class="pg pg_bottom">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Images</div>
+    <div class="heading onToggle">Images</div>
     <div class="data toggle">
         <div class="new_imgs">
         <?php
@@ -131,7 +127,7 @@ EOHTML;
     </div>
 </div>
 <div class="pg pg_bottom">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Links</div>
+    <div class="heading onToggle">Links</div>
     <div class="data toggle">
         <?php
             if (empty($links))
@@ -142,10 +138,10 @@ EOHTML;
                 echo<<<EOHTML
                     <div class="link_item">
                         <input type="hidden" name="link[]" value="@link@"/>
-                        <input class="jq_watermark" type="text" name="link[]" title="Link" value="{$link['url']}"/>
-                        <input class="jq_watermark" type="text" name="link[]" title="Label" value="{$link['label']}"/>
-                        <input type="button" value="Add link" onclick="js_menu.addLink(this);" />
-                        <input type="button" value="Remove link" onclick="js_menu.removeLink(this);" />
+                        <input type="text" class="jq_watermark" name="link[]" title="Link" value="{$link['url']}"/>
+                        <input type="text" class="jq_watermark" name="link[]" title="Label" value="{$link['label']}"/>
+                        <input type="button" class="link_add" value="Add link" />
+                        <input type="button" class="link_remove" value="Remove link" />
                     </div>
 EOHTML;
             }
@@ -153,7 +149,7 @@ EOHTML;
     </div>
 </div>
 <div class="pg pg_bottom">
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>Business Information</div>
+    <div class="heading onToggle">Business Information</div>
     <div class="data toggle">
         <input class="jq_watermark" type="text" name="info_name" title="Name of the place" value="<?php echo $info['name']; ?>"/>
         <br/>
@@ -179,7 +175,7 @@ EOHTML;
         <input type="button" value="Move up" onclick="js_menu.moveMenu(this, -1);" />
         <input type="button" value="Move down" onclick="js_menu.moveMenu(this, 1);" />
     </div>
-    <div class="heading onToggle" <?php echo $toggleEvent; ?>>
+    <div class="heading onToggle">
         Menu <span class="menu_name"><?php echo $mdt['name']; ?></span>
     </div>
     <div class="data toggle">
@@ -187,7 +183,7 @@ EOHTML;
             <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
             <input type="hidden" name="mdt[]" value="@mdt@"/>
             <input type="hidden" name="mdt[]" value="<?php echo $mdt['section_id']; ?>"/>
-            <input class="jq_watermark" type="text" name="mdt[]" title="Group (ie. Appetizers)" onchange="js_menu.menuNameOnChange(this);" value="<?php echo $mdt['name']; ?>" />
+            <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="<?php echo $mdt['name']; ?>" />
             <br/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?php echo $mdt['notes']; ?>" />
         </div>
@@ -199,19 +195,19 @@ EOHTML;
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@item@"/>
                 <input type="hidden" name="mdt[]" value="<?php echo $item['metadata_id']; ?>"/>
-                <input class="jq_watermark" type="text" name="mdt[]" title="Label" value="<?php echo $item['label']; ?>"/>
-                <input class="jq_watermark" type="text" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
-                <input class="jq_watermark" type="text" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
-                <input type="button" value="Add item" onclick="js_menu.addMenuItem(this);" />
-                <input type="button" value="Remove item" onclick="js_menu.removeMenuItem(this);" />
+                <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?php echo $item['label']; ?>"/>
+                <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
+                <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
+                <input type="button" class="menuitem_add" value="Add item" />
+                <input type="button" class="menuitem_remove" value="Remove item" />
             </div>
             <?php } // foreach ($mdt['items'] as $item_idx => $item) ?>
         </div>
     </div>
     <div class="pg_bottom controller toggle">
         <input type="submit" value="Save Menu"/>
-        <input type="button" value="Add menu" onclick="js_menu.addMenu(this);" />
-        <input type="button" value="Remove menu" onclick="js_menu.removeMenu(this);" />
+        <input type="button" class="menu_add" value="Add menu" />
+        <input type="button" class="menu_remove" value="Remove menu" />
     </div>
     <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
 </div>
