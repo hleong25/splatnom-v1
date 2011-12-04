@@ -14,7 +14,7 @@ return {
 
 function init()
 {
-    $('div.onToggle').live({
+    $('div.onToggle').on({
         click: toggle_onClick,
         mouseover: toggle_onHoverIn,
         mouseout: toggle_onHoverOut
