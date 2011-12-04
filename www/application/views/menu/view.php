@@ -156,10 +156,12 @@ EOHTML;
 
                 // fork its
                 $forkit_msg = 'Stick a fork in it if you like this item!';
-
                 list($forkit_url, $forkit_css, $forkit_cnt) = forkit_helper($forkits, $id, $section_id, $metadata_id);
                 if ($forkit_cnt['after'] < 1)
                     $forkit_cnt['after'] = '';
+
+                // view item
+                $view_url = "/menu/item/{$id}/{$section_id}/{$metadata_id}";
 
                 echo<<<EOHTML
                     <div class="group {$css}">
@@ -174,9 +176,9 @@ EOHTML;
                             </div>
                         </div>
                         <div class="g_info">
-                            <div class="label">{$item['label']}</div>
-                            <div class="pictures"><img src="/img/camera.png" /></div>
-                            <div class="comments"><img src="/img/balloon.png" /></div>
+                            <div class="label"><a href="{$view_url}">{$item['label']}</a></div>
+                            <div class="pictures"><a href="{$view_url}"><img src="/img/camera.png" /></a></div>
+                            <div class="comments"><a href="{$view_url}"><img src="/img/balloon.png" /></a></div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>
                             <div class="notes {$notes_css}">{$item['notes']}</div>

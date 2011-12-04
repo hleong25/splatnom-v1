@@ -533,21 +533,10 @@ EOQ;
         $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $rst = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $info = array_shift($rst);
+        $info = $prepare->fetch(PDO::FETCH_ASSOC);
 
         if (empty($info))
-        {
-            $info = array(
-                'name'=>'',
-                'notes'=>'',
-                'address'=>'',
-                'latitude'=>'',
-                'longitude'=>'',
-                'numbers'=>'',
-                'hours'=>''
-            );
-        }
+            return false;
 
         $info['status'] = $status;
         return $info;
@@ -1295,5 +1284,32 @@ EOQ;
         }
 
         return $forkits;
+    }
+
+    function getMenuItem($menu_id, $section_id, $metadata_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                label,
+                price,
+                notes
+            FROM tblMenuMetadata
+            WHERE metadata_id = :metadata_id
+            AND menu_id = :menu_id
+            AND section_id = :section_id
+EOQ;
+
+        $params = array(
+            ':menu_id' => $menu_id,
+            ':section_id' => $section_id,
+            ':metadata_id' => $metadata_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $row = $prepare->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
 }

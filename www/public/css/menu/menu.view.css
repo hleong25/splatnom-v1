@@ -87,3 +87,9 @@ div.after
 {
     display: none;
 }
+
+a:link,
+a:visited
+{
+    color: black;
+}
