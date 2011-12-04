@@ -39,9 +39,12 @@ div.g_panel {
 }
 div.g_info {
 }
-div.label {
+div.label,
+div.comments,
+div.pictures {
     display: inline;
     float: left;
+    margin-left: 0.5em;
 }
 div.price {
     float: right;
@@ -61,14 +64,17 @@ div.clear {
 }
 
 img {
-    opacity: 0.35;
     vertical-align: middle;
     width: 16px;
     height: 16px;
 }
 
-img:hover,
-img.forkit {
+div.forkit img {
+    opacity: 0.35;
+}
+
+div.forkit img:hover,
+div.forkit img.forkit {
     opacity: 1.0 !important;
 }
 

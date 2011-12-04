@@ -11,9 +11,11 @@ function init()
     $('div.group')
         .mouseover(function() {
             $(this).addClass('zover');
+            //$(this).css('cursor', 'pointer');
         })
         .mouseout(function() {
             $(this).removeClass('zover');
+            //$(this).css('cursor', 'auto');
         })
     ;
 }

@@ -22,6 +22,80 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 
+function forkit_helper($forkits, $id, $section_id, $metadata_id)
+{
+    if (isset($forkits[$section_id][$metadata_id]))
+    {
+        $forkit = $forkits[$section_id][$metadata_id];
+
+        if ($forkit['me'])
+        {
+            // if this forkit is me... then the "after" is everything before me
+            $forkit_url = array
+            (
+                'now'   => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+                'after' => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+            );
+
+            $forkit_css = array
+            (
+                'now'   => 'forkit',
+                'after' => '',
+            );
+
+            $forkit_cnt = array
+            (
+                'now'   => $forkit['cnt'],
+                'after' => $forkit['cnt']-1,
+            );
+        }
+        else
+        {
+            // this forkit is not me, so the "after" is everything after me
+            $forkit_url = array
+            (
+                'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+                'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+            );
+
+            $forkit_css = array
+            (
+                'now'   => '',
+                'after' => 'forkit',
+            );
+
+            $forkit_cnt = array
+            (
+                'now'   => $forkit['cnt'],
+                'after' => $forkit['cnt']+1,
+            );
+        }
+
+    }
+    else
+    {
+        $forkit_url = array
+        (
+            'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
+            'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+        );
+
+        $forkit_css = array
+        (
+            'now'   => '',
+            'after' => 'forkit',
+        );
+
+        $forkit_cnt = array
+        (
+            'now'   => '',
+            'after' => 1,
+        );
+    }
+
+    return array($forkit_url, $forkit_css, $forkit_cnt);
+}
+
 ?>
 <?php
 if ($is_metadata)
@@ -83,75 +157,7 @@ EOHTML;
                 // fork its
                 $forkit_msg = 'Stick a fork in it if you like this item!';
 
-                if (isset($forkits[$section_id][$metadata_id]))
-                {
-                    $forkit = $forkits[$section_id][$metadata_id];
-
-                    if ($forkit['me'])
-                    {
-                        // if this forkit is me... then the "after" is everything before me
-                        $forkit_url = array
-                        (
-                            'now'   => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
-                            'after' => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-                        );
-
-                        $forkit_css = array
-                        (
-                            'now'   => 'forkit',
-                            'after' => '',
-                        );
-
-                        $forkit_cnt = array
-                        (
-                            'now'   => $forkit['cnt'],
-                            'after' => $forkit['cnt']-1,
-                        );
-                    }
-                    else
-                    {
-                        // this forkit is not me, so the "after" is everything after me
-                        $forkit_url = array
-                        (
-                            'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-                            'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
-                        );
-
-                        $forkit_css = array
-                        (
-                            'now'   => '',
-                            'after' => 'forkit',
-                        );
-
-                        $forkit_cnt = array
-                        (
-                            'now'   => $forkit['cnt'],
-                            'after' => $forkit['cnt']+1,
-                        );
-                    }
-
-                }
-                else
-                {
-                    $forkit_url = array
-                    (
-                        'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-                        'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
-                    );
-
-                    $forkit_css = array
-                    (
-                        'now'   => '',
-                        'after' => 'forkit',
-                    );
-
-                    $forkit_cnt = array
-                    (
-                        'now'   => '',
-                        'after' => 1,
-                    );
-                }
-
+                list($forkit_url, $forkit_css, $forkit_cnt) = forkit_helper($forkits, $id, $section_id, $metadata_id);
                 if ($forkit_cnt['after'] < 1)
                     $forkit_cnt['after'] = '';
 
@@ -169,6 +175,8 @@ EOHTML;
                         </div>
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
+                            <div class="pictures"><img src="/img/camera.png" /></div>
+                            <div class="comments"><img src="/img/balloon.png" /></div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>
                             <div class="notes {$notes_css}">{$item['notes']}</div>
