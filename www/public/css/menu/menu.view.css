@@ -44,7 +44,7 @@ div.comments,
 div.pictures {
     display: inline;
     float: left;
-    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 div.price {
     float: right;
