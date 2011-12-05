@@ -1290,13 +1290,17 @@ EOQ;
     {
         $query =<<<EOQ
             SELECT
-                label,
-                price,
-                notes
-            FROM tblMenuMetadata
-            WHERE metadata_id = :metadata_id
-            AND menu_id = :menu_id
-            AND section_id = :section_id
+                m.name AS place_name,
+                s.name AS section_name,
+                mdt.label AS item_name,
+                mdt.price,
+                mdt.notes
+            FROM tblMenuMetadata mdt
+            INNER JOIN tblMenuSection s ON mdt.section_id = s.section_id
+            INNER JOIN tblMenuInfo_us m ON mdt.menu_id = m.menu_id
+            WHERE mdt.metadata_id = :metadata_id
+            AND mdt.menu_id = :menu_id
+            AND mdt.section_id = :section_id
 EOQ;
 
         $params = array(

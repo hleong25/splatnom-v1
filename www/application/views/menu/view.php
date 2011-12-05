@@ -97,17 +97,12 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
 }
 
 ?>
-<?php
-if ($is_metadata)
-{
-    echo<<<EOHTML
-        <div class="pg pg_bottom ismdt">
-            <input type="button" value="export menu" onclick="location.href='/menu/export/{$id}/json'" />
-            <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/{$id}'" />
-        </div>
-EOHTML;
-}
-?>
+<?php if ($is_metadata): ?>
+<div class="pg pg_bottom ismdt">
+    <input type="button" value="export menu" onclick="location.href='/menu/export/{$id}/json'" />
+    <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/{$id}'" />
+</div>
+<?php endif; //if ($is_metadata) ?>
 <div class="pg biz_info">
     <div class="name"><?php echo $info['name']; ?></div>
     <div class="details"><?php echo nl2br($info['notes']); ?></div>
@@ -134,7 +129,7 @@ EOHTML;
 ?>
 </div>
 <div class="pg menus">
-<?php foreach ($mdts as $mdt) { ?>
+<?php foreach ($mdts as $mdt): ?>
     <div class="menu">
         <div class="info heading">
             <div class="h_name"><?php echo $mdt['name']; ?></div>
@@ -190,5 +185,5 @@ EOHTML;
         ?>
         </div>
     </div>
-<?php }// foreach ($mdts as $mdt) ?>
+<?php endforeach; // foreach ($mdts as $mdt) ?>
 </div>

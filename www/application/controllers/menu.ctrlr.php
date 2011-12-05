@@ -590,13 +590,17 @@ class MenuController
 
     function onAction_item($menu_id=null, $section_id=null, $metadata_id=null)
     {
-        $item = $this->Menu->getMenuItem($menu_id, $section_id, $metadata_id);
+        $menu = $this->Menu;
+        $item = $menu->getMenuItem($menu_id, $section_id, $metadata_id);
         if (empty($item))
         {
             $this->redirect("/menu/view/{$menu_id}");
             return;
         }
 
+        $this->addCss('menu/menu.item');
+
+        $this->set('menu_id', $menu_id);
         $this->set('item', $item);
     }
 }

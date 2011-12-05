@@ -1,0 +1,28 @@
+div.nav {
+    font-size: 0.8em;
+    text-align: right;
+}
+div.info,
+div.add {
+    margin-bottom: 1em;
+}
+div.info span.name {
+    font-size: 1.5em;
+}
+div.photos {
+    background-color: silver;
+    height: 350px;
+}
+div.photos div {
+    width: 49.7%;
+    display: inline-block;
+}
+div.photos div.list {
+    background-color: gray;
+    overflow: auto;
+    height: 100%;
+}
+div.photos div.view {
+    background-color: red;
+    float: right;
+}
