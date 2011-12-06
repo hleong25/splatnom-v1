@@ -255,4 +255,11 @@ class AdminController
         }
     }
 
+    function onAction_jqueryui_test()
+    {
+        $this->addJqueryUi();
+        $this->addJs('admin/admin.jqueryui.test');
+        $this->addCss('admin/admin.jqueryui.test');
+    }
+
 }

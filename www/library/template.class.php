@@ -45,14 +45,7 @@ class Template
         $this->addCss('default');
 
         // add jquery
-        //$this->addJs('jquery-1.6.1.min', WEB_PATH_OTHER);
-        //$this->addJs('jquery-1.6.2.min', WEB_PATH_OTHER);
-        //$this->addJs('jquery-1.6.3.min', WEB_PATH_OTHER);
-        //$this->addJs('jquery-1.7.min', WEB_PATH_OTHER);
         $this->addJs('jquery-1.7.1.min', WEB_PATH_OTHER);
-
-        // add colorbox
-        $this->addCss('colorbox/colorbox', WEB_PATH_OTHER);
 
         $this->setupNav();
     }
@@ -132,7 +125,7 @@ class Template
         }
     }
 
-    function addResource($type, $value, $bIsUnique = true)
+    function addResource($type, $value, $bCheckIfExists = true /*, $bIsUnique = true*/)
     {
         $file = false;
         if ($type === 'css')
@@ -144,26 +137,37 @@ class Template
             $file = OS_PATH_PUBLIC . DS . $value . '.js';
         }
 
-        if (!file_exists($file))
+        if ($bCheckIfExists && !file_exists($file))
         {
-            error_log("(Template.class) File does not exists '{$file}'");
+            Util::logit("(Template.class) File does not exists '{$file}'");
             //return;
         }
 
+/*
         if ($bIsUnique && !empty($this->m_res[$type]) && in_array($value, $this->m_res[$type], true))
             return;
+*/
 
         $this->m_res[$type][] = $value;
     }
 
-    function addCss($css, $path = WEB_PATH_CSS)
+    function addCss($css, $path = WEB_PATH_CSS, $bCheckIfExists = true)
     {
-        $this->addResource('css', $path . DS . $css);
+        $this->addResource('css', $path . DS . $css, $bCheckIfExists);
     }
 
-    function addJs($js, $path = WEB_PATH_JS)
+    function addJs($js, $path = WEB_PATH_JS, $bCheckIfExists = true)
     {
-        $this->addResource('js', $path . DS . $js);
+        $this->addResource('js', $path . DS . $js, $bCheckIfExists);
+    }
+
+    function addJqueryUi()
+    {
+        // NOTE: don't check for existance.
+        //       htaccess handles the redirect of the js/css files
+        $jquery_ui = 'jquery-ui-1.8.16-redmond';
+        $this->addCss($jquery_ui, WEB_PATH_OTHER, false);
+        $this->addJs($jquery_ui, WEB_PATH_OTHER, false);
     }
 
     function includeCss()

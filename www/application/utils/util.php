@@ -7,7 +7,11 @@ class Util
         $from = "";
         if (!empty($file) && !empty($line))
             $from = "({$file}:{$line}): ";
-        error_log($from.var_export($obj, true));
+
+        if (is_string($obj))
+            error_log($from.$obj);
+        else
+            error_log($from.var_export($obj, true));
     }
 
     static function redirect($location)

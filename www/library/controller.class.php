@@ -46,4 +46,10 @@ class Controller
     {
         $this->m_template->addJs($js, $path);
     }
+
+    function addJqueryUi()
+    {
+        $this->m_template->addJqueryUi();
+    }
+
 }

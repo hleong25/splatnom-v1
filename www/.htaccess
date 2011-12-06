@@ -4,6 +4,15 @@
 # handle www.site.com/index.html, index.htm, and index.php
     RewriteRule     ^index\.(html?|php)$        public/home/main    [L]
 
+# handle jquery-ui in format jquery-ui-{version}-{theme}.(js|css)
+    RewriteRule     other/jquery-ui-(.*)-(.*)\.js$      public/other/jquery-ui/jquery-ui-$1.$2/js/jquery-ui-$1.custom.min.js    [L]
+    RewriteRule     other/jquery-ui-(.*)-(.*)\.css$     public/other/jquery-ui/jquery-ui-$1.$2/css/$2/jquery-ui-$1.custom.css   [L]
+
+# handle jquery-ui css images in format jquery-ui-{version}-{theme}/images/{file}.png
+# new jquery-ui images must be modified to be this format in css file
+# NOTE: in vim, I used this to search and replace :%s/url(images/url(jquery-ui-1.8.16-redmond\/images/gc
+    RewriteRule     other/jquery-ui-(.*)-(.*)/images/(.*)\.png$     public/other/jquery-ui/jquery-ui-$1.$2/css/redmond/images/$3.png    [L]
+
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
     RewriteRule     (.*)    public/$1           [L]
