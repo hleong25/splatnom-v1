@@ -354,6 +354,8 @@ class MenuController
             return;
         }
 
+        $this->addJqueryUi();
+
         $this->addJs('menu/menu.view');
         $this->addCss('menu/menu.view');
         $this->addCss('zebra');
