@@ -99,19 +99,19 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
 ?>
 <?php if ($is_metadata): ?>
 <div class="pg pg_bottom ismdt">
-    <input type="button" value="export menu" onclick="location.href='/menu/export/{$id}/json'" />
-    <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/{$id}'" />
+    <input type="button" value="export menu" onclick="location.href='/menu/export/<?=$id?>/json'" />
+    <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/<?=$id?>'" />
 </div>
 <?php endif; //if ($is_metadata) ?>
 <div class="pg biz_info">
-    <div class="name"><?php echo $info['name']; ?></div>
-    <div class="details"><?php echo nl2br($info['notes']); ?></div>
+    <div class="name"><?=$info['name']?></div>
+    <div class="details"><?=nl2br($info['notes'])?></div>
     <br/>
-    <div class="address"><?php echo nl2br($info['address']); ?></div>
+    <div class="address"><?=nl2br($info['address'])?></div>
     <br/>
-    <div class="phone"><?php echo nl2br($info['numbers']); ?></div>
+    <div class="phone"><?=nl2br($info['numbers'])?></div>
     <br/>
-    <div class="hours"><?php echo nl2br($info['hours']); ?></div>
+    <div class="hours"><?=nl2br($info['hours'])?></div>
 </div>
 <div class="pg links">
 <?php

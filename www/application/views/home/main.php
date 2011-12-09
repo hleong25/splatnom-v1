@@ -65,7 +65,7 @@ EOHTML;
 }
 ?>
 </div>
-<?php if ($is_metadata && !empty($need_metadata)) { ?>
+<?php if ($is_metadata && !empty($need_metadata)) : ?>
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>
     <div class="data">
@@ -73,6 +73,7 @@ EOHTML;
             <thead>
                 <td>id</td>
                 <td>timestamp</td>
+                <td>name</td>
                 <td>site</td>
                 <td>imgs</td>
                 <td></td>
@@ -83,6 +84,7 @@ EOHTML;
                 {
                     $id = $row['id'];
                     $ts = $row['ts'];
+                    $name = $row['name'];
                     $site = $row['links_cnt'];
                     $imgs = $row['imgs_cnt'];
 
@@ -90,6 +92,7 @@ EOHTML;
                     <tr>
                         <td>{$id}</td>
                         <td>{$ts}</td>
+                        <td>{$name}</td>
                         <td>{$site}</td>
                         <td>{$imgs}</td>
                         <td><a href="/menu/edit_metadata/{$id}">Edit</a></td>
@@ -101,4 +104,4 @@ EOHTML;
         </table>
     </div>
 </div>
-<?php } // if ($is_metadata) ?>
+<?php endif; // if ($is_metadata) ?>
