@@ -43,6 +43,7 @@ class MenuController
 
         if (empty($menu_info))
         {
+            Util::logit("No menu info for id: {$id}");
             $this->redirect('/home/main');
             return;
         }

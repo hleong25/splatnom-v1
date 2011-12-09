@@ -526,8 +526,9 @@ EOQ;
                 latitude, longitude,
                 numbers,
                 hours
-            FROM tblMenuInfo_us
-            WHERE menu_id = :id
+            FROM tblMenu m
+            LEFT JOIN tblMenuInfo_us i ON m.id = i.menu_id
+            WHERE m.id = :id
 EOQ;
 
         $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
