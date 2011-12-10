@@ -123,7 +123,7 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
         if (empty($label)) $label = $url;
 
         echo<<<EOHTML
-            <div class="link"><a target="_blank" href="{$url}">{$label}</a></div>
+            <div class="link">Link: <a target="_blank" href="{$url}">{$label}</a></div>
 EOHTML;
     }
 ?>
