@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><?php echo SITE_NAME; ?></title>
+<title><?=SITE_NAME?></title>
 <?php $this->includeCss(); ?>
 </head>
 <?php
@@ -14,6 +14,6 @@ flush();
         <div id="top_nav">
         <?php $this->includeNavLinks(); ?>
         </div>
-        <span id="welcome"><a href="/home/main"><?php echo SITE_NAME; ?></a></span> 
+        <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
     </div>
 </div>
