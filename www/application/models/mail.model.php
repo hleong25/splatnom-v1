@@ -78,10 +78,13 @@ class MailModel
 
         $send = $mail->send($to, $headers, $body);
 
-        if ($send !== true)
-            Util::logit('Mail error: '.$send->getMessage());
+        if (PEAR::isError($send))
+        {
+            Util::logit('Mail error: '.$send->getMessage(), __FILE__, __LINE__);
+            return false;
+        }
 
-        return $send;
+        return true;
     }
 
     function send_tester($from, $to, $subject, $message)

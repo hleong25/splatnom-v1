@@ -6,6 +6,7 @@ $params = array(
     'fname'=>'',
     'lname'=>'',
     'email'=>'',
+    'email2'=>'',
     'username'=>'',
     'err_msg'=>false,
 );
@@ -17,6 +18,8 @@ extract($params, EXTR_SKIP);
         <input class="jq_watermark lname" type="text" name="lname" title="Last name" value="<?php echo $lname; ?>" />
         <br/>
         <input class="jq_watermark email" type="text" name="email" title="Email" value="<?php echo $email; ?>" />
+        <br/>
+        <input class="jq_watermark email" type="text" name="email2" title="Confirm email" value="<?php echo $email2; ?>" />
         <br/>
         <br/>
         <input class="jq_watermark username" type="text" name="username" title="Username" value="<?php echo $username; ?>"/>
