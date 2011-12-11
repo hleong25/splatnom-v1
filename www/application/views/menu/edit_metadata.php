@@ -198,16 +198,16 @@ EOHTML;
                 <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?php echo $item['label']; ?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
-                <input type="button" class="menuitem_add" value="Add item" />
-                <input type="button" class="menuitem_remove" value="Remove item" />
+                <input type="image" class="menuitem_add" src="/img/plus.png" onclick="return js_menu.menuitem_add(this);"/>
+                <input type="image" class="menuitem_remove" src="/img/minus.png" onclick="return js_menu.menuitem_remove(this);"/>
             </div>
             <?php } // foreach ($mdt['items'] as $item_idx => $item) ?>
         </div>
     </div>
     <div class="pg_bottom controller toggle">
         <input type="submit" value="Save Menu"/>
-        <input type="button" class="menu_add" value="Add menu" />
-        <input type="button" class="menu_remove" value="Remove menu" />
+        <input type="button" class="menu_add" value="Add menu" onclick="return js_menu.menu_add(this);"/>
+        <input type="button" class="menu_remove" value="Remove menu" onclick="return js_menu.menu_remove(this);"/>
     </div>
     <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
 </div>

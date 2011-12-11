@@ -10,6 +10,10 @@ return {
     showAll: showAll,
     googleSearchAddress: googleSearchAddress,
     moveMenu: moveMenu,
+    menu_add: menu_add,
+    menu_remove: menu_remove,
+    menuitem_add: menuitem_add,
+    menuitem_remove: menuitem_remove,
 };
 
 function init()
@@ -24,12 +28,12 @@ function init()
     $('input:button.link_remove').on('click', link_remove);
 
     $('div.group_info input:text.menu_name').on('change', menuName_onChange);
-    $('div.controller input:button.menu_add').on('click', menu_add);
-    $('div.controller input:button.menu_remove').on('click', menu_remove);
+//    $('div.controller input:button.menu_add').on('click', menu_add);
+//    $('div.controller input:button.menu_remove').on('click', menu_remove);
 
     $('div.menu_item input:text').on('keyup', keyboardNavigation);
-    $('div.menu_item input:button.menuitem_add').on('click', menuitem_add);
-    $('div.menu_item input:button.menuitem_remove').on('click', menuitem_remove);
+//    $('div.menu_item input:image.menuitem_add').on('click', menuitem_add);
+//    $('div.menu_item input:image.menuitem_remove').on('click', menuitem_remove);
 
 }
 
@@ -215,12 +219,12 @@ function menuName_onChange()
     ;
 }
 
-function menu_add()
+function menu_add(item)
 {
-    var objThis = $(this).parents('div.menu');
+    var objThis = $(item).parents('div.menu');
 
     var clone_obj = objThis
-        .clone(true)
+        .clone()
         .insertAfter(objThis)
 
         .find('div.menu_item')
@@ -262,11 +266,13 @@ function menu_add()
                 .end()
             .end()
     ;
+
+    return false;
 }
 
-function menu_remove()
+function menu_remove(item)
 {
-    var objThis = $(this).parents('div.menu');
+    var objThis = $(item).parents('div.menu');
 
     if (objThis.siblings('div.menu').length == 0)
     {
@@ -274,9 +280,7 @@ function menu_remove()
         objThis
             .find('div.menu_item')
                 // remove all but one menu item
-                .not(':first')
-                    .remove()
-                    .end()
+                .not(':first').remove().end()
                 .end()
 
             .find('input:text')
@@ -288,13 +292,10 @@ function menu_remove()
                     .attr('data-jq-watermark', '')
                     .watermark()
                     .end()
-                .end()
 
-            .find('input:text')
                 // user friendly... go to the first input
-                .first()
-                    .focus()
-                    .end()
+                .first().focus().end()
+
                 .end()
         ;
     }
@@ -303,6 +304,8 @@ function menu_remove()
         // remove it...
         objThis.remove();
     }
+
+    return false;
 }
 
 function keyboardNavigation(event)
@@ -329,13 +332,18 @@ function keyboardNavigation(event)
     }
 }
 
-function menuitem_add()
+function menuitem_add(item)
 {
-    var objThis = $(this).parent('div.menu_item');
+    var objThis = $(item).parent('div.menu_item');
 
     var clone_obj = objThis
-        .clone(true)
+        .clone()
         .insertAfter(objThis)
+
+        .find('input:hidden')
+            // reset id
+            .last().val('').end()
+            .end()
 
         .find('input:text')
             // reset the fields
@@ -346,25 +354,18 @@ function menuitem_add()
                 .attr('data-jq-watermark', '')
                 .watermark()
                 .end()
-            .end()
 
-        .find('input:hidden')
-            // reset id
-            .last().val('').end()
-            .end()
-
-        .find('input:text')
             // user friendly... go to the first input
-            .first()
-                .focus()
-                .end()
+            .first().focus().end()
             .end()
     ;
+
+    return false;
 }
 
-function menuitem_remove()
+function menuitem_remove(item)
 {
-    var objThis = $(this).parent('div.menu_item');
+    var objThis = $(item).parent('div.menu_item');
 
     if (objThis.siblings('div.menu_item').length == 0)
     {
@@ -380,14 +381,12 @@ function menuitem_remove()
                     .watermark()
                     .end()
 
+                // user friendly... go to the first input
+                .first().focus().end()
+
                 .end()
 
-            .find('input:text')
-                // user friendly... go to the first input
-                .first()
-                    .focus()
-                    .end()
-                .end()
+            .end()
         ;
     }
     else
@@ -395,6 +394,8 @@ function menuitem_remove()
         // remove it...
         objThis.remove();
     }
+
+    return false;
 }
 
 })();
