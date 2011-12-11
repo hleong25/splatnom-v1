@@ -451,17 +451,9 @@ class MenuController
 
         // import info
         $info = $json['info'];
-        $q_info = array(
-            ':id' => $new_id,
-            ':name' => $info['name'],
-            ':notes' => $info['notes'],
-            ':address' => $info['address'],
-            ':latitude' => $info['latitude'],
-            ':longitude' => $info['longitude'],
-            ':numbers' => $info['numbers'],
-            ':hours' => $info['hours'],
-        );
-        $import = $menu->updateMenuInfo($q_info);
+        $q_info = &$info;
+
+        $import = $menu->updateMenuInfo($new_id, $q_info);
         if (!$import)
         {
             $this->set('err_msg', 'Failed to import info');
