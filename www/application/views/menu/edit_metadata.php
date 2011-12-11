@@ -36,28 +36,24 @@ $params = array(
 extract($params, EXTR_SKIP);
 
 ?>
-<?php
-if ($is_admin) {
-?>
-<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" >
+<?php if ($is_admin): ?>
+<form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
 <div class="pg">
     <div class="heading">Admin control</div>
     <div class="data">
-        <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?php echo $id; ?>');" />
+        <input type="button" value="Delete Menu" onclick="js_menu.purgeMenu('/menu/purge/<?=$id?>');" />
         <br/>
     </div>
     <br/>
 </div>
-<?php } // if ($is_admin) ?>
-<?php
-if ($is_metadata) {
-?>
+<?php endif; // if ($is_admin) ?>
+<?php if ($is_metadata): ?>
 <div class="pg">
     <div class="heading">Metadata control</div>
     <div class="data">
         <input type="submit" value="Save Menu"/>
-        <input type="button" value="Export Menu" onclick="js_menu.export('/menu/export/<?php echo $id; ?>/json');"; />
-        <input type="button" value="View Menu" onclick="js_menu.view('/menu/view/<?php echo $id; ?>');" />
+        <input type="button" value="Export Menu" onclick="js_menu.export('/menu/export/<?=$id?>/json');"; />
+        <input type="button" value="View Menu" onclick="js_menu.view('/menu/view/<?=$id?>');" />
         <input type="button" value="Hide all sections" onclick="js_menu.hideAll();" />
         <input type="button" value="Show all sections" onclick="js_menu.showAll();" />
         <br/>
@@ -81,9 +77,9 @@ EOHTML;
     </div>
     <hr />
 </div>
-<?php } // if ($is_metadata) ?>
+<?php endif; // if ($is_metadata) ?>
 <div class="pg pg_bottom" style="text-align: right;">
-    <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
+    <input type="button" value="Refresh" onclick="location.href='/<?=$myurl?>'"/>
     <br/>
     <span>Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</span>
 </div>
@@ -151,25 +147,25 @@ EOHTML;
 <div class="pg pg_bottom">
     <div class="heading onToggle">Business Information</div>
     <div class="data toggle">
-        <input class="jq_watermark" type="text" name="info_name" title="Name of the place" value="<?php echo $info['name']; ?>"/>
+        <input class="jq_watermark" type="text" name="info_name" title="Name of the place" value="<?=$info['name']?>"/>
         <br/>
-        <input class="jq_watermark" type="text" name="info_notes" title="Notes" value="<?php echo $info['notes']; ?>"/>
+        <input class="jq_watermark" type="text" name="info_notes" title="Notes" value="<?=$info['notes']?>"/>
         <br/>
-        <textarea class="jq_watermark address" rows="5"  name="info_address" title="Address"><?php echo $info['address']; ?></textarea>
+        <textarea class="jq_watermark address" rows="5"  name="info_address" title="Address"><?=$info['address']?></textarea>
         <br/>
         <input type="button" value="Google search address" onclick="return js_menu.googleSearchAddress();" />
         <input class="jq_watermark" type="text" style="width: 400px;" title="javascript get lat long" value="javascript:void(prompt('',gApplication.getMap().getCenter()));"/>
         <br/>
-        <input class="jq_watermark" type="text" name="info_latitude" title="Latitude" value="<?php echo $info['latitude']; ?>"/>
-        <input class="jq_watermark" type="text" name="info_longitude" title="Longitude" value="<?php echo $info['longitude']; ?>"/>
+        <input class="jq_watermark" type="text" name="info_latitude" title="Latitude" value="<?=$info['latitude']?>"/>
+        <input class="jq_watermark" type="text" name="info_longitude" title="Longitude" value="<?=$info['longitude']?>"/>
         <span class="latlong_info">If latitude is in (###,###) format, it will parse it to lat/long.</span>
         <br/>
-        <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"><?php echo $info['numbers']; ?></textarea>
+        <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"><?=$info['numbers']?></textarea>
         <br/>
-        <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"><?php echo $info['hours']; ?></textarea>
+        <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"><?=$info['hours']?></textarea>
     </div>
 </div>
-<?php foreach ($mdts as $mdt) { ?>
+<?php foreach ($mdts as $mdt): ?>
 <div class="pg pg_bottom menu">
     <div class="menu_ctrl">
         <input type="button" value="Move up" onclick="js_menu.moveMenu(this, -1);" />
@@ -182,26 +178,26 @@ EOHTML;
         <div class="pg_bottom group_info">
             <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
             <input type="hidden" name="mdt[]" value="@mdt@"/>
-            <input type="hidden" name="mdt[]" value="<?php echo $mdt['section_id']; ?>"/>
-            <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="<?php echo $mdt['name']; ?>" />
+            <input type="hidden" name="mdt[]" value="<?=$mdt['section_id']?>"/>
+            <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="<?=$mdt['name']?>" />
             <br/>
-            <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?php echo $mdt['notes']; ?>" />
+            <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?=$mdt['notes']?>" />
         </div>
         <div class="pg_bottom subheading">Menu items</div>
         <div class="menu_group">
             <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
-            <?php foreach ($mdt['items'] as $item_idx => $item) { ?>
+            <?php foreach ($mdt['items'] as $item_idx => $item): ?>
             <div class="menu_item">
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@item@"/>
-                <input type="hidden" name="mdt[]" value="<?php echo $item['metadata_id']; ?>"/>
-                <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?php echo $item['label']; ?>"/>
-                <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?php echo $item['price']; ?>"/>
-                <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?php echo $item['notes']; ?>"/>
+                <input type="hidden" name="mdt[]" value="<?=$item['metadata_id']?>"/>
+                <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?=$item['label']?>"/>
+                <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?=$item['price']?>"/>
+                <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?=$item['notes']?>"/>
                 <input type="image" class="menuitem_add" src="/img/plus.png" onclick="return js_menu.menuitem_add(this);"/>
                 <input type="image" class="menuitem_remove" src="/img/minus.png" onclick="return js_menu.menuitem_remove(this);"/>
             </div>
-            <?php } // foreach ($mdt['items'] as $item_idx => $item) ?>
+            <?php endforeach; // foreach ($mdt['items'] as $item_idx => $item) ?>
         </div>
     </div>
     <div class="pg_bottom controller toggle">
@@ -211,9 +207,9 @@ EOHTML;
     </div>
     <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
 </div>
-<?php } // foreach ($mdts as $idx => $mdt) ?>
+<?php endforeach; // foreach ($mdts as $idx => $mdt) ?>
 </form>
-<?php if(!empty($dbg)) { ?>
+<?php if(!empty($dbg)): ?>
 <div class="pg"><br/><br/><pre><?php var_export($dbg); ?></pre></div>
-<?php } ?>
+<?php endif; // if(!empty($dbg)) ?>
 
