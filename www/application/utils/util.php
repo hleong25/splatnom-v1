@@ -191,7 +191,7 @@ class UploadHandler
         {
             //Util::logit("handle_upload_files_helper(): {$unique_id} -> {$uploaded_file}");
 
-            @chmod($uploaded_file, 0644);
+            //@chmod($uploaded_file, 0644);
 
             $img = new ImageresizeUtil($uploaded_file);
 

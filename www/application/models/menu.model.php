@@ -385,7 +385,7 @@ EOQ;
 
         foreach ($pending_menu['imgs'] as $file_img)
         {
-            $file_src = OS_UPLOAD_PATH . DS . $file_img['filename'];
+            $file_src = OS_UPLOAD_PATH . DS . $pending_id . DS . $file_img['filename'];
             $file_dst = $menu_img_path . DS . $file_img['filename'];
 
             $rename_ok = @rename($file_src, $file_dst);
