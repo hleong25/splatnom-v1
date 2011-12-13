@@ -130,6 +130,8 @@ EOHTML;
 </div>
 <div class="pg upload">
     <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
+    <br/>
+    <br/>
 </div>
 <div class="pg menus">
 <?php foreach ($mdts as $mdt): ?>

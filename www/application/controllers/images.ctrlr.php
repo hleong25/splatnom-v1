@@ -46,7 +46,16 @@ class ImagesController
         $this->addCss('images/images.upload');
         $this->addJs('images/images.upload');
 
-        $menu_url = "/menu/view/{$menu_id}";
+        $back_url = 'view';
+        if (!empty($_GET) && isset($_GET['back']))
+        {
+            $back = $_GET['back'];
+
+            if ($back === 'edit')
+                $back_url = 'edit_metadata';
+        }
+
+        $menu_url = "/menu/{$back_url}/{$menu_id}";
 
         $this->set('menu_url', $menu_url);
         $this->set('id', $menu_id);

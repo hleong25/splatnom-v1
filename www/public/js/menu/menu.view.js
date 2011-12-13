@@ -18,6 +18,8 @@ function init()
             //$(this).css('cursor', 'auto');
         })
     ;
+
+    $('a.button').button();
 }
 
 function forkit(elem, link)
