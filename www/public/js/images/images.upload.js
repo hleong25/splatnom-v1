@@ -1,4 +1,4 @@
-var js_menu = (function() {
+var js_images = (function() {
 
 init();
 
@@ -10,7 +10,7 @@ function init()
 {
     $('input#btnAddMore').click(btnAddMore_OnClick);
 
-    $('form#frmNewMenu')
+    $('form#upload_photos')
         .submit(form_OnSubmit)
     ;
 }
@@ -42,7 +42,7 @@ function funcValidateForm()
 
     if (imgs === 0)
     {
-        alert('Need at least one menu');
+        alert('Need at least one image');
         return false;
     }
 

@@ -1,4 +1,10 @@
 <IfModule mod_rewrite.c>
+# Update upload size
+# TODO: update php.ini file -- 30M is random... choose a better value
+    php_value   post_max_size           30M
+    php_value   upload_max_filesize     30M
+
+# start rewrite engine
     RewriteEngine   on
 
 # handle www.site.com/index.html, index.htm, and index.php

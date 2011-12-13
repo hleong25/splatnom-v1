@@ -63,21 +63,49 @@ class Util
         unset($_SESSION['perms']);
     }
 
-    static function handle_upload_files()
+    static function handle_upload_files($path)
     {
-        $uploader = new UploadHandler();
+        $uploader = new UploadHandler($path);
         return $uploader->handle_upload_files();
     }
 }
 
 class UploadHandler
 {
+    private $m_path;
+
+    function __construct($path)
+    {
+        $this->m_path = $path;
+
+        if (!file_exists($path))
+        {
+            if (!mkdir($path, 0755, true))
+            {
+                Util::logit("Path '{$path}' does not exists. Failed to create it.", __FILE__, __LINE__);
+                $this->m_path = null;
+            }
+        }
+    }
+
     function handle_upload_files()
     {
+        if (empty($this->m_path) || !file_exists($this->m_path))
+        {
+            Util::logit("handle_upload_files() failed, path '{$this->m_path}' not found", __FILE__, __LINE__);
+            return false;
+        }
+
         if (empty($_FILES))
             return false;
 
         $files = array();
+
+        // TODO:: handle $_FILES[error] for error codes
+        //        also look into removing the php_value in .htaccess or php.ini and see why the
+        //        error isn't being set when max is met
+        //        for example, change to default 8M upload max, and then upload 10M, the $_FILES
+        //        empty and theres no info on that at all.
 
         foreach ($_FILES as $key => $file)
         {
@@ -133,13 +161,15 @@ class UploadHandler
         //$file_name = 'menu_' . date('ymdHis');
 
         $uploaded_file = false;
-        for ($ii = 0, $jj = 5; $ii < $jj; $ii++)
+        $unique_id = '';
+        for ($ii = 0, $jj = 100; $ii < $jj; $ii++)
         {
             // this will retry up to 5 times to get a unique filename
-            $unique_id = date('ymdHisu') . uniqid();
+            //$unique_id = date('ymdHisu') . uniqid(); // TODO: 'u' is supported on 5.2.2+
+            $unique_id = date('ymdHis') . uniqid();
             $short_id = base_convert($unique_id, 10, 36); // 0-9,a-z
-            $new_filename = "menu_{$short_id}.{$file_ext}";
-            $uploaded_file = OS_UPLOAD_PATH . DS . $new_filename;
+            $new_filename = "{$short_id}.{$file_ext}";
+            $uploaded_file = $this->m_path . DS . $new_filename;
 
             if (!file_exists($uploaded_file))
                 break;
@@ -148,13 +178,21 @@ class UploadHandler
         }
 
         if ($uploaded_file === false)
+        {
             // failed to get a unique filename...
+            Util::logit('Failed to create unique filename... even after 100 tries', __FILE__, __LINE__);
             return false;
+        }
 
-        $move_ok = @rename($tmp_name, $uploaded_file);
+        //$move_ok = @rename($tmp_name, $uploaded_file);
+        $move_ok = @move_uploaded_file($tmp_name, $uploaded_file);
         $move_file = false;
         if ($move_ok)
         {
+            //Util::logit("handle_upload_files_helper(): {$unique_id} -> {$uploaded_file}");
+
+            @chmod($uploaded_file, 0644);
+
             $img = new ImageresizeUtil($uploaded_file);
 
             $move_file = array

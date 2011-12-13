@@ -62,7 +62,8 @@ EOQ;
         if (!$prepare) return false;
 
         $new_menu_img = array(':new_id' => $new_id, ':file_img' => '', ':width' => 0, ':height' => 0);
-        $files = Util::handle_upload_files();
+        $new_path = OS_UPLOAD_PATH . DS . $new_id;
+        $files = Util::handle_upload_files($new_path);
 
         foreach ($files as $img)
         {
@@ -1316,5 +1317,57 @@ EOQ;
 
         $row = $prepare->fetch(PDO::FETCH_ASSOC);
         return $row;
+    }
+
+    function insertMenuImage($menu_id, $imgs)
+    {
+        $this->beginTransaction();
+
+        $query =<<<EOQ
+            INSERT INTO tblMenuImages(
+                menu_id,
+                file_img,
+                width,
+                height
+            ) VALUES (
+                :menu_id,
+                :file_img,
+                :width,
+                :height
+            )
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rst = $prepare->bindValue(':menu_id', $menu_id);
+        if (!$rst)
+        {
+            $this->log_dberr($rst, __FILE__, __LINE__);
+            return false;
+        }
+
+        foreach ($imgs as $img)
+        {
+            $rsts[] = $prepare->bindValue(':file_img', $img['filename']);
+            $rsts[] = $prepare->bindValue(':width', $img['width']);
+            $rsts[] = $prepare->bindValue(':height', $img['height']);
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+        }
+
+        $this->commit();
+        return true;
     }
 }

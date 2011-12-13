@@ -101,6 +101,8 @@ EOHTML;
 <div class="pg pg_bottom">
     <div class="heading onToggle">Images</div>
     <div class="data toggle">
+        <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
+        <br/>
         <div class="new_imgs">
         <?php
             foreach ($imgs as $img)

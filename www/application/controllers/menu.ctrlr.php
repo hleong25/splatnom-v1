@@ -598,4 +598,17 @@ class MenuController
         $this->set('menu_id', $menu_id);
         $this->set('item', $item);
     }
+
+    function onAction_upload($menu_id=null)
+    {
+        $this->m_bRender = false;
+
+        if (empty($menu_id))
+        {
+            // nothing to do here...
+            Util::logit('No menu id identified for upload');
+            return;
+        }
+
+    }
 }

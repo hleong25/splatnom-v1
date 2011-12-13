@@ -3,13 +3,13 @@
 class ImagesModel
     extends Model
 {
-    function getPendingImage($img)
+    function getPendingImage($pending_id, $img)
     {
         $img_file = OS_DEFAULT_NO_IMAGE;
 
-        if (!empty($img))
+        if (!empty($pending_id) && !empty($img))
         {
-            $upload_img = OS_UPLOAD_PATH . DS . $img;
+            $upload_img = OS_UPLOAD_PATH . DS . $pending_id . DS . $img;
             if (file_exists($upload_img))
                 $img_file = $upload_img;
         }

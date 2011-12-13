@@ -129,7 +129,7 @@ EOHTML;
 ?>
 </div>
 <div class="pg upload">
-    <button class="upload_pic">Add photos</button>
+    <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
 </div>
 <div class="pg menus">
 <?php foreach ($mdts as $mdt): ?>
@@ -189,7 +189,4 @@ EOHTML;
         </div>
     </div>
 <?php endforeach; // foreach ($mdts as $mdt) ?>
-</div>
-<div class="dlgUploadPic" title="Add photos">
-    <p>Send me some food pr0n!!!</p>
 </div>

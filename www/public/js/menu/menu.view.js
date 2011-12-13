@@ -1,7 +1,5 @@
 var js_menu = (function() {
 
-var dlgUploadPic = null;
-
 init();
 
 return {
@@ -20,23 +18,6 @@ function init()
             //$(this).css('cursor', 'auto');
         })
     ;
-
-    $('button.upload_pic')
-        .button()
-        .click(uploadPhoto_onClick);
-    ;
-
-    dlgUploadPic = $('div.dlgUploadPic')
-        .dialog({
-            autoOpen: false,
-            modal: true,
-        })
-    ;
-}
-
-function uploadPhoto_onClick()
-{
-    dlgUploadPic.dialog('open');
 }
 
 function forkit(elem, link)

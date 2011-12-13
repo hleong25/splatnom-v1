@@ -20,6 +20,41 @@ class TrojanController
     {
         $system = array();
 
+        if (PHP_VERSION_ID >= 50202)
+        {
+            $system[] = array(
+                'new_req' => 'date(u) supported',
+                'fix' => 'change all dates with u support ',
+            );
+        }
+
+        $check_paths = array
+        (
+            OS_PATH_PUBLIC,
+            OS_UPLOAD_PATH,
+            OS_PURGE_PATH,
+        );
+
+        foreach ($check_paths as $path)
+        {
+            if (!file_exists($path))
+            {
+                $system[] = array(
+                    'req' => "Path '{$path}' not found",
+                    'fix' => 'Create it',
+                    'hint' => "mkdir -p \"{$path}\""
+                );
+            }
+            else if (!is_writable($path))
+            {
+                $system[] = array(
+                    'req' => "Path '{$path}' not writable",
+                    'fix' => 'Make it writable',
+                    'hint' => "chmod 0777 \"{$path}\""
+                );
+            }
+        }
+
         if (!function_exists('gd_info'))
         {
             $system[] = array(
