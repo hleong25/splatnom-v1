@@ -22,8 +22,8 @@ define('OS_IMAGE_PATH',         ROOT . DS . 'public' .  DS . 'img');
 define('OS_DEFAULT_NO_IMAGE',   OS_IMAGE_PATH . DS . 'noimage.jpg');
 
 define('OS_PURGE_PATH',         '/home/custom_code/www.purge');
-
 define('OS_MENU_PATH',          '/home/custom_code/www.menus');
+define('OS_TEMP_PATH',          '/home/custom_code/www.temp');
 
 define('WEB_PATH_CSS',      DS . 'css');
 define('WEB_PATH_JS',       DS . 'js');

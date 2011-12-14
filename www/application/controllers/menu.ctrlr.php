@@ -390,6 +390,7 @@ class MenuController
         $mdts = $menu->getMetadata($id, $sections);
 
         $export = array(
+            'version' => 1,
             'info' => $info,
             'links' => $links,
             'metadatas' => $mdts,

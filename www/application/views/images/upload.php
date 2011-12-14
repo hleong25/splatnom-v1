@@ -9,6 +9,7 @@ $params = array
 );
 
 extract($params, EXTR_SKIP);
+
 ?>
 <div class="pg info">
     <span>Upload images for <?=$info['name']?>.</span>

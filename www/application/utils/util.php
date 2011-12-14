@@ -107,6 +107,7 @@ class UploadHandler
         //        for example, change to default 8M upload max, and then upload 10M, the $_FILES
         //        empty and theres no info on that at all.
 
+        $handle_files = array();
         foreach ($_FILES as $key => $file)
         {
             if (is_array($file['name']))
@@ -116,16 +117,18 @@ class UploadHandler
                     if ($file['tmp_name'][$idx] === '')
                         continue;
 
-                    $ret = $this->handle_upload_files_helper($file['tmp_name'][$idx], $file['name'][$idx]);
+                    $tmp_name = $file['tmp_name'][$idx];
+                    $name = $file['name'][$idx];
+                    $mime = mime_content_type($tmp_name); // TODO: might need to change this to finfo_file
+                    $file_ext = pathinfo($name, PATHINFO_EXTENSION);
 
-                    if ($ret !== false)
-                    {
-                        $files[] = $ret;
-                    }
-                    else
-                    {
-                        Util::logit('Failed to handle uploaded file', __FILE__, __LINE__);
-                    }
+                    $handle_files[] = array
+                    (
+                        'tmp_name'=>$tmp_name,
+                        'name'=>$name,
+                        'mime'=>$mime,
+                        'file_ext'=>$file_ext,
+                    );
                 }
             }
             else
@@ -133,71 +136,101 @@ class UploadHandler
                 if ($file['tmp_name'] === '')
                     continue;
 
-                $ret = $this->handle_upload_files_helper($file['tmp_name'], $file['name']);
+                $tmp_name = $file['tmp_name'];
+                $name = $file['name'];
+                $mime = mime_content_type($tmp_name); // TODO: might need to change this to finfo_file
+                $file_ext = pathinfo($name, PATHINFO_EXTENSION);
 
-                if ($ret !== false)
-                {
-                    $files[] = $ret;
-                }
-                else
-                {
-                    Util::logit('Failed to handle uploaded file', __FILE__, __LINE__);
-                }
+                $handle_files[] = array
+                (
+                    'tmp_name'=>$tmp_name,
+                    'name'=>$name,
+                    'mime'=>$mime,
+                    'file_ext'=>$file_ext,
+                );
             }
+        }
+
+        foreach ($handle_files as $hfile)
+        {
+            $info = $this->upload_helper_image($hfile, true);
+            if ($info !== false)
+            {
+                $files[] = $info;
+                continue;
+            }
+
+            $info = $this->upload_helper_zip($hfile);
+            if ($info !== false)
+            {
+                $files = array_merge($files, $info);
+                continue;
+            }
+
+            // if it's here, then it's no good...
+            Util::logit("Unhandled file type. File '{$hfile['name']}', mime-type '{$hfile['mime']}'", __FILE__, __LINE__);
+            @unlink($hfile['tmp_name']);
         }
 
         return $files;
     }
 
-    function handle_upload_files_helper($tmp_name, $name)
+    function getRandFilename()
     {
-        // TODO: might need to change this to finfo_file
-        $mime = mime_content_type($tmp_name);
+        $now_date = date('ymdHis'); // TODO: ymdHisu -> 'u' is supported on 5.2.2+
+        $unique_id = base_convert(date('ymdHis'), 10, 36); // 0-9,a-z
+        $short_id = $unique_id . uniqid();
+
+        return $short_id;
+    }
+
+    function upload_helper_image($upload_file, $bIsUploadFiled)
+    {
+        $tmp_name = $upload_file['tmp_name'];
+        //$name = $upload_file['name'];
+        $mime = $upload_file['mime'];
+        $file_ext = $upload_file['file_ext'];
 
         if (strpos($mime, 'image') !== 0)
+        {
+            // not an image type
             return false;
+        }
 
-        $file_ext = pathinfo($name, PATHINFO_EXTENSION);
-        //$file_name = 'menu_' . date('ymdHis');
-
-        $uploaded_file = false;
-        $unique_id = '';
+        $rand_file = false;
+        $new_filename = false;
         for ($ii = 0, $jj = 100; $ii < $jj; $ii++)
         {
-            // this will retry up to 5 times to get a unique filename
-            //$unique_id = date('ymdHisu') . uniqid(); // TODO: 'u' is supported on 5.2.2+
-            $unique_id = date('ymdHis') . uniqid();
-            $short_id = base_convert($unique_id, 10, 36); // 0-9,a-z
-            $new_filename = "{$short_id}.{$file_ext}";
-            $uploaded_file = $this->m_path . DS . $new_filename;
+            $rand_file = $this->getRandFilename() . '.' . $file_ext;
+            $new_filename = $this->m_path . DS . $rand_file;
 
-            if (!file_exists($uploaded_file))
+            if (!file_exists($new_filename))
                 break;
 
-            $uploaded_file = false;
+            $new_filename = false;
         }
 
-        if ($uploaded_file === false)
+        if ($new_filename === false)
         {
             // failed to get a unique filename...
-            Util::logit('Failed to create unique filename... even after 100 tries', __FILE__, __LINE__);
+            Util::logit('Failed to create unique filename.', __FILE__, __LINE__);
             return false;
         }
 
-        //$move_ok = @rename($tmp_name, $uploaded_file);
-        $move_ok = @move_uploaded_file($tmp_name, $uploaded_file);
+        $move_ok = false;
+        if ($bIsUploadFiled)
+            $move_ok = @move_uploaded_file($tmp_name, $new_filename);
+        else
+            $move_ok = @rename($tmp_name, $new_filename);
+
         $move_file = false;
         if ($move_ok)
         {
-            //Util::logit("handle_upload_files_helper(): {$unique_id} -> {$uploaded_file}");
-
-            //@chmod($uploaded_file, 0644);
-
-            $img = new ImageresizeUtil($uploaded_file);
+            $img = new ImageresizeUtil($new_filename);
 
             $move_file = array
             (
-                'filename' => $new_filename,
+                'filename' => $rand_file,
                 'width' => $img->getWidth(),
                 'height' => $img->getHeight(),
             );
@@ -206,5 +239,89 @@ class UploadHandler
         return $move_file;
     }
 
+    function upload_helper_zip($upload_file)
+    {
+        $tmp_name = $upload_file['tmp_name'];
+        //$name = $upload_file['name'];
+        $mime = $upload_file['mime'];
+        $file_ext = $upload_file['file_ext'];
 
+        if ($mime !== 'application/x-zip')
+        {
+            // not a zip type
+            return false;
+        }
+
+        $zip = new ZipArchive;
+        $res = $zip->open($tmp_name);
+
+        if ($res !== true)
+        {
+            Util::logit("Failed to open zip file. {$name}", __FILE__, __LINE__);
+            return false;
+        }
+
+        $extract_files = array();
+        for ($ii = 0, $jj = $zip->numFiles; $ii < $jj; $ii++)
+        {
+            $zip_name = $zip->getNameIndex($ii);
+            $zip_ext = pathinfo($zip_name, PATHINFO_EXTENSION);
+            $zip_ext = strtolower($zip_ext);
+
+            switch ($zip_ext)
+            {
+                case 'jpg':
+                case 'jpeg':
+                case 'gif':
+                case 'png':
+                    $extract_files[] = $zip_name;
+            }
+        }
+
+        if (empty($extract_files))
+        {
+            $zip->close();
+            return false;
+        }
+
+        // create temp directory and extract to path
+        $temp_path = OS_TEMP_PATH . DS . $this->getRandFilename();
+        @mkdir($temp_path);
+
+        $unzipped = $zip->extractTo($temp_path, $extract_files);
+        if ($unzipped !== true)
+        {
+            Util::logit("Failed to unzip files. {$name}", __FILE__, __LINE__);
+            return false;
+        }
+
+        // close and delete the zip file
+        $zip->close();
+        @unlink($tmp_name);
+
+        $files = array();
+
+        // transfer the zip files to the destination path
+        foreach ($extract_files as $unzipped_file)
+        {
+            $tmp_name = $temp_path . DS . $unzipped_file;
+            $name = $unzipped_file;
+            $mime = mime_content_type($tmp_name); // TODO: might need to change this to finfo_file
+            $file_ext = pathinfo($name, PATHINFO_EXTENSION);
+
+            $uzfile = array
+            (
+                'tmp_name'=>$tmp_name,
+                'name'=>$name,
+                'mime'=>$mime,
+                'file_ext'=>$file_ext,
+            );
+
+            $files[] = $this->upload_helper_image($uzfile, false);
+        }
+
+        @rmdir($temp_path);
+
+        return $files;
+    }
 }

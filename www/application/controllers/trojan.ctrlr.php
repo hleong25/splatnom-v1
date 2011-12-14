@@ -30,9 +30,10 @@ class TrojanController
 
         $check_paths = array
         (
-            OS_PATH_PUBLIC,
             OS_UPLOAD_PATH,
             OS_PURGE_PATH,
+            OS_MENU_PATH,
+            OS_TEMP_PATH,
         );
 
         foreach ($check_paths as $path)
@@ -70,6 +71,15 @@ class TrojanController
                 'req' => 'json_encode/json_decode',
                 'fix' => 'install json support on centos',
                 'hint' => 'pear install json (???) or have PHP >= 5.2.0',
+            );
+        }
+
+        if (!class_exists('ZipArchive', false))
+        {
+            $system[] = array(
+                'req' => 'ZipArchive',
+                'fix' => 'install php zip support on centos',
+                'hint' => 'yum install php-pecl-zip or have PHP >= 5.2.0',
             );
         }
 
