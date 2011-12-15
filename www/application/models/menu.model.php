@@ -1319,7 +1319,7 @@ EOQ;
         return $row;
     }
 
-    function insertMenuImage($menu_id, $imgs)
+    function insertMenuImages($menu_id, $imgs)
     {
         $this->beginTransaction();
 
@@ -1346,6 +1346,10 @@ EOQ;
             $this->log_dberr($rst, __FILE__, __LINE__);
             return false;
         }
+
+        // make imgs an array if it's not
+        if (!is_array($imgs))
+            $imgs = array($imgs);
 
         foreach ($imgs as $img)
         {

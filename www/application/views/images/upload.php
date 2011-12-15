@@ -6,6 +6,7 @@ $params = array
     'menu_url'=>'/home/menu',
     'is_upload'=>false,
     'is_err'=>false,
+    'new_imgs'=>array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -53,4 +54,25 @@ extract($params, EXTR_SKIP);
         <a href="<?=$menu_url?>">Go back to menu</a>
     <?php endif; // if ($is_err) ?>
 </div>
+<?php if (!empty($new_imgs)): ?>
+<div class="pg uploaded_photos">
+    <hr/>
+    <br/>
+<?php
+    foreach ($new_imgs as $img)
+    {
+        $filename = $img['filename'];
+
+        $img_link = "/images/get/menu/org/{$id}/{$filename}";
+        $thumbnail_link = "/images/get/menu/md/{$id}/{$filename}";
+
+        echo<<<EOHTML
+            <div class="new_img">
+                <img src="$thumbnail_link" />
+            </div>
+EOHTML;
+    }
+?>
+</div>
+<?php endif; //if (!empty($new_imgs)): ?>
 <?php endif; // if ($is_upload) ?>

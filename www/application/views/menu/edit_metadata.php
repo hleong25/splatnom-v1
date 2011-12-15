@@ -108,8 +108,8 @@ EOHTML;
             foreach ($imgs as $img)
             {
                 $filename = $img['filename'];
-                $width = $img['width'];
-                $height = $img['height'];
+                //$width = $img['width'];
+                //$height = $img['height'];
 
                 $img_link = "/images/get/menu/org/{$id}/{$filename}";
                 $thumbnail_link = "/images/get/menu/sm/{$id}/{$filename}";

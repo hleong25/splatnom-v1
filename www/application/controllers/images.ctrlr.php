@@ -84,7 +84,7 @@ class ImagesController
             return;
         }
 
-        $insertImgs = $menu->insertMenuImage($menu_id, $imgs);
+        $insertImgs = $menu->insertMenuImages($menu_id, $imgs);
         if ($insertImgs)
         {
             $this->set('new_imgs', $imgs);
