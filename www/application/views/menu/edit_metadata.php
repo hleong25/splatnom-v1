@@ -111,13 +111,14 @@ EOHTML;
                 $width = $img['width'];
                 $height = $img['height'];
 
-                $img_link = "/images/menu/{$id}/{$filename}";
-                $thumbnail_link = "/images/menu_sm/{$id}/{$filename}";
+                $img_link = "/images/get/menu/org/{$id}/{$filename}";
+                $thumbnail_link = "/images/get/menu/sm/{$id}/{$filename}";
 
-                $thumbnail_size = ImageresizeUtil::resizeDimension($width, $height, 100, 100);
+                //$resize = ImagesModel::getPreferredSize('sm');
+                //$thumbnail_size = ImageresizeUtil::resizeDimension($width, $height, $resize['width'], $resize['height']);
 
                 echo<<<EOHTML
-                    <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" width="{$thumbnail_size['width']}" height="{$thumbnail_size['height']}" /></a>
+                    <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" /></a>
 EOHTML;
             }
         ?>

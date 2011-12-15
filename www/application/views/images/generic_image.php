@@ -1,7 +1,7 @@
 <?php
 
 $params = array(
-    'thumbnail' => false
+    'resize_img' => false,
 );
 
 extract($params, EXTR_SKIP);
@@ -16,7 +16,7 @@ extract($params, EXTR_SKIP);
 */
 
 $request = apache_request_headers();
-$modified = filemtime($img_file);
+$modified = filemtime($img_file['filename']);
 
 if (isset($request['If-Modified-Since']))
 {
@@ -31,7 +31,7 @@ if (isset($request['If-Modified-Since']))
     }
 }
 
-$mime = mime_content_type($img_file);
+$mime = mime_content_type($img_file['filename']);
 
 $modified_date = gmdate('D, d M Y H:i:s', $modified);
 
@@ -39,14 +39,14 @@ header("Content-type: $mime");
 header("Last-Modified: {$modified_date} GMT");
 header('Cache-Control: public');
 
-if (empty($thumbnail))
+if (empty($resize_img))
 {
-    readfile($img_file);
+    readfile($img_file['filename']);
 }
 else
 {
-    $resize = new ImageresizeUtil($img_file);
-    $resize->resizeImage(100, 100);
+    $resize = new ImageresizeUtil($img_file['filename']);
+    $resize->resizeImage($img_file['resize_width'], $img_file['resize_height']);
     $resize->saveImage(null);
 }
 

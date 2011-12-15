@@ -25,8 +25,8 @@ EOHTML;
         <?php
             foreach ($imgs as $img)
             {
-                $img_link = "/images/pending/{$pending_id}/{$img['filename']}";
-                $thumbnail_link = "/images/pending_sm/{$pending_id}/{$img['filename']}";
+                $img_link = "/images/get/pending/org/{$pending_id}/{$img['filename']}";
+                $thumbnail_link = "/images/get/pending/sm/{$pending_id}/{$img['filename']}";
                 echo<<<EOHTML
                     <a href="$img_link" target="_blank"><img class="menu" src="$thumbnail_link" /></a>
 EOHTML;

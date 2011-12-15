@@ -3,32 +3,41 @@
 class ImagesController
     extends Controller
 {
-    function onAction_pending($pending_id=null, $img_id=null)
+    function onAction_get($where, $max_size, $where_id=null, $img_id=null)
     {
         $this->m_bRender = false;
 
-        $img_file = $this->Images->getPendingImage($pending_id, $img_id);
+        $images = $this->Images;
+
+        $preferred_size = $images->getPreferredSize($max_size);
+
+        $img_file = ImagesModel::getDefaultNoImage();
+        switch ($where)
+        {
+            case 'pending':
+                $img_file = $images->getPendingImage($where_id, $img_id);
+                break;
+            case 'menu':
+                $img_file = $images->getMenuImage($where_id, $img_id);
+                break;
+        }
+
+        if (($preferred_size !== false) &&
+            (($img_file['width'] > $preferred_size['width']) ||
+             ($img_file['height'] > $preferred_size['height'])) )
+        {
+            $this->set('resize_img', true);
+
+            $resize = ImageresizeUtil::resizeDimension(
+                $img_file['width'], $img_file['height'],
+                $preferred_size['width'], $preferred_size['height']
+            );
+
+            $img_file['resize_width'] = $resize['width'];
+            $img_file['resize_height'] = $resize['height'];
+        }
+
         $this->set('img_file', $img_file);
-    }
-
-    function onAction_pending_sm($pending_id=null, $img_id=null)
-    {
-        $this->onAction_pending($pending_id, $img_id);
-        $this->set('thumbnail', true);
-    }
-
-    function onAction_menu($menu_id=null, $img_id=null)
-    {
-        $this->m_bRender = false;
-
-        $img_file = $this->Images->getMenuImage($menu_id, $img_id);
-        $this->set('img_file', $img_file);
-    }
-
-    function onAction_menu_sm($menu_id=null, $img_id=null)
-    {
-        $this->onAction_menu($menu_id, $img_id);
-        $this->set('thumbnail', true);
     }
 
     function onAction_upload($menu_id=null)
@@ -72,10 +81,13 @@ class ImagesController
         if (empty($imgs))
         {
             $this->set('is_err', true);
+            return;
         }
-        else
+
+        $insertImgs = $menu->insertMenuImage($menu_id, $imgs);
+        if ($insertImgs)
         {
-            $menu->insertMenuImage($menu_id, $imgs);
+            $this->set('new_imgs', $imgs);
         }
 
     }
