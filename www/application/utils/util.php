@@ -63,6 +63,38 @@ class Util
         unset($_SESSION['perms']);
     }
 
+    static function getUniqueString()
+    {
+        $now_date = date('ymdHis'); // TODO: ymdHisu -> 'u' is supported on 5.2.2+
+        $unique_id = base_convert(date('ymdHis'), 10, 36); // 0-9,a-z
+        $short_id = $unique_id . uniqid();
+
+        return $short_id;
+    }
+
+    static function decodeUniqueString($src)
+    {
+        $base36_cnt = 8;
+        $base36 = substr($src, 0, $base36_cnt);
+
+        if (empty($base36))
+            return false;
+
+        $date = base_convert($base36, 36, 10);
+        $uniqid = substr($src, $base36_cnt);
+
+        if (empty($uniqid))
+            return false;
+
+        $decode = array
+        (
+            'date' => $date,
+            'unique_id' => $uniqid,
+        );
+
+        return $decode;
+    }
+
     static function handle_upload_files($path)
     {
         $uploader = new UploadHandler($path);
@@ -175,15 +207,6 @@ class UploadHandler
         return $files;
     }
 
-    function getRandFilename()
-    {
-        $now_date = date('ymdHis'); // TODO: ymdHisu -> 'u' is supported on 5.2.2+
-        $unique_id = base_convert(date('ymdHis'), 10, 36); // 0-9,a-z
-        $short_id = $unique_id . uniqid();
-
-        return $short_id;
-    }
-
     function upload_helper_image($upload_file, $bIsUploadFiled)
     {
         $tmp_name = $upload_file['tmp_name'];
@@ -201,7 +224,7 @@ class UploadHandler
         $new_filename = false;
         for ($ii = 0, $jj = 100; $ii < $jj; $ii++)
         {
-            $rand_file = $this->getRandFilename() . '.' . $file_ext;
+            $rand_file = Util::getUniqueString() . '.' . $file_ext;
             $new_filename = $this->m_path . DS . $rand_file;
 
             if (!file_exists($new_filename))
@@ -285,7 +308,7 @@ class UploadHandler
         }
 
         // create temp directory and extract to path
-        $temp_path = OS_TEMP_PATH . DS . $this->getRandFilename();
+        $temp_path = OS_TEMP_PATH . DS . Util::getUniqueString();
         @mkdir($temp_path);
 
         $unzipped = $zip->extractTo($temp_path, $extract_files);

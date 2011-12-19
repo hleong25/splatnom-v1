@@ -30,7 +30,7 @@ extract($params, EXTR_SKIP);
         //$width = $img['width'];
         //$height = $img['height'];
 
-        $img_link = "/menu/images/{$id}/&view={$filename}";
+        $img_link = "/menu/images/{$id}/{$filename}";
         $thumbnail_link = "/images/get/menu/sm/{$id}/{$filename}";
 
         echo<<<EOHTML

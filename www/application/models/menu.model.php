@@ -1374,4 +1374,64 @@ EOQ;
         $this->commit();
         return true;
     }
+
+    function getMenuSectionImgs($id, $section_id)
+    {
+        $params = array(':id' => $id); //, ':section_id' => $section_id);
+
+        $query =<<<EOQ
+            SELECT
+                file_img,
+                width,
+                height
+            FROM tblMenuImages
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        $imgs = array();
+        foreach ($menu_imgs as $img)
+            $imgs[] = array
+            (
+                'filename' => $img['file_img'],
+                'width' => $img['width'],
+                'height' => $img['height'],
+            );
+
+        return $imgs;
+    }
+
+    function getMenuItemImgs($id, $section_id, $item_id)
+    {
+        $params = array(':id' => $id);//, ':section_id' => $section_id, ':item_id' => $item_id);
+
+        $query =<<<EOQ
+            SELECT
+                file_img,
+                width,
+                height
+            FROM tblMenuImages
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        $imgs = array();
+        foreach ($menu_imgs as $img)
+            $imgs[] = array
+            (
+                'filename' => $img['file_img'],
+                'width' => $img['width'],
+                'height' => $img['height'],
+            );
+
+        return $imgs;
+    }
 }
