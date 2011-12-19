@@ -35,6 +35,7 @@ class MenuController
 
         $this->addCss('menu/menu.edit.metadata');
 
+        $this->addJqueryUi();
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.edit.metadata');
 
@@ -611,5 +612,31 @@ class MenuController
             return;
         }
 
+    }
+
+    function onAction_images($menu_id=null)
+    {
+        if ($menu_id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $menu = $this->Menu;
+        $menu_info = $menu->getMenuInfo($menu_id);
+
+        if (empty($menu_info))
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
+        $this->addCss('menu/menu.images');
+
+        $this->set('id', $menu_id);
+        $this->set('info', $menu_info);
+
+        $menu_imgs = $menu->getMenuImgs($menu_id);
+        $this->set('imgs', $menu_imgs);
     }
 }

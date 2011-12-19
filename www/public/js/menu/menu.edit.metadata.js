@@ -35,6 +35,7 @@ function init()
 //    $('div.menu_item input:image.menuitem_add').on('click', menuitem_add);
 //    $('div.menu_item input:image.menuitem_remove').on('click', menuitem_remove);
 
+    $('a.button').button();
 }
 
 function purgeMenu(purgeUrl)

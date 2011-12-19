@@ -65,3 +65,6 @@ span.menu_group_info
 {
     font-size: small;
 }
+a.button {
+    font-size: 0.8em;
+}

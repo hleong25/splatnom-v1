@@ -129,16 +129,22 @@ EOHTML;
 ?>
 </div>
 <div class="pg upload">
+    <br/>
     <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
+    <a class="button" href="/menu/images/<?=$id?>">View photos</a>
     <br/>
     <br/>
 </div>
 <div class="pg menus">
-<?php foreach ($mdts as $mdt): ?>
+<?php foreach ($mdts as $mdt):
+    $section_id = $mdt['section_id'];
+
+    $section_photo_url = "/menu/images/{$id}/{$section_id}";
+?>
     <div class="menu">
         <div class="info heading">
-            <div class="h_name"><?php echo $mdt['name']; ?></div>
-            <div class="h_notes"><?php echo $mdt['notes']; ?></div>
+            <div class="h_name"><?=$mdt['name']?> <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a></div>
+            <div class="h_notes"><?=$mdt['notes']?></div>
         </div>
         <div class="items">
         <?php
@@ -148,7 +154,6 @@ EOHTML;
                 $b_alt = !$b_alt;
                 $css = $b_alt ? 'zalt' : '';
 
-                $section_id = $mdt['section_id'];
                 $metadata_id = $item['metadata_id'];
 
                 // notes
@@ -162,6 +167,7 @@ EOHTML;
 
                 // view item
                 $view_url = "/menu/item/{$id}/{$section_id}/{$metadata_id}";
+                $item_photo_url = "/menu/images/{$id}/{$section_id}/{$metadata_id}";
 
                 echo<<<EOHTML
                     <div class="group {$css}">
@@ -177,7 +183,7 @@ EOHTML;
                         </div>
                         <div class="g_info">
                             <div class="label"><a href="{$view_url}">{$item['label']}</a></div>
-                            <div class="pictures"><a href="{$view_url}"><img src="/img/camera.png" /></a></div>
+                            <div class="pictures"><a href="{$item_photo_url}"><img src="/img/camera.png" /></a></div>
                             <div class="comments"><a href="{$view_url}"><img src="/img/balloon.png" /></a></div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>

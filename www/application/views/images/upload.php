@@ -7,6 +7,7 @@ $params = array
     'is_upload'=>false,
     'is_err'=>false,
     'new_imgs'=>array(),
+    'goback'=>'',
 );
 
 extract($params, EXTR_SKIP);
@@ -21,6 +22,7 @@ extract($params, EXTR_SKIP);
 </div>
 <div class="pg upload">
 <form id="upload_photos" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
+    <input class="back" type="hidden" name="back" value="<?=$goback?>" />
     <div class="new_img">
         <input class="file" type="file" name="imgs[]"/>
     </div>

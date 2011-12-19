@@ -55,10 +55,20 @@ class ImagesController
         $this->addCss('images/images.upload');
         $this->addJs('images/images.upload');
 
+        $back = '';
         $back_url = 'view';
         if (!empty($_GET) && isset($_GET['back']))
         {
             $back = $_GET['back'];
+        }
+        else if (!empty($_POST) && isset($_POST['back']))
+        {
+            $back = $_POST['back'];
+        }
+
+        if (!empty($back))
+        {
+            $this->set('goback', $back);
 
             if ($back === 'edit')
                 $back_url = 'edit_metadata';

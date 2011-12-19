@@ -103,6 +103,7 @@ EOHTML;
     <div class="data toggle">
         <a class="button" href="/images/upload/<?=$id?>/&back=edit">Add photos</a>
         <br/>
+        <br/>
         <div class="new_imgs">
         <?php
             foreach ($imgs as $img)

@@ -7,6 +7,7 @@ class ImagesModel
     {
         return array
         (
+            'path' => false,
             'filename' => OS_DEFAULT_NO_IMAGE,
             'width' => OS_DEFAULT_NO_IMAGE_WIDTH,
             'height' => OS_DEFAULT_NO_IMAGE_HEIGHT,
@@ -21,14 +22,21 @@ class ImagesModel
                 return array('width'=>100, 'height'=>100);
                 break;
             case 'md':
+                return array('width'=>250, 'height'=>250);
+                break;
+            case 'lg':
                 return array('width'=>500, 'height'=>500);
                 break;
         }
 
-        $parsed = sscanf($max_size, '%dx%d', $width, $height);
-        if ($parsed === 2)
-            return array('width'=>(int)$width, 'height'=>(int)$height);
+        if (false)
+        {
+            // use this for testing only...
 
+            $parsed = sscanf($max_size, '%dx%d', $width, $height);
+            if ($parsed === 2)
+                return array('width'=>(int)$width, 'height'=>(int)$height);
+        }
         return false;
     }
 
@@ -89,11 +97,13 @@ EOQ;
 
         if (!empty($pending_id) && !empty($img))
         {
-            $upload_img = OS_UPLOAD_PATH . DS . $pending_id . DS . $img;
+            $upload_path = OS_UPLOAD_PATH . DS . $pending_id;
+            $upload_img = $upload_path . DS . $img;
             if (file_exists($upload_img))
             {
                 $img_file = $this->getImageDimensions('pending', $pending_id, $img);
                 $img_file['filename'] = $upload_img;
+                $img_file['path'] = $upload_path;
             }
         }
 
@@ -106,11 +116,13 @@ EOQ;
 
         if (!empty($menu_id) && !empty($img))
         {
-            $menu_img = OS_MENU_PATH . DS . $menu_id . DS . $img;
+            $menu_path = OS_MENU_PATH . DS . $menu_id;
+            $menu_img = $menu_path . DS . $img;
             if (file_exists($menu_img))
             {
                 $img_file = $this->getImageDimensions('menu', $menu_id, $img);
                 $img_file['filename'] = $menu_img;
+                $img_file['path'] = $menu_path;
             }
         }
 
