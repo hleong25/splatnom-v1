@@ -22,20 +22,65 @@ class ImagesController
                 break;
         }
 
-        if (($preferred_size !== false) &&
-            (($img_file['width'] > $preferred_size['width']) ||
-             ($img_file['height'] > $preferred_size['height'])) )
-        {
-            $this->set('resize_img', true);
+        $this->set('img_file', $img_file);
 
-            $resize = ImageresizeUtil::resizeDimension(
+        if ($img_file['filename'] === OS_DEFAULT_NO_IMAGE_FILE)
+            return; // don't resize default no image
+
+        if ($preferred_size === false)
+            return; // preferred size is false...
+
+        if (($img_file['width'] < $preferred_size['width']) ||
+            ($img_file['height'] < $preferred_size['height']))
+            return; // size is within range of preferred size
+
+        // if it's here, then we want to use the thumbnails...
+        // just gotta see if we want to create it or re-use it
+
+        $new_path = $img_file['path'] .DS . $max_size;
+        $save_file = $new_path . DS . $img_file['filename'];
+
+        $new_size = array('width'=>$img_file['width'], 'height'=>$img_file['height']);
+        if (file_exists($save_file))
+        {
+            // don't need to re-create the thumbnail
+            $new_size = ImageresizeUtil::resizeDimension
+            (
                 $img_file['width'], $img_file['height'],
                 $preferred_size['width'], $preferred_size['height']
             );
-
-            $img_file['resize_width'] = $resize['width'];
-            $img_file['resize_height'] = $resize['height'];
         }
+        else
+        {
+            // okay... we need to create the thumbnail
+            $img_src = $img_file['path'] . DS . $img_file['filename'];
+            $resize = new ImageresizeUtil($img_src);
+            $new_size = $resize->resizeImage($preferred_size['width'], $preferred_size['height']);
+
+            if (!file_exists($new_path))
+            {
+                $path_ok = mkdir($new_path, 0755, true);
+                if (!$path_ok)
+                {
+                    Util::logit("Failed to create path '{$new_path}'", __FILE__, __LINE__);
+                    return;
+                }
+            }
+
+            $bSaved = $resize->saveImage($save_file);
+
+            if ($bSaved !== true)
+            {
+                Util::logit("Failed to create thumbnail for '{$img_src}'", __FILE__, __LINE__);
+                return;
+            }
+
+            //Util::logit("Successfully created thumbnail '{$save_file}' ", __FILE__, __LINE__);
+        }
+
+        $img_file['path'] = $new_path;
+        $img_file['width'] = $new_size['width'];
+        $img_file['height'] = $new_size['height'];
 
         $this->set('img_file', $img_file);
     }

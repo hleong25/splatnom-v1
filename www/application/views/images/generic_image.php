@@ -1,11 +1,4 @@
 <?php
-
-$params = array(
-    'resize_img' => false,
-);
-
-extract($params, EXTR_SKIP);
-
 // NOTE: image caching
 //       http://drupal.org/node/25977
 //       http://betterexplained.com/articles/how-to-optimize-your-site-with-http-caching/
@@ -15,8 +8,15 @@ extract($params, EXTR_SKIP);
     Maybe look into ETags
 */
 
+$img_src = $img_file['path'] . DS . $img_file['filename'];
+
+if (!file_exists($img_src))
+{
+    $img_file = OS_DEFAULT_NO_IMAGE_PATH . DS . OS_DEFAULT_NO_IMAGE_FILE;
+}
+
 $request = apache_request_headers();
-$modified = filemtime($img_file['filename']);
+$modified = filemtime($img_src);
 
 if (isset($request['If-Modified-Since']))
 {
@@ -31,7 +31,7 @@ if (isset($request['If-Modified-Since']))
     }
 }
 
-$mime = mime_content_type($img_file['filename']);
+$mime = mime_content_type($img_src);
 
 $modified_date = gmdate('D, d M Y H:i:s', $modified);
 
@@ -39,14 +39,4 @@ header("Content-type: $mime");
 header("Last-Modified: {$modified_date} GMT");
 header('Cache-Control: public');
 
-if (empty($resize_img))
-{
-    readfile($img_file['filename']);
-}
-else
-{
-    $resize = new ImageresizeUtil($img_file['filename']);
-    $resize->resizeImage($img_file['resize_width'], $img_file['resize_height']);
-    $resize->saveImage(null);
-}
-
+readfile($img_src);

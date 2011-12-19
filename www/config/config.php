@@ -23,7 +23,8 @@ define('OS_PURGE_PATH',         '/home/custom_code/www.purge');
 define('OS_MENU_PATH',          '/home/custom_code/www.menus');
 define('OS_TEMP_PATH',          '/home/custom_code/www.temp');
 
-define('OS_DEFAULT_NO_IMAGE',           OS_IMAGE_PATH . DS . 'noimage.jpg');
+define('OS_DEFAULT_NO_IMAGE_PATH',      OS_IMAGE_PATH);
+define('OS_DEFAULT_NO_IMAGE_FILE',      'noimage.jpg');
 define('OS_DEFAULT_NO_IMAGE_WIDTH',     258);
 define('OS_DEFAULT_NO_IMAGE_HEIGHT',    196);
 

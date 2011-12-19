@@ -89,7 +89,6 @@
 				$optimalWidth  = $optionArray['optimalWidth'];
 				$optimalHeight = $optionArray['optimalHeight'];
 
-
 				// *** Resample - create image canvas of x, y size
 				$this->imageResized = imagecreatetruecolor($optimalWidth, $optimalHeight);
 				imagecopyresampled($this->imageResized, $this->image, 0, 0, 0, 0, $optimalWidth, $optimalHeight, $this->width, $this->height);
@@ -99,6 +98,8 @@
 				if ($option == 'crop') {
 					$this->crop($optimalWidth, $optimalHeight, $newWidth, $newHeight);
 				}
+
+                return array('width'=>$optimalWidth, 'height'=>$optimalHeight);
 			}
 
             public static function resizeDimension($width, $height, $newWidth, $newHeight, $option="auto")
@@ -241,18 +242,19 @@
         		    $extension = strrchr($savePath, '.');
        			$extension = strtolower($extension);
 
+                $bToImage = false;
 				switch($extension)
 				{
 					case '.jpg':
 					case '.jpeg':
 						if (imagetypes() & IMG_JPG) {
-							imagejpeg($this->imageResized, $savePath, $imageQuality);
+							$bToImage = imagejpeg($this->imageResized, $savePath, $imageQuality);
 						}
 						break;
 
 					case '.gif':
 						if (imagetypes() & IMG_GIF) {
-							imagegif($this->imageResized, $savePath);
+							$bToImage = imagegif($this->imageResized, $savePath);
 						}
 						break;
 
@@ -264,7 +266,7 @@
 						$invertScaleQuality = 9 - $scaleQuality;
 
 						if (imagetypes() & IMG_PNG) {
-							 imagepng($this->imageResized, $savePath, $invertScaleQuality);
+							 $bToImage = imagepng($this->imageResized, $savePath, $invertScaleQuality);
 						}
 						break;
 
@@ -276,6 +278,8 @@
 				}
 
 				imagedestroy($this->imageResized);
+
+                return $bToImage;
 			}
 
 

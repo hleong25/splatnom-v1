@@ -7,8 +7,8 @@ class ImagesModel
     {
         return array
         (
-            'path' => false,
-            'filename' => OS_DEFAULT_NO_IMAGE,
+            'path' => OS_DEFAULT_NO_IMAGE_PATH,
+            'filename' => OS_DEFAULT_NO_IMAGE_FILE,
             'width' => OS_DEFAULT_NO_IMAGE_WIDTH,
             'height' => OS_DEFAULT_NO_IMAGE_HEIGHT,
         );
@@ -48,7 +48,7 @@ class ImagesModel
             'height' => OS_DEFAULT_NO_IMAGE_HEIGHT,
         );
 
-        if ($img === OS_DEFAULT_NO_IMAGE)
+        if ($img === OS_DEFAULT_NO_IMAGE_FILE)
             return $dimens;
 
         $dimens = array
@@ -102,7 +102,7 @@ EOQ;
             if (file_exists($upload_img))
             {
                 $img_file = $this->getImageDimensions('pending', $pending_id, $img);
-                $img_file['filename'] = $upload_img;
+                $img_file['filename'] = $img;
                 $img_file['path'] = $upload_path;
             }
         }
@@ -121,7 +121,7 @@ EOQ;
             if (file_exists($menu_img))
             {
                 $img_file = $this->getImageDimensions('menu', $menu_id, $img);
-                $img_file['filename'] = $menu_img;
+                $img_file['filename'] = $img;
                 $img_file['path'] = $menu_path;
             }
         }
