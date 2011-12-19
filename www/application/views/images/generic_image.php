@@ -12,7 +12,7 @@ $img_src = $img_file['path'] . DS . $img_file['filename'];
 
 if (!file_exists($img_src))
 {
-    $img_file = OS_DEFAULT_NO_IMAGE_PATH . DS . OS_DEFAULT_NO_IMAGE_FILE;
+    $img_src = OS_DEFAULT_NO_IMAGE_PATH . DS . OS_DEFAULT_NO_IMAGE_FILE;
 }
 
 $request = apache_request_headers();
