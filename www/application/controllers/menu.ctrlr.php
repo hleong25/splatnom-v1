@@ -638,5 +638,17 @@ class MenuController
 
         $menu_imgs = $menu->getMenuImgs($menu_id);
         $this->set('imgs', $menu_imgs);
+
+        $selected_img = '';
+        if (!empty($_GET) && !empty($_GET['view']))
+        {
+            $selected_img = $_GET['view'];
+        }
+        else if (!empty($menu_imgs))
+        {
+            $selected_img = $menu_imgs[0]['filename'];
+        }
+
+        $this->set('selected_img', $selected_img);
     }
 }
