@@ -577,7 +577,8 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                file_img,
+                id,
+                file_img AS filename,
                 width,
                 height
             FROM tblMenuImages
@@ -589,16 +590,20 @@ EOQ;
 
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
+        return $menu_imgs;
+/*
         $imgs = array();
         foreach ($menu_imgs as $img)
             $imgs[] = array
             (
+                'id' => $img['id'],
                 'filename' => $img['file_img'],
                 'width' => $img['width'],
                 'height' => $img['height'],
             );
 
         return $imgs;
+*/
     }
 
     function updateMenuSectionAndMetadata($id, &$datas)
@@ -1381,7 +1386,8 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                file_img,
+                id,
+                file_img AS filename,
                 width,
                 height
             FROM tblMenuImages
@@ -1393,16 +1399,21 @@ EOQ;
 
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
+        return $menu_imgs;
+
+/*
         $imgs = array();
         foreach ($menu_imgs as $img)
             $imgs[] = array
             (
+                'id' => $img['id'],
                 'filename' => $img['file_img'],
                 'width' => $img['width'],
                 'height' => $img['height'],
             );
 
         return $imgs;
+*/
     }
 
     function getMenuItemImgs($id, $section_id, $item_id)
@@ -1411,7 +1422,8 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
-                file_img,
+                id,
+                file_img AS filename,
                 width,
                 height
             FROM tblMenuImages
@@ -1423,15 +1435,57 @@ EOQ;
 
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
+        return $menu_imgs;
+
+/*
         $imgs = array();
         foreach ($menu_imgs as $img)
             $imgs[] = array
             (
+                'id' => $img['id'],
                 'filename' => $img['file_img'],
                 'width' => $img['width'],
                 'height' => $img['height'],
             );
 
         return $imgs;
+*/
+    }
+
+    function getMenuTags($menu_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                ms.section_id AS sid,
+                ms.name AS section,
+                mi.metadata_id AS mid,
+                mi.label AS label
+            FROM tblMenuSection ms
+            INNER JOIN tblMenuMetadata mi ON (ms.menu_id = mi.menu_id) AND (ms.section_id = mi.section_id)
+            WHERE ms.menu_id = :menu_id
+            ORDER BY ms.ordinal, mi.ordinal
+EOQ;
+
+        $params = array(':menu_id' => $menu_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $tags = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $tags;
+    }
+
+    function getImgFromArray($filename, $imgs)
+    {
+        foreach ($imgs as $img)
+        {
+            $img_file = $img['filename'];
+            if ($filename === $img_file)
+            {
+                return $img;
+            }
+        }
+
+        return false;
     }
 }

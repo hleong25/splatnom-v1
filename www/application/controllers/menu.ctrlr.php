@@ -662,6 +662,9 @@ class MenuController
 
         $this->addCss('menu/menu.images');
 
+        $this->addJqueryUi();
+        $this->addJs('menu/menu.images');
+
         $this->set('id', $menu_id);
         $this->set('info', $menu_info);
 
@@ -685,9 +688,15 @@ class MenuController
         $this->set('imgs', $menu_imgs);
 
         $selected_img = $view_img;
+        if (!empty($selected_img))
+            $selected_img = $menu->getImgFromArray($selected_img, $menu_imgs);
+
         if (empty($selected_img))
-            $selected_img = $menu_imgs[0]['filename'];
+            $selected_img = $menu_imgs[0];
 
         $this->set('selected_img', $selected_img);
+
+        $tags = $menu->getMenuTags($menu_id);
+        $this->set('tags', $tags);
     }
 }
