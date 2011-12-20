@@ -99,8 +99,8 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
 ?>
 <?php if ($is_metadata): ?>
 <div class="pg pg_bottom ismdt">
-    <input type="button" value="export menu" onclick="location.href='/menu/export/<?=$id?>/json'" />
-    <input type="button" value="edit menu" onclick="location.href='/menu/edit_metadata/<?=$id?>'" />
+    <a class="button" href="/menu/export/<?=$id?>/json">export menu</a>
+    <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
 <div class="pg biz_info">
