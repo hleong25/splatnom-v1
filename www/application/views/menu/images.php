@@ -3,6 +3,7 @@ $params = array
 (
     'selected_img'=>array('filename'=>'','id'=>0),
     'imgs'=>array(),
+    'taggits'=>array(),
     'tags'=>array(),
 );
 
@@ -19,20 +20,29 @@ extract($params, EXTR_SKIP);
         <img class="view_img" src="<?="/images/get/menu/lg/{$id}/{$selected_img['filename']}"?>" />
     </div>
     <div class="tag">
-        <script type="text/javascript">
-            var menu_tags = <?=json_encode($tags)?>;
-        </script>
         <div class="autocomplete">
-            <label for="tags">taggit: </label>
-            <input type="textbox" id="tags"></input>
+            <label for="tags">This looks delicious!!! Can you tell me what it is? </label><br/>
+            <input type="textbox" id="tags" class="jq_watermark" title="taggit"></input>
             <div class="tag_group template">
-                <img src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
+                <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
                 <span class="label"></span>
+                <input type="hidden" name="add[]" value="1"/>
                 <input type="hidden" name="sid[]" value=""/>
                 <input type="hidden" name="mid[]" value=""/>
             </div>
         </div>
-        <form id="taggit" enctype="multipart/form-data" method="post" action="/menu/tag/<?=$id?>/<?=$selected_img['filename']?>" >
+        <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/<?=$id?>/<?=$selected_img['filename']?>" >
+            <input type="hidden" name="backurl" value="<?=$myurl?>"/>
+            <input class="save_taggits" type="submit" value="Save!"/>
+            <?php foreach ($taggits as $taggit): ?>
+                <div class="tag_group">
+                    <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
+                    <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                    <input type="hidden" name="add[]" value="1"/>
+                    <input type="hidden" name="sid[]" value="<?=$taggit['sid']?>"/>
+                    <input type="hidden" name="mid[]" value="<?=$taggit['mid']?>"/>
+                </div>
+            <?php endforeach; //foreach ($taggits as $taggit): ?>
         </form>
     </div>
 </div>
@@ -55,3 +65,11 @@ EOHTML;
 ?>
 </div>
 <?php endif; //if (empty($imgs)): ?>
+<script type="text/javascript">
+    <?php
+        // TODO: extract parameter in script tag
+        //       http://wowmotty.blogspot.com/2010/04/get-parameters-from-your-script-tag.html
+        //       http://feather.elektrum.org/book/src.html
+    ?>
+    var menu_tags = <?=json_encode($tags)?>;
+</script>

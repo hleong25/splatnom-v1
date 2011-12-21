@@ -11,10 +11,14 @@ return {
 
 function init()
 {
+    $('input.save_taggits').button();
+
     customAutoComplete();
 
-    tagForm = $('form#taggit');
+    tagForm = $('form.taggit');
     acTemplate = $('div.autocomplete > div.template');
+
+    $('input#tags').focus();
 }
 
 function customAutoComplete()
@@ -37,7 +41,7 @@ function customAutoComplete()
     $('input#tags')
         .myautocomplete({
             'source': menu_tags,
-            'minLength': 2,
+            //'minLength': 2,
             'delay': 100, // local data -- refresh fast!
             'select': acSelect,
         })
@@ -69,7 +73,12 @@ function taggit_remove(item)
 {
     var objThis = $(item).parents('div.tag_group');
 
-    objThis.remove();
+    objThis
+        .hide()
+        .find('input[name="add[]"]')
+            .val('')
+            .end()
+    ;
 }
 
 })();

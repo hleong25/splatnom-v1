@@ -663,6 +663,7 @@ class MenuController
         $this->addCss('menu/menu.images');
 
         $this->addJqueryUi();
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.images');
 
         $this->set('id', $menu_id);
@@ -696,7 +697,69 @@ class MenuController
 
         $this->set('selected_img', $selected_img);
 
+        $taggits = $menu->getTaggitsByImageFile($menu_id, $selected_img['filename']);
+        $this->set('taggits', $taggits);
+
         $tags = $menu->getMenuTags($menu_id);
         $this->set('tags', $tags);
+    }
+
+    function onAction_taggit($menu_id=null, $view_img=null)
+    {
+        if ($menu_id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        if ($view_img == null)
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
+        $backurl = "/menu/view/{$menu_id}";
+        if (isset($_POST['backurl']))
+            $backurl = "/{$_POST['backurl']}";
+
+        $adds = isset($_POST['add']) ? $_POST['add'] : array();
+        $sids = isset($_POST['sid']) ? $_POST['sid'] : array();
+        $mids = isset($_POST['mid']) ? $_POST['mid'] : array();
+
+        if (count($sids) != count($mids))
+        {
+            $err_msg  = "Taggits for menu_id({$menu_id}) has wrong count. ";
+            $err_msg .= 'sids=>'.var_export($sids, true).' ';
+            $err_msg .= 'mids=>'.var_export($mids, true);
+
+            Util::logit($err_msg, __FILE__, __LINE__);
+            $this->redirect($backurl);
+            return;
+        }
+
+        $add_taggits = array();
+        $remove_taggits = array();
+
+        foreach ($mids as $idx => $mid)
+        {
+            $sid = $sids[$idx];
+            $taggit = array
+            (
+                'sid' => $sid,
+                'mid' => $mid,
+            );
+
+            if (!empty($adds[$idx]))
+                $add_taggits[] = $taggit;
+            else
+                $remove_taggits[] = $taggit;
+        }
+
+        if ((count($add_taggits) > 0) || (count($remove_taggits) > 0))
+        {
+            $this->Menu->updateTaggits($menu_id, $view_img, $add_taggits, $remove_taggits);
+        }
+
+        $this->redirect($backurl);
     }
 }

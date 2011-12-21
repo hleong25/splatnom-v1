@@ -19,4 +19,22 @@ class Model
         // empty
 	}
 
+    function areDbResultsGood($rsts, $file, $line)
+    {
+        if (!is_array($rsts))
+        {
+            $rsts = array($rsts);
+        }
+
+        foreach ($rsts as $rst)
+        {
+            if (!$rst)
+            {
+                $this->log_dberr($rst, $file, $line);
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

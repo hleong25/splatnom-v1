@@ -21,6 +21,8 @@ div.template
 div.tag_group
 {
     font-size: 0.8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 div.img
 {
@@ -30,6 +32,10 @@ div.img
 div.tag
 {
 }
+div.tag img.remove_tag
+{
+    vertical-align: middle;
+}
 div.clear
 {
     clear: both;
@@ -37,4 +43,8 @@ div.clear
 div.imgs
 {
     margin-top: 1em;
+}
+input.save_taggits
+{
+    font-size: 0.8em;
 }

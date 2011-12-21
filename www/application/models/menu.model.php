@@ -1488,4 +1488,136 @@ EOQ;
 
         return false;
     }
+
+    function updateTaggits($menu_id, $img_file, $add_taggits, $remove_taggits)
+    {
+        $this->beginTransaction();
+
+        $bCommit = $this->removeTaggits($menu_id, $img_file, $remove_taggits);
+        if (!$bCommit) return false;
+
+        $bCommit = $this->addTaggits($menu_id, $img_file, $add_taggits);
+        if (!$bCommit) return false;
+
+        $this->commit();
+        return true;
+    }
+
+    function addTaggits($menu_id, $img_file, $taggits)
+    {
+        $img_query =<<<EOQ
+            SELECT id
+            FROM tblMenuImages
+            WHERE menu_id = :i_menu_id
+            AND file_img = :i_file_img
+EOQ;
+
+        $query =<<<EOQ
+            INSERT INTO tblTaggits(
+                menu_id,
+                section_id,
+                metadata_id,
+                img_id
+            ) VALUES (
+                :menu_id,
+                :section_id,
+                :metadata_id,
+                ({$img_query})
+            )
+            ON DUPLICATE KEY UPDATE ts = CURRENT_TIMESTAMP
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        /*
+            WARNING: The 'ignore' will NOT cause errors if the values
+            are wrong.  It will just put the default value.
+
+            Might need to do a post process thing to remove invalid
+            rows.
+        */
+
+        $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':i_menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':i_file_img', $img_file);
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        foreach ($taggits as $taggit)
+        {
+            $rsts[] = $prepare->bindValue(':section_id', $taggit['sid']);
+            $rsts[] = $prepare->bindValue(':metadata_id', $taggit['mid']);
+            $rsts[] = $prepare->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
+        }
+
+        return true;
+    }
+
+    function removeTaggits($menu_id, $img_file, $taggits)
+    {
+        $img_query =<<<EOQ
+            SELECT id
+            FROM tblMenuImages
+            WHERE menu_id = :i_menu_id
+            AND file_img = :i_file_img
+EOQ;
+
+        $query =<<<EOQ
+            DELETE FROM tblTaggits
+            WHERE menu_id = :menu_id
+            AND section_id = :section_id
+            AND metadata_id = :metadata_id
+            AND img_id = ({$img_query})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':i_menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':i_file_img', $img_file);
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        foreach ($taggits as $taggit)
+        {
+            $rsts[] = $prepare->bindValue(':section_id', $taggit['sid']);
+            $rsts[] = $prepare->bindValue(':metadata_id', $taggit['mid']);
+            $rsts[] = $prepare->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
+        }
+
+        return true;
+    }
+
+    function getTaggitsByImageFile($menu_id, $img_file)
+    {
+        $query =<<<EOQ
+            SELECT
+                s.section_id AS sid,
+                s.name AS section,
+                m.metadata_id AS mid,
+                m.label AS metadata
+            FROM tblTaggits t
+            INNER JOIN tblMenuImages i ON t.menu_id = i.menu_id AND t.img_id = i.id
+            INNER JOIN tblMenuSection s ON t.section_id = s.section_id
+            INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            WHERE t.menu_id = :menu_id
+            AND i.file_img = :img_file
+EOQ;
+
+        $params = array(':menu_id'=>$menu_id, ':img_file'=>$img_file);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $taggits = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $taggits;
+    }
 }
