@@ -573,8 +573,6 @@ EOQ;
 
     function getMenuImgs($id)
     {
-        $menu_id = array(':id' => $id);
-
         $query =<<<EOQ
             SELECT
                 id,
@@ -585,25 +583,14 @@ EOQ;
             WHERE menu_id = :id
 EOQ;
 
+        $menu_id = array(':id' => $id);
+
         $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
         if (!$prepare) return false;
 
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
         return $menu_imgs;
-/*
-        $imgs = array();
-        foreach ($menu_imgs as $img)
-            $imgs[] = array
-            (
-                'id' => $img['id'],
-                'filename' => $img['file_img'],
-                'width' => $img['width'],
-                'height' => $img['height'],
-            );
-
-        return $imgs;
-*/
     }
 
     function updateMenuSectionAndMetadata($id, &$datas)
@@ -1382,17 +1369,19 @@ EOQ;
 
     function getMenuSectionImgs($id, $section_id)
     {
-        $params = array(':id' => $id); //, ':section_id' => $section_id);
-
         $query =<<<EOQ
             SELECT
-                id,
-                file_img AS filename,
-                width,
-                height
-            FROM tblMenuImages
-            WHERE menu_id = :id
+                i.id,
+                i.file_img AS filename,
+                i.width,
+                i.height
+            FROM tblMenuImages i
+            INNER JOIN tblTaggits t ON i.menu_id = t.menu_id AND i.id = t.img_id
+            WHERE i.menu_id = :menu_id
+            AND t.section_id = :section_id
 EOQ;
+
+        $params = array(':menu_id' => $id, ':section_id' => $section_id);
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;
@@ -1400,35 +1389,24 @@ EOQ;
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
         return $menu_imgs;
-
-/*
-        $imgs = array();
-        foreach ($menu_imgs as $img)
-            $imgs[] = array
-            (
-                'id' => $img['id'],
-                'filename' => $img['file_img'],
-                'width' => $img['width'],
-                'height' => $img['height'],
-            );
-
-        return $imgs;
-*/
     }
 
     function getMenuItemImgs($id, $section_id, $item_id)
     {
-        $params = array(':id' => $id);//, ':section_id' => $section_id, ':item_id' => $item_id);
-
-        $query =<<<EOQ
+       $query =<<<EOQ
             SELECT
-                id,
-                file_img AS filename,
-                width,
-                height
-            FROM tblMenuImages
-            WHERE menu_id = :id
+                i.id,
+                i.file_img AS filename,
+                i.width,
+                i.height
+            FROM tblMenuImages i
+            INNER JOIN tblTaggits t ON i.menu_id = t.menu_id AND i.id = t.img_id
+            WHERE i.menu_id = :menu_id
+            AND t.section_id = :section_id
+            AND t.metadata_id = :item_id
 EOQ;
+
+        $params = array(':menu_id' => $id, ':section_id' => $section_id, ':item_id' => $item_id);
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;
@@ -1436,20 +1414,6 @@ EOQ;
         $menu_imgs = $prepare->fetchAll(PDO::FETCH_ASSOC);
 
         return $menu_imgs;
-
-/*
-        $imgs = array();
-        foreach ($menu_imgs as $img)
-            $imgs[] = array
-            (
-                'id' => $img['id'],
-                'filename' => $img['file_img'],
-                'width' => $img['width'],
-                'height' => $img['height'],
-            );
-
-        return $imgs;
-*/
     }
 
     function getMenuTags($menu_id)

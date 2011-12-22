@@ -14,6 +14,10 @@
     margin: .8em 0 .2em;
     line-height: 1.5;
 }
+div.menu_nav
+{
+    margin-bottom: 0.5em;
+}
 div.template
 {
     display: none;

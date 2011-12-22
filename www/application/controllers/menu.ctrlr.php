@@ -667,6 +667,8 @@ class MenuController
         $this->addJs('menu/menu.images');
 
         $this->set('id', $menu_id);
+        $this->set('section_id', $section_id);
+        $this->set('item_id', $item_id);
         $this->set('info', $menu_info);
 
         $menu_imgs = array();
@@ -693,7 +695,7 @@ class MenuController
             $selected_img = $menu->getImgFromArray($selected_img, $menu_imgs);
 
         if (empty($selected_img))
-            $selected_img = $menu_imgs[0];
+            $selected_img = @$menu_imgs[0];
 
         $this->set('selected_img', $selected_img);
 

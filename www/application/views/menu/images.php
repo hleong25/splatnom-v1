@@ -9,7 +9,13 @@ $params = array
 
 extract($params, EXTR_SKIP);
 
+$view_img_url = '/menu/images/'.$id;
+
+$menu_url = '/menu/view/'.$id;
 ?>
+<div class="pg menu_nav">
+    <span>Go back to </span><a href="<?=$menu_url?>">menu</a>
+</div>
 <?php if (empty($imgs)): ?>
 <div class="pg">
     <span>No images in this menu...</span>
@@ -55,7 +61,16 @@ extract($params, EXTR_SKIP);
         //$width = $img['width'];
         //$height = $img['height'];
 
-        $img_link = "/menu/images/{$id}/{$filename}";
+        $img_link = $view_img_url;
+
+        if (!empty($section_id))
+            $img_link .= "/{$section_id}";
+
+        if (!empty($item_id))
+            $img_link .= "/{$item_id}";
+
+        $img_link .= "/{$filename}";
+
         $thumbnail_link = "/images/get/menu/sm/{$id}/{$filename}";
 
         echo<<<EOHTML
