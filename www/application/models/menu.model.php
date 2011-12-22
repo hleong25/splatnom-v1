@@ -573,6 +573,13 @@ EOQ;
 
     function getMenuImgs($id)
     {
+        /*
+            NOTE: This might have "zombie" items because during
+            taggits, if the section_id or metadata_id is not valid,
+            it will insert a "0", so during this query, it will
+            return it in this result
+        */
+
         $query =<<<EOQ
             SELECT
                 id,
@@ -1369,6 +1376,13 @@ EOQ;
 
     function getMenuSectionImgs($id, $section_id)
     {
+        /*
+            NOTE: This might have "zombie" items because during
+            taggits, if the metadata_id is not valid, it will insert
+            a "0", so during this query, it will return it in this
+            result
+        */
+
         $query =<<<EOQ
             SELECT
                 i.id,
