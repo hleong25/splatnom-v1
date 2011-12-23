@@ -304,6 +304,9 @@ class MenuController
             $p_query = $_POST['query'];
             $p_location = $_POST['location'];
 
+            if (empty($p_location))
+                $p_location = '00000';
+
             $p_query = rawurlencode($p_query);
 
             $url = "/{$get_url}/{$p_location}/{$p_query}";
