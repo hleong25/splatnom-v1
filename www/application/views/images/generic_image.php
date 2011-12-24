@@ -13,7 +13,7 @@ if (!file_exists($img_src))
 
 $request = apache_request_headers();
 
-$referer = $request['Referer'];
+//$referer = $request['Referer'];
 
 $mime = mime_content_type($img_src);
 
