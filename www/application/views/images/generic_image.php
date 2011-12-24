@@ -18,10 +18,11 @@ $request = apache_request_headers();
 $mime = mime_content_type($img_src);
 
 $stat = stat($img_src);
+$inode = $stat['ino'];
 $mtime = $stat['mtime'];
 $fsize = $stat['size'];
 
-$etag = sprintf('"%x-%x-%x"', $stat['ino'], $stat['size'], $stat['mtime']);
+$etag = sprintf('"%x-%x-%x"', $inode, $fsize, $mtime);
 
 if (isset($request['If-Modified-Since']) && isset($request['If-None-Match']))
 {
