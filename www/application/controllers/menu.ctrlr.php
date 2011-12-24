@@ -671,6 +671,9 @@ class MenuController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.images');
 
+        $user_id = Util::getUserId();
+        $this->set('is_logged_in', $user_id !== false);
+
         $this->set('menu_id', $id_names['menu_id']);
         $this->set('section_id', $id_names['section_id']);
         $this->set('item_id', $id_names['item_id']);

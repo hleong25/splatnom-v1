@@ -1,6 +1,7 @@
 <?php
 $params = array
 (
+    'is_logged_in'=>false,
     'menu_id'=>0,
     'section_id'=>0,
     'item_id'=>0,
@@ -39,6 +40,7 @@ extract($params, EXTR_SKIP);
             <img class="view_img" src="<?="/images/get/menu/lg/{$menu_id}/{$selected_img['filename']}"?>" />
         </a>
     </div>
+    <?php if ($is_logged_in === true): ?>
     <div class="tag">
         <div class="autocomplete">
             <label for="tags">This looks delicious!!! What's that? </label><br/>
@@ -67,6 +69,23 @@ extract($params, EXTR_SKIP);
             <?php endforeach; //foreach ($taggits as $taggit): ?>
         </form>
     </div>
+    <?php else: //if ($is_logged_in): ?>
+    <div class="tag">
+        <?php foreach ($taggits as $taggit): ?>
+            <div class="tag_group">
+                <span>&hearts;</span>
+                <a href="/menu/images/<?=$menu_id?>/<?=$taggit['sid']?>/<?=$taggit['mid']?>">
+                    <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                </a>
+            </div>
+        <?php endforeach; //foreach ($taggits as $taggit): ?>
+    </div>
+    <?php endif; //if ($is_logged_in): ?>
+    <?php if (empty($taggits) && !$is_logged_in): ?>
+    <div class="notags">
+        <span>Wow... I don't know what this is, but it looks delicious!! Can you login and help me find out what it is?? Please!!! With a cherry on top =D</span>
+    </div>
+    <?php endif; //if (empty($taggits)): ?>
 </div>
 <div class="clear"></div>
 <div class="pg imgs">
@@ -100,5 +119,5 @@ EOHTML;
         //       http://wowmotty.blogspot.com/2010/04/get-parameters-from-your-script-tag.html
         //       http://feather.elektrum.org/book/src.html
     ?>
-    var menu_tags = <?=json_encode($tags)?>;
+    var menu_tags = <?= $is_logged_in ? json_encode($tags) : '[]'?>;
 </script>
