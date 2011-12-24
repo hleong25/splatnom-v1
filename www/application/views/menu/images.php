@@ -17,8 +17,9 @@ extract($params, EXTR_SKIP);
 
 ?>
 <div class="pg menu_nav">
+    <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>">Menu</a>
     <?php if (!empty($menu_str)): ?>
-        <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>"><?=$menu_str?></a>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>"><?=$menu_str?></a>
     <?php endif; //if (!empty($menu_str): ?>
     <?php if (!empty($section_str)): ?>
         <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>"><?=$section_str?></a>
@@ -34,7 +35,9 @@ extract($params, EXTR_SKIP);
 <?php else: //if (empty($imgs)): ?>
 <div class="pg view">
     <div class="img">
-        <img class="view_img" src="<?="/images/get/menu/lg/{$menu_id}/{$selected_img['filename']}"?>" />
+        <a href="<?="/images/get/menu/org/{$menu_id}/{$selected_img['filename']}"?>" target="_blank">
+            <img class="view_img" src="<?="/images/get/menu/lg/{$menu_id}/{$selected_img['filename']}"?>" />
+        </a>
     </div>
     <div class="tag">
         <div class="autocomplete">
