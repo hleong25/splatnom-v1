@@ -657,7 +657,9 @@ class MenuController
         $menu = $this->Menu;
         $menu_info = $menu->getMenuInfo($menu_id);
 
-        if (empty($menu_info))
+        $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
+
+        if (empty($menu_info) || empty($id_names))
         {
             $this->redirect("/menu/view/{$menu_id}");
             return;
@@ -669,9 +671,14 @@ class MenuController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.images');
 
-        $this->set('id', $menu_id);
-        $this->set('section_id', $section_id);
-        $this->set('item_id', $item_id);
+        $this->set('menu_id', $id_names['menu_id']);
+        $this->set('section_id', $id_names['section_id']);
+        $this->set('item_id', $id_names['item_id']);
+
+        $this->set('menu_str', $id_names['menu']);
+        $this->set('section_str', $id_names['section']);
+        $this->set('item_str', $id_names['item']);
+
         $this->set('info', $menu_info);
 
         $menu_imgs = array();

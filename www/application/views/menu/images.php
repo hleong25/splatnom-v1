@@ -1,6 +1,12 @@
 <?php
 $params = array
 (
+    'menu_id'=>0,
+    'section_id'=>0,
+    'item_id'=>0,
+    'menu_str'=>'',
+    'section_str'=>'',
+    'item_str'=>'',
     'selected_img'=>array('filename'=>'','id'=>0),
     'imgs'=>array(),
     'taggits'=>array(),
@@ -9,12 +15,17 @@ $params = array
 
 extract($params, EXTR_SKIP);
 
-$view_img_url = '/menu/images/'.$id;
-
-$menu_url = '/menu/view/'.$id;
 ?>
 <div class="pg menu_nav">
-    <span>Go back to </span><a href="<?=$menu_url?>">menu</a>
+    <?php if (!empty($menu_str)): ?>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>"><?=$menu_str?></a>
+    <?php endif; //if (!empty($menu_str): ?>
+    <?php if (!empty($section_str)): ?>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>"><?=$section_str?></a>
+    <?php endif; //if (!empty($section_str): ?>
+    <?php if (!empty($item_str)): ?>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>"><?=$item_str?></a>
+    <?php endif; //if (!empty($item_str): ?>
 </div>
 <?php if (empty($imgs)): ?>
 <div class="pg">
@@ -23,11 +34,11 @@ $menu_url = '/menu/view/'.$id;
 <?php else: //if (empty($imgs)): ?>
 <div class="pg view">
     <div class="img">
-        <img class="view_img" src="<?="/images/get/menu/lg/{$id}/{$selected_img['filename']}"?>" />
+        <img class="view_img" src="<?="/images/get/menu/lg/{$menu_id}/{$selected_img['filename']}"?>" />
     </div>
     <div class="tag">
         <div class="autocomplete">
-            <label for="tags">This looks delicious!!! Can you tell me what it is? </label><br/>
+            <label for="tags">This looks delicious!!! What's that? </label><br/>
             <input type="textbox" id="tags" class="jq_watermark" title="taggit"></input>
             <div class="tag_group template">
                 <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
@@ -37,13 +48,15 @@ $menu_url = '/menu/view/'.$id;
                 <input type="hidden" name="mid[]" value=""/>
             </div>
         </div>
-        <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/<?=$id?>/<?=$selected_img['filename']?>" >
+        <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/<?=$menu_id?>/<?=$selected_img['filename']?>" >
             <input type="hidden" name="backurl" value="<?=$myurl?>"/>
             <input class="save_taggits" type="submit" value="Save!"/>
             <?php foreach ($taggits as $taggit): ?>
                 <div class="tag_group">
                     <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
-                    <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                    <a href="/menu/images/<?=$menu_id?>/<?=$taggit['sid']?>/<?=$taggit['mid']?>">
+                        <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                    </a>
                     <input type="hidden" name="add[]" value="1"/>
                     <input type="hidden" name="sid[]" value="<?=$taggit['sid']?>"/>
                     <input type="hidden" name="mid[]" value="<?=$taggit['mid']?>"/>
@@ -58,10 +71,8 @@ $menu_url = '/menu/view/'.$id;
     foreach ($imgs as $img)
     {
         $filename = $img['filename'];
-        //$width = $img['width'];
-        //$height = $img['height'];
 
-        $img_link = $view_img_url;
+        $img_link = '/menu/images/'.$menu_id;
 
         if (!empty($section_id))
             $img_link .= "/{$section_id}";
@@ -71,7 +82,7 @@ $menu_url = '/menu/view/'.$id;
 
         $img_link .= "/{$filename}";
 
-        $thumbnail_link = "/images/get/menu/sm/{$id}/{$filename}";
+        $thumbnail_link = "/images/get/menu/sm/{$menu_id}/{$filename}";
 
         echo<<<EOHTML
             <a href="$img_link"><img class="pv_img" src="$thumbnail_link" /></a>

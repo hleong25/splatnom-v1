@@ -1598,4 +1598,43 @@ EOQ;
         $taggits = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $taggits;
     }
+
+    function getIdAndNames($menu_id, $section_id, $item_id)
+    {
+        if (is_null($section_id))
+            $section_id = 'null';
+
+        if (is_null($item_id))
+            $item_id = 'null';
+
+        $query =<<<EOQ
+            SELECT
+                i.menu_id AS menu_id,
+                i.name AS menu,
+                s.section_id AS section_id,
+                s.name AS section,
+                m.metadata_id AS item_id,
+                m.label AS item
+            FROM tblMenuInfo_us i
+            LEFT JOIN tblMenuSection s ON i.menu_id = s.menu_id AND s.section_id = :section_id
+            LEFT JOIN tblMenuMetadata m ON i.menu_id = m.menu_id AND s.section_id = m.section_id AND m.metadata_id = :metadata_id
+            WHERE i.menu_id = :menu_id
+EOQ;
+
+        $params = array
+        (
+            ':menu_id' => $menu_id,
+            ':section_id' => $section_id,
+            ':metadata_id' => $item_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $row = $prepare->fetch(PDO::FETCH_ASSOC);
+        if (empty($row))
+            return false;
+
+        return $row;
+    }
 }
