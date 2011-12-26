@@ -10,10 +10,10 @@ flush();
 ?>
 <body>
 <div id="header">
+    <div id="top_nav" class="pg"><?=$this->includeNavLinks()?></div>
     <div class="pg">
-        <div id="top_nav">
-        <?php $this->includeNavLinks(); ?>
-        </div>
         <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
+        <br/>
+        <span style="font-size: 0.75em;">find. look. eat.</span>
     </div>
 </div>
