@@ -29,7 +29,7 @@ extract($params, EXTR_SKIP);
         <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>"><?=$item_str?></a>
     <?php endif; //if (!empty($item_str): ?>
     <br/>
-    <?php if (!empty($menu_str)): ?>
+    <?php if ($is_logged_in && !empty($menu_str)): ?>
         <br/>
         <?php if (!empty($section_str) && !empty($item_str)): ?>
             <a class="button" href="/images/upload/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>">Add images to (<?=$section_str?>) <?=$item_str?></a>
@@ -37,6 +37,30 @@ extract($params, EXTR_SKIP);
             <a class="button" href="/images/upload/<?=$menu_id?>">Add images to <?=$menu_str?></a>
         <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
     <?php endif; //if (!empty($menu_str): ?>
+</div>
+<div class="pg imgs">
+<?php
+    foreach ($imgs as $img)
+    {
+        $filename = $img['filename'];
+
+        $img_link = '/menu/images/'.$menu_id;
+
+        if (!empty($section_id))
+            $img_link .= "/{$section_id}";
+
+        if (!empty($item_id))
+            $img_link .= "/{$item_id}";
+
+        $img_link .= "/{$filename}";
+
+        $thumbnail_link = "/images/get/menu/sm/{$menu_id}/{$filename}";
+
+        echo<<<EOHTML
+            <a href="$img_link"><img class="pv_img" src="$thumbnail_link" /></a>
+EOHTML;
+    }
+?>
 </div>
 <?php if (empty($imgs)): ?>
 <div class="pg">
@@ -97,31 +121,10 @@ extract($params, EXTR_SKIP);
     <?php endif; //if (empty($taggits)): ?>
 </div>
 <div class="clear"></div>
-<div class="pg imgs">
-<?php
-    foreach ($imgs as $img)
-    {
-        $filename = $img['filename'];
-
-        $img_link = '/menu/images/'.$menu_id;
-
-        if (!empty($section_id))
-            $img_link .= "/{$section_id}";
-
-        if (!empty($item_id))
-            $img_link .= "/{$item_id}";
-
-        $img_link .= "/{$filename}";
-
-        $thumbnail_link = "/images/get/menu/sm/{$menu_id}/{$filename}";
-
-        echo<<<EOHTML
-            <a href="$img_link"><img class="pv_img" src="$thumbnail_link" /></a>
-EOHTML;
-    }
-?>
-</div>
 <?php endif; //if (empty($imgs)): ?>
+<div class="pg comments">
+    Add comments
+</div>
 <script type="text/javascript">
     <?php
         // TODO: extract parameter in script tag

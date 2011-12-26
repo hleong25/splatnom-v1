@@ -46,12 +46,14 @@ EOQ;
         $query =<<<EOQ
             INSERT INTO tblPendingMenuImages (
                 pendingmenu_id,
+                user_id,
                 file_img,
                 width,
                 height
             )
             VALUES (
                 :new_id,
+                :user_id,
                 :file_img,
                 :width,
                 :height
@@ -61,7 +63,10 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $new_menu_img = array(':new_id' => $new_id, ':file_img' => '', ':width' => 0, ':height' => 0);
+        $user_id = Util::getUserId();
+        if (!$user_id) $user_id = 0;
+
+        $new_menu_img = array(':new_id' => $new_id, ':user_id' => $user_id, ':file_img' => '', ':width' => 0, ':height' => 0);
         $new_path = OS_UPLOAD_PATH . DS . $new_id;
         $files = Util::handle_upload_files($new_path);
 
@@ -231,6 +236,7 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
+                user_id,
                 file_img,
                 width,
                 height
@@ -246,6 +252,7 @@ EOQ;
         foreach ($imgs as $img)
             $menu['imgs'][] = array
             (
+                'user_id' => $img['user_id'],
                 'filename' => $img['file_img'],
                 'width' => $img['width'],
                 'height' => $img['height'],
@@ -332,11 +339,13 @@ EOQ;
         $query =<<<EOQ
             INSERT INTO tblMenuImages(
                 menu_id,
+                user_id,
                 file_img,
                 width,
                 height
             ) VALUES (
                 :menu_id,
+                :user_id,
                 :file_img,
                 :width,
                 :height
@@ -353,8 +362,14 @@ EOQ;
             return false;
         }
 
+        $current_user_id = Util::getUserId();
+
         foreach ($pending_menu['imgs'] as $file_img)
         {
+            $user_id = $file_img['user_id'];
+            if (!$user_id) $user_id = $current_user_id;
+
+            $rsts[] = $prepare->bindValue(':user_id', $user_id);
             $rsts[] = $prepare->bindValue(':file_img', $file_img['filename']);
             $rsts[] = $prepare->bindValue(':width', $file_img['width']);
             $rsts[] = $prepare->bindValue(':height', $file_img['height']);
