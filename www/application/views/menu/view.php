@@ -134,16 +134,24 @@ EOHTML;
     <a class="button" href="/menu/images/<?=$id?>">View photos</a>
     <br/>
     <br/>
+    <a class="button" href="/menu/comments/<?=$id?>">View comments</a>
+    <br/>
+    <br/>
 </div>
 <div class="pg menus">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
 
+    $section_comment_url = "/menu/comments/{$id}/{$section_id}";
     $section_photo_url = "/menu/images/{$id}/{$section_id}";
 ?>
     <div class="menu">
         <div class="info heading">
-            <div class="h_name"><?=$mdt['name']?> <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a></div>
+            <div class="h_name">
+                <?=$mdt['name']?>
+                <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a>
+                <a href="<?=$section_comment_url?>"><img src="/img/balloon.png" /></a>
+            </div>
             <div class="h_notes"><?=$mdt['notes']?></div>
         </div>
         <div class="items">
@@ -165,8 +173,8 @@ EOHTML;
                 if ($forkit_cnt['after'] < 1)
                     $forkit_cnt['after'] = '';
 
-                // view item
-                $view_url = "/menu/item/{$id}/{$section_id}/{$metadata_id}";
+                // item links
+                $item_comment_url = "/menu/comments/{$id}/{$section_id}/{$metadata_id}";
                 $item_photo_url = "/menu/images/{$id}/{$section_id}/{$metadata_id}";
 
                 echo<<<EOHTML
@@ -184,7 +192,7 @@ EOHTML;
                         <div class="g_info">
                             <div class="label">{$item['label']}</div>
                             <div class="pictures"><a href="{$item_photo_url}"><img src="/img/camera.png" /></a></div>
-                            <div class="comments"><a href="{$view_url}"><img src="/img/balloon.png" /></a></div>
+                            <div class="comments"><a href="{$item_comment_url}"><img src="/img/balloon.png" /></a></div>
                             <div class="price">{$item['price']}</div>
                             <div class="clear"></div>
                             <div class="notes {$notes_css}">{$item['notes']}</div>
