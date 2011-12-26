@@ -1,6 +1,14 @@
 <IfModule mod_rewrite.c>
     RewriteEngine   On
 
+# Set browser and version environment variables based on the visitor's browser
+# http://v4.thewatchmakerproject.com/blog/no-more-css-hacks-browser-sniffing-with-htaccess/
+# NOTE: this might not be the most perfect way of getting the browser info, but it's a start
+    SetEnvIfNoCase  User-Agent (Opera|Chrome|Version|Firefox|MSIE)[\/|\s](\d+)\. browser_type=$1 browser_version=$2
+    SetEnvIf        browser_type Version    browser_type=Safari
+    SetEnvIf        browser_type MSIE       browser_type=IE
+
+# default handler
     RewriteCond     %{REQUEST_FILENAME} !-f
     RewriteCond     %{REQUEST_FILENAME} !-d
     RewriteCond     %{REQUEST_URI}      !/public/img/

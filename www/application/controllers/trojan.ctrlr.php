@@ -83,6 +83,15 @@ class TrojanController
             );
         }
 
+        if (getEnv('browser_type') === false)
+        {
+            $system[] = array(
+                'req' => 'getEnv(browser_type)',
+                'fix' => 'Add "browser sniffing" to htaccess',
+                'hint' => 'http://v4.thewatchmakerproject.com/blog/no-more-css-hacks-browser-sniffing-with-htaccess/',
+            );
+        }
+
         if (!empty($system))
         {
             $this->m_bRender = true;

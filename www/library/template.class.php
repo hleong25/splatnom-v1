@@ -125,12 +125,41 @@ class Template
         }
     }
 
-    function addResource($type, $value, $bCheckIfExists = true /*, $bIsUnique = true*/)
+    function getBrowserVersion()
+    {
+        // NOTE: getEnv('browser_type') is set in the .htaccess file
+        //       it's a hack to get the browser info
+
+        // Note: this will handle different browser version types
+        //       the output will be the browser specific version
+        $browser = strtolower(getEnv('browser_type'));
+        return $browser;
+
+    }
+
+    function addResource($type, $value, $bCheckIfExists = true)
     {
         $file = false;
         if ($type === 'css')
         {
-            $file = OS_PATH_PUBLIC . DS . $value . '.css';
+            $browser_type = $this->getBrowserVersion();
+            if (!empty($browser_type))
+            {
+                $file = OS_PATH_PUBLIC . DS . $value . ".{$browser_type}.css";
+                if (file_exists($file))
+                {
+                    // since the file exists, we're gonna use this browser specific file
+                    $value .= ".{$browser_type}";
+                }
+                else
+                {
+                    // since the file exists does not exists, we'll go use the default one below
+                    $file = false;
+                }
+            }
+
+            if (empty($file))
+                $file = OS_PATH_PUBLIC . DS . $value . '.css';
         }
         else if ($type === 'js')
         {
@@ -142,11 +171,6 @@ class Template
             Util::logit("(Template.class) File does not exists '{$file}'");
             //return;
         }
-
-/*
-        if ($bIsUnique && !empty($this->m_res[$type]) && in_array($value, $this->m_res[$type], true))
-            return;
-*/
 
         $this->m_res[$type][] = $value;
     }
