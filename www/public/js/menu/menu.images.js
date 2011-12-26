@@ -12,6 +12,7 @@ return {
 function init()
 {
     $('input.save_taggits').button();
+    $('a.button').button();
 
     customAutoComplete();
 

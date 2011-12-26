@@ -85,7 +85,7 @@ class ImagesController
         $this->set('img_file', $img_file);
     }
 
-    function onAction_upload($menu_id=null)
+    function onAction_upload($menu_id=null, $section_id=null, $item_id=null)
     {
         $menu = new MenuModel();
         $info = $menu->getMenuInfo($menu_id);
@@ -100,50 +100,51 @@ class ImagesController
         $this->addCss('images/images.upload');
         $this->addJs('images/images.upload');
 
-        $back = '';
-        $back_url = 'view';
-        if (!empty($_GET) && isset($_GET['back']))
-        {
-            $back = $_GET['back'];
-        }
-        else if (!empty($_POST) && isset($_POST['back']))
-        {
-            $back = $_POST['back'];
-        }
-
-        if (!empty($back))
-        {
-            $this->set('goback', $back);
-
-            if ($back === 'edit')
-                $back_url = 'edit_metadata';
-        }
-
-        $menu_url = "/menu/{$back_url}/{$menu_id}";
-
-        $this->set('menu_url', $menu_url);
         $this->set('id', $menu_id);
         $this->set('info', $info);
 
-        if (empty($_FILES))
-            return;
+        $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
 
-        $this->set('is_upload', true);
+        $this->set('menu_id', $id_names['menu_id']);
+        $this->set('section_id', $id_names['section_id']);
+        $this->set('item_id', $id_names['item_id']);
 
-        $path = OS_MENU_PATH . DS . $menu_id;
-        $imgs = Util::handle_upload_files($path);
+        $this->set('menu_str', $id_names['menu']);
+        $this->set('section_str', $id_names['section']);
+        $this->set('item_str', $id_names['item']);
 
-        if (empty($imgs))
+        if (!empty($_FILES))
         {
-            $this->set('is_err', true);
-            return;
-        }
+            $this->set('is_upload', true);
 
-        $insertImgs = $menu->insertMenuImages($menu_id, $imgs);
-        if ($insertImgs)
-        {
-            $this->set('new_imgs', $imgs);
-        }
+            $tags = $menu->getMenuTags($menu_id);
+            $this->set('tags', $tags);
 
+            $path = OS_MENU_PATH . DS . $menu_id;
+            $imgs = Util::handle_upload_files($path);
+
+            if (empty($imgs))
+            {
+                $this->set('is_err', true);
+                return;
+            }
+
+            $insertImgs = $menu->insertMenuImages($menu_id, $imgs);
+
+            if ($insertImgs)
+            {
+                $this->set('new_imgs', $imgs);
+
+                if (!empty($id_names['section_id']) && !empty($id_names['item_id']))
+                {
+                    $taggits[] = array('sid'=>$id_names['section_id'], 'mid'=>$id_names['item_id']);
+
+                    foreach ($imgs as $img)
+                    {
+                        $menu->updateTaggits($menu_id, $img['filename'], $taggits, null);
+                    }
+                }
+            }
+        }
     }
 }

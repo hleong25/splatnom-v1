@@ -3,26 +3,26 @@ $params = array
 (
 //    'id'=>0,
 //    'info'=>false,
-    'menu_url'=>'/home/menu',
     'is_upload'=>false,
     'is_err'=>false,
     'new_imgs'=>array(),
-    'goback'=>'',
+    'tags'=>array(),
 );
 
 extract($params, EXTR_SKIP);
 
 ?>
 <div class="pg info">
-    <span>Upload images for <?=$info['name']?>.</span>
-    <br/>
-    <a href="<?=$menu_url?>">Go back to menu</a>
+    <span>Adding images to <a href="/menu/view/<?=$menu_id?>"><?=$menu_str?></a></span>
+    <?php if (!empty($section_str) && !empty($item_str)): ?>
+        <br/>
+        <span>Tagging them to <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>">(<?=$section_str?>) <?=$item_str?></a></span>
+    <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
     <br/>
     <br/>
 </div>
 <div class="pg upload">
 <form id="upload_photos" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
-    <input class="back" type="hidden" name="back" value="<?=$goback?>" />
     <div class="new_img">
         <input class="file" type="file" name="imgs[]"/>
     </div>
@@ -47,13 +47,8 @@ extract($params, EXTR_SKIP);
 <?php if ($is_upload): ?>
 <div class="pg msg">
     <br/>
-    <br/>
     <?php if ($is_err): ?>
         <span class="err" style="">Failed to upload image.  Try again or notify the admin!</span>
-    <?php else: ?>
-        <span>Thanks for uploading these images!!!</span>
-        <br/>
-        <a href="<?=$menu_url?>">Go back to menu</a>
     <?php endif; // if ($is_err) ?>
 </div>
 <?php if (!empty($new_imgs)): ?>
@@ -78,3 +73,11 @@ EOHTML;
 </div>
 <?php endif; //if (!empty($new_imgs)): ?>
 <?php endif; // if ($is_upload) ?>
+<script type="text/javascript">
+    <?php
+        // TODO: extract parameter in script tag
+        //       http://wowmotty.blogspot.com/2010/04/get-parameters-from-your-script-tag.html
+        //       http://feather.elektrum.org/book/src.html
+    ?>
+    var menu_tags = <?=json_encode($tags)?>;
+</script>

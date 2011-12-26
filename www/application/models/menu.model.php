@@ -1483,6 +1483,8 @@ EOQ;
 
     function addTaggits($menu_id, $img_file, $taggits)
     {
+        if (count($taggits) === 0) return true;
+
         $img_query =<<<EOQ
             SELECT id
             FROM tblMenuImages
@@ -1537,6 +1539,8 @@ EOQ;
 
     function removeTaggits($menu_id, $img_file, $taggits)
     {
+        if (count($taggits) === 0) return true;
+
         $img_query =<<<EOQ
             SELECT id
             FROM tblMenuImages

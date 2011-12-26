@@ -28,6 +28,15 @@ extract($params, EXTR_SKIP);
     <?php if (!empty($item_str)): ?>
         <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>"><?=$item_str?></a>
     <?php endif; //if (!empty($item_str): ?>
+    <br/>
+    <?php if (!empty($menu_str)): ?>
+        <br/>
+        <?php if (!empty($section_str) && !empty($item_str)): ?>
+            <a class="button" href="/images/upload/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>">Add images to (<?=$section_str?>) <?=$item_str?></a>
+        <?php else: //if (!empty($section_str) && !empty($item_str)): ?>
+            <a class="button" href="/images/upload/<?=$menu_id?>">Add images to <?=$menu_str?></a>
+        <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
+    <?php endif; //if (!empty($menu_str): ?>
 </div>
 <?php if (empty($imgs)): ?>
 <div class="pg">

@@ -182,7 +182,7 @@ EOHTML;
                             </div>
                         </div>
                         <div class="g_info">
-                            <div class="label"><a href="{$view_url}">{$item['label']}</a></div>
+                            <div class="label">{$item['label']}</div>
                             <div class="pictures"><a href="{$item_photo_url}"><img src="/img/camera.png" /></a></div>
                             <div class="comments"><a href="{$view_url}"><img src="/img/balloon.png" /></a></div>
                             <div class="price">{$item['price']}</div>
