@@ -36,6 +36,8 @@ function init()
 //    $('div.menu_item input:image.menuitem_remove').on('click', menuitem_remove);
 
     $('a.button').button();
+    $('input:button').button();
+    $('input:submit').button();
 }
 
 function purgeMenu(purgeUrl)

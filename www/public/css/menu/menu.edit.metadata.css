@@ -12,7 +12,7 @@ img.menu{
     padding-top: 3px;
 }
 div.heading{
-    font-size: 18px;
+    font-size: 1.2em;
     background-color: silver;
     width: 100%;
     padding-right: 3px;
@@ -22,7 +22,7 @@ div.heading{
     margin-bottom: 3px;
 }
 div.subheading{
-    font-size: 14px;
+    font-size: 0.9em;
     background-color: silver;
     width: 100%;
     padding-right: 3px;
@@ -65,8 +65,11 @@ span.menu_group_info
 {
     font-size: small;
 }
+input[type=button],
+input[type=submit],
 a.button {
-    font-size: 0.8em;
+    font-size: 0.7em;
+    padding: 0.2em 1em !important;
 }
 div.new_imgs
 {
