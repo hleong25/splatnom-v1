@@ -41,12 +41,16 @@ EOHTML;
     foreach ($ready_menus as $menu)
     {
         $menu_id = $menu['id'];
+        $name = $menu['name'];
+        $slug = Util::slugify($name);
 
-        $link = '<a href="/menu/view/'.$menu_id.'">%s</a>';
+        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
 
-        $id = sprintf($link, $menu['id']);
-        $name = sprintf($link, $menu['name']);
-        $address = sprintf($link, $menu['address']);
+        $id = sprintf($link, $slug, $menu['id']);
+        $name = sprintf($link, $slug, $name);
+        $address = sprintf($link, $slug, $menu['address']);
+
+        $slug = Util::slugify($name);
 
         echo<<<EOHTML
             <tr>

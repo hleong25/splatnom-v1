@@ -16,25 +16,32 @@ $params = array
 
 extract($params, EXTR_SKIP);
 
+$slug = array
+(
+    'menu'=>Util::slugify($menu_str),
+    'section'=>Util::slugify($section_str),
+    'item'=>Util::slugify($item_str),
+);
+
 ?>
 <div class="pg menu_nav">
-    <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>">Menu</a>
+    <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>">Menu</a>
     <?php if (!empty($menu_str)): ?>
-        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>"><?=$menu_str?></a>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a>
     <?php endif; //if (!empty($menu_str): ?>
     <?php if (!empty($section_str)): ?>
-        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>"><?=$section_str?></a>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>"><?=$section_str?></a>
     <?php endif; //if (!empty($section_str): ?>
     <?php if (!empty($item_str)): ?>
-        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>"><?=$item_str?></a>
+        <span class="menu_subnav">&raquo;</span> <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>"><?=$item_str?></a>
     <?php endif; //if (!empty($item_str): ?>
     <br/>
     <?php if ($is_logged_in && !empty($menu_str)): ?>
         <br/>
         <?php if (!empty($section_str) && !empty($item_str)): ?>
-            <a class="button" href="/images/upload/<?=$menu_id?>/<?=$section_id?>/<?=$item_id?>">Add images to (<?=$section_str?>) <?=$item_str?></a>
+            <a class="button" href="/images/upload/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">Add images to (<?=$section_str?>) <?=$item_str?></a>
         <?php else: //if (!empty($section_str) && !empty($item_str)): ?>
-            <a class="button" href="/images/upload/<?=$menu_id?>">Add images to <?=$menu_str?></a>
+            <a class="button" href="/images/upload/<?=$menu_id?>-<?=$slug['menu']?>">Add images to <?=$menu_str?></a>
         <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
     <?php endif; //if (!empty($menu_str): ?>
 </div>
@@ -96,7 +103,7 @@ EOHTML;
             <?php foreach ($taggits as $taggit): ?>
                 <div class="tag_group">
                     <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
-                    <a href="/menu/images/<?=$menu_id?>/<?=$taggit['sid']?>/<?=$taggit['mid']?>">
+                    <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
                         <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
                     </a>
                     <input type="hidden" name="add[]" value="1"/>
@@ -111,7 +118,7 @@ EOHTML;
         <?php foreach ($taggits as $taggit): ?>
             <div class="tag_group">
                 <span>&hearts;</span>
-                <a href="/menu/images/<?=$menu_id?>/<?=$taggit['sid']?>/<?=$taggit['mid']?>">
+                <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
                     <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
                 </a>
             </div>

@@ -96,6 +96,8 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
     return array($forkit_url, $forkit_css, $forkit_cnt);
 }
 
+$slug_menu_name = Util::slugify($info['name']);
+
 ?>
 <?php if ($is_metadata): ?>
 <div class="pg pg_bottom ismdt">
@@ -131,7 +133,7 @@ EOHTML;
 <div class="pg upload">
     <br/>
     <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
-    <a class="button" href="/menu/images/<?=$id?>">View photos</a>
+    <a class="button" href="/menu/images/<?=$id?>-<?=$slug_menu_name?>">View photos</a>
     <br/>
     <br/>
     <a class="button" href="/menu/comments/<?=$id?>">View comments</a>
@@ -141,14 +143,17 @@ EOHTML;
 <div class="pg menus">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
+    $section_name = $mdt['name'];
+    $slug_section_name = Util::slugify($section_name);
 
-    $section_comment_url = "/menu/comments/{$id}/{$section_id}";
-    $section_photo_url = "/menu/images/{$id}/{$section_id}";
+    $base_section_url = "{$id}-{$slug_menu_name}/{$section_id}-{$slug_section_name}";
+    $section_comment_url = "/menu/comments/{$base_section_url}";
+    $section_photo_url = "/menu/images/{$base_section_url}";
 ?>
     <div class="menu">
         <div class="info heading">
             <div class="h_name">
-                <?=$mdt['name']?>
+                <?=$section_name?>
                 <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a>
                 <a href="<?=$section_comment_url?>"><img src="/img/balloon.png" /></a>
             </div>
@@ -163,6 +168,8 @@ EOHTML;
                 $css = $b_alt ? 'zalt' : '';
 
                 $metadata_id = $item['metadata_id'];
+                $metadata_label = $item['label'];
+                $slug_metadata_label = Util::slugify($metadata_label);
 
                 // notes
                 $notes_css = empty($item['notes']) ? 'empty' : '';
@@ -174,8 +181,9 @@ EOHTML;
                     $forkit_cnt['after'] = '';
 
                 // item links
-                $item_comment_url = "/menu/comments/{$id}/{$section_id}/{$metadata_id}";
-                $item_photo_url = "/menu/images/{$id}/{$section_id}/{$metadata_id}";
+                $base_item_url = "{$id}-{$slug_menu_name}/{$section_id}-{$slug_section_name}/{$metadata_id}-{$slug_metadata_label}";
+                $item_comment_url = "/menu/comments/{$base_item_url}";
+                $item_photo_url = "/menu/images/{$base_item_url}";
 
                 echo<<<EOHTML
                     <div class="group {$css}">
@@ -190,7 +198,7 @@ EOHTML;
                             </div>
                         </div>
                         <div class="g_info">
-                            <div class="label">{$item['label']}</div>
+                            <div class="label">{$metadata_label}</div>
                             <div class="pictures"><a href="{$item_photo_url}"><img src="/img/camera.png" /></a></div>
                             <div class="comments"><a href="{$item_comment_url}"><img src="/img/balloon.png" /></a></div>
                             <div class="price">{$item['price']}</div>

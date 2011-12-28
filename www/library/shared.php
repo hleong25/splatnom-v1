@@ -74,10 +74,16 @@ function callHook ()
     $urlArray = array();
     $urlArray = explode("/", $get_url);
 
+/*
     $name = $urlArray[0];
     array_shift($urlArray);
     $action = 'onAction_' . @$urlArray[0];
     array_shift($urlArray);
+    $queryString = $urlArray;
+*/
+
+    $name = array_shift($urlArray);
+    $action = 'onAction_' . array_shift($urlArray);
     $queryString = $urlArray;
 
     $name = ucwords(trim($name));
@@ -108,6 +114,13 @@ function callHook ()
         $dispatch = new $ctrl($name, $action);
         if (method_exists($ctrl, $action))
         {
+            // unseo query string
+            foreach ($queryString as &$qs)
+            {
+                $unseo = Util::getUnseo($qs);
+                $qs = array_shift($unseo);
+            }
+
 //            call_user_func_array(array($dispatch, $action), array($queryString));
             call_user_func_array(array($dispatch, $action), $queryString);
         }
