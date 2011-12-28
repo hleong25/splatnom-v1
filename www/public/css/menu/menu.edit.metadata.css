@@ -68,3 +68,10 @@ span.menu_group_info
 a.button {
     font-size: 0.8em;
 }
+div.new_imgs
+{
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden; /* prevent horizontal scrollbar */
+    padding-right: 20px; /* add padding to account for vertical scrollbar */
+}
