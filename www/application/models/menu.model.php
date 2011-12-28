@@ -1399,7 +1399,7 @@ EOQ;
         */
 
         $query =<<<EOQ
-            SELECT
+            SELECT DISTINCT
                 i.id,
                 i.file_img AS filename,
                 i.width,
