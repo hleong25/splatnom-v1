@@ -130,13 +130,13 @@ EOHTML;
     }
 ?>
 </div>
-<div class="pg upload">
+<div class="pg user_actions">
     <br/>
-    <a class="button" href="/images/upload/<?=$id?>">Add photos</a>
+    <a class="button" href="/images/upload/<?=$id?>-<?=$slug_menu_name?>">Add photos</a>
     <a class="button" href="/menu/images/<?=$id?>-<?=$slug_menu_name?>">View photos</a>
     <br/>
     <br/>
-    <a class="button" href="/menu/comments/<?=$id?>">View comments</a>
+    <a class="button" href="/menu/comments/<?=$id?>-<?=$slug_menu_name?>">View comments</a>
     <br/>
     <br/>
 </div>
