@@ -14,6 +14,6 @@ flush();
     <div class="pg">
         <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
         <br/>
-        <span style="font-size: 0.75em;">find. look. eat.</span>
+        <span style="font-size: 0.75em;">find. look. eat. comment.</span>
     </div>
 </div>

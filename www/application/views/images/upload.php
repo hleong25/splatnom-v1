@@ -17,8 +17,6 @@ $params = array
 
 extract($params, EXTR_SKIP);
 
-$slug_menu_name = Util::slugify($info['name']);
-
 $slug = array
 (
     'menu'=>Util::slugify($menu_str),

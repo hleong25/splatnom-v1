@@ -136,6 +136,7 @@ EOHTML;
     <a class="button" href="/menu/images/<?=$id?>-<?=$slug_menu_name?>">View photos</a>
     <br/>
     <br/>
+    <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug_menu_name?>">Add comments</a>
     <a class="button" href="/menu/comments/<?=$id?>-<?=$slug_menu_name?>">View comments</a>
     <br/>
     <br/>

@@ -799,4 +799,26 @@ class MenuController
         $this->set('section_str', $id_names['section']);
         $this->set('item_str', $id_names['item']);
     }
+
+    function onAction_edit_comments($menu_id=null, $section_id=null, $item_id=null)
+    {
+        if ($menu_id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $menu = $this->Menu;
+        $menu_info = $menu->getMenuInfo($menu_id);
+
+        $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
+
+        $this->set('menu_id', $id_names['menu_id']);
+        $this->set('section_id', $id_names['section_id']);
+        $this->set('item_id', $id_names['item_id']);
+
+        $this->set('menu_str', $id_names['menu']);
+        $this->set('section_str', $id_names['section']);
+        $this->set('item_str', $id_names['item']);
+    }
 }

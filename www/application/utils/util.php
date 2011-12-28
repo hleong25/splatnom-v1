@@ -101,7 +101,7 @@ class Util
         return $uploader->handle_upload_files();
     }
 
-    // Modifies a string to remove al non ASCII characters and spaces.
+    // Modifies a string to remove all non ASCII characters and spaces.
     // http://sourcecookbook.com/en/recipes/8/function-to-slugify-strings-in-php
     static function slugify($text)
     {
