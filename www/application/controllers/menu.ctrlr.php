@@ -808,8 +808,22 @@ class MenuController
             return;
         }
 
+        $user_id = Util::getUserId();
+
         $menu = $this->Menu;
         $menu_info = $menu->getMenuInfo($menu_id);
+
+        if (empty($menu_id) || empty($user_id))
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $this->addJqueryUi();
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('menu/menu.edit.comments');
+
+        $this->addCss('menu/menu.edit.comments');
 
         $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
 
@@ -820,5 +834,38 @@ class MenuController
         $this->set('menu_str', $id_names['menu']);
         $this->set('section_str', $id_names['section']);
         $this->set('item_str', $id_names['item']);
+
+        $tags = $menu->getMenuTags($menu_id);
+        $this->set('tags', $tags);
+
+        if (empty($_POST))
+        {
+            return;
+        }
+
+        $post_mid = $_POST['mid'];
+        $post_cid = $_POST['cid'];
+        $post_comments = $_POST['comments'];
+
+        $this->set('post_comments', $post_comments);
+
+        // validate checks...
+        if ($post_mid != $menu_id)
+        {
+            // shouldn't be here... but if it does, log it
+            Util::logit("Edit comment post_mid({}) != menu_id({})", __FILE__, __LINE__);
+            $this->set('err_msg', 'Failed to add comment.');
+            return;
+        }
+
+        // finally... lets add/modify the comment
+        $comment_id = $menu->updateMenuComments($post_cid, $menu_id, $user_id, $post_comments);
+        if (empty($comment_id))
+        {
+            $this->set('err_msg', 'Failed to add comment.');
+            return;
+        }
+
+        $this->set('comment_id', $comment_id);
     }
 }

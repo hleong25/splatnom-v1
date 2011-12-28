@@ -1,0 +1,10 @@
+textarea.user_comment
+{
+    width: 500px;
+    height: 10em;
+}
+input[type=button],
+input[type=submit]{
+    font-size: 0.7em;
+    padding: 0.2em 1em !important;
+}

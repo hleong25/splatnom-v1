@@ -661,7 +661,7 @@ EOQ;
 EOQ;
 
         $prepareHack = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
+        if (!$prepareHack) return false;
 
         $insertSections = array();
         foreach ($datas as &$section)
@@ -1655,5 +1655,63 @@ EOQ;
             return false;
 
         return $row;
+    }
+
+    function updateMenuComments($comment_id, $menu_id, $user_id, $comment)
+    {
+        $is_insert = $comment_id < 0;
+
+        if ($is_insert)
+        {
+            $new_id = $this->insertMenuComments($menu_id, $user_id, $comment);
+            return $new_id;
+        }
+
+        $query =<<<EOQ
+            UPDATE tblMenuComments
+            SET
+                edit_ts = CURRENT_TIMESTAMP,
+                comment = :comment
+            WHERE comment_id = :comment_id
+            AND menu_id = :menu_id
+            AND user_id = :user_id
+EOQ;
+
+        $params = array
+        (
+            ':comment_id' => $comment_id,
+            ':menu_id' => $menu_id,
+            ':user_id' => $user_id,
+            ':comment' => $comment,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return $comment_id;
+    }
+
+    function insertMenuComments($menu_id, $user_id, $comment)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuComments
+            SET
+                menu_id = :menu_id,
+                user_id = :user_id,
+                comment = :comment
+EOQ;
+
+        $params = array
+        (
+            ':menu_id' => $menu_id,
+            ':user_id' => $user_id,
+            ':comment' => $comment,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $new_id = $this->lastInsertId();
+        return $new_id;
     }
 }
