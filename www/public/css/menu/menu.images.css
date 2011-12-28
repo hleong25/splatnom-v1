@@ -58,3 +58,11 @@ input.save_taggits
 {
     font-size: 0.8em;
 }
+img.pv_img
+{
+    margin: 0.5em;
+}
+img.selected_pv_img
+{
+    border: 0.3em solid red;
+}

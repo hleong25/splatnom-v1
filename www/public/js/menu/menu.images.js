@@ -20,6 +20,10 @@ function init()
     acTemplate = $('div.autocomplete > div.template');
 
     $('input#tags').focus();
+
+    // NOTE: load has issues with images and cached images
+    //       http://api.jquery.com/load-event/
+    $(window).load(function(){goToSelectedThumbnail();});
 }
 
 function customAutoComplete()
@@ -80,6 +84,17 @@ function taggit_remove(item)
             .val('')
             .end()
     ;
+}
+
+function goToSelectedThumbnail()
+{
+    var scrollTo = $('img.selected_pv_img');
+    var container = $('div.imgs');
+
+    container.scrollTop
+    (
+        scrollTo.offset().top - container.offset().top + container.scrollTop()
+    );
 }
 
 })();

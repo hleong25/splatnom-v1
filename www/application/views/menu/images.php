@@ -56,8 +56,12 @@ extract($params, EXTR_SKIP);
 
         $thumbnail_link = "/images/get/menu/sm/{$menu_id}/{$filename}";
 
+        $selected_pv_css = '';
+        if ($selected_img['filename'] === $filename)
+            $selected_pv_css = 'selected_pv_img';
+
         echo<<<EOHTML
-            <a href="$img_link"><img class="pv_img" src="$thumbnail_link" /></a>
+            <a href="{$img_link}"><img class="pv_img {$selected_pv_css}" src="{$thumbnail_link}" /></a>
 EOHTML;
     }
 ?>
@@ -123,7 +127,9 @@ EOHTML;
 <div class="clear"></div>
 <?php endif; //if (empty($imgs)): ?>
 <div class="pg comments">
-    Add comments
+    <?php
+        // TODO: Add comments
+    ?>
 </div>
 <script type="text/javascript">
     <?php
