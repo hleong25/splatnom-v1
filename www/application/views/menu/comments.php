@@ -21,7 +21,7 @@ $slug = array
 
 ?>
 <div class="pg menu_nav">
-    <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>">Menu</a>
+    <span class="menu_subnav">&raquo;</span> <a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>">Menu</a>
     <?php if (!empty($menu_str)): ?>
         <span class="menu_subnav">&raquo;</span> <a href="/menu/comments/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a>
     <?php endif; //if (!empty($menu_str): ?>

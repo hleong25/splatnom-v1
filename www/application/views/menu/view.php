@@ -96,7 +96,12 @@ function forkit_helper($forkits, $id, $section_id, $metadata_id)
     return array($forkit_url, $forkit_css, $forkit_cnt);
 }
 
-$slug_menu_name = Util::slugify($info['name']);
+$slug = array
+(
+    'menu'=>Util::slugify($info['name']),
+    'section'=>'',
+    'item'=>'',
+);
 
 ?>
 <?php if ($is_metadata): ?>
@@ -132,12 +137,12 @@ EOHTML;
 </div>
 <div class="pg user_actions">
     <br/>
-    <a class="button" href="/images/upload/<?=$id?>-<?=$slug_menu_name?>">Add photos</a>
-    <a class="button" href="/menu/images/<?=$id?>-<?=$slug_menu_name?>">View photos</a>
+    <a class="button" href="/images/upload/<?=$id?>-<?=$slug['menu']?>">Add photos</a>
+    <a class="button" href="/menu/images/<?=$id?>-<?=$slug['menu']?>">View photos</a>
     <br/>
     <br/>
-    <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug_menu_name?>">Add comments</a>
-    <a class="button" href="/menu/comments/<?=$id?>-<?=$slug_menu_name?>">View comments</a>
+    <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
+    <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
     <br/>
     <br/>
 </div>
@@ -145,9 +150,9 @@ EOHTML;
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
     $section_name = $mdt['name'];
-    $slug_section_name = Util::slugify($section_name);
+    $slug['section'] = Util::slugify($section_name);
 
-    $base_section_url = "{$id}-{$slug_menu_name}/{$section_id}-{$slug_section_name}";
+    $base_section_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}";
     $section_comment_url = "/menu/comments/{$base_section_url}";
     $section_photo_url = "/menu/images/{$base_section_url}";
 ?>
@@ -170,7 +175,7 @@ EOHTML;
 
                 $metadata_id = $item['metadata_id'];
                 $metadata_label = $item['label'];
-                $slug_metadata_label = Util::slugify($metadata_label);
+                $slug['item'] = Util::slugify($metadata_label);
 
                 // notes
                 $notes_css = empty($item['notes']) ? 'empty' : '';
@@ -182,7 +187,7 @@ EOHTML;
                     $forkit_cnt['after'] = '';
 
                 // item links
-                $base_item_url = "{$id}-{$slug_menu_name}/{$section_id}-{$slug_section_name}/{$metadata_id}-{$slug_metadata_label}";
+                $base_item_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}/{$metadata_id}-{$slug['item']}";
                 $item_comment_url = "/menu/comments/{$base_item_url}";
                 $item_photo_url = "/menu/images/{$base_item_url}";
 
