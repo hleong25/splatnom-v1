@@ -90,7 +90,6 @@ EOHTML;
             <label for="tags">This looks delicious!!! What's that? </label><br/>
             <input type="textbox" id="tags" class="jq_watermark" title="taggit"></input>
             <div class="tag_group template">
-                <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
                 <span class="label"></span>
                 <input type="hidden" name="add[]" value="1"/>
                 <input type="hidden" name="sid[]" value=""/>
@@ -100,9 +99,10 @@ EOHTML;
         <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/<?=$menu_id?>/<?=$selected_img['filename']?>" >
             <input type="hidden" name="backurl" value="<?=$myurl?>"/>
             <input class="save_taggits" type="submit" value="Save!"/>
+            <br/>
+            <div class="current_tags">
             <?php foreach ($taggits as $taggit): ?>
                 <div class="tag_group">
-                    <img class="remove_tag" src="/img/minus.png" onclick="return js_menu.taggit_remove(this);"/>
                     <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
                         <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
                     </a>
@@ -111,13 +111,13 @@ EOHTML;
                     <input type="hidden" name="mid[]" value="<?=$taggit['mid']?>"/>
                 </div>
             <?php endforeach; //foreach ($taggits as $taggit): ?>
+            </div>
         </form>
     </div>
     <?php else: //if ($is_logged_in): ?>
-    <div class="tag">
+    <div class="current_tags">
         <?php foreach ($taggits as $taggit): ?>
-            <div class="tag_group">
-                <span>&hearts;</span>
+            <div class="tag_group need_login">
                 <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
                     <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
                 </a>

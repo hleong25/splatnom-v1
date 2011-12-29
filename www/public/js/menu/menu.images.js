@@ -1,6 +1,6 @@
 var js_menu = (function() {
 
-var tagForm = null;
+var div_taggits = null;
 var acTemplate = null;
 
 init();
@@ -16,8 +16,15 @@ function init()
 
     customAutoComplete();
 
-    tagForm = $('form.taggit');
+    div_taggits = $('div.current_tags');
     acTemplate = $('div.autocomplete > div.template');
+
+    acTemplate.button({icons: {primary: 'ui-icon-close'}});
+
+    $('div.tag_group')
+        .button({icons: {primary: 'ui-icon-close'}})
+        .live('click', taggit_remove);
+    ;
 
     $('input#tags').focus();
 
@@ -60,7 +67,7 @@ function acSelect(event, ui)
 
     acTemplate
         .clone()
-        .appendTo(tagForm)
+        .appendTo(div_taggits)
         .removeClass('template')
         .find('input[name="sid[]"]')
             .val(item.sid)
@@ -76,7 +83,18 @@ function acSelect(event, ui)
 
 function taggit_remove(item)
 {
-    var objThis = $(item).parents('div.tag_group');
+    var srcItem = $(event.srcElement);
+
+    if (!srcItem.hasClass('ui-icon-close'))
+        return;
+
+    var objThis = $(srcItem).parents('div.tag_group');
+
+    if (objThis.hasClass('need_login'))
+    {
+        alert('You must be logged in to untaggit');
+        return;
+    }
 
     objThis
         .hide()
