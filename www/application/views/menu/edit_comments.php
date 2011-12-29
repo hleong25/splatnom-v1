@@ -30,13 +30,28 @@ $slug = array
         <span>Tagging them to <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">(<?=$section_str?>) <?=$item_str?></a></span>
     <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
 </div>
+<br/>
 <form id="edit_comments" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
 <div class="pg my_comments">
+    <input class="save_comment" type="submit" value="Save!"/>
+    <br/>
     <input type="hidden" name="mid" value="<?=$menu_id?>"/>
     <input type="hidden" name="cid" value="<?=$comment_id?>"/>
     <textarea class="user_comment jq_watermark" name="comments" title="Tell me something something about this."><?=$post_comments?></textarea>
     <br/>
-    <input class="save_comment" type="submit" value="Save!"/>
+    <br/>
+    <div class="autocomplete">
+        <label for="tags">You make this sound soooo goodo!!  Tell me what's in it!</label><br/>
+        <input type="textbox" id="tags" class="jq_watermark" title="taggit"></input>
+        <div class="tag_group template">
+            <span class="label"></span>
+            <input type="hidden" name="add[]" value="1"/>
+            <input type="hidden" name="sid[]" value=""/>
+            <input type="hidden" name="mid[]" value=""/>
+        </div>
+    </div>
+    <div class="taggits">
+    </div>
 </div>
 </form>
 <script type="text/javascript">

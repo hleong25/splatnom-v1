@@ -810,10 +810,16 @@ class MenuController
 
         $user_id = Util::getUserId();
 
+        if (empty($user_id))
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
         $menu = $this->Menu;
         $menu_info = $menu->getMenuInfo($menu_id);
 
-        if (empty($menu_id) || empty($user_id))
+        if (empty($menu_id))
         {
             $this->redirect('/home/main/');
             return;
