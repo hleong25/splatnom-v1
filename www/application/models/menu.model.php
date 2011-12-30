@@ -1405,7 +1405,7 @@ EOQ;
                 i.width,
                 i.height
             FROM tblMenuImages i
-            INNER JOIN tblTaggits t ON i.menu_id = t.menu_id AND i.id = t.img_id
+            INNER JOIN tblTaggitsImage t ON i.menu_id = t.menu_id AND i.id = t.img_id
             WHERE i.menu_id = :menu_id
             AND t.section_id = :section_id
 EOQ;
@@ -1429,7 +1429,7 @@ EOQ;
                 i.width,
                 i.height
             FROM tblMenuImages i
-            INNER JOIN tblTaggits t ON i.menu_id = t.menu_id AND i.id = t.img_id
+            INNER JOIN tblTaggitsImage t ON i.menu_id = t.menu_id AND i.id = t.img_id
             WHERE i.menu_id = :menu_id
             AND t.section_id = :section_id
             AND t.metadata_id = :item_id
@@ -1482,21 +1482,21 @@ EOQ;
         return false;
     }
 
-    function updateTaggits($menu_id, $img_file, $add_taggits, $remove_taggits)
+    function updateTaggitsImage($menu_id, $img_file, $add_taggits, $remove_taggits)
     {
         $this->beginTransaction();
 
-        $bCommit = $this->removeTaggits($menu_id, $img_file, $remove_taggits);
+        $bCommit = $this->removeTaggitsImage($menu_id, $img_file, $remove_taggits);
         if (!$bCommit) return false;
 
-        $bCommit = $this->addTaggits($menu_id, $img_file, $add_taggits);
+        $bCommit = $this->addTaggitsImage($menu_id, $img_file, $add_taggits);
         if (!$bCommit) return false;
 
         $this->commit();
         return true;
     }
 
-    function addTaggits($menu_id, $img_file, $taggits)
+    function addTaggitsImage($menu_id, $img_file, $taggits)
     {
         if (count($taggits) === 0) return true;
 
@@ -1508,7 +1508,7 @@ EOQ;
 EOQ;
 
         $query =<<<EOQ
-            INSERT INTO tblTaggits(
+            INSERT INTO tblTaggitsImage(
                 menu_id,
                 section_id,
                 metadata_id,
@@ -1552,7 +1552,7 @@ EOQ;
         return true;
     }
 
-    function removeTaggits($menu_id, $img_file, $taggits)
+    function removeTaggitsImage($menu_id, $img_file, $taggits)
     {
         if (count($taggits) === 0) return true;
 
@@ -1564,7 +1564,7 @@ EOQ;
 EOQ;
 
         $query =<<<EOQ
-            DELETE FROM tblTaggits
+            DELETE FROM tblTaggitsImage
             WHERE menu_id = :menu_id
             AND section_id = :section_id
             AND metadata_id = :metadata_id
@@ -1601,7 +1601,7 @@ EOQ;
                 s.name AS section,
                 m.metadata_id AS mid,
                 m.label AS metadata
-            FROM tblTaggits t
+            FROM tblTaggitsImage t
             INNER JOIN tblMenuImages i ON t.menu_id = i.menu_id AND t.img_id = i.id
             INNER JOIN tblMenuSection s ON t.section_id = s.section_id
             INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
@@ -1657,13 +1657,13 @@ EOQ;
         return $row;
     }
 
-    function updateMenuComments($comment_id, $menu_id, $user_id, $comment)
+    function updateMenuComments($comment_id, $menu_id, $user_id, $img_id, $comment)
     {
         $is_insert = $comment_id < 0;
 
         if ($is_insert)
         {
-            $new_id = $this->insertMenuComments($menu_id, $user_id, $comment);
+            $new_id = $this->insertMenuComments($menu_id, $user_id, $img_id, $comment);
             return $new_id;
         }
 
@@ -1691,13 +1691,14 @@ EOQ;
         return $comment_id;
     }
 
-    function insertMenuComments($menu_id, $user_id, $comment)
+    function insertMenuComments($menu_id, $user_id, $img_id, $comment)
     {
         $query =<<<EOQ
             INSERT INTO tblMenuComments
             SET
                 menu_id = :menu_id,
                 user_id = :user_id,
+                img_id = :img_id,
                 comment = :comment
 EOQ;
 
@@ -1705,6 +1706,7 @@ EOQ;
         (
             ':menu_id' => $menu_id,
             ':user_id' => $user_id,
+            ':img_id' => $img_id,
             ':comment' => $comment,
         );
 
@@ -1713,5 +1715,125 @@ EOQ;
 
         $new_id = $this->lastInsertId();
         return $new_id;
+    }
+
+    function updateTaggitsComment($menu_id, $comment_id, $add_taggits, $remove_taggits)
+    {
+        $this->beginTransaction();
+
+        $bCommit = $this->removeTaggitsComment($menu_id, $comment_id, $remove_taggits);
+        if (!$bCommit) return false;
+
+        $bCommit = $this->addTaggitsComment($menu_id, $comment_id, $add_taggits);
+        if (!$bCommit) return false;
+
+        $this->commit();
+        return true;
+    }
+
+    function addTaggitsComment($menu_id, $comment_id, $taggits)
+    {
+        if (count($taggits) === 0) return true;
+
+        $query =<<<EOQ
+            INSERT INTO tblTaggitsComment(
+                menu_id,
+                section_id,
+                metadata_id,
+                comment_id
+            ) VALUES (
+                :menu_id,
+                :section_id,
+                :metadata_id,
+                :comment_id
+            )
+            ON DUPLICATE KEY UPDATE ts = CURRENT_TIMESTAMP
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        /*
+            WARNING: The 'ignore' will NOT cause errors if the values
+            are wrong.  It will just put the default value.
+
+            Might need to do a post process thing to remove invalid
+            rows.
+        */
+
+        $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':comment_id', $comment_id);
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        foreach ($taggits as $taggit)
+        {
+            $rsts[] = $prepare->bindValue(':section_id', $taggit['sid']);
+            $rsts[] = $prepare->bindValue(':metadata_id', $taggit['mid']);
+            $rsts[] = $prepare->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
+        }
+
+        return true;
+    }
+
+    function removeTaggitsComment($menu_id, $comment_id, $taggits)
+    {
+        if (count($taggits) === 0) return true;
+
+        $query =<<<EOQ
+            DELETE FROM tblTaggitsImage
+            WHERE menu_id = :menu_id
+            AND section_id = :section_id
+            AND metadata_id = :metadata_id
+            AND comment_id = :comment_id
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':comment_id', $comment_id);
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        foreach ($taggits as $taggit)
+        {
+            $rsts[] = $prepare->bindValue(':section_id', $taggit['sid']);
+            $rsts[] = $prepare->bindValue(':metadata_id', $taggit['mid']);
+            $rsts[] = $prepare->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
+        }
+
+        return true;
+    }
+
+    function getTaggitsByCommentId($menu_id, $comment_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                s.section_id AS sid,
+                s.name AS section,
+                m.metadata_id AS mid,
+                m.label AS metadata
+            FROM tblTaggitsComment t
+            INNER JOIN tblMenuComments c ON t.menu_id = c.menu_id AND t.comment_id = c.comment_id
+            INNER JOIN tblMenuSection s ON t.section_id = s.section_id
+            INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            WHERE t.menu_id = :menu_id
+            AND c.comment_id = :comment_id
+EOQ;
+
+        $params = array(':menu_id'=>$menu_id, ':comment_id'=>$comment_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $taggits = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $taggits;
     }
 }

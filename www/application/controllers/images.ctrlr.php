@@ -141,7 +141,7 @@ class ImagesController
 
                     foreach ($imgs as $img)
                     {
-                        $menu->updateTaggits($menu_id, $img['filename'], $taggits, null);
+                        $menu->updateTaggitsImage($menu_id, $img['filename'], $taggits, null);
                     }
                 }
             }

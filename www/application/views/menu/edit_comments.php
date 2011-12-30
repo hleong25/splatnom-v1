@@ -11,6 +11,7 @@ $params = array
     'tags'=>array(),
     'comment_id'=>-1,
     'post_comments'=>'',
+    'taggits'=>array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -29,13 +30,18 @@ $slug = array
         <br/>
         <span>Tagging them to <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">(<?=$section_str?>) <?=$item_str?></a></span>
     <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
+    <?php if (!empty($err_msg)): ?>
+        <br/>
+        <br/>
+        <span class="error"><?=$err_msg?></span>
+    <?php endif; //if (!empty($err_msg)): ?>
 </div>
 <br/>
 <form id="edit_comments" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
 <div class="pg my_comments">
     <input class="save_comment" type="submit" value="Save!"/>
     <br/>
-    <input type="hidden" name="mid" value="<?=$menu_id?>"/>
+    <input type="hidden" name="menu_id" value="<?=$menu_id?>"/>
     <input type="hidden" name="cid" value="<?=$comment_id?>"/>
     <textarea class="user_comment jq_watermark" name="comments" title="Tell me something something about this."><?=$post_comments?></textarea>
     <br/>
@@ -51,6 +57,16 @@ $slug = array
         </div>
     </div>
     <div class="taggits">
+        <?php foreach ($taggits as $taggit): ?>
+            <div class="tag_group">
+                <a href="/menu/comments/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
+                    <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                </a>
+                <input type="hidden" name="add[]" value="1"/>
+                <input type="hidden" name="sid[]" value="<?=$taggit['sid']?>"/>
+                <input type="hidden" name="mid[]" value="<?=$taggit['mid']?>"/>
+            </div>
+        <?php endforeach; //foreach ($taggits as $taggit): ?>
     </div>
 </div>
 </form>

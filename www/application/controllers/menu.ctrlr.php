@@ -719,7 +719,19 @@ class MenuController
         $this->set('tags', $tags);
     }
 
-    function onAction_taggit($menu_id=null, $view_img=null)
+    function onAction_taggit($type=null, $menu_id=null, $p1=null)
+    {
+        switch ($type)
+        {
+            case 'images':
+                $this->taggit_images($menu_id, $p1);
+                break;
+            default:
+                $this->redirect('/home/main/');
+        }
+    }
+
+    function taggit_images($menu_id=null, $view_img=null)
     {
         if ($menu_id == null)
         {
@@ -743,7 +755,7 @@ class MenuController
 
         if (count($sids) != count($mids))
         {
-            $err_msg  = "Taggits for menu_id({$menu_id}) has wrong count. ";
+            $err_msg  = "Taggit images for menu_id({$menu_id}) has wrong count. ";
             $err_msg .= 'sids=>'.var_export($sids, true).' ';
             $err_msg .= 'mids=>'.var_export($mids, true);
 
@@ -772,7 +784,7 @@ class MenuController
 
         if ((count($add_taggits) > 0) || (count($remove_taggits) > 0))
         {
-            $this->Menu->updateTaggits($menu_id, $view_img, $add_taggits, $remove_taggits);
+            $this->Menu->updateTaggitsImage($menu_id, $view_img, $add_taggits, $remove_taggits);
         }
 
         $this->redirect($backurl);
@@ -849,7 +861,7 @@ class MenuController
             return;
         }
 
-        $post_mid = $_POST['mid'];
+        $post_mid = $_POST['menu_id'];
         $post_cid = $_POST['cid'];
         $post_comments = $_POST['comments'];
 
@@ -859,13 +871,13 @@ class MenuController
         if ($post_mid != $menu_id)
         {
             // shouldn't be here... but if it does, log it
-            Util::logit("Edit comment post_mid({}) != menu_id({})", __FILE__, __LINE__);
+            Util::logit("Edit comment post_mid({$post_mid}) != menu_id({$menu_id})", __FILE__, __LINE__);
             $this->set('err_msg', 'Failed to add comment.');
             return;
         }
 
         // finally... lets add/modify the comment
-        $comment_id = $menu->updateMenuComments($post_cid, $menu_id, $user_id, $post_comments);
+        $comment_id = $menu->updateMenuComments($post_cid, $menu_id, $user_id, 0 /* $img_id */, $post_comments);
         if (empty($comment_id))
         {
             $this->set('err_msg', 'Failed to add comment.');
@@ -873,5 +885,52 @@ class MenuController
         }
 
         $this->set('comment_id', $comment_id);
+
+        // handle taggits!
+        $adds = isset($_POST['add']) ? $_POST['add'] : array();
+        $sids = isset($_POST['sid']) ? $_POST['sid'] : array();
+        $mids = isset($_POST['mid']) ? $_POST['mid'] : array();
+
+        if (count($sids) != count($mids))
+        {
+            $err_msg  = "Taggit comments for menu_id({$menu_id}) has wrong count. ";
+            $err_msg .= 'sids=>'.var_export($sids, true).' ';
+            $err_msg .= 'mids=>'.var_export($mids, true);
+
+            Util::logit($err_msg, __FILE__, __LINE__);
+            $this->redirect($backurl);
+            return;
+        }
+
+        $add_taggits = array();
+        $remove_taggits = array();
+
+        foreach ($mids as $idx => $mid)
+        {
+            $sid = $sids[$idx];
+
+            // this is for the template...
+            if (empty($mid) || empty($sid))
+                continue;
+
+            $taggit = array
+            (
+                'sid' => $sid,
+                'mid' => $mid,
+            );
+
+            if (!empty($adds[$idx]))
+                $add_taggits[] = $taggit;
+            else
+                $remove_taggits[] = $taggit;
+        }
+
+        if ((count($add_taggits) > 0) || (count($remove_taggits) > 0))
+        {
+            $this->Menu->updateTaggitsComment($menu_id, $comment_id, $add_taggits, $remove_taggits);
+        }
+
+        $taggits = $menu->getTaggitsByCommentId($menu_id, $comment_id);
+        $this->set('taggits', $taggits);
     }
 }

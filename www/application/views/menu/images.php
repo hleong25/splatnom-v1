@@ -96,7 +96,7 @@ EOHTML;
                 <input type="hidden" name="mid[]" value=""/>
             </div>
         </div>
-        <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/<?=$menu_id?>/<?=$selected_img['filename']?>" >
+        <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/images/<?=$menu_id?>/<?=$selected_img['filename']?>" >
             <input type="hidden" name="backurl" value="<?=$myurl?>"/>
             <input class="save_taggits" type="submit" value="Save!"/>
             <br/>

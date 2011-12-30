@@ -20,7 +20,9 @@ function init()
     acTemplate.button({icons: {primary: 'ui-icon-close'}});
 
     $('div.taggits > div.tag_group:not(div.template)')
-        .live('click', taggit_remove);
+        .live('click', taggit_remove)
+        .button({icons: {primary: 'ui-icon-close'}})
+    ;
 }
 
 function customAutoComplete()
