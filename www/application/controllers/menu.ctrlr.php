@@ -803,6 +803,11 @@ class MenuController
 
         $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
 
+        $this->addJqueryUi();
+        $this->addJs('menu/menu.comments');
+
+        $this->addCss('menu/menu.comments');
+
         $this->set('menu_id', $id_names['menu_id']);
         $this->set('section_id', $id_names['section_id']);
         $this->set('item_id', $id_names['item_id']);
@@ -810,6 +815,34 @@ class MenuController
         $this->set('menu_str', $id_names['menu']);
         $this->set('section_str', $id_names['section']);
         $this->set('item_str', $id_names['item']);
+
+        $comments = array();
+        if (!empty($menu_id))
+        {
+            if (empty($section_id))
+            {
+                $comments = $menu->getMenuComments($menu_id);
+            }
+            else
+            {
+                if (empty($item_id))
+                    $comments = $menu->getMenuSectionComments($menu_id, $section_id);
+                else
+                    $comments = $menu->getMenuItemComments($menu_id, $section_id, $item_id);
+            }
+        }
+
+        $this->set('comments', $comments);
+
+        $comment_tags = $menu->getTaggitsCommentByMenuId($menu_id);
+
+        $taggits = array();
+        foreach ($comment_tags as $tag)
+        {
+            $comment_id = $tag['comment_id'];
+            $taggits[$comment_id][] = $tag;
+        }
+        $this->set('taggits', $taggits);
     }
 
     function onAction_edit_comments($menu_id=null, $section_id=null, $item_id=null)
@@ -855,6 +888,15 @@ class MenuController
 
         $tags = $menu->getMenuTags($menu_id);
         $this->set('tags', $tags);
+
+        $taggits[] = array
+        (
+            'sid'=>$id_names['section_id'],
+            'section'=>$id_names['section'],
+            'mid'=>$id_names['item_id'],
+            'metadata'=>$id_names['item'],
+        );
+        $this->set('taggits', $taggits);
 
         if (empty($_POST))
         {

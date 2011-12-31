@@ -97,6 +97,13 @@ class ImagesController
             return;
         }
 
+        $user_id = Util::getUserId();
+        if (empty($user_id))
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
         $this->addCss('images/images.upload');
         $this->addJs('images/images.upload');
 
@@ -129,7 +136,7 @@ class ImagesController
                 return;
             }
 
-            $insertImgs = $menu->insertMenuImages($menu_id, $imgs);
+            $insertImgs = $menu->insertMenuImages($menu_id, $user_id, $imgs);
 
             if ($insertImgs)
             {

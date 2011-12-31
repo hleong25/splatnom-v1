@@ -8,6 +8,8 @@ $params = array
     'menu_str'=>'',
     'section_str'=>'',
     'item_str'=>'',
+    'comments'=>array(),
+    'taggits'=>array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -40,3 +42,50 @@ $slug = array
         <span>Add comments to <a href="/menu/edit_comments/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a></span>
     <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
 </div>
+<div class="pg comments">
+    <?php if (empty($comments)): ?>
+        <span>Nothing to talk about... maybe you can help by adding a comment. =D</span>
+    <?php else: //if (empty($comments)): ?>
+        <br/>
+        <?php
+            foreach ($comments as $item_comment)
+            {
+                $comment_id = $item_comment['comment_id'];
+                $name = Util::formatViewingName($item_comment['username'], $item_comment['firstname'], $item_comment['lastname']);
+
+                $talk = nl2br($item_comment['comment']);
+
+                $ctaggits = '';
+                if (isset($taggits[$comment_id]))
+                {
+                    // we have taggits for this comment!
+                    foreach ($taggits[$comment_id] as $ct)
+                    {
+                        $slug_section = $ct['sid'].'-'.Util::slugify($ct['section']);
+                        $slug_metadata = $ct['mid'].'-'.Util::slugify($ct['metadata']);
+
+                        $ctaggits .=<<<EOTAGHTML
+                            <div class="taggit">
+                                <a href="/menu/comments/{$menu_id}-{$slug['menu']}/{$slug_section}/{$slug_metadata}">({$ct['section']}) {$ct['metadata']}</a>
+                            </div>
+EOTAGHTML;
+                    }
+                }
+
+                echo<<<EOHTML
+                    <div class="comment">
+                        <div class="user">
+                            {$name} says:
+                        </div>
+                        <div class="says">
+                            {$talk}
+                        </div>
+                        <div class="taggits">{$ctaggits}</div>
+                    </div>
+                    <hr/>
+EOHTML;
+            }
+        ?>
+    <?php endif; //if (empty($comments)): ?>
+</div>
+<pre class="pg"><?=isset($dbg) ? var_export($dbg) : ''?></pre>

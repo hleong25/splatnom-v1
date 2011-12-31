@@ -1333,18 +1333,20 @@ EOQ;
         return $row;
     }
 
-    function insertMenuImages($menu_id, $imgs)
+    function insertMenuImages($menu_id, $user_id, $imgs)
     {
         $this->beginTransaction();
 
         $query =<<<EOQ
             INSERT INTO tblMenuImages(
                 menu_id,
+                user_id,
                 file_img,
                 width,
                 height
             ) VALUES (
                 :menu_id,
+                :user_id,
                 :file_img,
                 :width,
                 :height
@@ -1354,12 +1356,10 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $rst = $prepare->bindValue(':menu_id', $menu_id);
-        if (!$rst)
-        {
-            $this->log_dberr($rst, __FILE__, __LINE__);
-            return false;
-        }
+        $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+        $rsts[] = $prepare->bindValue(':user_id', $user_id);
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
 
         // make imgs an array if it's not
         if (!is_array($imgs))
@@ -1829,6 +1829,155 @@ EOQ;
 EOQ;
 
         $params = array(':menu_id'=>$menu_id, ':comment_id'=>$comment_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $taggits = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $taggits;
+    }
+
+    function getMenuComments($menu_id)
+    {
+        $aes_key = SQL_AES_KEY;
+
+        $query =<<<EOQ
+            SELECT
+                c.comment_id,
+                c.reply_id,
+                c.ts,
+                c.edit_ts,
+
+                c.user_id,
+                AES_DECRYPT(u.username, '{$aes_key}_username') AS username,
+                AES_DECRYPT(u.firstname, '{$aes_key}_firstname') AS firstname,
+                AES_DECRYPT(u.lastname, '{$aes_key}_lastname') AS lastname,
+
+                c.img_id,
+                i.file_img,
+
+                c.comment
+            FROM tblMenuComments c
+            LEFT JOIN tblUsers u ON c.user_id = u.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            WHERE c.menu_id = :menu_id
+EOQ;
+
+        $params = array(':menu_id'=>$menu_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $comments = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $comments;
+    }
+
+    function getMenuSectionComments($menu_id, $section_id)
+    {
+        $aes_key = SQL_AES_KEY;
+
+        /*
+            NOTE: This might have "zombie" items because during
+            taggits, if the metadata_id is not valid, it will insert
+            a "0", so during this query, it will return it in this
+            result
+        */
+
+        $query =<<<EOQ
+            SELECT DISTINCT
+                c.comment_id,
+                c.reply_id,
+                c.ts,
+                c.edit_ts,
+
+                c.user_id,
+                AES_DECRYPT(u.username, '{$aes_key}_username') AS username,
+                AES_DECRYPT(u.firstname, '{$aes_key}_firstname') AS firstname,
+                AES_DECRYPT(u.lastname, '{$aes_key}_lastname') AS lastname,
+
+                c.img_id,
+                i.file_img,
+
+                c.comment
+            FROM tblMenuComments c
+            INNER JOIN tblTaggitsComment t ON c.menu_id = t.menu_id AND c.comment_id = t.comment_id
+            LEFT JOIN tblUsers u ON c.user_id = u.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            WHERE c.menu_id = :menu_id
+            AND t.section_id = :section_id
+EOQ;
+
+        $params = array(':menu_id' => $menu_id, ':section_id' => $section_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $comments = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $comments;
+    }
+
+    function getMenuItemComments($menu_id, $section_id, $item_id)
+    {
+        $aes_key = SQL_AES_KEY;
+
+        /*
+            NOTE: This might have "zombie" items because during
+            taggits, if the metadata_id is not valid, it will insert
+            a "0", so during this query, it will return it in this
+            result
+        */
+
+        $query =<<<EOQ
+            SELECT DISTINCT
+                c.comment_id,
+                c.reply_id,
+                c.ts,
+                c.edit_ts,
+
+                c.user_id,
+                AES_DECRYPT(u.username, '{$aes_key}_username') AS username,
+                AES_DECRYPT(u.firstname, '{$aes_key}_firstname') AS firstname,
+                AES_DECRYPT(u.lastname, '{$aes_key}_lastname') AS lastname,
+
+                c.img_id,
+                i.file_img,
+
+                c.comment
+            FROM tblMenuComments c
+            INNER JOIN tblTaggitsComment t ON c.menu_id = t.menu_id AND c.comment_id = t.comment_id
+            LEFT JOIN tblUsers u ON c.user_id = u.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            WHERE c.menu_id = :menu_id
+            AND t.section_id = :section_id
+            AND t.metadata_id = :item_id
+EOQ;
+
+        $params = array(':menu_id' => $menu_id, ':section_id' => $section_id, ':item_id' => $item_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $comments = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $comments;
+    }
+
+    function getTaggitsCommentByMenuId($menu_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                c.comment_id,
+                s.section_id AS sid,
+                s.name AS section,
+                m.metadata_id AS mid,
+                m.label AS metadata
+            FROM tblTaggitsComment t
+            INNER JOIN tblMenuComments c ON t.menu_id = c.menu_id AND t.comment_id = c.comment_id
+            INNER JOIN tblMenuSection s ON t.section_id = s.section_id
+            INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            WHERE t.menu_id = :menu_id
+EOQ;
+
+        $params = array(':menu_id'=>$menu_id);
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;

@@ -28,7 +28,7 @@ $slug = array
     <span>Adding comments to <a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a></span>
     <?php if (!empty($section_str) && !empty($item_str)): ?>
         <br/>
-        <span>Tagging them to <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">(<?=$section_str?>) <?=$item_str?></a></span>
+        <span>Tagging them to <a href="/menu/comments/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">(<?=$section_str?>) <?=$item_str?></a></span>
     <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
     <?php if (!empty($err_msg)): ?>
         <br/>

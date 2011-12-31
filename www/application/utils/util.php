@@ -136,6 +136,24 @@ class Util
         $parse = explode('-', $text);
         return $parse;
     }
+
+    static function formatViewingName($uname /*username*/, $fname /*firstname*/, $lname /*lastname*/)
+    {
+        $uname = trim($uname);
+        $fname = trim($fname);
+        $lname = trim($lname);
+
+        if (empty($fname))
+            return $uname;
+
+        if (empty($lname))
+            return $fname;
+
+        $name = "{$fname} {$lname[0]}.";
+        $name = ucwords($name);
+
+        return $name;
+    }
 }
 
 class UploadHandler
