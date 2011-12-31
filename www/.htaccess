@@ -19,6 +19,9 @@
 # NOTE: in vim, I used this to search and replace :%s/url(images/url(jquery-ui-1.8.16-redmond\/images/gc
     RewriteRule     other/jquery-ui-(.*)-(.*)/images/(.*)\.png$     public/other/jquery-ui/jquery-ui-$1.$2/css/redmond/images/$3.png    [L]
 
+# handle unit test
+    RewriteRule     ^unittest   -   [L]
+
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
     RewriteRule     (.*)    public/$1           [L]
