@@ -88,4 +88,3 @@ EOHTML;
         ?>
     <?php endif; //if (empty($comments)): ?>
 </div>
-<pre class="pg"><?=isset($dbg) ? var_export($dbg) : ''?></pre>
