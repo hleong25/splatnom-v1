@@ -1,22 +1,15 @@
 <?php
 
-class ut_login extends UnitTest
+class ut_gohome extends UnitTest
 {
-    protected $m_new_session = false;
-
     protected function getUrl()
     {
-        return 'http://www.gogomenu.com/login/main&goto=home/main';
+        return 'http://www.gogomenu.com/home/main';
     }
 
     protected function getParams()
     {
-        $fields = array
-        (
-            'lu' => 'admin',
-            'lp' => 'henry',
-        );
-
+        $fields = array();
         return $fields;
     }
 
