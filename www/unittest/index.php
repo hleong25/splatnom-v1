@@ -12,7 +12,7 @@ else
 
 function show_tests()
 {
-    $unit_tests[] = 'test_simple_login';
+    $unit_tests[] = 'test_login';
 
     foreach ($unit_tests as $ut)
     {
@@ -25,8 +25,6 @@ EOHTML;
 
 function exec_test($test)
 {
-    require_once('unit_test.php');
-
     $file = "{$test}.php";
 
     echo<<<EOHTML
@@ -37,4 +35,19 @@ EOHTML;
     echo '<pre>';
     require_once($file);
     echo '<pre>';
+}
+
+function __autoload ($className)
+{
+    $clsName = strtolower($className);
+
+    $load_file = "./ut/{$clsName}.php";
+
+    if (!file_exists($load_file))
+    {
+        error_log("unit_test file '{$load_file}' does not exists for class '{$className}'");
+        return;
+    }
+
+    require_once($load_file);
 }

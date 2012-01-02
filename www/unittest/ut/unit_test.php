@@ -1,48 +1,30 @@
 <?php
 
-require_once('../config/config.php');
+define('OS_TEMP_PATH', '/home/custom_code/www.temp');
+define('COOKIE_FILE', OS_TEMP_PATH.'/unit_test.cookie.txt');
 
-abstract class UnitTest
+abstract class Unit_Test
 {
-    private $m_curl_handle = false;
     private $m_curl_exec = '';
     private $m_curl_getinfo = '';
 
-    //protected function is_new_session(); // { return false };
+    protected $m_params = array();
+
     abstract protected function getUrl();
-    abstract protected function getParams();
     abstract protected function validate();
 
-    public function __construct($new_session = false)
+    public function __construct()
     {
-        $cookie_file = OS_TEMP_PATH.'/unit_test.cookie.txt';
-
-        $url = $this->getUrl();
-
-        //open connection
-        $ch = curl_init();
-
-        // setup the session cookie -- so we can keep being logged in
-        if ($new_session)
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
-        else
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
-
-        // setup curl
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $this->m_curl_handle = $ch;
     }
 
     public function __destruct()
     {
-        curl_close($this->get_ch());
+        // empty
     }
 
-    public function get_ch()
+    protected function isNewSession()
     {
-        return $this->m_curl_handle;
+        return false;
     }
 
     public function get_curl_exec()
@@ -57,8 +39,27 @@ abstract class UnitTest
 
     public function run()
     {
-        $ch = $this->get_ch();
+        $cookie_file = COOKIE_FILE;
 
+        $url = $this->getUrl();
+
+        //open connection
+        $ch = curl_init();
+
+        // setup the session cookie -- so we can keep being logged in
+        if ($this->isNewSession())
+            @unlink(COOKIE_FILE);
+
+        if ($this->isNewSession())
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file);
+        else
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file);
+
+        // setup curl
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // set the POST params
         $fields = $this->getParams();
         $post = $this->toPostStr($fields);
 
@@ -68,7 +69,11 @@ abstract class UnitTest
         $this->m_curl_exec = curl_exec($ch);
         $this->m_curl_getinfo = curl_getinfo($ch);
 
-        $this->validate();
+        $validate = $this->validate();
+
+        curl_close($ch);
+
+        return $validate;
     }
 
     protected function logit($obj, $file=null, $line=null)
@@ -93,5 +98,20 @@ abstract class UnitTest
         rtrim($fields_string,'&');
 
         return $fields_string;
+    }
+
+    public function set($key, $value)
+    {
+        $this->m_params[$key] = $value;
+    }
+
+    public function setParams($key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    public function getParams()
+    {
+        return $this->m_params;
     }
 }
