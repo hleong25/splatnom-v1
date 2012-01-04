@@ -13,6 +13,7 @@ else
 function show_tests()
 {
     $unit_tests[] = 'test_login';
+    $unit_tests[] = 'test_new_menu';
 
     foreach ($unit_tests as $ut)
     {
@@ -35,6 +36,18 @@ EOHTML;
     echo '<pre>';
     require_once($file);
     echo '<pre>';
+}
+
+function logit($obj, $file=null, $line=null)
+{
+    $from = "";
+    if (!empty($file) && !empty($line))
+        $from = "({$file}:{$line}): ";
+
+    if (is_string($obj))
+        echo ($from.$obj)."\n";
+    else
+        echo ($from.var_export($obj, true))."\n";
 }
 
 function __autoload ($className)

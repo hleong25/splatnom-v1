@@ -5,6 +5,8 @@ define('COOKIE_FILE', OS_TEMP_PATH.'/unit_test.cookie.txt');
 
 abstract class Unit_Test
 {
+    private $m_curl_errno = 0;
+    private $m_curl_error = '';
     private $m_curl_exec = '';
     private $m_curl_getinfo = '';
 
@@ -37,11 +39,17 @@ abstract class Unit_Test
         return $this->m_curl_getinfo;
     }
 
-    public function run()
+    public function run($verbose = false)
     {
         $cookie_file = COOKIE_FILE;
 
         $url = $this->getUrl();
+
+        if ($verbose)
+        {
+            logit($url);
+            logit($this->m_params);
+        }
 
         //open connection
         $ch = curl_init();
@@ -59,59 +67,53 @@ abstract class Unit_Test
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        // set the POST params
-        $fields = $this->getParams();
-        $post = $this->toPostStr($fields);
-
-        curl_setopt($ch, CURLOPT_POST, count($fields));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $postdata = $this->m_params;
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 
         $this->m_curl_exec = curl_exec($ch);
         $this->m_curl_getinfo = curl_getinfo($ch);
 
+        $this->m_curl_errno = curl_errno($ch);
+        $this->m_curl_error = curl_error($ch);
+
+        if ($this->m_curl_errno != 0)
+        {
+            $curl_error = "cURL errno({$this->m_curl_errno}): {$this->m_curl_error}";
+            logit($curl_error);
+            return false;
+        }
+
+
         $validate = $this->validate();
+
+        logit(curl_error($ch));
 
         curl_close($ch);
 
         return $validate;
     }
 
-    protected function logit($obj, $file=null, $line=null)
-    {
-        $from = "";
-        if (!empty($file) && !empty($line))
-            $from = "({$file}:{$line}): ";
-
-        if (is_string($obj))
-            echo ($from.$obj)."\n";
-        else
-            echo ($from.var_export($obj, true))."\n";
-    }
-
-    protected function toPostStr($params)
-    {
-        $fields_string = '';
-        foreach ($params as $key=>$value)
-        {
-            $fields_string .= $key.'='.$value.'&';
-        }
-        rtrim($fields_string,'&');
-
-        return $fields_string;
-    }
-
     public function set($key, $value)
     {
-        $this->m_params[$key] = $value;
+        if (!is_array($value))
+        {
+            $this->m_params[$key] = $value;
+        }
+        else
+        {
+            unset($this->m_params[$key]);
+
+            foreach ($value as $idx => $val)
+            {
+                $new_key = "{$key}[{$idx}]";
+                $this->m_params[$new_key] = $val;
+            }
+        }
     }
 
     public function setParams($key, $value)
     {
         $this->set($key, $value);
-    }
-
-    public function getParams()
-    {
-        return $this->m_params;
     }
 }

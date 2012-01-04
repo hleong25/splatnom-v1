@@ -92,6 +92,15 @@ class TrojanController
             );
         }
 
+        if (!class_exists('DOMDocument', false))
+        {
+            $system[] = array(
+                'req' => 'DOMDocument',
+                'fix' => 'install php xml on centos',
+                'hint' => 'yum install php-xml',
+            );
+        }
+
         if (!empty($system))
         {
             $this->m_bRender = true;
