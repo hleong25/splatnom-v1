@@ -29,12 +29,12 @@ abstract class Unit_Test
         return false;
     }
 
-    public function get_curl_exec()
+    protected function get_curl_exec()
     {
         return $this->m_curl_exec;
     }
 
-    public function get_curl_getinfo()
+    protected function get_curl_getinfo()
     {
         return $this->m_curl_getinfo;
     }
