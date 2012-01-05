@@ -12,22 +12,22 @@ else
 
 function show_tests()
 {
-    $unit_tests[] = 'test_login';
-    $unit_tests[] = 'test_new_menu';
+    $files = scandir('.');
 
-    foreach ($unit_tests as $ut)
+    foreach ($files as $file)
     {
+        if (stripos($file, 'test_') !== 0)
+            continue;
+
         echo<<<EOHTML
-            <a href="/unittest/index.php?test={$ut}">{$ut}</a>
+            <a href="/unittest/index.php?test={$file}">{$file}</a>
             <br/>
 EOHTML;
     }
 }
 
-function exec_test($test)
+function exec_test($file)
 {
-    $file = "{$test}.php";
-
     echo<<<EOHTML
         <a href="/unittest/">go main</a>
         <br/>
