@@ -44,10 +44,13 @@ function logit($obj, $file=null, $line=null)
     if (!empty($file) && !empty($line))
         $from = "({$file}:{$line}): ";
 
+    $msg = '';
     if (is_string($obj))
-        echo ($from.$obj)."\n";
+        $msg = ($from.$obj)."\n";
     else
-        echo ($from.var_export($obj, true))."\n";
+        $msg = ($from.var_export($obj, true))."\n";
+
+    echo htmlentities($msg);
 }
 
 function __autoload ($className)
