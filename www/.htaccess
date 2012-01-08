@@ -7,9 +7,13 @@
 # start rewrite engine
     RewriteEngine   on
 
-# handle localhost access
+# handle localhost access to trojan site
+# TODO: fix the trojan section to be more like unittests
     RewriteCond     %{REMOTE_ADDR}  ^127\.0\.0\.1$
     RewriteRule     ^trojan/(.*)    public/trojan/$1    [L]
+
+# handle localhost access to unit test
+    RewriteCond     %{REMOTE_ADDR}  ^127\.0\.0\.1$
     RewriteRule     ^unittest       -                   [L]
 
 # handle www.site.com/index.html, index.htm, and index.php
