@@ -61,8 +61,6 @@ function make_new_menu()
 
     if (!$res)
         echo "Failed!\n";
-    else
-        echo "Success!\n";
 
     return $res;
 }
@@ -79,8 +77,6 @@ function admin_login()
 
     if (!$res)
         echo "Failed!\n";
-    else
-        echo "Success!\n";
 
     return $res;
 }
@@ -103,8 +99,6 @@ function remove_new_menu()
         echo "Failed!\n";
         return false;
     }
-    else
-        echo "Success!\n";
 
     $last_id = $pending_menu_list->get_last_pending_id();
 
@@ -119,8 +113,6 @@ function remove_new_menu()
         echo "Failed!\n";
         return false;
     }
-    else
-        echo "Success!\n";
 
     echo 'Get last pending id to verify...';
     $pending_menu_list = new ut_pending_menu_list();
@@ -131,11 +123,10 @@ function remove_new_menu()
         echo "nothing to check... assuming success!\n";
         return true;
     }
-    else
-        echo "Success!\n";
 
     $new_last_id = $pending_menu_list->get_last_pending_id();
 
-    echo "Please check... last_id({$last_id}) ?== new_last_id({$new_last_id})";
+    echo "Please check... last_id({$last_id}) ?== new_last_id({$new_last_id})\n";
+    echo "Done\n";
     return true;
 }
