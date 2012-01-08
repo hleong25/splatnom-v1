@@ -7,6 +7,11 @@
 # start rewrite engine
     RewriteEngine   on
 
+# handle localhost access
+    RewriteCond     %{REMOTE_ADDR}  ^127\.0\.0\.1$
+    RewriteRule     ^trojan/(.*)    public/trojan/$1    [L]
+    RewriteRule     ^unittest       -                   [L]
+
 # handle www.site.com/index.html, index.htm, and index.php
     RewriteRule     ^index\.(html?|php)$        public/home/main    [L]
 
@@ -18,9 +23,6 @@
 # new jquery-ui images must be modified to be this format in css file
 # NOTE: in vim, I used this to search and replace :%s/url(images/url(jquery-ui-1.8.16-redmond\/images/gc
     RewriteRule     other/jquery-ui-(.*)-(.*)/images/(.*)\.png$     public/other/jquery-ui/jquery-ui-$1.$2/css/redmond/images/$3.png    [L]
-
-# handle unit test
-    RewriteRule     ^unittest   -   [L]
 
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
