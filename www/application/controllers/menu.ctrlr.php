@@ -251,6 +251,7 @@ class MenuController
         // set the metadata only after it goes through updating...
         // that way we get the updated IDs
         $this->set('mdts', $mdts);
+        //$this->set('dbg', $mdts);
     }
 
     function get_menu_metadata($id, &$info)

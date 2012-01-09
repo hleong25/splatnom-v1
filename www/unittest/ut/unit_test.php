@@ -84,10 +84,7 @@ abstract class Unit_Test
             return false;
         }
 
-
         $validate = $this->validate();
-
-        logit(curl_error($ch));
 
         curl_close($ch);
 

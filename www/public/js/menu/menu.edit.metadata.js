@@ -248,12 +248,12 @@ function menu_add(item)
                 .end()
             .end()
 
-        .find('div.group_info input:hidden')
+        .find('div.group_info input[type="hidden"]')
             // reset id
             .last().val('').end()
             .end()
 
-        .find('div.menu_item input:hidden')
+        .find('div.menu_item input[type="hidden"]')
             // reset id
             .last().val('').end()
             .end()
@@ -343,7 +343,7 @@ function menuitem_add(item)
         .clone()
         .insertAfter(objThis)
 
-        .find('input:hidden')
+        .find('input[type="hidden"]')
             // reset id
             .last().val('').end()
             .end()
