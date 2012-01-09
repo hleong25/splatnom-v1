@@ -890,14 +890,17 @@ class MenuController
         $tags = $menu->getMenuTags($menu_id);
         $this->set('tags', $tags);
 
-        $taggits[] = array
-        (
-            'sid'=>$id_names['section_id'],
-            'section'=>$id_names['section'],
-            'mid'=>$id_names['item_id'],
-            'metadata'=>$id_names['item'],
-        );
-        $this->set('taggits', $taggits);
+        if (!empty($id_names['section_id']) && !empty($id_names['item_id']))
+        {
+            $taggits[] = array
+            (
+                'sid'=>$id_names['section_id'],
+                'section'=>$id_names['section'],
+                'mid'=>$id_names['item_id'],
+                'metadata'=>$id_names['item'],
+            );
+            $this->set('taggits', $taggits);
+        }
 
         if (empty($_POST))
         {
