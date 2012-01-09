@@ -6,6 +6,9 @@ if (empty($menu_id))
     return;
 
 validate_menu($menu_id);
+purge_menu($menu_id);
+
+logit('Done.');
 
 function admin_login()
 {
@@ -125,6 +128,29 @@ function validate_menu_group($menu)
     else
     {
         logit("\tMenu section success.");
+    }
+
+    return true;
+}
+
+function purge_menu($menu_id)
+{
+    $link = "http://www.gogomenu.com/menu/purge/{$menu_id}";
+
+    $go = new ut_golink();
+    $go->link($link);
+
+    logit("Purge menu by going to '{$link}'...");
+    $res = $go->run();
+
+    $info = $go->curl_getinfo();
+
+    $http_code = $info['http_code'];
+
+    if ($http_code != 302)
+    {
+        logit('Failed.');
+        return false;
     }
 
     return true;
