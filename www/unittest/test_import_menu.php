@@ -6,6 +6,9 @@ if (empty($menu_id))
     return;
 
 validate_menu($menu_id);
+
+upload_images_menu($menu_id);
+
 purge_menu($menu_id);
 
 logit('Done.');
@@ -150,6 +153,63 @@ function purge_menu($menu_id)
     if ($http_code != 302)
     {
         logit('Failed.');
+        return false;
+    }
+
+    return true;
+}
+
+function validate_files(&$files)
+{
+    $bIsGood = true;
+    foreach ($files as &$file)
+    {
+        if (empty($file))
+            continue;
+
+        if (!is_readable($file))
+        {
+            $bIsGood = false;
+            echo "Local file does not exists or cannot be read for upload: '{$file}'\n";
+        }
+        else
+        {
+            $file = '@'.$file;
+        }
+    }
+
+    return $bIsGood;
+}
+
+function upload_images_menu($menu_id)
+{
+    $upload = new ut_images_upload();
+    $upload->set_menu_id($menu_id);
+
+    $imgs = array
+    (
+        OS_TEMP_PATH.'/menu1.jpg',
+        OS_TEMP_PATH.'/menu2.jpg',
+        OS_TEMP_PATH.'/menu3.jpg',
+        OS_TEMP_PATH.'/menu4.jpg',
+    );
+
+    // validate we have files locally
+    if (!validate_files($imgs))
+    {
+        return false;
+    }
+
+    $upload->set('imgs', $imgs);
+
+    logit('Uploading images to menu...');
+    $res = $upload->run();
+
+    $upload_imgs = $upload->get_imgs();
+
+    if (count($imgs) != count($upload_imgs))
+    {
+        logit("\tFailed to upload images.");
         return false;
     }
 
