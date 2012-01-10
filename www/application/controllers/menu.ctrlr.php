@@ -193,6 +193,9 @@ class MenuController
         if (!$menu->updateMenuLinks($id, $links))
             $err_msgs[] = 'Failed to save menu links';
 
+        // cache metadata ids to check for duplicate ids
+        $mids = array();
+
         $post_mdts = $_POST['mdt'];
         $mdts = array();
         $mdt = array();
@@ -210,6 +213,10 @@ class MenuController
                         'notes' => $post_mdts[++$ii],
                     );
                     $ordinal_metadata = 0;
+
+                    // clear metadata cache
+                    $mids = array();
+
                     break;
                 case '@item@':
                     $item = array(
@@ -219,6 +226,22 @@ class MenuController
                         'price' => $post_mdts[++$ii],
                         'notes' => $post_mdts[++$ii],
                     );
+
+                    $post_mid = $item['metadata_id'];
+                    if (!empty($post_mid))
+                    {
+                        if (in_array($post_mid, $mids))
+                        {
+                            Util::logit("Dupliate metadata id. menu({$id}) section({$mdt['section_id']}) metadata({$post_mid}) ordinal({$item['ordinal']})", __FILE__, __LINE__);
+
+                            // clear it since it's probably a JS error
+                            $item['metadata_id'] = '';
+                        }
+                        else
+                        {
+                            $mids[] = $post_mid;
+                        }
+                    }
 
                     // parse 'item' for easier input
                     // format is '{item}@@{price}@@{notes}
