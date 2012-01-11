@@ -1002,4 +1002,39 @@ class MenuController
         $taggits = $menu->getTaggitsByCommentId($menu_id, $comment_id);
         $this->set('taggits', $taggits);
     }
+
+    function onAction_thoughts($menu_id=null, $section_id=null, $item_id=null)
+    {
+        if ($menu_id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $user_id = Util::getUserId();
+
+        if (empty($user_id))
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
+        $menu = $this->Menu;
+        $menu_info = $menu->getMenuInfo($menu_id);
+
+        if (empty($menu_id))
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $this->addJqueryUi();
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('menu/menu.thoughts');
+
+        $this->addCss('menu/menu.thoughts');
+
+        $tags = $menu->getMenuTags($menu_id);
+        $this->set('tags', $tags);
+    }
 }

@@ -145,6 +145,9 @@ EOHTML;
     <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
     <br/>
     <br/>
+    <a class="button" href="/menu/thoughts/<?=$id?>-<?=$slug['menu']?>">What are you thoughts???</a>
+    <br/>
+    <br/>
 </div>
 <div class="pg menus">
 <?php foreach ($mdts as $mdt):
