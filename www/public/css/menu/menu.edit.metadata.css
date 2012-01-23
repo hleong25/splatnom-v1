@@ -65,15 +65,6 @@ span.menu_group_info
 {
     font-size: small;
 }
-input[type=button],
-input[type=submit],
-a.button {
-    font-size: 0.7em;
-    padding: 0.2em 1em !important;
-}
-.ui-button-text {
-    padding: 0px !important;
-}
 div.new_imgs
 {
     max-height: 300px;

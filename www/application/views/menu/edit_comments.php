@@ -39,11 +39,14 @@ $slug = array
 <br/>
 <form id="edit_comments" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
 <div class="pg my_comments">
-    <input class="save_comment" type="submit" value="Save!"/>
+    <input class="save" type="submit" value="Save!"/>
     <br/>
     <input type="hidden" name="menu_id" value="<?=$menu_id?>"/>
     <input type="hidden" name="cid" value="<?=$comment_id?>"/>
     <textarea class="user_comment jq_watermark" name="comments" title="Tell me something something about this."><?=$post_comments?></textarea>
+    <br/>
+    <br/>
+    <span>Picture: </span><input type="file" name="img" />
     <br/>
     <br/>
     <div class="autocomplete">

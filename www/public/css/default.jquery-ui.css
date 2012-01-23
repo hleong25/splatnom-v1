@@ -6,6 +6,7 @@
 }
 .ui-menu-item {
     font-size: 0.8em;
+    margin-left: 1em !important;
 }
 .ui-autocomplete-section {
     font-size: 0.8em;
@@ -14,22 +15,11 @@
     margin: .8em 0 .2em;
     line-height: 1.5;
 }
-div.taggits {
-    margin-top: 0em;
-    margin-bottom: 0em;
-}
-div.tag_group {
+a.button,
+input[type=button],
+input[type=submit]{
     font-size: 0.7em;
     padding: 0.2em 1em !important;
-    margin-top: 0.5em;
-    margin-right: 1em;
+    margin: 0em;
 }
-div.template
-{
-    display: none;
-}
-textarea.comment
-{
-    width: 50em;
-    height: 20em;
-}
+

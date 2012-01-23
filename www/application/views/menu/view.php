@@ -104,14 +104,28 @@ $slug = array
 );
 
 ?>
+<div class="pg">
 <?php if ($is_metadata): ?>
-<div class="pg pg_bottom ismdt">
+<div class="pg_bottom ismdt">
     <a class="button" href="/menu/export/<?=$id?>/json">export menu</a>
     <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
-<div class="pg biz_info">
-    <div class="name"><?=$info['name']?></div>
+<div class="toc">
+    <div class="toc_item">
+        <a class="toc_item" href="#info">Business Info</a>
+    </div>
+<?php foreach ($mdts as $mdt):
+    $section_id = $mdt['section_id'];
+    $section_name = $mdt['name'];
+?>
+    <div class="toc_item">
+        <a class="toc_item" href="#<?=$section_id?>"><?=$section_name?></a>
+    </div>
+<?php endforeach; ?>
+</div>
+<div class="biz_info notoc">
+    <div class="name"><a name="info"><?=$info['name']?></a></div>
     <div class="details"><?=nl2br($info['notes'])?></div>
     <br/>
     <div class="address"><?=nl2br($info['address'])?></div>
@@ -120,7 +134,7 @@ $slug = array
     <br/>
     <div class="hours"><?=nl2br($info['hours'])?></div>
 </div>
-<div class="pg links">
+<div class="links notoc">
 <?php
     foreach ($links as $link)
     {
@@ -135,21 +149,20 @@ EOHTML;
     }
 ?>
 </div>
-<div class="pg user_actions">
+<div class="user_actions notoc">
     <br/>
+    <?php /*
     <a class="button" href="/images/upload/<?=$id?>-<?=$slug['menu']?>">Add photos</a>
     <a class="button" href="/menu/images/<?=$id?>-<?=$slug['menu']?>">View photos</a>
     <br/>
     <br/>
+    */ ?>
     <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
     <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
     <br/>
     <br/>
-    <a class="button" href="/menu/thoughts/<?=$id?>-<?=$slug['menu']?>">What are you thoughts???</a>
-    <br/>
-    <br/>
 </div>
-<div class="pg menus">
+<div class="menus notoc">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
     $section_name = $mdt['name'];
@@ -162,9 +175,12 @@ EOHTML;
     <div class="menu">
         <div class="info heading">
             <div class="h_name">
+                <?php /*
                 <?=$section_name?>
                 <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a>
                 <a href="<?=$section_comment_url?>"><img src="/img/balloon.png" /></a>
+                */ ?>
+                <a name="<?=$section_id?>" href="<?=$section_comment_url?>"><?=$section_name?></a>
             </div>
             <div class="h_notes"><?=$mdt['notes']?></div>
         </div>
@@ -194,6 +210,30 @@ EOHTML;
                 $item_comment_url = "/menu/comments/{$base_item_url}";
                 $item_photo_url = "/menu/images/{$base_item_url}";
 
+
+                echo<<<EOHTML
+                    <div class="group {$css}">
+                        <div class="g_panel">
+                            <div class="forkit now">
+                                <span class="cnt">{$forkit_cnt['now']}</span>
+                                <img class="{$forkit_css['now']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['now']}');"/>
+                            </div>
+                            <div class="forkit after">
+                                <span class="cnt">{$forkit_cnt['after']}</span>
+                                <img class="{$forkit_css['after']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
+                            </div>
+                        </div>
+                        <div class="g_info">
+                            <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a></div>
+                            <div class="price">{$item['price']}</div>
+                            <div class="clear"></div>
+                            <div class="notes {$notes_css}">{$item['notes']}</div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+EOHTML;
+
+/*
                 echo<<<EOHTML
                     <div class="group {$css}">
                         <div class="g_panel">
@@ -217,9 +257,11 @@ EOHTML;
                         <div class="clear"></div>
                     </div>
 EOHTML;
+*/
             }
         ?>
         </div>
     </div>
 <?php endforeach; // foreach ($mdts as $mdt) ?>
+</div>
 </div>

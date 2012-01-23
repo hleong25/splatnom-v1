@@ -1,28 +1,11 @@
-.ui-autocomplete {
-    max-height: 500px;
-    overflow-y: auto;
-    overflow-x: hidden; /* prevent horizontal scrollbar */
-    padding-right: 20px; /* add padding to account for vertical scrollbar */
-}
-.ui-menu-item {
-    font-size: 0.8em;
-}
-.ui-autocomplete-section {
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: .2em .4em;
-    margin: .8em 0 .2em;
-    line-height: 1.5;
+input.save
+{
+    margin-bottom: 0.5em;
 }
 textarea.user_comment
 {
-    width: 500px;
-    height: 10em;
-}
-input[type=button],
-input[type=submit]{
-    font-size: 0.7em;
-    padding: 0.2em 1em !important;
+    width: 50em;
+    height: 20em;
 }
 div.template
 {
@@ -38,6 +21,4 @@ div.tag_group {
     padding: 0.2em 1em !important;
     margin-top: 0.5em;
     margin-right: 1em;
-}
-input.save_comment {
 }

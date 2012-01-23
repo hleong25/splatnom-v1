@@ -192,6 +192,9 @@ class Template
         $jquery_ui = 'jquery-ui-1.8.16-redmond';
         $this->addCss($jquery_ui, WEB_PATH_OTHER, false);
         $this->addJs($jquery_ui, WEB_PATH_OTHER, false);
+
+        // Add default jquery-ui CSS
+        $this->addCss('default.jquery-ui');
     }
 
     function includeCss()

@@ -66,13 +66,18 @@ class MenuController
             $this->import_normalize($import_json);
         }
 
-        if (empty($_POST))
-        {
-            $this->get_menu_metadata($id, $menu_info);
-        }
-        else
+        $load_from_db = empty($_POST);
+
+        if (!$load_from_db)
         {
             $this->edit_metadata_onPost($id, $menu_info, $import_json);
+
+            $load_from_db = !empty($_POST['force_reload']);
+        }
+
+        if ($load_from_db)
+        {
+            $this->get_menu_metadata($id, $menu_info);
         }
     }
 
@@ -945,8 +950,29 @@ class MenuController
             return;
         }
 
+        $img_id = 0;
+        if (!empty($_FILES))
+        {
+            $path = OS_MENU_PATH . DS . $menu_id;
+            $imgs = Util::handle_upload_files($path);
+
+            if (empty($imgs))
+            {
+                // TODO: check for failed image upload
+                // $this->set('is_err', true);
+                // return;
+            }
+
+            $insertImgs = $menu->insertMenuImages($menu_id, $user_id, $imgs);
+
+            if (!empty($insertImgs))
+                $img_id = $insertImgs[0]['img_id'];
+        }
+
+        // TODO: if it's editing the comments, then it needs a way to not override the current img_id
+
         // finally... lets add/modify the comment
-        $comment_id = $menu->updateMenuComments($post_cid, $menu_id, $user_id, 0 /* $img_id */, $post_comments);
+        $comment_id = $menu->updateMenuComments($post_cid, $menu_id, $user_id, $img_id, $post_comments);
         if (empty($comment_id))
         {
             $this->set('err_msg', 'Failed to add comment.');
@@ -1003,38 +1029,4 @@ class MenuController
         $this->set('taggits', $taggits);
     }
 
-    function onAction_thoughts($menu_id=null, $section_id=null, $item_id=null)
-    {
-        if ($menu_id == null)
-        {
-            $this->redirect('/home/main/');
-            return;
-        }
-
-        $user_id = Util::getUserId();
-
-        if (empty($user_id))
-        {
-            $this->redirect("/menu/view/{$menu_id}");
-            return;
-        }
-
-        $menu = $this->Menu;
-        $menu_info = $menu->getMenuInfo($menu_id);
-
-        if (empty($menu_id))
-        {
-            $this->redirect('/home/main/');
-            return;
-        }
-
-        $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
-        $this->addJs('menu/menu.thoughts');
-
-        $this->addCss('menu/menu.thoughts');
-
-        $tags = $menu->getMenuTags($menu_id);
-        $this->set('tags', $tags);
-    }
 }

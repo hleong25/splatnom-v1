@@ -1,6 +1,16 @@
 div.ismdt {
     text-align: right;
 }
+div.toc
+{
+    position: fixed;
+    width: 10em;
+    border: 1px solid black;
+}
+div.notoc
+{
+    margin-left: 11em;
+}
 div.biz_info {
     margin-bottom: 0.5em;
 }
@@ -33,11 +43,11 @@ div.group {
 div.g_panel {
     text-align: right;
     float: left;
-    width: 5em;
-    margin-left: -5.8em;
+    width: 4em;
     font-size: 0.8em;
 }
 div.g_info {
+    margin-left: 4em;
 }
 div.label,
 div.comments,
@@ -98,3 +108,10 @@ a.button
 {
     font-size: 0.8em;
 }
+
+div.toc_item
+{
+    font-size: 0.8em;
+    margin: 0.5em;
+}
+

@@ -1365,6 +1365,7 @@ EOQ;
         if (!is_array($imgs))
             $imgs = array($imgs);
 
+        $out_imgs = array();
         foreach ($imgs as $img)
         {
             $rsts[] = $prepare->bindValue(':file_img', $img['filename']);
@@ -1383,10 +1384,20 @@ EOQ;
             }
 
             unset($rsts);
+
+            $img_id = $this->lastInsertId();
+
+            $out_imgs[] = array
+            (
+                'img_id' => $img_id,
+                'filename' => $img['filename'],
+                'width' => $img['width'],
+                'height' => $img['height'],
+            );
         }
 
         $this->commit();
-        return true;
+        return $out_imgs;
     }
 
     function getMenuSectionImgs($id, $section_id)
