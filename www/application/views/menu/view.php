@@ -213,7 +213,7 @@ EOHTML;
 
                 echo<<<EOHTML
                     <div class="group {$css}">
-                        <div class="g_panel">
+                        <div class="g_col1">
                             <div class="forkit now">
                                 <span class="cnt">{$forkit_cnt['now']}</span>
                                 <img class="{$forkit_css['now']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['now']}');"/>
@@ -223,41 +223,16 @@ EOHTML;
                                 <img class="{$forkit_css['after']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
                             </div>
                         </div>
-                        <div class="g_info">
+                        <div class="g_col2">
                             <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a></div>
-                            <div class="price">{$item['price']}</div>
-                            <div class="clear"></div>
                             <div class="notes {$notes_css}">{$item['notes']}</div>
+                        </div>
+                        <div class="g_col3">
+                            <div class="price">{$item['price']}</div>
                         </div>
                         <div class="clear"></div>
                     </div>
 EOHTML;
-
-/*
-                echo<<<EOHTML
-                    <div class="group {$css}">
-                        <div class="g_panel">
-                            <div class="forkit now">
-                                <span class="cnt">{$forkit_cnt['now']}</span>
-                                <img class="{$forkit_css['now']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['now']}');"/>
-                            </div>
-                            <div class="forkit after">
-                                <span class="cnt">{$forkit_cnt['after']}</span>
-                                <img class="{$forkit_css['after']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
-                            </div>
-                        </div>
-                        <div class="g_info">
-                            <div class="label">{$metadata_label}</div>
-                            <div class="pictures"><a href="{$item_photo_url}"><img src="/img/camera.png" /></a></div>
-                            <div class="comments"><a href="{$item_comment_url}"><img src="/img/balloon.png" /></a></div>
-                            <div class="price">{$item['price']}</div>
-                            <div class="clear"></div>
-                            <div class="notes {$notes_css}">{$item['notes']}</div>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
-EOHTML;
-*/
             }
         ?>
         </div>

@@ -38,33 +38,30 @@ div.h_notes{
     padding-top: 0.3em;
 }
 div.group {
-    padding: 0.2em;
+    padding: 0.25em;
 }
-div.g_panel {
-    text-align: right;
+div.g_col1 {
     float: left;
+    text-align: right;
     width: 4em;
     font-size: 0.8em;
 }
-div.g_info {
-    margin-left: 4em;
-}
-div.label,
-div.comments,
-div.pictures {
-    display: inline;
+div.g_col2 {
     float: left;
-    margin-right: 0.5em;
+    margin-left: 0.6em;
 }
-div.price {
+div.g_col3 {
     float: right;
-    font-size: 1em;
+}
+div.label {
 }
 div.notes {
     font-size: 0.8em;
     display: list-item;
     list-style-position: inside;
-    padding: 0.3em;
+}
+div.price {
+    font-size: 1em;
 }
 div.empty {
     display: block !important;
