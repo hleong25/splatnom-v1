@@ -23,8 +23,7 @@ div.links {
 div.menu {
     margin-bottom: 0.5em;
 }
-div.heading{
-    background-color: silver;
+div.menu > div.info{
     width: 100%;
     text-align: center;
 }

@@ -151,12 +151,6 @@ EOHTML;
 </div>
 <div class="user_actions notoc">
     <br/>
-    <?php /*
-    <a class="button" href="/images/upload/<?=$id?>-<?=$slug['menu']?>">Add photos</a>
-    <a class="button" href="/menu/images/<?=$id?>-<?=$slug['menu']?>">View photos</a>
-    <br/>
-    <br/>
-    */ ?>
     <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
     <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
     <br/>
@@ -173,13 +167,8 @@ EOHTML;
     $section_photo_url = "/menu/images/{$base_section_url}";
 ?>
     <div class="menu">
-        <div class="info heading">
+        <div class="info zhead">
             <div class="h_name">
-                <?php /*
-                <?=$section_name?>
-                <a href="<?=$section_photo_url?>"><img src="/img/camera.png" /></a>
-                <a href="<?=$section_comment_url?>"><img src="/img/balloon.png" /></a>
-                */ ?>
                 <a name="<?=$section_id?>" href="<?=$section_comment_url?>"><?=$section_name?></a>
             </div>
             <div class="h_notes"><?=$mdt['notes']?></div>
