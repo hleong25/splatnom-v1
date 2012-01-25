@@ -40,36 +40,35 @@ div.h_notes{
 div.group {
     padding: 0.25em;
 }
-div.g_col1 {
+div.g_panel {
     float: left;
     text-align: right;
     width: 4em;
     font-size: 0.8em;
 }
-div.g_col2 {
-    float: left;
-    margin-left: 0.6em;
+div.g_info {
+    margin-left: 4em;
 }
-div.g_col3 {
+div.g_info1 {
+    /* empty */
+}
+div.g_info1 > div.label {
+    float: left;
+}
+div.g_info1 > div.price {
     float: right;
 }
-div.label {
+div.g_info2 {
+    /* empty */
 }
-div.notes {
+div.g_info2 > div.notes {
     font-size: 0.8em;
     display: list-item;
     list-style-position: inside;
 }
-div.price {
-    font-size: 1em;
-}
 div.empty {
     display: block !important;
 }
-div.clear {
-    clear: both;
-}
-
 img {
     vertical-align: middle;
     width: 16px;

@@ -210,10 +210,9 @@ EOHTML;
                 $item_comment_url = "/menu/comments/{$base_item_url}";
                 $item_photo_url = "/menu/images/{$base_item_url}";
 
-
                 echo<<<EOHTML
-                    <div class="group {$css}">
-                        <div class="g_col1">
+                    <div class="group clearfix {$css}">
+                        <div class="g_panel">
                             <div class="forkit now">
                                 <span class="cnt">{$forkit_cnt['now']}</span>
                                 <img class="{$forkit_css['now']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['now']}');"/>
@@ -223,14 +222,15 @@ EOHTML;
                                 <img class="{$forkit_css['after']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
                             </div>
                         </div>
-                        <div class="g_col2">
-                            <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a></div>
-                            <div class="notes {$notes_css}">{$item['notes']}</div>
+                        <div class="g_info" style="">
+                            <div class="g_info1 clearfix">
+                                <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a></div>
+                                <div class="price">{$item['price']}</div>
+                            </div>
+                            <div class="g_info2">
+                                <div class="notes {$notes_css}">{$item['notes']}</div>
+                            </div>
                         </div>
-                        <div class="g_col3">
-                            <div class="price">{$item['price']}</div>
-                        </div>
-                        <div class="clear"></div>
                     </div>
 EOHTML;
             }
