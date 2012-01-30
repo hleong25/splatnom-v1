@@ -204,7 +204,7 @@ EOHTML;
                 // if spicy
                 $img_spicy = '';
                 if ($item['is_spicy'])
-                    $img_spicy = '<img class="item_attr" src="/img/spicy.png"/>';
+                    $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
 
                 echo<<<EOHTML
                     <div class="group clearfix {$css}">
