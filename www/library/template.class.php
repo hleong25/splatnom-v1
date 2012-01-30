@@ -209,15 +209,16 @@ class Template
             'google_plusone',
         );
 
-        $html = '<div class="addthis_toolbox addthis_default_style ">';
-        foreach ($addThis_services as $addthis)
-        {
-            $html .=<<<EOHTML
-                <a class="addthis_button_{$addthis}"></a>
+        $html=<<<EOHTML
+            <div class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_google_plusone" g:plusone:count="false"></a>
+                <a class="addthis_button_reddit"></a>
+                <a class="addthis_button_email"></a>
+                <a class="addthis_button_compact"></a>
+            </div>
 EOHTML;
-        }
-        $html .= '<a class="addthis_button_compact"></a>';
-        $html .= '</div>';
 
         echo $html;
 
