@@ -167,9 +167,10 @@ EOHTML;
     $section_photo_url = "/menu/images/{$base_section_url}";
 ?>
     <div class="menu">
+        <a name="<?=$section_id?>"/>
         <div class="info zhead">
             <div class="h_name">
-                <a name="<?=$section_id?>" href="<?=$section_comment_url?>"><?=$section_name?></a>
+                <a href="<?=$section_comment_url?>"><?=$section_name?></a>
             </div>
             <div class="h_notes"><?=$mdt['notes']?></div>
         </div>

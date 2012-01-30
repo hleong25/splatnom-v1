@@ -20,6 +20,8 @@ function init()
     ;
 
     $('a.button').button();
+
+    scrollToLink();
 }
 
 function forkit(elem, link)
@@ -50,6 +52,19 @@ function forkit_success(objThis, data)
     {
         alert('Unexpected result...');
     }
+}
+
+function scrollToLink()
+{
+    var body = $('body');
+
+    $('a[href^=#]').click(function(elem){
+        var name = $(this).attr('href').substr(1);
+        var pos = $('a[name='+name+']').offset();
+        //body.animate({scrollTop: pos.top});
+        body.scrollTop(pos.top);
+        elem.preventDefault();
+    });
 }
 
 })();
