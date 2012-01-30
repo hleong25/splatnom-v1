@@ -42,6 +42,42 @@ $slug = array
         <span>Add comments to <a href="/menu/edit_comments/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a></span>
     <?php endif; //if (!empty($section_str) && !empty($item_str)): ?>
 </div>
+
+<div class="pg comment">
+</div>
+
+<div class="pg comments_list">
+    <?php if (empty($comments)): ?>
+        <span>Nothing to talk about... maybe you can help by adding a comment. =D</span>
+    <?php else: //if (empty($comments)): ?>
+        <br/>
+        <?php
+            foreach ($comments as $item_comment)
+            {
+                $comment_id = $item_comment['comment_id'];
+                $name = Util::formatViewingName($item_comment['username'], $item_comment['firstname'], $item_comment['lastname']);
+
+                $img_id = $item_comment['img_id'];
+                $img_file = $item_comment['file_img'];
+                $thumbnail_link = "/images/get/menu/md/{$menu_id}/{$img_file}";
+
+                if (empty($img_id))
+                    continue;
+
+                echo<<<EOHTML
+                    <div class="" style="margin: 1em; border: 1px solid black; ">
+                        <img class="" style="border: 1px solid black;" src="{$thumbnail_link}"/>
+                    </div>
+EOHTML;
+            }
+        ?>
+    <?php endif; //if (empty($comments)): ?>
+
+</div>
+<?php
+// TODO: remove below
+return
+?>
 <div class="pg comments">
     <?php if (empty($comments)): ?>
         <span>Nothing to talk about... maybe you can help by adding a comment. =D</span>

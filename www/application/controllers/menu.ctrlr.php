@@ -230,6 +230,7 @@ class MenuController
                         'label' => $post_mdts[++$ii],
                         'price' => $post_mdts[++$ii],
                         'notes' => $post_mdts[++$ii],
+                        'is_spicy' => false,
                     );
 
                     $post_mid = $item['metadata_id'];
@@ -257,6 +258,19 @@ class MenuController
                         $item['label'] = trim(array_shift($parsed));
                         $item['price'] = trim(array_shift($parsed));
                         $item['notes'] = trim(array_shift($parsed));
+                    }
+
+                    $mdt['items'][] = $item;
+                    break;
+                case '@item_attr@':
+                    $item = array_pop($mdt['items']);
+
+                    $is_spicy = false;
+
+                    if (($post_mdts[++$ii] === 'is_spicy') && ($post_mdts[$ii + 1] === 'on'))
+                    {
+                        ++$ii;
+                        $item['is_spicy'] = true;
                     }
 
                     $mdt['items'][] = $item;
@@ -525,6 +539,7 @@ class MenuController
         }
 
         $this->set('menu_id', $new_id);
+        //$this->set('dbg', $json);
     }
 
     function import_normalize(&$datas)

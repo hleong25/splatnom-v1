@@ -110,3 +110,8 @@ div.toc_item
     margin: 0.5em;
 }
 
+img.item_attr
+{
+    margin: 0px 0.5em;
+    vertical-align: top !important;
+}

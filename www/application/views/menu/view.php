@@ -200,6 +200,11 @@ EOHTML;
                 $item_comment_url = "/menu/comments/{$base_item_url}";
                 $item_photo_url = "/menu/images/{$base_item_url}";
 
+                // if spicy
+                $img_spicy = '';
+                if ($item['is_spicy'])
+                    $img_spicy = '<img class="item_attr" src="/img/spicy.png"/>';
+
                 echo<<<EOHTML
                     <div class="group clearfix {$css}">
                         <div class="g_panel">
@@ -214,7 +219,7 @@ EOHTML;
                         </div>
                         <div class="g_info" style="">
                             <div class="g_info1 clearfix">
-                                <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a></div>
+                                <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a>{$img_spicy}</div>
                                 <div class="price">{$item['price']}</div>
                             </div>
                             <div class="g_info2">

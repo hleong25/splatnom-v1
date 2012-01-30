@@ -198,6 +198,9 @@ EOHTML;
                 <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?=$item['label']?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?=$item['price']?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?=$item['notes']?>"/>
+                <input type="hidden" name="mdt[]" value="@item_attr@"/>
+                <input type="hidden" name="mdt[]" value="is_spicy"/>
+                <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>>Spicy</input>
                 <input type="image" class="menuitem_add" src="/img/plus.png" onclick="return js_menu.menuitem_add(this);"/>
                 <input type="image" class="menuitem_remove" src="/img/minus.png" onclick="return js_menu.menuitem_remove(this);"/>
             </div>

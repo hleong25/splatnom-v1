@@ -774,7 +774,8 @@ EOQ;
                 ordinal = :ordinal,
                 label = :label,
                 price = :price,
-                notes = :notes
+                notes = :notes,
+                is_spicy = :is_spicy
             WHERE metadata_id = :metadata_id
             AND menu_id = :menu_id
             AND section_id = :section_id
@@ -807,6 +808,7 @@ EOQ;
                 $label = $metadata['label'];
                 $price = $metadata['price'];
                 $notes = $metadata['notes'];
+                $is_spicy = $metadata['is_spicy'];
 
                 // update the row to be something way different.
                 // NOTE: it's because mysql < 5.3 does not support
@@ -824,6 +826,7 @@ EOQ;
                 $rsts[] = $prepare->bindValue(':label', $label);
                 $rsts[] = $prepare->bindValue(':price', $price);
                 $rsts[] = $prepare->bindValue(':notes', $notes);
+                $rsts[] = $prepare->bindValue(':is_spicy', $is_spicy);
                 $rsts[] = $prepare->execute();
 
                 // results check..
@@ -858,24 +861,24 @@ EOQ;
             $datas = array(
                 [section_id 1] = array(
                     [metadata ordinal 0] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                     [metadata ordinal 1] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                     [metadata ordinal 2] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                 )
                 [section_id 2] = array(
                     [metadata ordinal 0] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                     [metadata ordinal 1] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                     [metadata ordinal 2] = array(
-                        label, price, notes
+                        label, price, notes, is_spicy
                     )
                 )
             )
@@ -888,7 +891,8 @@ EOQ;
                 ordinal,
                 label,
                 price,
-                notes
+                notes,
+                is_spicy
             )
             VALUES
             (
@@ -897,7 +901,8 @@ EOQ;
                 :ordinal,
                 :label,
                 :price,
-                :notes
+                :notes,
+                :is_spicy
             )
 EOQ;
 
@@ -912,6 +917,7 @@ EOQ;
                 $label = $metadata['label'];
                 $price = $metadata['price'];
                 $notes = $metadata['notes'];
+                $is_spicy = $metadata['is_spicy'];
 
                 $rsts[] = $prepare->bindValue(':menu_id', $id);
                 $rsts[] = $prepare->bindValue(':section_id', $section_id);
@@ -919,6 +925,7 @@ EOQ;
                 $rsts[] = $prepare->bindValue(':label', $label);
                 $rsts[] = $prepare->bindValue(':price', $price);
                 $rsts[] = $prepare->bindValue(':notes', $notes);
+                $rsts[] = $prepare->bindValue(':is_spicy', $is_spicy);
                 $rsts[] = $prepare->execute();
 
                 // results check..
@@ -1071,6 +1078,7 @@ EOQ;
                 $label = $row['label'];
                 $price = $row['price'];
                 $notes = $row['notes'];
+                $is_spicy = (bool)$row['is_spicy'];
 
                 // create the menus metadata
                 $section_info['items'][] = array(
@@ -1078,6 +1086,7 @@ EOQ;
                     'label' => $label,
                     'price' => $price,
                     'notes' => $notes,
+                    'is_spicy' => $is_spicy,
                 );
             }
 
@@ -1870,7 +1879,7 @@ EOQ;
                 c.comment
             FROM tblMenuComments c
             LEFT JOIN tblUsers u ON c.user_id = u.id
-            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.menu_id
             WHERE c.menu_id = :menu_id
 EOQ;
 
@@ -1913,7 +1922,7 @@ EOQ;
             FROM tblMenuComments c
             INNER JOIN tblTaggitsComment t ON c.menu_id = t.menu_id AND c.comment_id = t.comment_id
             LEFT JOIN tblUsers u ON c.user_id = u.id
-            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.menu_id
             WHERE c.menu_id = :menu_id
             AND t.section_id = :section_id
 EOQ;
@@ -1957,7 +1966,7 @@ EOQ;
             FROM tblMenuComments c
             INNER JOIN tblTaggitsComment t ON c.menu_id = t.menu_id AND c.comment_id = t.comment_id
             LEFT JOIN tblUsers u ON c.user_id = u.id
-            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.id
+            LEFT JOIN tblMenuImages i ON c.img_id = i.id AND c.menu_id = i.menu_id
             WHERE c.menu_id = :menu_id
             AND t.section_id = :section_id
             AND t.metadata_id = :item_id
