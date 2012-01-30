@@ -18,8 +18,10 @@
 a.button,
 input[type=button],
 input[type=submit]{
-    font-size: 0.7em;
+    font-size: 0.8em !important;
     padding: 0.2em 1em !important;
-    margin: 0em;
+    margin: 0em !important;
 }
-
+.ui-button-text {
+    padding: 0 !important;
+}
