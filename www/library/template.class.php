@@ -197,6 +197,34 @@ class Template
         $this->addCss('default.jquery-ui');
     }
 
+    function addAddThis()
+    {
+        // NOTE: www.addthis.com login is hleong25+addthis@gmail.com
+
+        $addThis_services = array(
+            'facebook',
+            'twitter',
+            'reddit',
+            'email',
+            'google_plusone',
+        );
+
+        $html = '<div class="addthis_toolbox addthis_default_style ">';
+        foreach ($addThis_services as $addthis)
+        {
+            $html .=<<<EOHTML
+                <a class="addthis_button_{$addthis}"></a>
+EOHTML;
+        }
+        $html .= '<a class="addthis_button_compact"></a>';
+        $html .= '</div>';
+
+        echo $html;
+
+        $js = 'http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f2631133193ecb7';
+        $this->addResource('js', $js, false);
+    }
+
     function includeCss()
     {
         foreach ($this->m_res['css'] as $css)
