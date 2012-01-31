@@ -358,6 +358,13 @@ class MenuController
             return;
         }
 
+        // *** hack ***
+        $request_uri = $_SERVER['REQUEST_URI'];
+        $fixed_url = '/menu/search/';
+        $pos = strpos($request_uri, '/', strlen($fixed_url));
+        $ru_query = substr($request_uri, $pos+1);
+        $query = rawurldecode($ru_query);
+
         $this->addJs('jquery.cookie', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
@@ -373,6 +380,8 @@ class MenuController
             $this->set('msg', 'No location found');
             return;
         }
+
+        $this->set('msg', "Searching for: {$query}");
 
         $places = $loc->getPlacesWithinLatLong($query, $latlong['latitude'], $latlong['longitude'], 10);
         if (empty($places))
