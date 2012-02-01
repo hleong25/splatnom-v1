@@ -28,6 +28,17 @@
 # NOTE: in vim, I used this to search and replace :%s/url(images/url(jquery-ui-1.8.16-redmond\/images/gc
     RewriteRule     other/jquery-ui-(.*)-(.*)/images/(.*)\.png$     public/other/jquery-ui/jquery-ui-$1.$2/css/redmond/images/$3.png    [L]
 
+# modified search handler
+# http://www.gogomenu.com/menu/search?query=shrimp&location=92782 -> http://www.gogomenu.com/menu/search/92782/shrimp
+    RewriteCond     %{QUERY_STRING}     ^query=&location=(.*)$
+    RewriteRule     ^menu/search$       http://%{HTTP_HOST}/menu/search/%1/?        [R=301,L]
+
+    RewriteCond     %{QUERY_STRING}     ^query=(.*)&location=$
+    RewriteRule     ^menu/search$       http://%{HTTP_HOST}/menu/search/00000/%1?   [R=301,L]
+
+    RewriteCond     %{QUERY_STRING}     ^query=(.*)&location=(.*)$
+    RewriteRule     ^menu/search$       http://%{HTTP_HOST}/menu/search/%2/%1?      [R=301,L]
+
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
     RewriteRule     (.*)    public/$1           [L]

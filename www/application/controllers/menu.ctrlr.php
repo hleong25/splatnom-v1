@@ -340,30 +340,10 @@ class MenuController
 
     function onAction_search($location=null, $query=null)
     {
-        if (!empty($_POST))
-        {
-            global $get_url;
-
-            $p_query = $_POST['query'];
-            $p_location = $_POST['location'];
-
-            if (empty($p_location))
-                $p_location = '00000';
-
-            $p_query = rawurlencode($p_query);
-
-            $url = "/{$get_url}/{$p_location}/{$p_query}";
-
-            $this->redirect($url);
-            return;
-        }
-
-        // *** hack ***
-        $request_uri = $_SERVER['REQUEST_URI'];
-        $fixed_url = '/menu/search/';
-        $pos = strpos($request_uri, '/', strlen($fixed_url));
-        $ru_query = substr($request_uri, $pos+1);
-        $query = rawurldecode($ru_query);
+        /*
+            NOTE: mod_rewrite URL change in .htaccess
+            original URL request is in $_GET format, after mod_rewrite it changes to MVC model
+        */
 
         $this->addJs('jquery.cookie', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
