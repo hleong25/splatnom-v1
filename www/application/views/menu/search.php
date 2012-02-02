@@ -26,32 +26,40 @@ if (!empty($places))
     echo<<<EOHTML
         <table class="tblDefault">
             <thead>
-                <td>id</td>
+                <td>#</td>
                 <td>name</td>
                 <td>address</td>
                 <td>distance</td>
+                <td>score</td>
             </thead>
             <tbody>
 EOHTML;
 
-    foreach ($places as $place)
+    foreach ($places as $idx=>$place)
     {
         $menu_id = $place['menu_id'];
         $distance = sprintf('%0.2f', $place['distance']);
+        $score = sprintf('%0.2f', $place['score']);
+
+        if ($score < 0.5)
+            break;
 
         $link = '<a href="/menu/view/'.$menu_id.'">%s</a>';
 
         $id = sprintf($link, $menu_id);
+        $idx_no = sprintf($link, $idx+1);
         $name = sprintf($link, $place['name']);
         $address = sprintf($link, $place['address']);
         $distance = sprintf($link, $distance);
+        $score = sprintf($link, $score);
 
         echo<<<EOHTML
             <tr>
-                <td>{$id}</td>
+                <td>{$idx_no}</td>
                 <td>{$name}</td>
                 <td>{$address}</td>
                 <td>{$distance}</td>
+                <td>{$score}</td>
             </tr>
 EOHTML;
     }

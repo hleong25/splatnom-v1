@@ -370,6 +370,15 @@ class MenuController
             return;
         }
 
+        $max_score = -1;
+        foreach ($places as &$place)
+        {
+            if ($place['score'] > $max_score)
+                $max_score = $place['score'];
+
+            $place['score'] /= $max_score;
+        }
+
         $this->set('places', $places);
 
     }
