@@ -122,11 +122,19 @@ class UserController
     function sendVerificationToUser($user, $emailTo, $verifyCode)
     {
         $mail = new MailModel();
-        $subject = 'Verify account for Foodify';
-        $message =<<<EOM
-            user: {$user}<br/>
-            http://www.gogomenu.com/user/verify/{$verifyCode}
-EOM;
+        $subject = 'Verify account for splatnom';
+
+        $params = array(
+            'user' => $user,
+            'verifyCode' => $verifyCode,
+        );
+
+        $message = $mail->grab_data('user', 'email_verification', $params);
+        if (empty($message))
+        {
+            Util::logit('Failed to send email verification', __FILE__, __LINE__);
+            return false;
+        }
 
         $sent = $mail->send_smtp(null, $emailTo, $subject, $message);
 

@@ -38,4 +38,28 @@ class MailController
         }
     }
 
+    function onAction_henry()
+    {
+        $this->m_bRender = false;
+
+        $user = 'henry_username';
+        $verifyCode = 'myverifycode';
+        $emailTo = 'hleong25@gmail.com';
+
+        $mail = new MailModel();
+        $subject = 'Verify account for splatnom';
+
+        $params = array(
+            'user' => $user,
+            'verifyCode' => $verifyCode,
+        );
+
+        $msg = $mail->grab_data('user', 'email_verification', $params);
+        if (empty($msg))
+            return false;
+
+        $sent = $mail->send_smtp(null, $emailTo, $subject, $msg);
+
+        return $sent;
+    }
 }

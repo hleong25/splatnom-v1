@@ -5,7 +5,7 @@ require_once('Mail/mime.php');
 class MailModel
     extends Model
 {
-    public $DEFAULT_EMAIL = 'hanksmenu@gmail.com';
+    public $DEFAULT_EMAIL = 'support@splatnom.com';
 
     function send($from, $to, $subject, $message)
     {
@@ -36,30 +36,22 @@ class MailModel
 
     function send_smtp($from, $to, $subject, $message)
     {
-        $bUseSSL = true;
         $crlf = "\n";
 
         if (empty($from))
             $from = $this->DEFAULT_EMAIL;
 
         $headers = array(
-            'From' => $from,
+            'From' => "{$from} <{$from}>",
+            'To' => "{$to} <{$to}>",
             'Return-Path' => $from,
             'Subject' => $subject
         );
 
-        if ($bUseSSL == true)
-        {
-            $host = 'ssl://smtp.gmail.com';
-            $port = '465';
-        }
-        else
-        {
-            $host = 'smtp.gmail.com';
-            $port = '25';
-        }
+        $host = 'ssl://smtp.gmail.com';
+        $port = '465';
 
-        $username = 'hanksmenu@gmail.com';
+        $username = 'support@splatnom.com';
         $password = 'alhambra1234';
 
         $smtp_cfg = array();
@@ -92,5 +84,25 @@ class MailModel
         $send = $this->send_smtp($from, $to, $subject, $message);
 
         return $send === true;
+    }
+
+    function grab_data($ctrl, $page, $params)
+    {
+        $view_page = $ctrl . DS . $page . '.php';
+        $path = ROOT . DS . 'application' . DS . 'views';
+        $file = $path . DS . $view_page;
+
+        if (!file_exists($file))
+        {
+            Util::logit("Email view page not found: {$view_page}");
+            return false;
+        }
+
+        ob_start();
+            extract($params);
+            include($file);
+        $data = ob_get_clean();
+
+        return $data;
     }
 }
