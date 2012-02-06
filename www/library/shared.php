@@ -44,7 +44,8 @@ function unregisterGlobals ()
         {
             foreach ($GLOBALS[$value] as $key => $var)
             {
-                if ($var === $GLOBALS[$key])
+
+                if ((isset($GLOBALS[$key])) && ($var === $GLOBALS[$key]))
                 {
                     unset($GLOBALS[$key]);
                 }
