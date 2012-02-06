@@ -23,18 +23,8 @@ EOQ;
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $cnt = $prepare->rowCount();
-        if ($cnt != 0)
-        {
-            // bad login
-            return false;
-        }
-        elseif ($cnt > 1)
-        {
-            Util::logit('!!! Multiple results with username('.$user.') !!!');
-            return false;
-        }
-
-        return $prepare->fetchColumn();
+        // fetchColumn will return false if nothing
+        $rst = $prepare->fetchColumn();
+        return $rst;
     }
 }
