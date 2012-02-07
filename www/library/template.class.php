@@ -253,7 +253,7 @@ EOHTML;
                 printf('<span class="lnkspc"> | </span>');
             }
 
-            printf('<a class="%s" href="%s">%s</a>', $lnk['css'], BASE_PATH . DS . $lnk['lnk'], $lnk['lbl']);
+            printf('<a class="%s" href="%s">%s</a>', $lnk['css'], DS . $lnk['lnk'], $lnk['lbl']);
 
             $bCont = true;
         }
