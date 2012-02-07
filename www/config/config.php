@@ -28,11 +28,13 @@ if (file_exists('paths.inc.php'))
 else
 {
     define('OS_PATH_PUBLIC',        ROOT . DS . 'public');
-    define('OS_UPLOAD_PATH',        '/home/custom_code/www.uploads');
     define('OS_IMAGE_PATH',         ROOT . DS . 'public' .  DS . 'img');
-    define('OS_PURGE_PATH',         '/home/custom_code/www.purge');
-    define('OS_MENU_PATH',          '/home/custom_code/www.menus');
-    define('OS_TEMP_PATH',          '/home/custom_code/www.temp');
+
+    define('OS_ASSET_PATH',         '/home/custom_code');
+    define('OS_UPLOAD_PATH',        OS_ASSET_PATH.'/www.uploads');
+    define('OS_PURGE_PATH',         OS_ASSET_PATH.'/www.purge');
+    define('OS_MENU_PATH',          OS_ASSET_PATH.'/www.menus');
+    define('OS_TEMP_PATH',          OS_ASSET_PATH.'/www.temp');
 
     define('OS_DEFAULT_NO_IMAGE_PATH',      OS_IMAGE_PATH);
     define('OS_DEFAULT_NO_IMAGE_FILE',      'noimage.jpg');
