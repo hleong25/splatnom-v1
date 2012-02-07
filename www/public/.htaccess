@@ -8,6 +8,10 @@
     SetEnvIf        browser_type Version    browser_type=Safari
     SetEnvIf        browser_type MSIE       browser_type=IE
 
+# Add cache info to $_SERVER because apache_request_headers() may not exists
+    SetEnvIfNoCase ^If-Modified-Since$  "(.+)"  HTTP_IF_MODIFIED_SINCE=$1
+    SetEnvIfNoCase ^If-None-Match$      "(.+)"  HTTP_IF_NONE_MATCH=$1
+
 # default handler
     RewriteCond     %{REQUEST_FILENAME} !-f
     RewriteCond     %{REQUEST_FILENAME} !-d

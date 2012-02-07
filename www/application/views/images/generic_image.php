@@ -11,7 +11,30 @@ if (!file_exists($img_src))
     $img_src = OS_DEFAULT_NO_IMAGE_PATH . DS . OS_DEFAULT_NO_IMAGE_FILE;
 }
 
-$request = apache_request_headers();
+$if_mod_since = false;
+$if_none_match = false;
+
+if (function_exists('apache_request_headers'))
+{
+    $request = apache_request_headers();
+
+    if (isset($request['If-Modified-Since']))
+        $if_mod_since = $request['If-Modified-Since'];
+
+    if (isset($request['If-None-Match']))
+        $if_none_match = $request['If-None-Match'];
+}
+else
+{
+    // $_SERVER[HTTP_IF_MODIFIED_SINCE] and $_SERVER[HTTP_IF_NONE_MATCH] is set from .htaccess
+    $request = $_SERVER;
+
+    if (isset($request['HTTP_IF_MODIFIED_SINCE']))
+        $if_mod_since = $request['HTTP_IF_MODIFIED_SINCE'];
+
+    if (isset($request['HTTP_IF_NONE_MATCH']))
+        $if_none_match = $request['HTTP_IF_NONE_MATCH'];
+}
 
 //$referer = $request['Referer'];
 
@@ -24,13 +47,13 @@ $fsize = $stat['size'];
 
 $etag = sprintf('"%x-%x-%x"', $inode, $fsize, $mtime);
 
-if (isset($request['If-Modified-Since']) && isset($request['If-None-Match']))
+if (!empty($if_mod_since) && !empty($if_none_match))
 {
     //remove information after the semicolon and form a timestamp
-    $request_mtime = explode(';', $request['If-Modified-Since']);
+    $request_mtime = explode(';', $if_mod_since);
     $request_mtime = strtotime($request_mtime[0]);
 
-    $request_etag = $request['If-None-Match'];
+    $request_etag = $if_none_match;
 
     if (($mtime <= $request_mtime) && ($etag === $request_etag))
     {
