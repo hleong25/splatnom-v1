@@ -7,9 +7,9 @@ define('SITE_NAME', 'splatnom');
 define('DEVELOPMENT_ENVIRONMENT',true);
 define('LOG_QUERY', false);
 
-if (file_exists('db.inc.php'))
+if (file_exists(ROOT.'/config/db.inc.php'))
 {
-    require_once('db.inc.php');
+    require_once(ROOT.'/config/db.inc.php');
 }
 else
 {
@@ -21,9 +21,9 @@ else
 
 define('SQL_AES_KEY',   'tr0nL3g@c4');
 
-if (file_exists('paths.inc.php'))
+if (file_exists(ROOT.'/config/paths.inc.php'))
 {
-    require_once('paths.inc.php');
+    require_once(ROOT.'/config/paths.inc.php');
 }
 else
 {
