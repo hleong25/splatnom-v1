@@ -124,13 +124,6 @@ EOQ;
         $prepare = $this->prepareAndExecute($query, array(':id' => $id), __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $cnt = $prepare->rowCount();
-        if ($cnt != 0)
-        {
-            // bad id
-            return false;
-        }
-
         $info = $prepare->fetch(PDO::FETCH_ASSOC);
         return $info;
     }

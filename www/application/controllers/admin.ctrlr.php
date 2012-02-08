@@ -82,6 +82,12 @@ class AdminController
         }
 
         $info = $user->getUser($id);
+        if (empty($info))
+        {
+            $this->redirect('/admin/find_user');
+            return;
+        }
+
         $permissions = $user->getUserPermission($id);
 
         $this->set('whoami', sprintf('%s: %s', $info['id'], $info['username']));
