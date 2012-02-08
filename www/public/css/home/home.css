@@ -8,35 +8,11 @@ div.new_menus
     margin-top: 1em;
 }
 
-div.new_added
-{
-    margin: 1em;
-}
-
-div.new_added a
-{
-    color: inherit;
-}
-
-div.new_added
-{
-    width: 120px;
-    height: 120px;
-}
-
-div.pg_bottom
-{
-    margin-bottom: 10px;
-}
-
 div.heading
 {
     font-size: 18px;
     background-color: silver;
     width: 100%;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    margin-bottom: 3px;
+    padding: 0.2em;
+    margin-bottom: 0.2em;
 }

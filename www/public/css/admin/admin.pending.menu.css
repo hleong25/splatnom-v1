@@ -1,28 +1,19 @@
 img.menu{
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    padding: 0.2em;
 }
 div.heading{
-    font-size: 18px;
+    font-size: 1.2em;
     background-color: silver;
     width: 100%;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    margin-bottom: 3px;
+    padding: 0.2em;
+    margin-bottom: 0.2em;
 }
 div.subheading{
-    font-size: 14px;
+    font-size: 0.9em;
     background-color: silver;
     width: 100%;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    margin-bottom: 3px;
+    padding: 0.2em;
+    margin-bottom: 0.2em;
     font-weight: bold;
 }
 

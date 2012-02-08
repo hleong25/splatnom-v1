@@ -1,17 +1,17 @@
 .pg
 {
-    max-width: 900px;
+    max-width: 55em;
     margin-left: auto;
     margin-right: auto;
 }
 
 .pg_bottom{
-    margin-bottom: 10px;
+    margin-bottom: 0.5em;
 }
 
 div#header
 {
-    padding: 5px;
+    padding: 0.5em;
     background-color: #990000;
     color: white;
     padding-bottom: 0.8em;
@@ -50,7 +50,7 @@ pre
 {
     font-family: 'Courier New',Courier,monospace;
     text-align: left;
-    font-size: 10pt;
+    font-size: 0.8em;
 }
 
 /************************************************************

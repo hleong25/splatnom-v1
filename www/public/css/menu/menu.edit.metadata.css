@@ -1,61 +1,43 @@
-div.pg_bottom{
-    margin-bottom: 10px;
-}
 div.err_msgs{
     color: red;
     text-align: center;
 }
 img.menu{
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    padding: 0.2em;
 }
 div.heading{
     font-size: 1.2em;
     background-color: silver;
     width: 100%;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    margin-bottom: 3px;
+    padding: 0.2em;
+    margin-bottom: 0.2em;
 }
 div.subheading{
     font-size: 0.9em;
     background-color: silver;
     width: 100%;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
-    margin-bottom: 3px;
+    padding: 0.2em;
+    margin-bottom: 0.2em;
     font-weight: bold;
 }
 div.data{
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-bottom: 3px;
-    padding-top: 3px;
+    padding: 0.2em;
 }
 textarea.address,
 textarea.phone_numbers,
 textarea.hours{
-    width: 300px;
+    width: 40em;
 }
 div.menu div.data{
-    border-left-style: solid;
-    border-left-width: 2px;
-    border-left-color: silver;
-    margin-left: 5px;
-    padding-left: 5px;
+    border-left: 2px solid silver;
+    margin-left: 0.3em;
+    margin-bottom: 0.3em;
+    padding-left: 0.3em;
 }
 div.menu_group{
-    border-left-style: solid;
-    border-left-width: 2px;
-    border-left-color: silver;
-    margin-left: 5px;
-    padding-left: 5px;
+    border-left: 2px solid silver;
+    margin-left: 0.3em;
+    padding-left: 0.3em;
 }
 div.menu_ctrl{
     float: right;
@@ -67,7 +49,7 @@ span.menu_group_info
 }
 div.new_imgs
 {
-    max-height: 300px;
+    max-height: 18em;
     overflow-y: auto;
     overflow-x: hidden; /* prevent horizontal scrollbar */
     padding-right: 20px; /* add padding to account for vertical scrollbar */
