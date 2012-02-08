@@ -10,7 +10,7 @@ flush();
 ?>
 <body>
 <div id="header">
-    <div id="top_nav" class="pg"><?=$this->includeNavLinks()?></div>
+    <div id="nav" class="pg"><?=$this->includeNavLinks()?></div>
     <div class="pg">
         <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
         <br/>

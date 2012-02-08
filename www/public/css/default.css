@@ -23,9 +23,13 @@ span#welcome
     font-size: 2em;
 }
 
-div#top_nav
+div#nav
 {
     text-align: right;
+}
+
+a.nav
+{
     font-size: 0.8em;
 }
 
