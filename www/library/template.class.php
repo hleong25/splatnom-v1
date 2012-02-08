@@ -187,11 +187,15 @@ class Template
 
     function addJqueryUi()
     {
-        // NOTE: don't check for existance.
-        //       htaccess handles the redirect of the js/css files
-        $jquery_ui = 'jquery-ui-1.8.16-redmond';
-        $this->addCss($jquery_ui, WEB_PATH_OTHER, false);
-        $this->addJs($jquery_ui, WEB_PATH_OTHER, false);
+        $version = '1.8.16';
+        $theme = 'redmond';
+
+        $path = "jquery-ui/jquery-ui-{$version}.{$theme}";
+        $css  = "{$path}/css/{$theme}/jquery-ui-{$version}.custom";
+        $js   = "{$path}/js/jquery-ui-{$version}.custom.min";
+
+        $this->addCss($css, WEB_PATH_OTHER);
+        $this->addJs($js, WEB_PATH_OTHER);
 
         // Add default jquery-ui CSS
         $this->addCss('default.jquery-ui');
