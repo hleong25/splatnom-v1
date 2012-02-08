@@ -194,7 +194,7 @@ EOHTML;
             <div class="menu_item">
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@item@"/>
-                <input type="hidden" name="mdt[]" value="<?=$item['metadata_id']?>"/>
+                <input type="hidden" class="mid" name="mdt[]" value="<?=$item['metadata_id']?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Label" value="<?=$item['label']?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Price" value="<?=$item['price']?>"/>
                 <input type="text" class="jq_watermark" name="mdt[]" title="Notes" value="<?=$item['notes']?>"/>

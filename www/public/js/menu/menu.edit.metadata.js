@@ -343,9 +343,9 @@ function menuitem_add(item)
         .clone()
         .insertAfter(objThis)
 
-        .find('input[type="hidden"]')
+        .find('input[type="hidden"].mid')
             // reset id
-            .last().val('').end()
+            .val('')
             .end()
 
         .find('input:text')
@@ -360,6 +360,11 @@ function menuitem_add(item)
 
             // user friendly... go to the first input
             .first().focus().end()
+            .end()
+
+        .find('input:checkbox')
+            // uncheck items
+            .attr('checked', false)
             .end()
     ;
 
