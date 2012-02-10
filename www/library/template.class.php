@@ -72,6 +72,7 @@ class Template
             if(Util::getPermissions('admin'))
                 $links[] = array('css' => 'nav ', 'lbl' => 'admin', 'lnk' => 'admin/main');
 
+            $links[] = array('css' => 'nav', 'lbl' => 'profile', 'lnk' => 'user/profile');
             $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => 'login/end');
         }
 

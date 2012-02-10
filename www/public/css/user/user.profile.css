@@ -1,0 +1,17 @@
+div.invite
+{
+    border: 1px solid black;
+    width: 10em;
+    padding: 0.3em;
+    margin: 0.3em 0;
+}
+
+form#invite
+{
+}
+
+form#invite input
+{
+    width: 100%;
+}
+

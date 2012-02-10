@@ -192,4 +192,83 @@ class UserController
         }
     }
 
+    function onAction_profile($id=null)
+    {
+        if (empty($id))
+            $id = Util::getUserId();
+
+        if (empty($id) || ($id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $user = $this->User;
+        $user_info = $user->getUser($id);
+
+        if (empty($user_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $this->addJqueryUi();
+        $this->addJs('jquery.watermark', WEB_PATH_OTHER);
+        $this->addJs('user/user.profile');
+
+        $this->addCss('user/user.profile');
+
+        $this->set('user_info', $user_info);
+    }
+
+    function onAction_invite()
+    {
+        $id = Util::getUserId();
+
+        if (empty($id) || ($id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        if (empty($_POST) || empty($_POST['friend']))
+        {
+            $this->redirect('/user/profile');
+            return;
+        }
+
+        $user = $this->User;
+        $user_info = $user->getUser($id);
+
+        $friend = $_POST['friend'];
+
+        $mail = new MailModel();
+        $subject = "Splatnom invitation!";
+
+        $params = array(
+            'username' => $user_info['username'],
+            'email' => $user_info['email'],
+            'firstname' => $user_info['firstname'],
+            'lastname' => $user_info['lastname'],
+        );
+
+        //Util::logit("Email invitation to '{$friend}' from user {$id}", __FILE__, __LINE__);
+
+        $message = $mail->grab_data('user', 'email_invite', $params);
+        if (empty($message))
+        {
+            Util::logit("Failed to grab email invitation to '{$friend}' from user {$id}", __FILE__, __LINE__);
+            $this->redirect('/user/profile');
+            return;
+        }
+
+        $bSent = $mail->send_smtp(null, $friend, $subject, $message);
+        if ($bSent !== true)
+        {
+            Util::logit("Failed to send email invitation to '{$friend}' from user {$id}", __FILE__, __LINE__);
+        }
+
+        $this->redirect('/user/profile');
+    }
+
 }

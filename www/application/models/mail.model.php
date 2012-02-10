@@ -7,43 +7,21 @@ class MailModel
 {
     public $DEFAULT_EMAIL = 'support@splatnom.com';
 
-    function send($from, $to, $subject, $message)
-    {
-        $crlf = "\n";
-
-        $headers = array(
-            'From' => $from,
-            'Return-Path' => $from,
-            'Subject' => $subject
-        );
-
-        $mail =& Mail::factory('mail');
-        $mime = new Mail_mime($crlf);
-
-        $mime->setHTMlBody($message);
-        $body = $mime->get();
-        $headers = $mime->headers($headers);
-
-        $send = $mail->send($to, $headers, $body);
-
-        Util::logit($send);
-
-        if ($send !== true)
-            Util::logit($send);
-
-        return $send;
-    }
-
     function send_smtp($from, $to, $subject, $message)
     {
+        // TODO: send this request to a queue so
+        // it can be returned fast and then the
+        // process queue can spend time sending
+        // it out
+
         $crlf = "\n";
 
         if (empty($from))
             $from = $this->DEFAULT_EMAIL;
 
         $headers = array(
-            'From' => "{$from} <{$from}>",
-            'To' => "{$to} <{$to}>",
+            'From' => $from,
+            'To' => $to,
             'Return-Path' => $from,
             'Subject' => $subject
         );
