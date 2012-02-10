@@ -70,6 +70,7 @@
                 $elem.removeAttr('placeholder');
 			
             watermark_container.css({
+                width: $elem.css('width'),
                 display: 'inline-block',
                 position: 'relative'
             });
