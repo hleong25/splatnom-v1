@@ -216,9 +216,19 @@ class UserController
         $this->addJs('jquery.watermark', WEB_PATH_OTHER);
         $this->addJs('user/user.profile');
 
+        $this->addCss('table');
         $this->addCss('user/user.profile');
 
         $this->set('user_info', $user_info);
+
+        $menu = new MenuModel();
+
+        $pending_menus = $menu->getPendingMenus($id);
+        $this->set('pending_menus', $pending_menus);
+
+        $ready_menus = $user->getUserMenus($id);
+        $this->set('ready_menus', $ready_menus);
+        $this->set('dbg', $ready_menus);
     }
 
     function onAction_invite()
@@ -245,7 +255,12 @@ class UserController
         $mail = new MailModel();
         $subject = "Splatnom invitation!";
 
+        $invite_url = $_SERVER['SERVER_NAME'];
+        if (empty($invite_url))
+            $invite_url = $_SERVER['HTTP_HOST'];
+
         $params = array(
+            'invite_url' => $invite_url,
             'username' => $user_info['username'],
             'email' => $user_info['email'],
             'firstname' => $user_info['firstname'],

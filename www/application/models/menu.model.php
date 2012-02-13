@@ -11,10 +11,14 @@ class MenuModel
            left join tblPendingMenuImages menu_img on menu.id = menu_img.pendingmenu_id
          */
 
+        $user_id = Util::getUserId();
+        if (!$user_id) $user_id = 0;
+
         $this->beginTransaction();
 
         $query =<<<EOQ
             INSERT INTO tblPendingMenu (
+                user_id,
                 site_addy1,
                 site_addy2,
                 site_addy3,
@@ -22,6 +26,7 @@ class MenuModel
                 site_addy5
             )
             VALUES (
+                :user_id,
                 :url1,
                 :url2,
                 :url3,
@@ -31,6 +36,7 @@ class MenuModel
 EOQ;
 
         $params = array(
+            ':user_id' => $user_id,
             ':url1' => $urls[0],
             ':url2' => $urls[1],
             ':url3' => $urls[2],
@@ -63,9 +69,6 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $user_id = Util::getUserId();
-        if (!$user_id) $user_id = 0;
-
         $new_menu_img = array(':new_id' => $new_id, ':user_id' => $user_id, ':file_img' => '', ':width' => 0, ':height' => 0);
         $new_path = OS_UPLOAD_PATH . DS . $new_id;
         $files = Util::handle_upload_files($new_path);
@@ -97,16 +100,44 @@ EOQ;
         return $cnt;
     }
 
-    function getPendingMenus()
+    function getPendingMenus($user_id=null)
     {
-        $query =<<<EOQ
-            SELECT menu.*, COUNT(imgs.pendingmenu_id) as cnt_imgs
-            FROM tblPendingMenu menu
-            LEFT JOIN tblPendingMenuImages imgs ON menu.id = imgs.pendingmenu_id
-            GROUP BY menu.id
+        $params = array();
+        $aes_key = SQL_AES_KEY;
+
+        if (empty($user_id))
+        {
+            // get all pending menus
+            $query =<<<EOQ
+                SELECT
+                    menu.*,
+                    COUNT(imgs.pendingmenu_id) as cnt_imgs,
+                    AES_DECRYPT(user.username, '{$aes_key}_username') AS username
+                FROM tblPendingMenu menu
+                LEFT JOIN tblPendingMenuImages imgs ON menu.id = imgs.pendingmenu_id
+                LEFT JOIN tblUsers user ON menu.user_id = user.id
+                GROUP BY menu.id
+EOQ;
+        }
+        else
+        {
+            // get users pending menu
+            $query =<<<EOQ
+                SELECT
+                    menu.*,
+                    COUNT(imgs.pendingmenu_id) as cnt_imgs,
+                    AES_DECRYPT(user.username, '{$aes_key}_username') AS username
+                FROM tblPendingMenu menu
+                LEFT JOIN tblPendingMenuImages imgs ON menu.id = imgs.pendingmenu_id
+                LEFT JOIN tblUsers user ON menu.user_id = user.id
+                WHERE menu.user_id = :user_id
+                GROUP BY menu.id
 EOQ;
 
-        $rst = $this->query($query);
+            $params['user_id'] = $user_id;
+        }
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         $rows = $rst->fetchAll();
 
         return $rows;
@@ -211,6 +242,7 @@ EOQ;
 
         $query =<<<EOQ
             SELECT
+                user_id,
                 site_addy1,
                 site_addy2,
                 site_addy3,
@@ -227,6 +259,8 @@ EOQ;
         if (empty($info)) return false;
         $prepare->closeCursor();
         unset($prepare);
+
+        $menu['user_id'] = $info['user_id'];
 
         $menu['sites'][] = $info['site_addy1'];
         $menu['sites'][] = $info['site_addy2'];
@@ -279,14 +313,16 @@ EOQ;
 
         $query =<<<EOQ
             INSERT INTO tblMenu(
-                mode_id
+                mode_id,
+                user_id
             )
             VALUES (
-                (SELECT id FROM vMenuStatus WHERE menu_status='new')
+                (SELECT id FROM vMenuStatus WHERE menu_status='new'),
+                :user_id
             )
 EOQ;
 
-        $rst = $this->query($query);
+        $rst = $this->prepareAndExecute($query, array(':user_id'=>$pending_menu['user_id']), __FILE__, __LINE__);
         if (!$rst)
         {
             $this->log_dberr($rst, __FILE__, __LINE__);

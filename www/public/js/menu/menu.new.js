@@ -13,6 +13,10 @@ function init()
     $('form#frmNewMenu')
         .submit(form_OnSubmit)
     ;
+
+    $('input:button').button();
+    $('input:submit').button();
+    $('input:file').button();
 }
 
 function btnAddMore_OnClick()

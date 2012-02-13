@@ -3,6 +3,7 @@
         <thead>
             <td>id</td>
             <td>timestamp</td>
+            <td>user</td>
             <td>site</td>
             <td>imgs</td>
             <td></td>
@@ -16,6 +17,7 @@
                 $row_id = "row_{$id}";
                 $ts = date("m.d.y G:i:s", strtotime($menu["ts"]));
                 $cnt_sites = 0;
+                $user = $menu['username'];
 
                 $cnt_sites += !empty($menu['site_addy1']) ? 1 : 0;
                 $cnt_sites += !empty($menu['site_addy2']) ? 1 : 0;
@@ -27,6 +29,7 @@
                 <tr id="{$row_id}">
                     <td>{$id}</td>
                     <td>{$ts}</td>
+                    <td>{$user}</td>
                     <td>{$cnt_sites}</td>
                     <td>{$menu['cnt_imgs']}</td>
                     <td><a href="/admin/pending_menu/{$id}">View</a></td>

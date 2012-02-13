@@ -3,6 +3,12 @@ div#new_menu
     width: 32em;
 }
 
+span#err
+{
+    color: red;
+    font-weight: bold;
+}
+
 span#msg
 {
     color: black;
@@ -16,6 +22,11 @@ fieldset#menu_files
     padding: 0.3em;
 }
 
+div.new_img
+{
+    margin: 0.3em;
+}
+
 input.file
 {
     width: 100%;
@@ -23,10 +34,10 @@ input.file
 
 input.site_menu
 {
-    width: 30em;
+    width: 100%;
 }
 
 input#btnAddMore
 {
-    margin-top: 1em;
+    margin: 0.3em !important;
 }

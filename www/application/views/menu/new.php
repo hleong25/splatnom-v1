@@ -1,6 +1,7 @@
 <?php
 $params = array(
     'new_menu_done' => false,
+    'is_user' => false,
 );
 
 extract($params, EXTR_SKIP);
@@ -12,6 +13,9 @@ if ($new_menu_done === false)
 ?>
     <span id="help">Help us by telling us about your favorite menu!</span>
     <br/>
+    <?php if ($is_user !== true): ?>
+        <span id="err">Login to keep track of this menu.</span>
+    <?php endif; ?>
     <br/>
     <br/>
     <form id="frmNewMenu" enctype="multipart/form-data" method="post" action="/menu/new">

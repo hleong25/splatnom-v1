@@ -274,4 +274,27 @@ EOQ;
         $this->commit();
         return true;
     }
+
+    function getUserMenus($user_id)
+    {
+        // NOTE: copied and modified from HomeModel::getReadyMenus()
+
+        $query =<<<EOQ
+            SELECT
+                m.id,
+                m.ts,
+                ms.menu_status,
+                info.name,
+                info.address
+            FROM tblMenu m
+            INNER JOIN vMenuStatus ms ON m.mode_id = ms.id
+            LEFT JOIN tblMenuInfo_us info ON m.id = info.menu_id
+            WHERE m.user_id = :user_id
+            ORDER BY m.ts
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, array(':user_id' => $user_id), __FILE__, __LINE__);
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }
