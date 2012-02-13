@@ -206,16 +206,33 @@ EOQ;
 EOQ;
 */
 
+        $query_match = '';
+        if (empty($user_query))
+        {
+            $query_match =<<<EOQ
+                1 AS info_score,
+                1 AS mdt_score,
+                1 AS info_score_boolean,
+                1 AS mdt_score_boolean
+EOQ;
+        }
+        else
+        {
+            $query_match =<<<EOQ
+                MAX(MATCH(info.name, info.notes) AGAINST(:match1)) AS info_score,
+                MAX(MATCH(mdt.label) AGAINST(:match2)) AS mdt_score,
+                MATCH(info.name, info.notes) AGAINST(:match3 IN BOOLEAN MODE) AS info_score_boolean,
+                MATCH(mdt.label) AGAINST(:match4 IN BOOLEAN MODE) AS mdt_score_boolean
+EOQ;
+        }
+
         $query_bounds =<<<EOQ
             SELECT *,
                 (info_score + mdt_score + info_score_boolean + mdt_score_boolean) AS score
             FROM (
                 SELECT
                     info.*,
-                    MAX(MATCH(info.name, info.notes) AGAINST(:match1)) AS info_score,
-                    MAX(MATCH(mdt.label) AGAINST(:match2)) AS mdt_score,
-                    MATCH(info.name, info.notes) AGAINST(:match3 IN BOOLEAN MODE) AS info_score_boolean,
-                    MATCH(mdt.label) AGAINST(:match4 IN BOOLEAN MODE) AS mdt_score_boolean
+                    {$query_match}
                 FROM tblMenu menu
                 INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
                 INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
@@ -252,12 +269,16 @@ EOQ;
             //ORDER BY info_score DESC, mdt_score DESC, info_score_boolean DESC, mdt_score_boolean DESC, distance ASC
 
         $opts = array(
-            ':match1'=>$user_query,
-            ':match2'=>$user_query,
-            ':match3'=>$user_query,
-            ':match4'=>$user_query,
             ':withinRadius'=>$withinRadius,
         );
+
+        if (!empty($user_query))
+        {
+            $opts[':match1'] = $user_query;
+            $opts[':match2'] = $user_query;
+            $opts[':match3'] = $user_query;
+            $opts[':match4'] = $user_query;
+        }
 
         $prepare = $this->prepareAndExecute($query, $opts, __FILE__, __LINE__);
         if (!$prepare) return false;
