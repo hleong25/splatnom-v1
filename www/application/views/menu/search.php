@@ -44,14 +44,17 @@ EOHTML;
         if ($score < 0.5)
             break;
 
-        $link = '<a href="/menu/view/'.$menu_id.'">%s</a>';
+        $name = $place['name'];
+        $slug = Util::slugify($name);
+        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
 
-        $id = sprintf($link, $menu_id);
-        $idx_no = sprintf($link, $idx+1);
-        $name = sprintf($link, $place['name']);
-        $address = sprintf($link, $place['address']);
-        $distance = sprintf($link, $distance);
-        $score = sprintf($link, $score);
+
+        $id = sprintf($link, $slug, $menu_id);
+        $idx_no = sprintf($link, $slug, $idx+1);
+        $name = sprintf($link, $slug, $name);
+        $address = sprintf($link, $slug, $place['address']);
+        $distance = sprintf($link, $slug, $distance);
+        $score = sprintf($link, $slug, $score);
 
         echo<<<EOHTML
             <tr>
