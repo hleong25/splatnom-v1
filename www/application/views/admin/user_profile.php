@@ -1,3 +1,19 @@
+<?php
+$p_info = array(
+    'id' => -1,
+    'userame' => '',
+    'firstname' => '',
+    'lastname' => '',
+    'email' => '',
+);
+
+$params = array(
+    'info' => $p_info,
+    'permissions' => array(),
+);
+
+extract($params, EXTR_SKIP);
+?>
 <div class="pg info">
     <div id="id"><span class="info">id</span><span class="val"><?php echo $info['id']; ?></span></div>
     <div id="username"><span class="info">user name</span><span class="val"><?php echo $info['username']; ?></span></div>

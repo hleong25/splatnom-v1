@@ -1,7 +1,7 @@
 <?php
 $params = array(
     'query_user' => '',
-    'query_result' => null,
+    'query_result' => array(),
 );
 extract($params, EXTR_SKIP);
 ?>
@@ -17,33 +17,35 @@ if ($query_result !== null)
 {
 ?>
 <div id="" class="pg">
-    <span>Searching for '<?php echo $query_user; ?>' returned <?php echo count($query_result); ?> results.</span>
+    <span>Searching for '<?php echo $query_user; ?>' returned <?php echo count($query_result); ?> results. (max results is 100)</span>
     <br/>
     <br/>
     <table class="tblDefault">
         <thead>
             <td>id</td>
             <td>username</td>
-            <td></td>
+            <td>email</td>
+            <td>firstname</td>
+            <td>lastname</td>
         </thead>
         <tbody>
-        <?php
-            foreach ($query_result as $row)
-            {
+        <?php foreach ($query_result as $row):
                 $id = $row['id'];
                 $name = $row['username'];
+                $email = $row['email'];
+                $firstname = $row['firstname'];
+                $lastname = $row['lastname'];
 
-                echo<<<EOHTML
-                <tr>
-                    <td>{$id}</td>
-                    <td><a href="/admin/user_profile/{$id}">{$name}</a></td>
-                    <td>
-                        [Edit] [Remove]
-                    </td>
-                </tr>
-EOHTML;
-            }
+                $user_link = "/admin/user_profile/{$id}";
         ?>
+                <tr>
+                    <td><a href="<?=$user_link?>"><?=$id?></a></td>
+                    <td><a href="<?=$user_link?>"><?=$name?></a></td>
+                    <td><a href="<?=$user_link?>"><?=$email?></a></td>
+                    <td><a href="<?=$user_link?>"><?=$firstname?></a></td>
+                    <td><a href="<?=$user_link?>"><?=$lastname?></a></td>
+                </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>
