@@ -8,6 +8,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
+    <span>To verify your account, please login.</span>
     <form id="new_user" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>">
         <input class="jq_watermark username" type="text" name="username" title="Username" value="<?php echo $username; ?>"/>
         <br/>

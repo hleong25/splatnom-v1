@@ -124,9 +124,15 @@ class UserController
         $mail = new MailModel();
         $subject = 'Verify account for splatnom';
 
+        $verify_url = $_SERVER['SERVER_NAME'];
+        if (empty($verify_url))
+            $verify_url = $_SERVER['HTTP_HOST'];
+
+        $verify_url .= '/user/verify/'.$verifyCode;
+
         $params = array(
             'user' => $user,
-            'verifyCode' => $verifyCode,
+            'verify_url' => $verify_url,
         );
 
         $message = $mail->grab_data('user', 'email_verification', $params);
@@ -225,6 +231,9 @@ class UserController
 
         $pending_menus = $menu->getPendingMenus($id);
         $this->set('pending_menus', $pending_menus);
+        $invite_url = $_SERVER['SERVER_NAME'];
+        if (empty($invite_url))
+            $invite_url = $_SERVER['HTTP_HOST'];
 
         $ready_menus = $user->getUserMenus($id);
         $this->set('ready_menus', $ready_menus);

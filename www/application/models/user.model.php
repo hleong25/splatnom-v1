@@ -5,10 +5,12 @@ class UserModel
 {
     function isUsernameAvailable($q_name)
     {
+        $aes_key = SQL_AES_KEY;
+
         $query =<<<EOQ
             SELECT COUNT(*) AS cnt
             FROM tblUsers
-            WHERE username = :name
+            WHERE username = AES_ENCRYPT(:name, '{$aes_key}_username')
 EOQ;
 
         $prepare = $this->prepareAndExecute($query, array(':name' => $q_name), __FILE__, __LINE__);
