@@ -12,11 +12,8 @@ extract($params, EXTR_SKIP);
     </form>
 </div>
 <br/>
-<?php
-if ($query_result !== null)
-{
-?>
-<div id="" class="pg">
+<?php if (!empty($query_result)): ?>
+<div id="search" class="pg">
     <span>Searching for '<?php echo $query_user; ?>' returned <?php echo count($query_result); ?> results. (max results is 100)</span>
     <br/>
     <br/>
@@ -49,6 +46,4 @@ if ($query_result !== null)
         </tbody>
     </table>
 </div>
-<?php
-} // if ($query_result === null)
-?>
+<?php endif; ?>
