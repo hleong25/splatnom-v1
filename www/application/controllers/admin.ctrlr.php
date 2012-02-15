@@ -107,6 +107,8 @@ class AdminController
             $this->redirect('/admin/pendingmenu_list');
             return;
         }
+
+        $this->addCss('table');
         $this->addCss('admin/admin.pending.menu');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
@@ -132,17 +134,27 @@ class AdminController
         switch ($_POST['action'])
         {
             case 'search':
-                // TODO: do custom search
-                $search_arg = array(
-                    'name' => $_POST['name'],
-                    'location' => $_POST['location'],
-                );
+                $q_name = $_POST['name'];
+                $q_location = $_POST['location'];
 
-                $search_rst = array(
-                );
+                $this->set('search_arg', array('name'=>$q_name, 'location'=>$q_location));
 
-                $this->set('search_arg', $search_arg);
-                $this->set('search_rst', $search_rst);
+                $loc = new LocationModel();
+                $latlong = $loc->getLatLongByZip($q_location);
+                if (empty($latlong))
+                {
+                    $this->set('search_msg', 'No location found');
+                    break;
+                }
+
+                $places = $loc->getPlacesWithinLatLong($q_name, $latlong['latitude'], $latlong['longitude'], 10);
+                if (empty($places))
+                {
+                    $this->set('search_msg', 'No places found');
+                    break;
+                }
+
+                $this->set('search_rst', $places);
 
                 break;
         }

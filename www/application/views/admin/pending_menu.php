@@ -1,3 +1,21 @@
+<?php
+$search_args = array(
+    'name' => '',
+    'location' => '',
+);
+
+$params = array(
+    'pending_id' => '',
+    'err_msg' => '',
+    'sites' => array(),
+    'imgs' => array(),
+    'search_arg' => $search_args,
+    'search_msg' => '',
+    'search_rst' => array(),
+);
+
+extract($params, EXTR_SKIP);
+?>
 <div class="pg pg_bottom" style="text-align: right;">
     <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>
@@ -38,18 +56,56 @@ EOHTML;
 <div class="pg pg_bottom">
     <div class="heading">Search</div>
     <div class="data">
-        <form id="pending" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" > 
+        <form id="pending" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" >
             <input type="hidden" name="action" value="search" />
             <input class="jq_watermark" type="textbox" name="name" title="Name" value="<?php echo $search_arg['name']; ?>" />
             <input class="jq_watermark" type="textbox" name="location" title="Location" value="<?php echo $search_arg['location']; ?>" />
             <input type="submit" value="Submit"/>
         </form>
-        <span class="search_result">
-            <?php
-                if (isset($search_rst))
-                    echo 'Search resulted in '.count($search_rst).' rows.';
-            ?>
-        </span>
+    </div>
+    <div class="search">
+        <span class="search_msg"><?=$search_msg?></span>
+        <?php if (!empty($search_rst)): ?>
+            <table class="tblDefault">
+                <thead>
+                    <td>#</td>
+                    <td>name</td>
+                    <td>address</td>
+                    <td>distance</td>
+                    <td>score</td>
+                </thead>
+                <tbody>
+                <?php foreach ($search_rst as $idx => $place):
+                        $menu_id = $place['menu_id'];
+                        $distance = sprintf('%0.2f', $place['distance']);
+                        $score = sprintf('%0.2f', $place['score']);
+
+                        if ($score < 0.5)
+                            break;
+
+                        $name = $place['name'];
+                        $slug = Util::slugify($name);
+                        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
+
+
+                        $id = sprintf($link, $slug, $menu_id);
+                        $idx_no = sprintf($link, $slug, $idx+1);
+                        $name = sprintf($link, $slug, $name);
+                        $address = sprintf($link, $slug, $place['address']);
+                        $distance = sprintf($link, $slug, $distance);
+                        $score = sprintf($link, $slug, $score);
+                ?>
+                    <tr>
+                        <td><?=$idx_no?></td>
+                        <td><?=$name?></td>
+                        <td><?=$address?></td>
+                        <td><?=$distance?></td>
+                        <td><?=$score?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
     </div>
 </div>
 <div class="pg pg_bottom">
@@ -62,4 +118,3 @@ EOHTML;
         <span class="err"><?php echo $err_msg; ?></span>
     </div>
 </div>
-<div class="pg"><pre><?php var_export($_GET); ?></pre></div>

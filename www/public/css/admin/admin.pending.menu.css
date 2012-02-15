@@ -16,4 +16,6 @@ div.subheading{
     margin-bottom: 0.2em;
     font-weight: bold;
 }
-
+div.search {
+    margin-left: 3em;
+}
