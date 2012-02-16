@@ -189,7 +189,7 @@ EOHTML;
         </div>
         <div class="pg_bottom subheading">Menu items</div>
         <div class="menu_group">
-            <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
+            <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</span><br/><br/>
             <?php foreach ($mdt['items'] as $item_idx => $item): ?>
             <div class="menu_item">
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->

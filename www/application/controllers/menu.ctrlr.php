@@ -254,14 +254,22 @@ class MenuController
                     }
 
                     // parse 'item' for easier input
-                    // format is '{item}@@{price}@@{notes}
+                    // format is '{item}@@{price}@@{notes}@@{attrs}
                     if (empty($item['price']) && empty($item['notes']))
                     {
-                        $parsed = explode('@@', $item['label'], 3);
+                        $parsed = explode('@@', $item['label'], 4);
 
                         $item['label'] = trim(array_shift($parsed));
                         $item['price'] = trim(array_shift($parsed));
                         $item['notes'] = trim(array_shift($parsed));
+
+                        $attrs = trim(array_shift($parsed));
+                        $attrs_len = strlen($attrs);
+                        for ($attrs_idx = 0; $attrs_idx < $attrs_len; $attrs_idx++)
+                        {
+                            if ($attrs[$attrs_idx] === 'S')
+                                $item['is_spicy'] = true;
+                        }
                     }
 
                     $mdt['items'][] = $item;
