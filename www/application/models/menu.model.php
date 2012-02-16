@@ -839,12 +839,12 @@ EOQ;
 
             foreach ($section['items'] as &$metadata)
             {
-                $metadata_id = $metadata['metadata_id'];
-                $ordinal = $metadata['ordinal'];
-                $label = $metadata['label'];
-                $price = $metadata['price'];
-                $notes = $metadata['notes'];
-                $is_spicy = $metadata['is_spicy'];
+                $metadata_id = @$metadata['metadata_id'];
+                $ordinal = @$metadata['ordinal'];
+                $label = @$metadata['label'];
+                $price = @$metadata['price'];
+                $notes = @$metadata['notes'];
+                $is_spicy = (bool) @$metadata['is_spicy'];
 
                 // update the row to be something way different.
                 // NOTE: it's because mysql < 5.3 does not support
@@ -949,11 +949,11 @@ EOQ;
         {
             foreach ($items as &$metadata)
             {
-                $ordinal = $metadata['ordinal'];
-                $label = $metadata['label'];
-                $price = $metadata['price'];
-                $notes = $metadata['notes'];
-                $is_spicy = $metadata['is_spicy'];
+                $ordinal = @$metadata['ordinal'];
+                $label = @$metadata['label'];
+                $price = @$metadata['price'];
+                $notes = @$metadata['notes'];
+                $is_spicy = (bool) @$metadata['is_spicy'];
 
                 $rsts[] = $prepare->bindValue(':menu_id', $id);
                 $rsts[] = $prepare->bindValue(':section_id', $section_id);
