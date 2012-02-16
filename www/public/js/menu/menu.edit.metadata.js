@@ -248,14 +248,19 @@ function menu_add(item)
                 .end()
             .end()
 
-        .find('div.group_info input[type="hidden"]')
-            // reset id
-            .last().val('').end()
+        .find('input:checkbox')
+            // uncheck items
+            .attr('checked', false)
             .end()
 
-        .find('div.menu_item input[type="hidden"]')
+        .find('div.group_info input[type="hidden"].sid')
             // reset id
-            .last().val('').end()
+            .val('')
+            .end()
+
+        .find('div.menu_item input[type="hidden"].mid')
+            // reset id
+            .val('')
             .end()
 
         .find('span.menu_name')

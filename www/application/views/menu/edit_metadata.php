@@ -182,7 +182,7 @@ EOHTML;
         <div class="pg_bottom group_info">
             <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
             <input type="hidden" name="mdt[]" value="@mdt@"/>
-            <input type="hidden" name="mdt[]" value="<?=$mdt['section_id']?>"/>
+            <input type="hidden" class="sid" name="mdt[]" value="<?=$mdt['section_id']?>"/>
             <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="<?=$mdt['name']?>" />
             <br/>
             <input class="jq_watermark" type="text" name="mdt[]" title="Group notes" value="<?=$mdt['notes']?>" />
