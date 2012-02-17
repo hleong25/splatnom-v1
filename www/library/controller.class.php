@@ -31,7 +31,7 @@ class Controller
             $this->m_template->render($this->m_bRender);
 
         $exec_time = scriptExecutionTime();
-        if ($exec_time > 2.5)
+        if ($exec_time > 3.0)
         {
             global $get_url;
             $msg = sprintf('Execution time: %.03f for %s', $exec_time, $get_url);
