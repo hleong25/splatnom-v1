@@ -1,7 +1,8 @@
 <hr/>
-<div class="pg">
-    <pre><?php echo date('r'); ?></pre>
-    <span style="font-size: 0.7em">Execution time: <?php printf('%.03f', scriptExecutionTime()); ?> seconds</span>
+<div id="footer" class="pg">
+    <div class="">
+        <a href="/home/feedback">feeback</a>
+    </div>
 </div>
 </body>
 <?php flush(); ?>

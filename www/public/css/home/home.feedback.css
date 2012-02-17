@@ -1,0 +1,13 @@
+.err {
+    font-weight: bold;
+    font-size: 0.8em;
+    color: red;
+}
+input[type="text"] {
+    width: 20em;
+}
+textarea {
+    width: 40em;
+    height: 10em;
+}
+
