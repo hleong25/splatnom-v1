@@ -193,6 +193,9 @@ class UserController
         }
         else
         {
+            global $get_url;
+            $msg = "Failed to validate user '{$username}', user_id '{$user_id}', with code '{$code}'. {$get_url}";
+            Util::logit($msg);
             $this->set('err_msg', 'Could not validate account');
             return;
         }
