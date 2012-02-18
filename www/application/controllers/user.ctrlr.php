@@ -155,9 +155,6 @@ class UserController
             return;
         }
 
-        //$this->addCss('user/user.verify');
-        //$this->addJs('user/user.verify');
-
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 
         $this->set('code', $code);
@@ -167,7 +164,7 @@ class UserController
             // user must be logged off to verify account.
             global $get_url;
             session_destroy();
-            $this->redirect($get_url);
+            $this->redirect("/$get_url");
             return;
         }
 
