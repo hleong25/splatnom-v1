@@ -9,6 +9,7 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 
+$invite_url = 'http://'.$invite_url;
 ?>
 <html><body>
     <div style="text-align:center; ">

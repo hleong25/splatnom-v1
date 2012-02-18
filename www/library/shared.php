@@ -59,19 +59,6 @@ function callHook ()
 {
     global $get_url;
 
-/*
-    NOTE: fixed by .htaccess
-
-    // TODO: detect invalid url and fix it
-    switch ($get_url)
-    {
-        case '':
-        case 'index.html':
-        case 'index.php':
-            $get_url = 'home/main';
-    }
-*/
-
     $urlArray = array();
     $urlArray = explode("/", $get_url);
 

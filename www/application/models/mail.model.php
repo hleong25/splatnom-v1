@@ -7,6 +7,13 @@ class MailModel
 {
     public $DEFAULT_EMAIL = 'support@splatnom.com';
 
+    private static $m_email_sent = false;
+
+    public function hasEmailSent()
+    {
+        return self::$m_email_sent;
+    }
+
     function send_smtp($from, $to, $subject, $message)
     {
         // TODO: send this request to a queue so
@@ -46,6 +53,7 @@ class MailModel
         $body = $mime->get();
         $headers = $mime->headers($headers);
 
+        self::$m_email_sent = true;
         $send = $mail->send($to, $headers, $body);
 
         if (PEAR::isError($send))

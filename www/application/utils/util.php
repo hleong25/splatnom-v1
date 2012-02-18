@@ -154,6 +154,21 @@ class Util
 
         return $name;
     }
+
+    static function getTopLevelDomain()
+    {
+        $url = $_SERVER['SERVER_NAME'];
+        if (empty($url))
+            $url = $_SERVER['HTTP_HOST'];
+
+        if (empty($url))
+        {
+            Util::logit('Failed to get root site name, using default.');
+            $url = 'www.splatnom.com';
+        }
+
+        return $url;
+    }
 }
 
 class UploadHandler

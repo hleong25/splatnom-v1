@@ -5,6 +5,8 @@ $params = array(
 );
 
 extract($params, EXTR_SKIP);
+
+$verify_url = 'http://'.$verify_url;
 ?>
 <html><body>
     <div style="text-align:center; ">

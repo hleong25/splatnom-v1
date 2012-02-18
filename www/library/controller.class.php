@@ -31,10 +31,12 @@ class Controller
             $this->m_template->render($this->m_bRender);
 
         $exec_time = scriptExecutionTime();
-        if ($exec_time > 3.0)
+        $max_exec_time = MailModel::hasEmailSent() ? 4.0 : 2.0;
+
+        if ($exec_time > $max_exec_time)
         {
             global $get_url;
-            $msg = sprintf('Execution time: %.03f for %s', $exec_time, $get_url);
+            $msg = sprintf('Execution time: %.03f/%0.3f for %s', $exec_time, $max_exec_time, $get_url);
             Util::logit($msg);
         }
 	}

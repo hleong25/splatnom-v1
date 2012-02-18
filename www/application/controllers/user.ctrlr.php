@@ -124,9 +124,7 @@ class UserController
         $mail = new MailModel();
         $subject = 'Verify account for splatnom';
 
-        $verify_url = $_SERVER['SERVER_NAME'];
-        if (empty($verify_url))
-            $verify_url = $_SERVER['HTTP_HOST'];
+        $verify_url = Util::getTopLevelDomain();
 
         $verify_url .= '/user/verify/'.$verifyCode;
 
@@ -234,9 +232,7 @@ class UserController
 
         $pending_menus = $menu->getPendingMenus($id);
         $this->set('pending_menus', $pending_menus);
-        $invite_url = $_SERVER['SERVER_NAME'];
-        if (empty($invite_url))
-            $invite_url = $_SERVER['HTTP_HOST'];
+        $invite_url = Util::getTopLevelDomain();
 
         $ready_menus = $user->getUserMenus($id);
         $this->set('ready_menus', $ready_menus);
@@ -267,9 +263,7 @@ class UserController
         $mail = new MailModel();
         $subject = "Splatnom invitation!";
 
-        $invite_url = $_SERVER['SERVER_NAME'];
-        if (empty($invite_url))
-            $invite_url = $_SERVER['HTTP_HOST'];
+        $invite_url = Util::getTopLevelDomain();
 
         $params = array(
             'invite_url' => $invite_url,
