@@ -169,6 +169,26 @@ class Util
 
         return $url;
     }
+
+    static function cookie($key, $val=null)
+    {
+        if (empty($key))
+            return false;
+
+        if (is_null($val))
+        {
+            // it's a get... return it
+            if (!empty($_COOKIE[$key]))
+                return $_COOKIE[$key];
+            else
+                return false;
+        }
+
+        // it's a set
+        $expire = time() + (3600*24*14); // expire in 2 weeks
+        setcookie($key, $val, $expire, '/');
+        return true;
+    }
 }
 
 class UploadHandler

@@ -11,9 +11,9 @@ class HomeController
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home');
 
-        if (!empty($_COOKIE['location']))
+        $loc = Util::cookie('location');
+        if (!empty($loc))
         {
-            $loc = $_COOKIE['location'];
             $this->set('location', $loc);
         }
 

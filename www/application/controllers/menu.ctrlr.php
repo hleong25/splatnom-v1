@@ -372,8 +372,7 @@ class MenuController
         else
         {
             // valid location... lets set the cookie
-            $expire = time() + (3600*24*14); // expire in 2 weeks
-            setcookie('location', $location, $expire, '/');
+            Util::cookie('location', $location);
         }
 
         $this->set('msg', "Searching for: {$query}");
