@@ -372,6 +372,12 @@ class MenuController
             $this->set('msg', 'No location found');
             return;
         }
+        else
+        {
+            // valid location... lets set the cookie
+            $expire = time() + (3600*24*14); // expire in 2 weeks
+            setcookie('location', $location, $expire, '/');
+        }
 
         $this->set('msg', "Searching for: {$query}");
 

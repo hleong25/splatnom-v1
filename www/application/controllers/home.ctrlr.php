@@ -8,10 +8,14 @@ class HomeController
         $this->addCss('table');
         $this->addCss('home/home');
 
-        //$this->addJs('jquery.cookie', WEB_PATH_OTHER);
-        //$this->addJs('jquery.form', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home');
+
+        if (!empty($_COOKIE['location']))
+        {
+            $loc = $_COOKIE['location'];
+            $this->set('location', $loc);
+        }
 
         $this->set('ready_menus', $this->Home->getReadyMenus());
 
