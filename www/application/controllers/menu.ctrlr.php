@@ -357,9 +357,6 @@ class MenuController
             original URL request is in $_GET format, after mod_rewrite it changes to MVC model
         */
 
-        $this->addJs('jquery.cookie', WEB_PATH_OTHER);
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
-
         $this->addCss('table');
 
         $this->set('location', $location);
