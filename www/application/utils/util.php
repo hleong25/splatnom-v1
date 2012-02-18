@@ -2,7 +2,7 @@
 
 class Util
 {
-    function logit($obj, $file=null, $line=null)
+    static function logit($obj, $file=null, $line=null)
     {
         $from = "";
         if (!empty($file) && !empty($line))
