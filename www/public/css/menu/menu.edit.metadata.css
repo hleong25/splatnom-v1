@@ -1,24 +1,34 @@
-div.err_msgs{
-    color: red;
-    text-align: center;
+div.edit > form > *{
+    margin-left: 10em;
+    margin-bottom: 0.5em;
 }
-img.menu{
-    padding: 0.2em;
+.action{
+    margin-left: 0em !important;
+    position: fixed;
+    width: 9em;
+}
+.action input{
+    display: block;
+    width: 100%;
+    margin-bottom: 0.3em !important;
+}
+.action hr{
+    width: 80%;
+}
+.noaction{
 }
 div.heading{
     font-size: 1.2em;
     background-color: silver;
     width: 100%;
     padding: 0.2em;
-    margin-bottom: 0.2em;
 }
-div.subheading{
-    font-size: 0.9em;
-    background-color: silver;
-    width: 100%;
+div.err_msgs{
+    color: red;
+    text-align: center;
+}
+img.menu{
     padding: 0.2em;
-    margin-bottom: 0.2em;
-    font-weight: bold;
 }
 div.data{
     padding: 0.2em;
@@ -28,6 +38,46 @@ textarea.phone_numbers,
 textarea.hours{
     width: 40em;
 }
+a.img_add,
+button.move_up,
+button.move_down,
+button.menu_add,
+button.menu_remove{
+    font-size: 0.8em;
+    font-weight: bold;
+}
+.heading > .left{
+    float: left;
+}
+.heading > .right{
+    text-align: right;
+}
+.group_info .menu_name{
+    width: 40em;
+}
+.group_info .menu_notes{
+    width: 40em;
+    height: 5em;
+}
+.menu_item textarea{
+    display: block;
+}
+.item_label{
+    width: 20em;
+}
+.item_price{
+    width: 8em;
+}
+.item_notes{
+    width: 10em;
+}
+.item_edit{
+    position: relative;
+    z-index: 9999;
+    width: 20em;
+    height: 5em;
+}
+
 div.menu div.data{
     border-left: 2px solid silver;
     margin-left: 0.3em;
@@ -38,9 +88,6 @@ div.menu_group{
     border-left: 2px solid silver;
     margin-left: 0.3em;
     padding-left: 0.3em;
-}
-div.menu_ctrl{
-    float: right;
 }
 span.latlong_info,
 span.menu_group_info

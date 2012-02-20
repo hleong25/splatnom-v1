@@ -3,133 +3,217 @@ var js_menu = (function() {
 init();
 
 return {
-    purgeMenu: purgeMenu,
-    view: view,
-    export: export,
-    hideAll: hideAll,
-    showAll: showAll,
-    googleSearchAddress: googleSearchAddress,
-    moveMenu: moveMenu,
-    menu_add: menu_add,
-    menu_remove: menu_remove,
-    menuitem_add: menuitem_add,
-    menuitem_remove: menuitem_remove,
+    //empty
 };
 
 function init()
 {
+    $('button').on('click', function(e){
+        e.preventDefault();
+    });
+
+    $('div.action > input.button')
+        .button()
+        .each(onAction_button)
+    ;
+
+    $('.search_address')
+        .button()
+        .on('click', googleSearchAddress)
+    ;
+
     $('div.onToggle').on({
         click: toggle_onClick,
         mouseover: toggle_onHoverIn,
         mouseout: toggle_onHoverOut
     });
 
-    $('input:button.link_add').on('click', link_add);
-    $('input:button.link_remove').on('click', link_remove);
+    $('a.img_add')
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-plusthick'},
+        })
+    ;
 
-    $('div.group_info input:text.menu_name').on('change', menuName_onChange);
-//    $('div.controller input:button.menu_add').on('click', menu_add);
-//    $('div.controller input:button.menu_remove').on('click', menu_remove);
-
-    $('div.menu_item input:text').on('keyup', keyboardNavigation);
-//    $('div.menu_item input:image.menuitem_add').on('click', menuitem_add);
-//    $('div.menu_item input:image.menuitem_remove').on('click', menuitem_remove);
-
-    $('a.button').button();
-    $('input:button').button();
-    $('input:submit').button();
+    $.proxy(events_link, document)();
+    $.proxy(events_menu, document)();
 }
 
-function purgeMenu(purgeUrl)
+function events_link()
 {
-    var bPurge = confirm('Are you sure you want to purge this menu?');
+    $('.link_add', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-plusthick'},
+        })
+        .off('click.link_add')
+        .on('click.link_add', link_add);
 
-    if (!bPurge)
+    $('.link_remove', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-closethick'},
+        })
+        .off('click.link_remove')
+        .on('click.link_remove', link_remove);
+}
+
+function events_menu()
+{
+    $('.move_up', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-arrowthick-1-n'},
+        })
+        .off('click.move_up')
+        .on('click.move_up', function(){
+            move_menu(this, -1);
+            return false;
+        })
+    ;
+
+    $('.move_down', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-arrowthick-1-s'},
+        })
+        .off('click.menu_down')
+        .on('click.menu_down', function(){
+            move_menu(this, 1);
+            return false;
+        })
+    ;
+
+    $('.menu_add', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-plusthick'},
+        })
+        .off('click.menu_add')
+        .on('click.menu_add', menu_add)
+    ;
+
+    $('.menu_remove', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-closethick'},
+        })
+        .off('click.menu_remove')
+        .on('click.menu_remove', menu_remove)
+    ;
+
+    $('input.menu_name', this)
+        .off('change.menu_name')
+        .on('change.menu_name', function(){
+            var $this = $(this);
+            var name = $this.val();
+
+            $this
+                .parents('div.menu')
+                .find('.heading span.menu_name')
+                .text(name)
+            ;
+        })
+    ;
+
+    $('.menu_group', this)
+        .off('focusin.menu')
+        .off('focusout.menu')
+        .off('keyup.menu')
+        .on('focusin.menu', 'textarea', function(){
+            var $this = $(this);
+            $this
+                .addClass('item_edit')
+            ;
+        })
+        .on('focusout.menu', 'textarea', function(){
+            var $this = $(this);
+            $this
+                .removeClass('item_edit')
+            ;
+        })
+        .on('keyup.menu', function(e){
+            if (e.keyCode == 27)
+                $(e.target).focusout();
+        })
+    ;
+
+    $.proxy(events_item, this)();
+}
+
+function events_item()
+{
+    $('.item_add', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-plusthick'},
+        })
+        .off('click.item_add')
+        .on('click.item_add', item_add)
+    ;
+
+    $('.item_remove', this)
+        .button({
+            text: false,
+            icons: {primary: 'ui-icon-closethick'},
+        })
+        .off('click.item_remove')
+        .on('click.item_remove', item_remove)
+    ;
+
+    $('.item_label,.item_price,.item_notes', this)
+        .off('keyup.item_textarea')
+        .on('keyup', keyboardNavigation)
+    ;
+}
+
+function onAction_button()
+{
+    var $this = $(this);
+    var action = $this.data('action');
+
+    switch (action)
     {
-        return false;
+        case 'save':
+            // do default
+            break;
+
+        case 'export':
+            $this.on('click', function(){
+                var url = $this.data('url');
+                location.href = url;
+            });
+            break;
+
+        case 'view':
+        case 'refresh':
+        case 'delete':
+            $this.on('click', function(){
+                var bAction = confirm('Are you sure you want to '+action+' this menu?');
+
+                if (!bAction)
+                    return false;
+
+                var url = $this.data('url');
+                location.href = url;
+            });
+            break;
+
+        case 'hideall':
+            $this.on('click', function(){
+                $('form#edit_mdt div.toggle').hide();
+            });
+            break;
+
+        case 'showall':
+            $this.on('click', function(){
+                $('form#edit_mdt div.toggle').show();
+            });
+            break;
+
+        default:
+            //console.log(action);
     }
-
-    location.href = purgeUrl;
-}
-
-function googleSearchAddress()
-{
-    var txtAddress = $('textarea[name="info_address"]').val();
-    var params = $.param({
-            'q': txtAddress
-    });
-
-    var url = 'http://maps.google.com/maps?' + params;
-
-    var map_window = window.open(url, 'gmaps');
-
-    return false;
-}
-
-function hideAll()
-{
-    $('div.pg > div.toggle').hide();
-}
-
-function showAll()
-{
-    $('div.pg > div.toggle').show();
-}
-
-function moveMenu(elem, position)
-{
-    var objThis = $(elem).parents('div.menu');
-    var node = null;
-
-    if (position > 0)
-    {
-        // move down
-        node = objThis.next('div.menu');
-
-        if (node == 0)
-            return;
-
-        objThis.insertAfter(node);
-    }
-
-    if (position < 0)
-    {
-        // move up
-        node = objThis.prev('div.menu');
-
-        if (node == 0)
-            return;
-
-        objThis.insertBefore(node);
-    }
-
-    //$('html, body').animate({scrollTop: objThis.offset().top}, 0);
-
-}
-
-function view(viewUrl)
-{
-    var bView = confirm('Are you sure you want to quit editting this menu?');
-
-    if (!bView)
-    {
-        return false;
-    }
-
-    location.href = viewUrl;
-
-}
-
-function export(exportUrl)
-{
-    var bView = confirm('Are you sure you want to quit editting this menu?');
-
-    if (!bView)
-    {
-        return false;
-    }
-
-    location.href = exportUrl;
 }
 
 function toggle_onClick()
@@ -149,103 +233,118 @@ function toggle_onHoverOut()
 
 function link_add()
 {
-    var objThis = $(this).parent('div.link_item');
+    var $this = $(this).parent('div.link_item');
 
-    var clone_obj = objThis
-        .clone(true)
-        .insertAfter(objThis)
+    var clone_obj = $this
+        .clone()
+        .insertAfter($this)
 
         .find('input:text')
             // reset the fields
             .val('')
+
+            // remove watermark events
+            .off('.jq_watermark')
 
             // reset the watermark
             .filter('.jq_watermark')
                 .attr('data-jq-watermark', '')
                 .watermark()
                 .end()
-            .end()
 
-        .find('input:text')
             // user friendly... go to the first input
-            .first()
-                .focus()
-                .end()
+            .first().focus().end()
+
             .end()
     ;
+
+    // set the events
+    $.proxy(events_link, clone_obj)();
+
+    return false;
 }
 
 function link_remove()
 {
-    var objThis = $(this).parent('div.link_item');
+    var $this = $(this).parent('div.link_item');
 
-    if (objThis.siblings('div.link_item').length == 0)
+    if ($this.siblings('div.link_item').length == 0)
     {
-        // just reset it...
-        objThis
-            .find('input:text')
-                // reset the fields
-                .val('')
-
-                // reset the watermark
-                .filter('.jq_watermark')
-                    .attr('data-jq-watermark', '')
-                    .watermark()
-                    .end()
-
-                .end()
-
-            .find('input:text')
-                // user friendly... go to the first input
-                .first()
-                    .focus()
-                    .end()
-                .end()
-        ;
+        $.proxy(link_add, this)();
     }
-    else
-    {
-        // remove it...
-        objThis.remove();
-    }
+
+    $this.remove();
+
+    return false;
 }
 
-function menuName_onChange()
+function googleSearchAddress()
 {
-    input = $(this);
-    var name = input.val();
+    var txtAddress = $('textarea[name="info_address"]').val();
+    var params = $.param({
+            'q': txtAddress
+    });
 
-    input
-        .parents('div.menu')
-        .find('div.heading > span.menu_name')
-        .text(name)
+    var url = 'http://maps.google.com/maps?' + params;
+
+    var map_window = window.open(url, 'gmaps');
+
+    return false;
+}
+
+function move_menu(elem, position)
+{
+    var $this = $(elem).parents('div.menu');
+    var node = null;
+    var speed = '';
+    var insertFunc = '';
+
+    if (position > 0)
+    {
+        // move down
+        node = $this.next('div.menu');
+
+        if (node == 0)
+            return;
+
+        insertFunc = 'insertAfter';
+    }
+
+    if (position < 0)
+    {
+        // move up
+        node = $this.prev('div.menu');
+
+        if (node == 0)
+            return;
+
+        insertFunc = 'insertBefore';
+    }
+
+    // animate the move
+    $this
+        .slideUp(speed, function(){
+            $this
+                [insertFunc](node)
+                .slideDown(speed)
+            ;
+        })
     ;
+
+    //$('html, body').animate({scrollTop: $this.offset().top}, 0);
 }
 
-function menu_add(item)
+function item_add()
 {
-    var objThis = $(item).parents('div.menu');
+    var $this = $(this).parent('div.menu_item');
 
-    var clone_obj = objThis
+    var clone_obj = $this
         .clone()
-        .insertAfter(objThis)
+        .insertAfter($this)
 
-        .find('div.menu_item')
-            // remove all but one menu item
-            .not(':first')
-                .remove()
-                .end()
-            .end()
-
-        .find('input:text')
-            // reset the fields
+        .find('input[type="hidden"].mid')
+            // reset id
             .val('')
-
-            // reset the watermark
-            .filter('.jq_watermark')
-                .attr('data-jq-watermark', '')
-                .watermark()
-                .end()
             .end()
 
         .find('input:checkbox')
@@ -253,12 +352,55 @@ function menu_add(item)
             .attr('checked', false)
             .end()
 
-        .find('div.group_info input[type="hidden"].sid')
-            // reset id
-            .val('')
-            .end()
+        .find('textarea')
+            // reset the fields
+            .text('')
 
-        .find('div.menu_item input[type="hidden"].mid')
+            // remove watermark events
+            .off('.jq_watermark')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+
+            // user friendly... go to the first input
+            .first().focus().end()
+
+            .end()
+    ;
+
+    // set the events
+    $.proxy(events_item, clone_obj)();
+
+    return false;
+}
+
+function item_remove()
+{
+    var $this = $(this).parent('div.menu_item');
+
+    if ($this.siblings('div.menu_item').length == 0)
+    {
+        $.proxy(item_add, this)();
+    }
+
+    // remove it...
+    $this.remove();
+
+    return false;
+}
+
+function menu_add()
+{
+    var $this = $(this).parents('div.menu');
+
+    var clone_obj = $this
+        .clone()
+        .insertAfter($this)
+
+        .find('input[type="hidden"].sid')
             // reset id
             .val('')
             .end()
@@ -267,51 +409,64 @@ function menu_add(item)
             .text('')
             .end()
 
+        .find('div.menu_item:gt(0)')
+            .remove()
+            .end()
+
         .find('input:text')
-            // user friendly... go to the first input
-            .first()
-                .focus()
+            // reset the fields
+            .val('')
+
+            // remove watermark events
+            .off('.jq_watermark')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
                 .end()
+
+            .end()
+
+        .find('textarea')
+            // reset the fields
+            .text('')
+
+            // remove watermark events
+            .off('.jq_watermark')
+
+            // reset the watermark
+            .filter('.jq_watermark')
+                .attr('data-jq-watermark', '')
+                .watermark()
+                .end()
+
             .end()
     ;
+
+    // clear the item values
+    $.proxy(item_remove, clone_obj.find('.item_remove'))();
+
+    // user friendly... go to the first input
+    clone_obj.find('input:text:first').focus().end();
+
+    // set the events
+    $.proxy(events_menu, clone_obj)();
 
     return false;
 }
 
-function menu_remove(item)
+function menu_remove()
 {
-    var objThis = $(item).parents('div.menu');
+    var $this = $(this).parents('div.menu');
 
-    if (objThis.siblings('div.menu').length == 0)
+    if ($this.siblings('div.menu').length == 0)
     {
-        // just reset it...
-        objThis
-            .find('div.menu_item')
-                // remove all but one menu item
-                .not(':first').remove().end()
-                .end()
-
-            .find('input:text')
-                // reset the fields
-                .val('')
-
-                // reset the watermark
-                .filter('.jq_watermark')
-                    .attr('data-jq-watermark', '')
-                    .watermark()
-                    .end()
-
-                // user friendly... go to the first input
-                .first().focus().end()
-
-                .end()
-        ;
+        $.proxy(menu_add, this)();
     }
-    else
-    {
-        // remove it...
-        objThis.remove();
-    }
+
+    // remove it...
+    $this.remove();
 
     return false;
 }
@@ -324,91 +479,21 @@ function keyboardNavigation(event)
         {
             case 38: // up
             case 40: // down
-                var objThis = $(this);
-                var title = objThis.attr('title');
+                var $this = $(this);
+                var title = $this.attr('title');
                 var newThis = null;
 
                 if (event.keyCode == 38)
-                    newThis = objThis.parents('div.menu_item').prev();
+                    newThis = $this.parents('div.menu_item').prev();
                 else
-                    newThis = objThis.parents('div.menu_item').next();
+                    newThis = $this.parents('div.menu_item').next();
 
-                newThis.find('input[type="text"][title="'+title+'"]').focus();
+                newThis.find('textarea[title="'+title+'"]').focus();
 
                 break;
         }
     }
 }
 
-function menuitem_add(item)
-{
-    var objThis = $(item).parent('div.menu_item');
-
-    var clone_obj = objThis
-        .clone()
-        .insertAfter(objThis)
-
-        .find('input[type="hidden"].mid')
-            // reset id
-            .val('')
-            .end()
-
-        .find('input:text')
-            // reset the fields
-            .val('')
-
-            // reset the watermark
-            .filter('.jq_watermark')
-                .attr('data-jq-watermark', '')
-                .watermark()
-                .end()
-
-            // user friendly... go to the first input
-            .first().focus().end()
-            .end()
-
-        .find('input:checkbox')
-            // uncheck items
-            .attr('checked', false)
-            .end()
-    ;
-
-    return false;
-}
-
-function menuitem_remove(item)
-{
-    var objThis = $(item).parent('div.menu_item');
-
-    if (objThis.siblings('div.menu_item').length == 0)
-    {
-        // just reset it...
-        objThis
-            .find('input:text')
-                // reset the fields
-                .val('')
-
-                // reset the watermark
-                .filter('.jq_watermark')
-                    .attr('data-jq-watermark', '')
-                    .watermark()
-                    .end()
-
-                // user friendly... go to the first input
-                .first().focus().end()
-
-                .end()
-
-            .end()
-        ;
-    }
-    else
-    {
-        // remove it...
-        objThis.remove();
-    }
-
-    return false;
-}
 
 })();
