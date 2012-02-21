@@ -10,36 +10,25 @@ extract($params, EXTR_SKIP);
 ?>
 <div class="pg pg_bottom search">
     <form id="searchit" method="get" action="/menu/search">
-        <input class="jq_watermark" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
-        <input class="jq_watermark" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
-        <input type="submit" value="Search" />
+        <div class="fq">
+            <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
+            <input class="jq_watermark query" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
+        </div>
+        <div class="fq">
+            <span class="hint">Zip code</span>
+            <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
+        </div>
+        <button class="search">Search</button>
     </form>
     <div id="results">
     </div>
 </div>
 <div class="pg pg_bottom new_menus">
-<?php
-if (empty($ready_menus))
-{
-    echo<<<EOHTML
-        <span>No menus added...</span>
-        <a href="/menu/new">Click here to help me out!</a>
-EOHTML;
-}
-else // if (empty($ready_menus)
-{
-    echo<<<EOHTML
-        <table class="tblDefault">
-            <thead>
-                <td>id</td>
-                <td>name</td>
-                <td>address</td>
-            </thead>
-            <tbody>
-EOHTML;
-
-    foreach ($ready_menus as $menu)
-    {
+<?php if (empty($ready_menus)): ?>
+    <span>No menus added...</span>
+    <a href="/menu/new">Click here to help me out!</a>
+<?php else: ?>
+    <?php foreach ($ready_menus as $menu):
         $menu_id = $menu['id'];
         $name = $menu['name'];
         $slug = Util::slugify($name);
@@ -51,23 +40,13 @@ EOHTML;
         $address = sprintf($link, $slug, $menu['address']);
 
         $slug = Util::slugify($name);
-
-        echo<<<EOHTML
-            <tr>
-                <td>{$id}</td>
-                <td>{$name}</td>
-                <td>{$address}</td>
-            </tr>
-EOHTML;
-    }
-
-    echo<<<EOHTML
-            </tbody>
-        </table>
-EOHTML;
-
-}
-?>
+    ?>
+        <div class="new">
+            <span class="name"><?=$name?></span><br/>
+            <span class="addy"><?=$address?></span>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>
 </div>
 <?php if ($is_metadata && !empty($need_metadata)) : ?>
 <div class="pg pg_bottom metadata">

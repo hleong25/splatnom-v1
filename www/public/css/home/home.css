@@ -16,3 +16,40 @@ div.heading
     padding: 0.2em;
     margin-bottom: 0.2em;
 }
+
+form#searchit input{
+    font-size: 1.1em;
+}
+form#searchit .fq{
+    display: inline-block;
+}
+span.hint {
+    display: block;
+    text-align: left;
+    font-size: 0.75em;
+}
+input.query{
+    width: 20em;
+}
+input.location{
+    width: 10em;
+}
+button{
+    width: 7em;
+}
+a:link,
+a:visited
+{
+    color: black;
+}
+div.new{
+    margin: 0em 1em 1em;
+    display: inline-block;
+}
+span.name{
+    font-size: 1.0em;
+    font-weight: bold;
+}
+span.addy{
+    font-size: 0.8em;
+}

@@ -5,6 +5,7 @@ class HomeController
 {
     function onAction_main()
     {
+        $this->addJqueryUi();
         $this->addCss('table');
         $this->addCss('home/home');
 

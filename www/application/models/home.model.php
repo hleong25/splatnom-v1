@@ -35,7 +35,8 @@ EOQ;
             FROM tblMenu m
             INNER JOIN vMenuStatus ms ON ms.menu_status = 'ready' AND m.mode_id = ms.id
             INNER JOIN tblMenuInfo_us info ON m.id = info.menu_id
-            ORDER BY m.ts
+            ORDER BY m.ts DESC
+            LIMIT 30
 EOQ;
 
         $rst = $this->query($query);
