@@ -2,6 +2,7 @@
 $params = array(
     'new_menu_done' => false,
     'is_user' => false,
+    'err_msg' => false,
 );
 
 extract($params, EXTR_SKIP);
@@ -15,8 +16,12 @@ if ($new_menu_done === false)
     <br/>
     <?php if ($is_user !== true): ?>
         <span id="err">Login to keep track of this menu.</span>
+        <br/>
     <?php endif; ?>
-    <br/>
+    <?php if (!empty($err_msg)): ?>
+        <span id="err"><?=$err_msg?></span>
+        <br/>
+    <?php endif; ?>
     <br/>
     <form id="frmNewMenu" enctype="multipart/form-data" method="post" action="/menu/new">
         <fieldset id="menu_urls">

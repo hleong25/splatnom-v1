@@ -16,16 +16,36 @@ class MenuController
 
         if (!empty($_POST))
         {
-            $this->set('new_menu_done', true);
-
+            $link_cnt = 0;
             $urls = $_POST['url'];
             foreach ($urls as $idx => $url)
             {
                 $url = Util::normalizeUrl($url);
                 $urls[$idx] = $url;
+
+                if (!empty($url))
+                    $link_cnt++;
             }
 
-            $this->Menu->saveNewMenu($urls);
+            $files_cnt = 0;
+            if (isset($_FILES['imgs']))
+            {
+                foreach ($_FILES['imgs']['tmp_name'] as $idx => $file)
+                {
+                    if (!empty($file))
+                        $files_cnt++;
+                }
+            }
+
+            if ($link_cnt > 0 || $files_cnt > 0)
+            {
+                $this->set('new_menu_done', true);
+                $this->Menu->saveNewMenu($urls);
+            }
+            else
+            {
+                $this->set('err_msg', 'No menu submited!');
+            }
         }
     }
 

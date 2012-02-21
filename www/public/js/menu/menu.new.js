@@ -44,7 +44,15 @@ function funcValidateForm()
             .length
     ;
 
-    if (imgs === 0)
+    var links =
+        $('.site_menu')
+            .filter(function(){
+                return $(this).val() != '';
+            })
+            .length
+    ;
+
+    if (imgs === 0 && links === 0)
     {
         alert('Need at least one menu');
         return false;
