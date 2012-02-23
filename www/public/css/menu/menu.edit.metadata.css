@@ -23,6 +23,14 @@ div.heading{
     width: 100%;
     padding: 0.2em;
 }
+div.subheading{
+    font-size: 0.9em;
+    font-weight: bold;
+    background-color: silver;
+    width: 100%;
+    padding: 0.3em;
+    margin: 0.3em 0 0 0;
+}
 div.err_msgs{
     color: red;
     text-align: center;

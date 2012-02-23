@@ -60,6 +60,7 @@ class MenuController
         $this->addCss('menu/menu.edit.metadata');
 
         $this->addJqueryUi();
+        $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.edit.metadata');
 

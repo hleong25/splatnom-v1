@@ -109,6 +109,15 @@ EOHTML;
     </div>
 
     <div class="links">
+        <script type="tmpl/link" id="tmpl_link">
+            <div class="link_item">
+                <input type="hidden" name="link[]" value="@link@"/>
+                <input type="text" class="jq_watermark link_url" style="width: 25em;" name="link[]" title="Link" value=""/>
+                <input type="text" class="jq_watermark link_lbl" style="width: 10em;" name="link[]" title="Label" value=""/>
+                <button class="link_add">Add link</button>
+                <button class="link_remove">Remove link</button>
+            </div>
+        </script>
         <div class="heading onToggle">Links</div>
         <div class="data toggle">
             <?php
@@ -153,6 +162,55 @@ EOHTML;
         </div>
     </div>
 
+
+<script type="tmpl/menu" id="tmpl_menu">
+    <div class="menu">
+        <!-- new menu -->
+        <div class="heading onToggle">
+            <div class="left clearfix">
+                <button class="move_up">Move up</button>
+                <button class="move_down">Move down</button>
+                Menu <span class="menu_name"></span>
+            </div>
+            <div class="right">
+                <button class="menu_add">Add menu</button>
+                <button class="menu_remove">Remove menu</button>
+            </div>
+        </div>
+        <div class="data toggle">
+            <div class="group_info">
+                <!-- new group info -->
+                <input type="hidden" name="mdt[]" value="@mdt@"/>
+                <input type="hidden" class="sid" name="mdt[]" value=""/>
+                <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="" />
+                <br/>
+                <textarea class="jq_watermark menu_notes" name="mdt[]" title="Group notes"></textarea>
+            </div>
+            <div class="subheading">Menu items</div>
+            <div class="menu_group">
+                <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</span><br/>
+            </div>
+        </div>
+        <input type="hidden" name="mdt[]" value="@end_of_mdt@"/>
+    </div>
+</script>
+
+<script type="tmpl/item" id="tmpl_item">
+    <div class="menu_item">
+        <!-- new menu item -->
+        <input type="hidden" name="mdt[]" value="@item@"/>
+        <input type="hidden" class="mid" name="mdt[]" value=""/>
+        <textarea class="jq_watermark item_label" name="mdt[]" title="Label" rows="1"></textarea>
+        <textarea class="jq_watermark item_price" name="mdt[]" title="Price" rows="1"></textarea>
+        <textarea class="jq_watermark item_notes" name="mdt[]" title="Notes" rows="1"></textarea>
+        <input type="hidden" name="mdt[]" value="@item_attr@"/>
+        <input type="hidden" name="mdt[]" value="is_spicy"/>
+        <input type="checkbox" name="mdt[]" >Spicy</input>
+        <button class="item_add">Add item</button>
+        <button class="item_remove">Remove item</button>
+    </div>
+</script>
+
 <?php foreach ($mdts as $mdt): ?>
     <div class="menu">
         <div class="heading onToggle">
@@ -167,7 +225,7 @@ EOHTML;
             </div>
         </div>
         <div class="data toggle">
-            <div class="pg_bottom group_info">
+            <div class="group_info">
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@mdt@"/>
                 <input type="hidden" class="sid" name="mdt[]" value="<?=$mdt['section_id']?>"/>
@@ -175,7 +233,7 @@ EOHTML;
                 <br/>
                 <textarea class="jq_watermark menu_notes" name="mdt[]" title="Group notes"><?=$mdt['notes']?></textarea>
             </div>
-            <div class="pg_bottom subheading">Menu items</div>
+            <div class="subheading">Menu items</div>
             <div class="menu_group">
                 <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</span><br/>
                 <?php foreach ($mdt['items'] as $item_idx => $item): ?>
