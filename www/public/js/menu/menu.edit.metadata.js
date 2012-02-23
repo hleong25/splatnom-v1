@@ -320,15 +320,53 @@ function move_menu(elem, position)
     //$('html, body').animate({scrollTop: $this.offset().top}, 0);
 }
 
-function item_add()
+function item_add(event)
 {
     var $this = $(this).parent('div.menu_item');
+    var item_label = $this.find('.item_label').val();
 
-    var new_dom = $.tmpl('tmpl_item').insertAfter($this);
+    if (event && event.ctrlKey && (item_label.length > 0) && (item_label.search(/@@/) >= 0) && (item_label.search(/\n/) >= 0))
+    {
+        // special case when adding multiple lines -- helper for importing a lot of items
+        var parsed_dom = $this;
+        var lines = item_label.split("\n");
 
-    setup_item.call(new_dom);
+        var new_dom;
+        var line;
+        for (var idx in lines)
+        {
+            line = lines[idx];
 
-    new_dom.find('.item_label').focus().end()
+            if (line.length == 0)
+                continue;
+
+            new_dom = $
+                .tmpl('tmpl_item')
+                .find('.item_label').text(line).end()
+                .insertAfter($this)
+            ;
+
+            //setup_item.call(new_dom);
+            $this = new_dom;
+        }
+
+        // remove the original parsed dom since we're done with it
+        parsed_dom.remove();
+
+        // get the group of items so we can set all them up at one shot
+        var group = $this.parent('.menu_group');
+        setup_item.call(group);
+    }
+    else
+    {
+        // regular item add
+        var new_dom = $.tmpl('tmpl_item').insertAfter($this);
+
+        setup_item.call(new_dom);
+
+        new_dom.find('.item_label').focus().end()
+    }
+
     return false;
 }
 
