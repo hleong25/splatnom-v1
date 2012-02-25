@@ -2,6 +2,7 @@
 $params = array(
     'dbg' => false,
     'user_info' => false,
+    'is_admin' => false,
     'pending_menus' => array(),
     'ready_menus' => array(),
 );
@@ -29,8 +30,7 @@ extract($params, EXTR_SKIP);
                     <td>timestamp</td>
                     <td>site</td>
                     <td>imgs</td>
-                    <td></td>
-                    <td></td>
+                    <?php if($is_admin): ?><td></td><?php endif; ?>
                 </thead>
                 <tbody>
                 <?php
@@ -47,14 +47,15 @@ extract($params, EXTR_SKIP);
                         $cnt_sites += !empty($menu['site_addy4']) ? 1 : 0;
                         $cnt_sites += !empty($menu['site_addy5']) ? 1 : 0;
 
+                        $link_view = $is_admin ? "<td><a href=\"/admin/pending_menu/{$id}\">View</a></td>" : '';
+
                         echo<<<EOHTML
                         <tr id="{$row_id}">
                             <td>{$id}</td>
                             <td>{$ts}</td>
                             <td>{$cnt_sites}</td>
                             <td>{$menu['cnt_imgs']}</td>
-                            <td><a href="/admin/pending_menu/{$id}">View</a></td>
-                            <td><a href="/admin/pendingmenu_list/purge/{$id}" onclick="return js_admin.remove_row({$id}, '{$row_id}');">Remove</a></td>
+                            {$link_view}
                         </tr>
 EOHTML;
                     }

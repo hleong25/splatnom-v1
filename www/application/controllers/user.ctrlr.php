@@ -224,6 +224,7 @@ class UserController
         $this->addCss('user/user.profile');
 
         $this->set('user_info', $user_info);
+        $this->set('is_admin', Util::getPermissions('admin'));
 
         $menu = new MenuModel();
 
@@ -233,7 +234,6 @@ class UserController
 
         $ready_menus = $user->getUserMenus($id);
         $this->set('ready_menus', $ready_menus);
-        $this->set('dbg', $ready_menus);
     }
 
     function onAction_invite()
