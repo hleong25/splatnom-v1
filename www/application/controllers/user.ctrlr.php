@@ -225,6 +225,7 @@ class UserController
 
         $this->set('user_info', $user_info);
         $this->set('is_admin', Util::getPermissions('admin'));
+        $this->set('is_metadata', Util::getPermissions('metadata'));
 
         $menu = new MenuModel();
 

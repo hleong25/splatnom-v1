@@ -3,6 +3,7 @@ $params = array(
     'dbg' => false,
     'user_info' => false,
     'is_admin' => false,
+    'is_metadata' => false,
     'pending_menus' => array(),
     'ready_menus' => array(),
 );
@@ -74,6 +75,7 @@ EOHTML;
                     <td>status</td>
                     <td>name</td>
                     <td>address</td>
+                    <td>metadata</td>
                 </thead>
                 <tbody>
                 <?php
@@ -91,7 +93,7 @@ EOHTML;
                         $name = sprintf($link, $slug, $name);
                         $address = sprintf($link, $slug, $menu['address']);
 
-                        $slug = Util::slugify($name);
+                        $edit_menu = $is_metadata ? "<a href=\"/menu/edit_metadata/{$menu['id']}\">edit</a>" : '';
 
                         echo<<<EOHTML
                             <tr>
@@ -100,6 +102,7 @@ EOHTML;
                                 <td>{$status}</td>
                                 <td>{$name}</td>
                                 <td>{$address}</td>
+                                <td>{$edit_menu}</td>
                             </tr>
 EOHTML;
                     }
