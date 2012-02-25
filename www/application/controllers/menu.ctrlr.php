@@ -239,8 +239,8 @@ class MenuController
                     $mdt = array(
                         'section_id' => $post_mdts[++$ii],
                         'ordinal' => $ordinal_section++,
-                        'name' => $post_mdts[++$ii],
-                        'notes' => $post_mdts[++$ii],
+                        'name' => trim($post_mdts[++$ii]),
+                        'notes' => trim($post_mdts[++$ii]),
                     );
                     $ordinal_metadata = 0;
 
@@ -252,9 +252,9 @@ class MenuController
                     $item = array(
                         'metadata_id' => $post_mdts[++$ii],
                         'ordinal' => $ordinal_metadata++,
-                        'label' => $post_mdts[++$ii],
-                        'price' => $post_mdts[++$ii],
-                        'notes' => $post_mdts[++$ii],
+                        'label' => trim($post_mdts[++$ii]),
+                        'price' => trim($post_mdts[++$ii]),
+                        'notes' => trim($post_mdts[++$ii]),
                         'is_spicy' => false,
                     );
 

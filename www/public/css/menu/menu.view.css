@@ -26,15 +26,15 @@ div.menu {
 div.menu > div.info{
     width: 100%;
     text-align: center;
+    padding: 0.5em 0;
 }
 div.h_name{
     font-size: 1.3em;
-    padding-top: 0.3em;
+    padding: 0 0.5em;
 }
 div.h_notes{
     font-size: 0.8em;
-    padding-bottom: 0.6em;
-    padding-top: 0.3em;
+    padding: 0 0.5em;
 }
 div.group {
     padding: 0.25em;
