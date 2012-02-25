@@ -23,6 +23,7 @@ extract($params, EXTR_SKIP);
 </div>
 <br/>
 <form id="edit_user" enctype="multipart/form-data" method="post" action="/admin/user_profile/<?php echo $info['id']; ?>">
+<input type="hidden" name="uid" value="<?=$info['id']?>" />
 <div class="pg permissions">
     <span class="heading">User Permissions</span>
     <br/>
