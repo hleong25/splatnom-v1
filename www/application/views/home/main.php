@@ -56,6 +56,7 @@ extract($params, EXTR_SKIP);
             <thead>
                 <td>id</td>
                 <td>timestamp</td>
+                <td>user</td>
                 <td>name</td>
                 <td>site</td>
                 <td>imgs</td>
@@ -67,6 +68,7 @@ extract($params, EXTR_SKIP);
                 {
                     $id = $row['id'];
                     $ts = $row['ts'];
+                    $user = $row['username'];
                     $name = $row['name'];
                     $site = $row['links_cnt'];
                     $imgs = $row['imgs_cnt'];
@@ -75,6 +77,7 @@ extract($params, EXTR_SKIP);
                     <tr>
                         <td>{$id}</td>
                         <td>{$ts}</td>
+                        <td>{$user}</td>
                         <td>{$name}</td>
                         <td>{$site}</td>
                         <td>{$imgs}</td>
