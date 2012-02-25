@@ -55,19 +55,37 @@ extract($params, EXTR_SKIP);
         <hr/>
         <div class="status">
             <span>Status: </span>
-            <select name="info_status">
-                <?php
-                    foreach ($info['status'] as $status)
-                    {
-                        $label = $status['status'];
-                        $selected = ($status['selected'] == 1) ? 'selected' : '';
+            <?php if ($is_admin): ?>
+                <select name="info_status">
+                    <?php
+                        foreach ($info['status'] as $status)
+                        {
+                            $label = $status['status'];
+                            $selected = ($status['selected'] == 1) ? 'selected' : '';
 
-                        echo<<<EOHTML
-                            <option value="{$label}" {$selected}>{$label}</option>
+                            echo<<<EOHTML
+                                <option value="{$label}" {$selected}>{$label}</option>
 EOHTML;
+                        }
+                    ?>
+                </select>
+            <?php else:
+                foreach ($info['status'] as $status)
+                {
+                    $label = $status['status'];
+                    $selected = $status['selected'] == 1;
+
+                    if ($status['selected'] == 1)
+                    {
+                        echo<<<EOHTML
+                            <strong>{$status['status']}</strong>
+                            <input type="hidden" name="info_status" value="{$status['status']}" />
+EOHTML;
+                        break;
                     }
-                ?>
-            </select>
+                }
+            ?>
+            <?php endif; ?>
         </div>
     </div>
 
