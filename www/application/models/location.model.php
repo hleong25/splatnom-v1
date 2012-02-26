@@ -156,6 +156,8 @@ EOQ;
             ':withinRadius'=>$withinRadius,
         );
 
+        //Util::logit($query, __FILE__, __LINE__);
+
         $prepare = $this->prepareAndExecute($query, $opts, __FILE__, __LINE__);
         if (!$prepare) return false;
 
@@ -279,6 +281,8 @@ EOQ;
             $opts[':match3'] = $user_query;
             $opts[':match4'] = $user_query;
         }
+
+        //Util::logit($query, __FILE__, __LINE__);
 
         $prepare = $this->prepareAndExecute($query, $opts, __FILE__, __LINE__);
         if (!$prepare) return false;

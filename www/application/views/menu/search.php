@@ -4,75 +4,64 @@ $params = array(
     'location'=>'',
     'msg'=>false,
     'places'=>array(),
+    'dbg' => false,
 );
 
 extract($params, EXTR_SKIP);
 
 ?>
-<div class="pg pg_bottom search">
-    <form id="searchit" method="get" action="/menu/search">
-        <input class="jq_watermark" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
-        <input class="jq_watermark" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
-        <input type="submit" value="Search" />
-    </form>
+<div class="pg">
+    <div class="search">
+        <form id="searchit" method="get" action="/menu/search">
+            <div class="fq">
+                <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
+                <input class="jq_watermark query" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
+            </div>
+            <div class="fq">
+                <span class="hint">Zip code</span>
+                <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
+            </div>
+            <button class="search">Search</button>
+        </form>
+    </div>
+    <div class="msg">
+        <span><?=$msg;?></span>
+    </div>
+    <div class="found">
+    <?php if (!empty($places)): ?>
+        <ul class="lstplaces">
+            <?php foreach ($places as $idx => $place):
+                $idx_no = $idx + 1;
+
+                $menu_id = $place['menu_id'];
+                $distance = sprintf('%0.2f', $place['distance']);
+                $score = sprintf('%0.2f', $place['score']);
+
+                if ($score < 0.5)
+                    break;
+
+                $name = $place['name'];
+                $addy = $place['address'];
+                $open = nl2br($place['hours']);
+
+                $slug = Util::slugify($name);
+                $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
+
+                $name = sprintf($link, $slug, $name);
+            ?>
+                <li id="place<?=$idx_no?>" class="place">
+                    <span class="place_no clearfix"><?=$idx_no?>.</span>
+                    <div class="info">
+                        <span class="name"><?=$name?></span><br/>
+                        <span class="addy"><?=$addy?></span><br/>
+                        <span class="hours"><?=$open?></span>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    </div>
 </div>
-<div class="pg pg_bottom msg">
-    <span><?php echo $msg; ?></span>
-</div>
-<div class="pg pg_bottom results">
-<?php
-if (!empty($places))
-{
-    echo<<<EOHTML
-        <table class="tblDefault">
-            <thead>
-                <td>#</td>
-                <td>name</td>
-                <td>address</td>
-                <td>distance</td>
-                <td>score</td>
-            </thead>
-            <tbody>
-EOHTML;
-
-    foreach ($places as $idx=>$place)
-    {
-        $menu_id = $place['menu_id'];
-        $distance = sprintf('%0.2f', $place['distance']);
-        $score = sprintf('%0.2f', $place['score']);
-
-        if ($score < 0.5)
-            break;
-
-        $name = $place['name'];
-        $slug = Util::slugify($name);
-        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
-
-
-        $id = sprintf($link, $slug, $menu_id);
-        $idx_no = sprintf($link, $slug, $idx+1);
-        $name = sprintf($link, $slug, $name);
-        $address = sprintf($link, $slug, $place['address']);
-        $distance = sprintf($link, $slug, $distance);
-        $score = sprintf($link, $slug, $score);
-
-        echo<<<EOHTML
-            <tr>
-                <td>{$idx_no}</td>
-                <td>{$name}</td>
-                <td>{$address}</td>
-                <td>{$distance}</td>
-                <td>{$score}</td>
-            </tr>
-EOHTML;
-    }
-
-    echo<<<EOHTML
-            </tbody>
-        </table>
-EOHTML;
-
-}
-?>
-</div>
-<div class="pg"><pre><?php var_export($places); ?></pre></div>
+<?php if (!empty($dbg)): ?>
+<div class="pg"><pre><?=var_export($dbg)?></pre></div>
+<?php endif; ?>

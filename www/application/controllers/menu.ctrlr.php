@@ -379,6 +379,11 @@ class MenuController
         */
 
         $this->addCss('table');
+        $this->addCss('menu/menu.search');
+
+        $this->addJqueryUi();
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('menu/menu.search');
 
         $this->set('location', $location);
         $this->set('query', $query);
@@ -387,7 +392,7 @@ class MenuController
         $latlong = $loc->getLatLongByZip($location);
         if (empty($latlong))
         {
-            $this->set('msg', 'No location found');
+            $this->set('msg', 'Location not valid');
             return;
         }
         else
