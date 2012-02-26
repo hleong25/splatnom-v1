@@ -9,6 +9,7 @@ class LoginController
 
         $this->addCss('login/login');
 
+        $this->addJqueryUi();
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login');
 

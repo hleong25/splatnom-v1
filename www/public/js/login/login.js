@@ -9,6 +9,7 @@ return {
 function init()
 {
     $('form#login input#username').focus();
+    $('input:submit').button();
 }
 
 })();
