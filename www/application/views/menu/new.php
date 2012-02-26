@@ -7,11 +7,14 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 ?>
+<?php if (!empty($new_menu_done)): ?>
+<div id="thanks">
+    <span>Thank you for the menu!</span>
+    <br/>
+    <p>The menu is waiting to be approved. Patience is a virtue.</p>
+</div>
+<?php endif; ?>
 <div id="new_menu" class="pg">
-<?php
-if ($new_menu_done === false)
-{
-?>
     <span id="help">Help us by telling us about your favorite menu!</span>
     <br/>
     <?php if ($is_user !== true): ?>
@@ -32,8 +35,6 @@ if ($new_menu_done === false)
             <input class="jq_watermark site_menu" type="text" name="url[]" title="Site4"/>
             <input class="jq_watermark site_menu" type="text" name="url[]" title="Site5"/>
         </fieldset>
-        <br/>
-        <br/>
         <fieldset id="menu_files">
             <legend style="padding: 0px 3px;">Upload menus</legend>
             <div class="new_img">
@@ -53,21 +54,6 @@ if ($new_menu_done === false)
             </div>
             <input id="btnAddMore" type="button" value="Add more"/>
         </fieldset>
-        <br/>
         <input type="submit" value="Submit" />
     </form>
-<?php
-} // if ($new_menu_done === false)
-else
-{
-?>
-    <span id="msg">Thank you for the menu!</span>
-    <br/>
-    <p>The menu is waiting to be approved. Patience is a virtue.</p>
-    <br/>
-    <br/>
-    <a href="/menu/new">More menus??? Schanks you very much!</a>
-<?php
-} // else
-?>
 </div>

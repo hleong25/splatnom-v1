@@ -1,43 +1,44 @@
-div#new_menu
-{
+div#thanks{
+    border: 1px solid black;
+    width: 30em;
+    margin: 0 auto 1em;
+    padding: 0.3em;
+    font-size: 0.8em;
+    text-align: center;
+}
+div#new_menu{
     width: 32em;
 }
 
-span#err
-{
+span#err {
     color: red;
     font-weight: bold;
 }
 
-span#msg
-{
+span#msg {
     color: black;
     font-size: 2em;
 }
 
 fieldset#menu_urls,
-fieldset#menu_files
-{
+fieldset#menu_files {
     border: 1px solid black;
     padding: 0.3em;
+    margin-bottom: 1em;
 }
 
-div.new_img
-{
+div.new_img {
     margin: 0.3em;
 }
 
-input.file
-{
+input.file {
     width: 100%;
 }
 
-input.site_menu
-{
+input.site_menu {
     width: 100%;
 }
 
-input#btnAddMore
-{
+input#btnAddMore {
     margin: 0.3em !important;
 }
