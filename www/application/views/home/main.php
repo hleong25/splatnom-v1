@@ -31,13 +31,16 @@ extract($params, EXTR_SKIP);
     <?php foreach ($ready_menus as $menu):
         $menu_id = $menu['id'];
         $name = $menu['name'];
+        $address = $menu['address'];
         $slug = Util::slugify($name);
+
+        $address = nl2br($address);
 
         $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
 
-        $id = sprintf($link, $slug, $menu['id']);
+        $id = sprintf($link, $slug, $menu_id);
         $name = sprintf($link, $slug, $name);
-        $address = sprintf($link, $slug, $menu['address']);
+        $address = sprintf($link, $slug, $address);
 
         $slug = Util::slugify($name);
     ?>
