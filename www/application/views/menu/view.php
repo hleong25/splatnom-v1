@@ -150,6 +150,7 @@ EOHTML;
     }
 ?>
 </div>
+<?php /* no comments for now
 <div class="user_actions notoc">
     <br/>
     <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
@@ -157,6 +158,7 @@ EOHTML;
     <br/>
     <br/>
 </div>
+*/?>
 <div class="menus notoc">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
@@ -205,6 +207,8 @@ EOHTML;
                 $img_spicy = '';
                 if ($item['is_spicy'])
                     $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
+
+                $item_comment_url = '#'; // no comments for now
 
                 echo<<<EOHTML
                     <div class="group clearfix {$css}">
