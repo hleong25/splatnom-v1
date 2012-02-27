@@ -184,6 +184,8 @@ class MenuController
             );
         }
 
+        $info['total_items'] = -1;
+
         $this->set('info', $info);
         if (!$menu->updateMenuInfo($id, $info_save))
             $err_msgs[] = 'Failed to update info.';
@@ -322,6 +324,14 @@ class MenuController
 
         if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
             $err_msgs[] = 'Failed to save menu data';
+
+        // recount the mdt items and set the info property
+        $cnt_mdt_items = 0;
+        foreach ($mdts as $mdt)
+            $cnt_mdt_items += count($mdt['items']);
+
+        $info['total_items'] = $cnt_mdt_items;
+        $this->set('info', $info);
 
         // set the metadata only after it goes through updating...
         // that way we get the updated IDs
