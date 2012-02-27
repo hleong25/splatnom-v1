@@ -14,6 +14,7 @@ $params_mdts[] = array(
 
 $params_info = array(
     'status'=>array(),
+    'total_items' => 0,
     'name'=>'',
     'notes'=>'',
     'address'=>'',
@@ -86,6 +87,9 @@ EOHTML;
                 }
             ?>
             <?php endif; ?>
+        </div>
+        <div class="stats">
+            <p>Items: <span id="stats_items"><?=$info['total_items']?><span></p>
         </div>
     </div>
 

@@ -571,6 +571,19 @@ EOQ;
         unset($prepare);
 
         $query =<<<EOQ
+            SELECT COUNT(*) AS total_items
+            FROM tblMenuMetadata
+            WHERE menu_id = :id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $total_items = (int) $prepare->fetchColumn();
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $query =<<<EOQ
             SELECT
                 name,
                 notes,
@@ -592,6 +605,7 @@ EOQ;
             return false;
 
         $info['status'] = $status;
+        $info['total_items'] = $total_items;
         return $info;
     }
 
