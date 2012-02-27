@@ -103,14 +103,36 @@ $slug = array
     'item'=>'',
 );
 
+// setup status info
+$is_ready = false;
+$curr_status = 'not ready';
+foreach ($info['status'] as $info_status)
+{
+    $status = $info_status['status'];
+    $is_selected = $info_status['selected'] == 1;
+
+    if ($status === 'ready')
+        $is_ready = $is_selected;
+
+    if ($is_selected)
+        $curr_status = $status;
+}
 ?>
+
+<?php if (!$is_ready): ?>
+<div class="notready">
+    <span>The status of this menu is '<?=$curr_status?>'.<br/>Just like the cake... this menu is a lie.</span>
+</div>
+<?php endif; ?>
+
 <div class="pg">
 <?php if ($is_metadata): ?>
-<div class="pg_bottom ismdt">
+<div class="ismdt">
     <a class="button" href="/menu/export/<?=$id?>/json">export menu</a>
     <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
+
 <div class="toc">
     <div class="toc_item">
         <a class="toc_item" href="#info">Business Info</a>
@@ -124,6 +146,7 @@ $slug = array
     </div>
 <?php endforeach; ?>
 </div>
+
 <div class="biz_info notoc">
     <div class="name"><a name="info"><?=$info['name']?></a></div>
     <?=$this->addAddThis()?>
@@ -135,6 +158,7 @@ $slug = array
     <br/>
     <div class="hours"><?=nl2br($info['hours'])?></div>
 </div>
+
 <div class="links notoc">
 <?php
     foreach ($links as $link)
@@ -150,6 +174,7 @@ EOHTML;
     }
 ?>
 </div>
+
 <?php /* no comments for now
 <div class="user_actions notoc">
     <br/>
@@ -159,6 +184,7 @@ EOHTML;
     <br/>
 </div>
 */?>
+
 <div class="menus notoc">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
@@ -239,4 +265,5 @@ EOHTML;
     </div>
 <?php endforeach; // foreach ($mdts as $mdt) ?>
 </div>
+
 </div>
