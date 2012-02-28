@@ -79,7 +79,8 @@ function callHook ()
 
     if (!class_exists($ctrl))
     {
-        error_log("Class '$ctrl' does not exists");
+        Util::logit("Class '$ctrl' does not exists", __FILE__, __LINE__);
+        Util::error_page();
     }
     else
     {
@@ -114,7 +115,8 @@ function callHook ()
         }
         else
         {
-            error_log("Function call '$ctrl::$action' does not exists");
+            Util::logit("Function call '$ctrl::$action' does not exists", __FILE__, __LINE__);
+            Util::error_page();
         }
     }
 }
@@ -182,7 +184,8 @@ function __autoload ($className)
 
     if (!file_exists($load_file))
     {
-        error_log("Controller file '{$load_file}' does not exists for class '{$className}'");
+        Util::logit("Controller file '{$load_file}' does not exists for class '{$className}'", __FILE__, __LINE__);
+        Util::error_page();
         return;
     }
 

@@ -189,6 +189,22 @@ class Util
         setcookie($key, $val, $expire, '/');
         return true;
     }
+
+    static function error_page($code=404)
+    {
+        switch ($code)
+        {
+            case 404:
+                header('HTTP/1.0 404 Not Found');
+                include(OS_DEFAULT_ERROR_PAGE_PATH.'/404.php');
+                break;
+            default:
+                Util::logit("Unknown error page: {$code}", __FILE__, __LINE__);
+                break;
+        }
+
+        exit;
+    }
 }
 
 class UploadHandler
