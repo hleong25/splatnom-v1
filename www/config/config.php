@@ -40,6 +40,8 @@ else
     define('OS_DEFAULT_NO_IMAGE_FILE',      'noimage.jpg');
     define('OS_DEFAULT_NO_IMAGE_WIDTH',     258);
     define('OS_DEFAULT_NO_IMAGE_HEIGHT',    196);
+
+    define('OS_DEFAULT_ERROR_PAGE_PATH',    OS_PATH_PUBLIC.'/pages');
 }
 
 define('WEB_PATH_CSS',      DS . 'css');

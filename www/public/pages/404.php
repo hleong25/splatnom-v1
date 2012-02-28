@@ -4,12 +4,12 @@
     <style>
         body{
             background: silver;
+            text-align: center;
         }
         div.zoidberg{
             width: 50em;
             padding: 1em;
             margin: 0px auto;
-            text-align: center;
             border: 0.3em solid black;
             background: white;
         }
@@ -21,6 +21,10 @@
 </head>
 <body>
     <br/><br/>
+    <div class="splatnom">
+        <a href="http://<?=$_SERVER['SERVER_NAME']?>">go back to splatnom</a>
+    </div>
+    <br/>
     <div class="zoidberg">
         <span>oops 404... why not zoidberg?</span>
         <?=zoidberg()?>
