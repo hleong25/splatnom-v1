@@ -194,6 +194,8 @@ EOHTML;
     $base_section_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}";
     $section_comment_url = "/menu/comments/{$base_section_url}";
     $section_photo_url = "/menu/images/{$base_section_url}";
+
+    $section_comment_url = '#';
 ?>
     <div class="menu">
         <a name="<?=$section_id?>"/>
@@ -236,6 +238,8 @@ EOHTML;
 
                 $item_comment_url = '#'; // no comments for now
 
+                $item_notes = nl2br($item['notes']);
+
                 echo<<<EOHTML
                     <div class="group clearfix {$css}">
                         <div class="g_panel">
@@ -254,7 +258,7 @@ EOHTML;
                                 <div class="price">{$item['price']}</div>
                             </div>
                             <div class="g_info2">
-                                <div class="notes {$notes_css}">{$item['notes']}</div>
+                                <div class="notes {$notes_css}">{$item_notes}</div>
                             </div>
                         </div>
                     </div>

@@ -73,8 +73,8 @@ div.g_info2 {
 }
 div.g_info2 > div.notes {
     font-size: 0.8em;
-    display: list-item;
-    list-style-position: inside;
+    /*display: list-item;*/
+    /*list-style-position: inside;*/
 }
 div.empty {
     display: block !important;
