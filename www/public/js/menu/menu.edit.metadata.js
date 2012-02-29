@@ -193,6 +193,11 @@ function onAction_button()
             break;
 
         case 'view':
+            $this.on('click', function(){
+                window.open($this.data('url'));
+            });
+            break;
+
         case 'refresh':
         case 'delete':
             $this.on('click', function(){
