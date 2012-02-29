@@ -149,8 +149,8 @@ foreach ($info['status'] as $info_status)
 
 <div class="biz_info notoc">
     <div class="name"><a name="info"><?=$info['name']?></a></div>
-    <?=$this->addAddThis()?>
     <div class="details"><?=nl2br($info['notes'])?></div>
+    <?=$this->addAddThis()?>
     <br/>
     <div class="address"><?=nl2br($info['address'])?></div>
     <br/>

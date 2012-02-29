@@ -205,16 +205,28 @@ class Template
     {
         // NOTE: www.addthis.com login is hleong25+addthis@gmail.com
 
-        $addThis_services = array(
-            'facebook',
-            'twitter',
-            'reddit',
-            'email',
-            'google_plusone',
-        );
+        global $get_url;
+        $site = Util::getTopLevelDomain();
+
+        $url = "http://{$site}/{$get_url}";
+        $title = '';
+        $desc = '';
+
+        if (isset($this->m_variables['meta_url']))
+            $url = $this->m_variables['meta_url'];
+
+        if (isset($this->m_variables['meta_title']))
+            $title = $this->m_variables['meta_title'];
+
+        if (isset($this->m_variables['meta_desc']))
+            $desc = $this->m_variables['meta_desc'];
 
         $html=<<<EOHTML
-            <div class="addthis_toolbox addthis_default_style ">
+            <div class="addthis_toolbox addthis_default_style "
+                addthis:url="{$url}"
+                addthis:title="splatnom wants to tell you about '{$title}'"
+                addthis:description="{$desc}"
+            >
                 <a class="addthis_button_facebook"></a>
                 <a class="addthis_button_twitter"></a>
                 <a class="addthis_button_google_plusone" g:plusone:count="false"></a>

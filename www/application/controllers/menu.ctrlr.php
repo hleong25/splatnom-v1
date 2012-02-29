@@ -450,6 +450,10 @@ class MenuController
             return;
         }
 
+        $name = $menu_info['name'];
+        $this->set('meta_title', $name);
+        $this->set('meta_desc', "Delicious food at $name... mmMmmmMmmm nom nom nom says Zoidberg! (\/)(',,,,')(\/)");
+
         $this->addJqueryUi();
 
         $this->addJs('menu/menu.view');
