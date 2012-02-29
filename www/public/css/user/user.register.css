@@ -1,4 +1,14 @@
+p{
+    font-size: 1em;
+}
+p.small {
+    font-size: 0.8em;
+}
 div.error_msg
 {
     color: red;
+}
+input {
+    font-size: 1.1em;
+    width: 15em;
 }

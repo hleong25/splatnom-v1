@@ -13,19 +13,21 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
+    <p>Thanks for registering! Your information is safe and encrypted. We won't do anything bad with it.</p>
+    <p class="small">Unless SONPA (Secret Order of Ninja-Pirates Association) offers me a special membership...</p>
+    <br/>
     <form id="new_user" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>">
         <input class="jq_watermark fname" type="text" name="fname" title="First name" value="<?php echo $fname; ?>" />
         <input class="jq_watermark lname" type="text" name="lname" title="Last name" value="<?php echo $lname; ?>" />
         <br/>
-        <input class="jq_watermark email" type="text" name="email" title="Email" value="<?php echo $email; ?>" />
         <br/>
+        <input class="jq_watermark email" type="text" name="email" title="Email" value="<?php echo $email; ?>" />
         <input class="jq_watermark email" type="text" name="email2" title="Confirm email" value="<?php echo $email2; ?>" />
         <br/>
         <br/>
         <input class="jq_watermark username" type="text" name="username" title="Username" value="<?php echo $username; ?>"/>
         <br/>
         <input class="jq_watermark password" type="password" name="password" title="Password" value=""/>
-        <br/>
         <input class="jq_watermark password" type="password" name="password2" title="Confirm Password" value=""/><br/>
         <br/>
         <input type="submit" value="Register!" />

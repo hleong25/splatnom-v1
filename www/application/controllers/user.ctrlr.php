@@ -15,6 +15,7 @@ class UserController
 
         $this->addCss('user/user.register');
 
+        $this->addJqueryUi();
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('user/user.register');
 
