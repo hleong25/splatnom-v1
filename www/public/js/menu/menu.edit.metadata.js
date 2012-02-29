@@ -168,7 +168,7 @@ function setup_item()
             .on('click.item_remove', item_remove)
             .end()
 
-        .find('.item_label,.item_price,.item_notes', this)
+        .find('.item_label,.item_price,.item_notes')
             .on('keyup', keyboardNavigation)
             .end()
     ;
@@ -439,7 +439,7 @@ function keyboardNavigation(event)
                 else
                     newThis = $this.parents('div.menu_item').next();
 
-                newThis.find('textarea[title="'+title+'"]').focus();
+                newThis.find('textarea.item_'+title.toLowerCase()).focus();
 
                 break;
         }
