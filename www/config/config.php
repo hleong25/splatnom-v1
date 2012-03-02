@@ -4,8 +4,10 @@
 
 define('SITE_NAME', 'splatnom');
 
-define('DEVELOPMENT_ENVIRONMENT',true);
-define('LOG_QUERY', false);
+if (file_exists(ROOT.'/config/config.dev'))
+    define('DEVELOPMENT_ENVIRONMENT',true);
+else
+    define('DEVELOPMENT_ENVIRONMENT',false);
 
 if (file_exists(ROOT.'/config/db.inc.php'))
 {
