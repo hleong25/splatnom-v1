@@ -3,6 +3,7 @@ $params = array(
     'dbg' => false,
     'err_msg' => false,
     'menu_id' => false,
+    'name' => '',
 );
 
 extract($params, EXTR_SKIP);
@@ -18,7 +19,7 @@ extract($params, EXTR_SKIP);
 if (!empty($menu_id))
 {
     echo<<<EOHTML
-    <br/><div class="pg"><a href="/menu/edit_metadata/{$menu_id}">Successfully imported menu.  New ID is {$menu_id}</a></div>
+    <br/><div class="pg"><a href="/menu/edit_metadata/{$menu_id}">Successfully imported menu '{$name}'.  New ID is {$menu_id}</a></div>
 EOHTML;
 }
 

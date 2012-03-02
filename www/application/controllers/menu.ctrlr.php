@@ -593,6 +593,7 @@ class MenuController
         }
 
         $this->set('menu_id', $new_id);
+        $this->set('name', $info['name']);
         //$this->set('dbg', $json);
     }
 
