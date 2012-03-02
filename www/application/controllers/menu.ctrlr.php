@@ -598,6 +598,8 @@ class MenuController
 
     function import_normalize(&$datas)
     {
+        unset($datas['info']['total_items']);
+
         $ordinal_section = 0;
         $ordinal_item = 0;
 
