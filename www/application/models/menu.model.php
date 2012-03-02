@@ -454,14 +454,16 @@ EOQ;
     {
         $query =<<<EOQ
             INSERT INTO tblMenu(
-                mode_id
+                mode_id,
+                user_id
             )
             VALUES (
-                (SELECT id FROM vMenuStatus WHERE menu_status='new')
+                (SELECT id FROM vMenuStatus WHERE menu_status='new'),
+                :user_id
             )
 EOQ;
 
-        $rst = $this->query($query);
+        $rst = $this->prepareAndExecute($query, array(':user_id'=>Util::getUserId()), __FILE__, __LINE__);
         if (!$rst)
         {
             $this->log_dberr($rst, __FILE__, __LINE__);
