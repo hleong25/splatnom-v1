@@ -497,7 +497,9 @@ class MenuController
 
         $this->export_normalize($export);
 
-        $file = "menu.{$id}.txt";
+        $slug_name = Util::slugify($info['name']);
+        $slug_addy = Util::slugify($info['address']);
+        $file = "{$id}.{$slug_name}.{$slug_addy}.txt";
 
         $this->set('export_data', $export);
         $this->set('out', $out);
