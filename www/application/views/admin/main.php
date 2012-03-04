@@ -5,6 +5,7 @@
     <a href="/admin/pendingmenu_list">Pending menus [<?php echo $cnt_pending_menus; ?>]</a><br/>
     <a href="/menu/import">Import menus</a><br/>
     <a href="/export/list">Export menus</a><br/>
+    <a href="/import/list">Import menus from server</a><br/>
     <hr/>
     <a href="/mail/tester">Send mail</a><br/>
     <a href="/admin/location">Search location and nearby</a><br/>

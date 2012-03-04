@@ -1,18 +1,20 @@
 <?php
 $params = array(
     'dbg'=>false,
-    'output'=>false,
-    'menus'=>array(),
+    'remote_site'=>'',
+    'remote_menus'=>array(),
 );
 
 extract($params, EXTR_SKIP);
-
-if($output === 'json'):
-    echo json_encode($menus);
-else:
 ?>
 <div class="pg">
-    <form id="lstmenus" method="post" action="/export/menus">
+    <form id="import_config" method="get" action="/import/list">
+        <input type="text" name="remote_site" value="<?=$remote_site?>"/>
+        <button type="submit">Connect!</button>
+    </form>
+    <br/>
+    <?php if (!empty($remote_menus)): ?>
+    <form id="lstmenus" method="post" action="/import/menus/<?=$remote_site?>">
     <div id="list">
         <table class="tblDefault">
             <thead>
@@ -25,7 +27,7 @@ else:
                 <td></td>
             </thead>
             <tbody>
-            <?php foreach ($menus as $row):
+            <?php foreach ($remote_menus as $row):
                 $id = $row['id'];
                 $ts = $row['ts'];
                 $user = $row['username'];
@@ -42,14 +44,14 @@ else:
                     <td><?=$user?></td>
                     <td><?=$name?></td>
                     <td><?=$addy?></td>
-                    <td><a href="/export/menus/<?=$id?>">Download</a></td>
+                    <td><a href="/import/menus/<?=$id?>">Import</a></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
-        <button type="submit">Download checked items</button>
+        <button type="submit">Import checked items</button>
     </div>
     </form>
+    <?php endif; //if (!empty($remote_menus)): ?>
 </div>
 <?php if (!empty($dbg)): ?><div class="pg"><pre><?=var_export($dbg)?></pre></div><?php endif; ?>
-<?php endif; //output style ?>

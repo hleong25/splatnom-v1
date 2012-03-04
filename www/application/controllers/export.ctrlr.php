@@ -3,13 +3,36 @@
 class ExportController
     extends Controller
 {
-    function onAction_list()
+    function isRemoteCall()
     {
-        if (!Util::getPermissions('admin'))
+        if (function_exists('apache_request_headers'))
+        {
+            $request = apache_request_headers();
+
+            if (isset($request['X-SPLATNOM-REMOTE']) && !empty($request['X-SPLATNOM-REMOTE']))
+            {
+                $remote = $request['X-SPLATNOM-REMOTE'];
+                //Util::logit("Remote call from '{$remote}'");
+                return true;
+            }
+        }
+        else
+        {
+            Util::logit('Failed to get headers to determine if it\'s a remote call.', __FILE__, __LINE__);
+        }
+
+        return false;
+    }
+
+    function onAction_list($output=null)
+    {
+        if (!$this->isRemoteCall() && !Util::getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;
         }
+
+        $this->m_bRender = empty($output);
 
         $this->addCss('table');
 
@@ -17,13 +40,14 @@ class ExportController
 
         $menus = $export->getMenus();
 
+        $this->set('output', $output);
         $this->set('menus', $menus);
         //$this->set('dbg', $menus);
     }
 
     function onAction_menus($id=null)
     {
-        if (!Util::getPermissions('admin'))
+        if (!$this->isRemoteCall() && !Util::getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;
@@ -231,6 +255,7 @@ class ExportArchiver
         header('Content-Transfer-Encoding: binary');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         header('Content-Length: ' . filesize($this->m_zfile));
+        header('X-SPLATNOM-FILENAME: '.$filename.'');
         readfile($this->m_zfile);
 
         return true;
