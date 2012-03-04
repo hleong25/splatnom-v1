@@ -44,8 +44,7 @@ class ImportModel
         }
 
         $post = array();
-        foreach ($menu_ids as $menu_id)
-            $post['menu_ids[]'] = $menu_id;
+        $post['menu_ids'] = $menu_ids;
 
         // clear the headers
         $this->m_curl_headers = array();
@@ -55,7 +54,7 @@ class ImportModel
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
         curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'readCurlHeaders'));
         $exec_res = curl_exec($ch);
         curl_close($ch);
