@@ -247,7 +247,8 @@ class ImportController
             $db_imgs = $menu->insertMenuImages($new_id, $user_id, $uploaded_imgs);
             if (!$db_imgs)
             {
-                $this->set('err_msg', 'Failed to import menu images');
+                Util::logit('Failed to import images to database.', __FILE__, __LINE__);
+                //$this->set('err_msg', 'Failed to import menu images');
                 return false;
             }
         }
