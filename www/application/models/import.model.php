@@ -88,4 +88,5 @@ class ImportModel
 
         return strlen($header);
     }
+
 }

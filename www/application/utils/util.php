@@ -205,6 +205,12 @@ class Util
 
         exit;
     }
+
+    static function purge_dir($path)
+    {
+        require_once('recursive_directory_delete_comments.php');
+        return recursive_remove_directory($path);
+    }
 }
 
 class UploadHandler
