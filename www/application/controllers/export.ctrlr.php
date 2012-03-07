@@ -5,20 +5,24 @@ class ExportController
 {
     function isRemoteCall()
     {
+        $request = false;
+        $key = false;
+
         if (function_exists('apache_request_headers'))
         {
             $request = apache_request_headers();
-
-            if (isset($request['X-SPLATNOM-REMOTE']) && !empty($request['X-SPLATNOM-REMOTE']))
-            {
-                $remote = $request['X-SPLATNOM-REMOTE'];
-                //Util::logit("Remote call from '{$remote}'");
-                return true;
-            }
+            $key = 'X-SPLATNOM-REMOTE';
         }
         else
         {
-            Util::logit('Failed to get headers to determine if it\'s a remote call.', __FILE__, __LINE__);
+            $request = $_SERVER;
+            $key = 'HTTP_X_SPLATNOM_REMOTE';
+        }
+
+        if (isset($request[$key]) && !empty($request[$key]))
+        {
+            $remote = $request[$key];
+            return true;
         }
 
         return false;
