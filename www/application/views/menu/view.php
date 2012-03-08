@@ -203,7 +203,7 @@ EOHTML;
             <div class="h_name">
                 <a href="<?=$section_comment_url?>"><?=$section_name?></a>
             </div>
-            <div class="h_notes"><?=$mdt['notes']?></div>
+            <div class="h_notes"><?=nl2br($mdt['notes'])?></div>
         </div>
         <div class="items">
         <?php
