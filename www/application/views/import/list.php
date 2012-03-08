@@ -1,6 +1,7 @@
 <?php
 $params = array(
     'dbg'=>false,
+    'local_file'=>'',
     'remote_site'=>'',
     'remote_menus'=>array(),
 );
@@ -10,14 +11,14 @@ extract($params, EXTR_SKIP);
 <div class="pg">
     <div class="local">
         <form id="import_config" method="post" action="/import/local">
-            <input type="text" name="local_file" value="/home/hleong/www.files/temp/menu_export.4f55ad3565c76.zip"/>
+            <input class="jq_watermark txtLocalFile" type="text" title="Full path of local file" name="local_file" value="<?=$local_file?>"/>
             <button type="submit">Import local file!</button>
         </form>
     </div>
     <hr/>
     <div class="remote">
         <form id="import_config" method="get" action="/<?=$myurl?>">
-            <input type="text" name="remote_site" value="<?=$remote_site?>"/>
+            <input class="jq_watermark txtRemoteSite" type="text" title="Remote site to grab menus, ie. www.splatnom.com" name="remote_site" value="<?=$remote_site?>"/>
             <button type="submit">Get remote list!</button>
         </form>
         <br/>
@@ -52,7 +53,7 @@ extract($params, EXTR_SKIP);
                         <td><?=$user?></td>
                         <td><?=$name?></td>
                         <td><?=$addy?></td>
-                        <td><a href="/import/menus/<?=$remote_site?>/<?=$id?>">Import</a></td>
+                        <td><a class="btnDownload" href="/import/menus/<?=$remote_site?>/<?=$id?>">Import</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

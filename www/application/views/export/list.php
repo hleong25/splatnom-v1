@@ -42,7 +42,7 @@ else:
                     <td><?=$user?></td>
                     <td><?=$name?></td>
                     <td><?=$addy?></td>
-                    <td><a href="/export/menus/<?=$id?>">Download</a></td>
+                    <td><a class="btnDownload" href="/export/menus/<?=$id?>">Download</a></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
