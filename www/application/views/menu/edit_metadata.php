@@ -45,14 +45,15 @@ extract($params, EXTR_SKIP);
         <input class="button" type="button" value="Export Menu" data-action="export" data-url="/menu/export/<?=$id?>/json" />
         <hr/>
         <input id="force_db_fetch" style="width: 1em; display: inline;" type="checkbox" name="force_reload" />
-        <label for="force_db_fetch">force-refresh</label>
+        <label for="force_db_fetch">refresh db</label>
         <input class="button" type="submit" value="Save Menu" data-action="save" />
         <?php if($is_admin): ?>
             <input class="button" type="button" value="Delete Menu" data-action="delete" data-url="/menu/purge/<?=$id?>" />
         <?php endif; //if($is_admin): ?>
         <hr/>
-        <input class="button" type="button" value="Hide all sections" data-action="hideall" />
-        <input class="button" type="button" value="Show all sections" data-action="showall" />
+        <span>Sections</span>
+        <input class="button" type="button" value="Hide all" data-action="hideall" />
+        <input class="button" type="button" value="Show all" data-action="showall" />
         <hr/>
         <div class="status">
             <span>Status: </span>
@@ -220,6 +221,8 @@ EOHTML;
 <script type="tmpl/item" id="tmpl_item">
     <div class="menu_item">
         <!-- new menu item -->
+        <button class="btnitem item_up">Move down</button>
+        <button class="btnitem item_down">Move down</button>
         <input type="hidden" name="mdt[]" value="@item@"/>
         <input type="hidden" class="mid" name="mdt[]" value=""/>
         <textarea class="jq_watermark item_label" name="mdt[]" title="Label" rows="1"></textarea>
@@ -228,8 +231,8 @@ EOHTML;
         <input type="hidden" name="mdt[]" value="@item_attr@"/>
         <input type="hidden" name="mdt[]" value="is_spicy"/>
         <input type="checkbox" name="mdt[]" >Spicy</input>
-        <button class="item_add">Add item</button>
-        <button class="item_remove">Remove item</button>
+        <button class="btnitem item_add">Add item</button>
+        <button class="btnitem item_remove">Remove item</button>
     </div>
 </script>
 
@@ -261,6 +264,8 @@ EOHTML;
                 <?php foreach ($mdt['items'] as $item_idx => $item): ?>
                 <div class="menu_item">
                     <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
+                    <button class="btnitem item_up">Move down</button>
+                    <button class="btnitem item_down">Move down</button>
                     <input type="hidden" name="mdt[]" value="@item@"/>
                     <input type="hidden" class="mid" name="mdt[]" value="<?=$item['metadata_id']?>"/>
                     <textarea class="jq_watermark item_label" name="mdt[]" title="Label" rows="1"><?=$item['label']?></textarea>
@@ -269,8 +274,8 @@ EOHTML;
                     <input type="hidden" name="mdt[]" value="@item_attr@"/>
                     <input type="hidden" name="mdt[]" value="is_spicy"/>
                     <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>>Spicy</input>
-                    <button class="item_add">Add item</button>
-                    <button class="item_remove">Remove item</button>
+                    <button class="btnitem item_add">Add item</button>
+                    <button class="btnitem item_remove">Remove item</button>
                 </div>
                 <?php endforeach; // foreach ($mdt['items'] as $item_idx => $item) ?>
             </div>

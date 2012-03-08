@@ -1,11 +1,11 @@
 div.edit > form > *{
-    margin-left: 10em;
+    margin-left: 8em;
     margin-bottom: 0.5em;
 }
 .action{
     margin-left: 0em !important;
     position: fixed;
-    width: 9em;
+    width: 7em;
 }
 .action input{
     display: block;
@@ -108,4 +108,8 @@ div.new_imgs
     overflow-y: auto;
     overflow-x: hidden; /* prevent horizontal scrollbar */
     padding-right: 20px; /* add padding to account for vertical scrollbar */
+}
+
+button.btnitem {
+    width: 1.8em !important;
 }

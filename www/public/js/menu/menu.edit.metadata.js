@@ -168,6 +168,28 @@ function setup_item()
             .on('click.item_remove', item_remove)
             .end()
 
+        .find('.item_up')
+            .button({
+                text: false,
+                icons: {primary: 'ui-icon-arrowthick-1-n'},
+            })
+            .on('click.item_up', function(){
+                move_item(this, -1);
+                return false;
+            })
+            .end()
+
+        .find('.item_down')
+            .button({
+                text: false,
+                icons: {primary: 'ui-icon-arrowthick-1-s'},
+            })
+            .on('click.item_down', function(){
+                move_item(this, 1);
+                return false;
+            })
+            .end()
+
         .find('.item_label,.item_price,.item_notes')
             .on('keyup', keyboardNavigation)
             .end()
@@ -295,7 +317,7 @@ function move_menu(elem, position)
         // move down
         node = $this.next('div.menu');
 
-        if (node == 0)
+        if (node.length == 0)
             return;
 
         insertFunc = 'insertAfter';
@@ -306,7 +328,7 @@ function move_menu(elem, position)
         // move up
         node = $this.prev('div.menu');
 
-        if (node == 0)
+        if (node.length == 0)
             return;
 
         insertFunc = 'insertBefore';
@@ -323,6 +345,46 @@ function move_menu(elem, position)
     ;
 
     //$('html, body').animate({scrollTop: $this.offset().top}, 0);
+}
+
+function move_item(elem, position)
+{
+    var $this = $(elem).parents('div.menu_item');
+    var node = null;
+    var speed = '';
+    var insertFunc = '';
+
+    if (position > 0)
+    {
+        // move down
+        node = $this.next('div.menu_item');
+
+        if (node.length == 0)
+            return;
+
+        insertFunc = 'insertAfter';
+    }
+
+    if (position < 0)
+    {
+        // move up
+        node = $this.prev('div.menu_item');
+
+        if (node.length == 0)
+            return;
+
+        insertFunc = 'insertBefore';
+    }
+
+    // animate the move
+    $this
+        .slideUp(speed, function(){
+            $this
+                [insertFunc](node)
+                .slideDown(speed)
+            ;
+        })
+    ;
 }
 
 function item_add(event)
