@@ -230,7 +230,7 @@ EOHTML;
         <textarea class="jq_watermark item_notes" name="mdt[]" title="Notes" rows="1"></textarea>
         <input type="hidden" name="mdt[]" value="@item_attr@"/>
         <input type="hidden" name="mdt[]" value="is_spicy"/>
-        <input type="checkbox" name="mdt[]" >Spicy</input>
+        <input type="checkbox" name="mdt[]" ><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>
         <button class="btnitem item_add">Add item</button>
         <button class="btnitem item_remove">Remove item</button>
     </div>
@@ -273,7 +273,7 @@ EOHTML;
                     <textarea class="jq_watermark item_notes" name="mdt[]" title="Notes" rows="1"><?=$item['notes']?></textarea>
                     <input type="hidden" name="mdt[]" value="@item_attr@"/>
                     <input type="hidden" name="mdt[]" value="is_spicy"/>
-                    <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>>Spicy</input>
+                    <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>
                     <button class="btnitem item_add">Add item</button>
                     <button class="btnitem item_remove">Remove item</button>
                 </div>
