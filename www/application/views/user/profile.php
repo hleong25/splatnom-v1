@@ -39,7 +39,7 @@ extract($params, EXTR_SKIP);
                     {
                         $id = $menu['id'];
                         $row_id = "row_{$id}";
-                        $ts = date("m.d.y G:i:s", strtotime($menu["ts"]));
+                        $ts = date('m.d.y', strtotime($menu['ts']));
                         $cnt_sites = 0;
 
                         $cnt_sites += !empty($menu['site_addy1']) ? 1 : 0;
@@ -71,42 +71,33 @@ EOHTML;
             <table class="tblDefault">
                 <thead>
                     <td>id</td>
-                    <td>ts</td>
+                    <td>date</td>
                     <td>status</td>
                     <td>name</td>
                     <td>address</td>
                     <td>metadata</td>
                 </thead>
                 <tbody>
-                <?php
-                    foreach ($ready_menus as $menu)
-                    {
-                        $menu_id = $menu['id'];
-                        $name = $menu['name'];
-                        $slug = Util::slugify($name);
+                <?php foreach ($ready_menus as $menu):
+                    $menu_id = $menu['id'];
+                    $name = $menu['name'];
+                    list($date, $time) = explode(' ', $menu['ts']);
+                    $status = $menu['menu_status'];
+                    $address = $menu['address'];
 
-                        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
+                    $slug = Util::slugify($name);
 
-                        $id = sprintf($link, $slug, $menu['id']);
-                        $ts = sprintf($link, $slug, $menu['ts']);
-                        $status = sprintf($link, $slug, $menu['menu_status']);
-                        $name = sprintf($link, $slug, $name);
-                        $address = sprintf($link, $slug, $menu['address']);
-
-                        $edit_menu = $is_metadata ? "<a href=\"/menu/edit_metadata/{$menu['id']}\">edit</a>" : '';
-
-                        echo<<<EOHTML
-                            <tr>
-                                <td>{$id}</td>
-                                <td>{$ts}</td>
-                                <td>{$status}</td>
-                                <td>{$name}</td>
-                                <td>{$address}</td>
-                                <td>{$edit_menu}</td>
-                            </tr>
-EOHTML;
-                    }
+                    $edit_menu = $is_metadata ? "<a href=\"/menu/edit_metadata/{$menu['id']}\">edit</a>" : '';
                 ?>
+                    <tr>
+                        <td><?=$menu_id?></td>
+                        <td><?=$date?></td>
+                        <td><?=$status?></td>
+                        <td><?=$name?></td>
+                        <td><?=$address?></td>
+                        <td><?=$edit_menu?></td>
+                    </tr>
+                <?php endforeach; ?>
                 </tbody>
             </table>
         <?php endif; ?>

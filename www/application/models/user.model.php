@@ -292,7 +292,7 @@ EOQ;
             INNER JOIN vMenuStatus ms ON m.mode_id = ms.id
             LEFT JOIN tblMenuInfo_us info ON m.id = info.menu_id
             WHERE m.user_id = :user_id
-            ORDER BY m.ts
+            ORDER BY ms.ordinal, m.ts DESC
 EOQ;
 
         $rst = $this->prepareAndExecute($query, array(':user_id' => $user_id), __FILE__, __LINE__);
