@@ -1,5 +1,6 @@
 <?php
 $params = array(
+    'is_admin' => false,
     'is_metadata' => false,
     'query' => '',
     'location' => '',
@@ -66,29 +67,29 @@ extract($params, EXTR_SKIP);
                 <td></td>
             </thead>
             <tbody>
-            <?php
-                foreach ($need_metadata as $row)
-                {
-                    $id = $row['id'];
-                    $ts = $row['ts'];
-                    $user = $row['username'];
-                    $name = $row['name'];
-                    $site = $row['links_cnt'];
-                    $imgs = $row['imgs_cnt'];
-
-                    echo<<<EOHTML
-                    <tr>
-                        <td>{$id}</td>
-                        <td>{$ts}</td>
-                        <td>{$user}</td>
-                        <td>{$name}</td>
-                        <td>{$site}</td>
-                        <td>{$imgs}</td>
-                        <td><a href="/menu/edit_metadata/{$id}">Edit</a></td>
-                    </tr>
-EOHTML;
-                }
+            <?php foreach ($need_metadata as $row):
+                $id = $row['id'];
+                $ts = $row['ts'];
+                $user = $row['username'];
+                $name = $row['name'];
+                $site = $row['links_cnt'];
+                $imgs = $row['imgs_cnt'];
             ?>
+                <tr>
+                    <td><?=$id?></td>
+                    <td><?=$ts?></td>
+                    <td><?=$user?></td>
+                    <td><?=$name?></td>
+                    <td><?=$site?></td>
+                    <td><?=$imgs?></td>
+                    <td>
+                        <a class="menu edit" href="/menu/edit_metadata/<?=$id?>">Edit</a>
+                        <?php if ($is_admin === true): ?>
+                            <a class="menu purge" href="/menu/purge/<?=$id?>">Delete</a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; // foreach ($need_metadata as $row): ?>
             </tbody>
         </table>
     </div>

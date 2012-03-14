@@ -17,6 +17,31 @@ function init()
     ;
 
     form.find('input[name="query"]').focus();
+
+    $('div.metadata a.menu')
+        .button()
+        .filter('.edit').on('click', menu_edit).end()
+        .filter('.purge').on('click', menu_purge).end()
+    ;
+}
+
+function menu_edit(event)
+{
+    // do nothing
+}
+
+function menu_purge(event)
+{
+    event.preventDefault();
+
+    var $this = $(this);
+    var link = $this.attr('href');
+
+    // execute the link
+    $.get(link);
+
+    // remove the row from the table
+    $this.parents('tr').remove();
 }
 
 })();

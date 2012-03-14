@@ -20,6 +20,9 @@ class HomeController
 
         $this->set('ready_menus', $this->Home->getReadyMenus());
 
+        $bAdmin = Util::getPermissions('admin');
+        $this->set('is_admin', $bAdmin);
+
         $bMetadata = Util::getPermissions('metadata');
         $this->set('is_metadata', $bMetadata);
         if ($bMetadata)

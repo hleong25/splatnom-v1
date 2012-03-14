@@ -54,3 +54,8 @@ span.name{
 span.addy{
     font-size: 0.8em;
 }
+
+a.menu{
+    font-size: 0.75em !important;
+    padding: 0.3em 0.5em;
+}
