@@ -49,6 +49,13 @@ class LoginController
 
     function onAction_forgot()
     {
+        $user_id = Util::getUserId();
+        if (!empty($user_id))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
         $this->addCss('login/login.forgot');
 
         $this->addJqueryUi();
@@ -128,6 +135,13 @@ class LoginController
 
     function onAction_reset($code=null)
     {
+        $user_id = Util::getUserId();
+        if (!empty($user_id))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
         $this->addCss('login/login.reset');
 
         $this->addJqueryUi();

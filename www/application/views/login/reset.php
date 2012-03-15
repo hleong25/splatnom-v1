@@ -21,10 +21,12 @@ extract($params, EXTR_SKIP);
         <br/>
         <input class="button" type="submit" name="resetme" value="Reset me!" />
     </form>
+    <?php if (!empty($err)): ?>
     <div id="err">
         <p><?=$err?></p>
         <p>If you are still having trouble, contact the monkeys by sending us feedback with the issue</p>
     </div>
+    <?php endif; // if (!empty($err)): ?>
 <?php else: ?>
     <p class="msg">Password reset was successful, but the princess is in another castle!</p>
     <p class="msg">You can now <a href="/login/main">login</a>.</p>
