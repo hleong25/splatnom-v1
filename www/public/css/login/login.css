@@ -1,12 +1,21 @@
 form#login
 {
-    text-align: center;
-}
-form#login input
-{
     width: 15em;
     font-size: 1.1em;
+}
+form#login input.txt
+{
+    width: inherit;
+    font-size: inherit;
     margin-bottom: 0.3em;
+}
+form#login input.button
+{
+    width: 8em;
+}
+form#login div.action
+{
+    text-align: center;
 }
 div#msg
 {
@@ -19,4 +28,10 @@ div#msg
 div#msg span
 {
     color: red;
+}
+div.help
+{
+    font-size: 0.6em;
+    text-align: right;
+    margin: 0.3em 0 0.5em;
 }

@@ -130,6 +130,29 @@ EOQ;
         return $info;
     }
 
+    function getUserByUsername($username)
+    {
+        $aes_key = SQL_AES_KEY;
+
+        $query =<<<EOQ
+            SELECT
+                id,
+                ts,
+                AES_DECRYPT(username, '{$aes_key}_username') AS username,
+                AES_DECRYPT(email, '{$aes_key}_email') AS email,
+                AES_DECRYPT(firstname, '{$aes_key}_firstname') AS firstname,
+                AES_DECRYPT(lastname, '{$aes_key}_lastname') AS lastname
+            FROM tblUsers
+            WHERE username = AES_ENCRYPT(:name, '{$aes_key}_username')
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':name' => $username), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $info = $prepare->fetch(PDO::FETCH_ASSOC);
+        return $info;
+    }
+
     function getUserPermission($id)
     {
         $query =<<<EOQ
@@ -206,8 +229,7 @@ EOQ;
 
     function setUserVerifyCode($id)
     {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $validation_code = substr(str_shuffle($chars), 0, 20);
+        $validation_code = Util::getRandomString();
 
         $query =<<<EOQ
             INSERT INTO tblUserValidation(

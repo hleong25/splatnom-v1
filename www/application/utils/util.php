@@ -63,6 +63,16 @@ class Util
         unset($_SESSION['perms']);
     }
 
+    static function getRandomString($len=20)
+    {
+        $len = max((int)$len, 20);
+
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $shuffle = substr(str_shuffle($chars), 0, $len);
+
+        return $shuffle;
+    }
+
     static function getUniqueString()
     {
         $now_date = date('ymdHis'); // TODO: ymdHisu -> 'u' is supported on 5.2.2+

@@ -9,7 +9,27 @@ return {
 function init()
 {
     $('form#login input#username').focus();
-    $('input:submit').button();
+
+    $('input.button')
+        .button()
+        .on('click', onclick_button)
+    ;
+}
+
+function onclick_button(event)
+{
+    var $this = $(this);
+    var type = $this.attr('type');
+
+    if (type == 'reset')
+    {
+        event.preventDefault();
+
+        $('input.txt')
+            .val('').focus()
+            .filter('#username').focus().end()
+        ;
+    }
 }
 
 })();

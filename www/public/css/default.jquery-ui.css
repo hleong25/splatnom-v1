@@ -16,7 +16,9 @@
     line-height: 1.5;
 }
 a.button,
+input.button,
 input[type=button],
+input[type=reset],
 input[type=submit],
 input[type=file]{
     font-size: 0.8em !important;

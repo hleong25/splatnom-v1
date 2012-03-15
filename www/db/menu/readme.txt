@@ -5,6 +5,7 @@ Import in this order
     - tblLocation_us
     - tblVersion
 2. Tables
+    NOTE: no AUTO_INCREMENT
 3. Views
     - vMenuStatus
     - vPermissions

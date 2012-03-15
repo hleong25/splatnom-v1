@@ -1,0 +1,12 @@
+p.msg{
+    margin-bottom: 1em;
+}
+input.txt
+{
+    font-size: 1.1em;
+    width: 15em;
+}
+div#err{
+    color:red;
+    margin-top: 1em;
+}
