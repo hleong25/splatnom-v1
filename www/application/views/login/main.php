@@ -7,12 +7,12 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
-    <?php if(!empty($msg)): ?>
-    <div id="msg">
-        <span><?php echo $msg; ?></span>
-    </div>
-    <?php endif; ?>
     <form id="login" method="post" action="/<?php echo $myurl.'&'.$goto_url; ?>">
+        <?php if(!empty($msg)): ?>
+            <div id="msg">
+                <span><?php echo $msg; ?></span>
+            </div>
+        <?php endif; ?>
         <div class="help">
             <a href="/login/forgot">Forgot password?</a>
         </div>

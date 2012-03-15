@@ -2,6 +2,7 @@ form#login
 {
     width: 15em;
     font-size: 1.1em;
+    margin: 0 auto;
 }
 form#login input.txt
 {
