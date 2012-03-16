@@ -101,6 +101,8 @@ class LoginController
             Util::logit("Failed to send forgot request for user '{$username}' because it can't send the email.", __FILE__, __LINE__);
             return;
         }
+
+        Util::logit("Reset password request: user({$username}) code({$code})", __FILE__, __LINE__);
     }
 
     function send_forgot_code($user_info, $code)
@@ -210,6 +212,32 @@ class LoginController
             return;
         }
 
+        $this->send_new_password($user_info, $password1);
         $this->set('is_reset', true);
+    }
+
+    function send_new_password($user_info, $new_password)
+    {
+        $user = $user_info['username'];
+        $email = $user_info['email'];
+
+        $mail = new MailModel();
+        $subject = 'splatnom: Password changed for '.$user;
+
+        $params = array(
+            'user' => $user,
+            'password' => $new_password,
+        );
+
+        $message = $mail->grab_data('login', 'email_new_password', $params);
+        if (empty($message))
+        {
+            Util::logit('Failed to send new password update', __FILE__, __LINE__);
+            return false;
+        }
+
+        $sent = $mail->send_smtp(null, $email, $subject, $message);
+
+        return $sent;
     }
 }
