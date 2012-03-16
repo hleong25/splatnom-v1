@@ -37,6 +37,7 @@ a:link,
 a:visited
 {
     text-decoration:none;
+    color: black;
 }
 
 div#header a:link,
@@ -49,12 +50,6 @@ div#footer > *
 {
     font-size: 0.8em;
     text-align: right;
-}
-
-div#footer a:link,
-div#footer a:visited
-{
-    color: black;
 }
 
 pre
