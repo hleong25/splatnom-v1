@@ -57,6 +57,11 @@ class Controller
         $this->m_template->addJs($js, $path);
     }
 
+    function addLess($less, $path = WEB_PATH_CSS)
+    {
+        $this->m_template->addLess($less, $path);
+    }
+
     function addJqueryUi()
     {
         $this->m_template->addJqueryUi();

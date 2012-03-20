@@ -57,7 +57,7 @@ class MenuController
             return;
         }
 
-        $this->addCss('menu/menu.edit.metadata');
+        $this->addLess('menu/menu.edit.metadata');
 
         $this->addJqueryUi();
         $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
@@ -457,8 +457,7 @@ class MenuController
         $this->addJqueryUi();
 
         $this->addJs('menu/menu.view');
-        $this->addCss('menu/menu.view');
-        $this->addCss('zebra');
+        $this->addLess('menu/menu.view');
 
         // it's in the database... let's continue
 

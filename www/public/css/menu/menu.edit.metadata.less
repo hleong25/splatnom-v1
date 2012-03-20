@@ -1,0 +1,147 @@
+@import '../global.less';
+
+div.edit {
+    .action {
+        margin-left: 0em !important;
+        position: fixed;
+        width: 7em;
+
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.3em !important;
+        }
+
+        hr { width: 80%; }
+    }
+
+    & > form > * {
+        margin-left: 8em;
+        margin-bottom: 0.5em;
+    }
+
+    div.heading {
+        font-size: 1.2em;
+        background-color: silver;
+        width: 100%;
+        padding: 0.2em;
+
+        & > .left{ float: left; }
+
+        & > .right{ text-align: right; }
+    }
+
+    div.data {
+        padding: 0.2em;
+    }
+
+    div.reminder {
+        font-size: 0.8em;
+        text-align: right;
+    }
+
+    div.err_msgs {
+        color: red;
+        text-align: center;
+    }
+
+    div.import {
+        /* empty */
+    }
+
+    div.images {
+        a.img_add { .toggle_button_on_heading; }
+
+        img.menu{ padding: 0.2em; }
+
+        div.new_imgs {
+            max-height: 18em;
+            overflow-y: auto;
+            overflow-x: hidden; /* prevent horizontal scrollbar */
+            padding-right: 20px; /* add padding to account for vertical scrollbar */
+        }
+    }
+
+    div.links {
+    }
+
+    div.info {
+        textarea.address,
+        textarea.phone_numbers,
+        textarea.hours {
+            width: 40em;
+        }
+
+        span.latlong_info { font-size: small; }
+    }
+
+    div.menu {
+        div.heading {
+            button.move_up,
+            button.move_down,
+            button.menu_add,
+            button.menu_remove{
+                .toggle_button_on_heading;
+            }
+        }
+
+        div.data {
+            border-left: 2px solid silver;
+            margin-left: 0.3em;
+            margin-bottom: 0.3em;
+            padding-left: 0.3em;
+
+            div.group_info {
+                input.menu_name {
+                    width: 40em;
+                }
+
+                input.menu_notes {
+                    width: 40em;
+                    height: 5em;
+                }
+            }
+
+            div.subheading {
+                font-size: 0.9em;
+                font-weight: bold;
+                background-color: silver;
+                width: 100%;
+                padding: 0.3em;
+                margin: 0.3em 0 0 0;
+            }
+
+            div.menu_group {
+                border-left: 2px solid silver;
+                margin-left: 0.3em;
+                padding-left: 0.3em;
+
+                span.menu_group_info { font-size: small; }
+
+                div.menu_item {
+                    button.btnitem { width: 1.8em !important; }
+
+                    textarea {
+                        display: block;
+
+                        &.item_label { width: 20em; }
+                        &.item_price { width: 8em; }
+                        &.item_notes { width: 10em; }
+
+                        &.item_edit {
+                            position: relative;
+                            z-index: 9999;
+                            width: 20em;
+                            height: 5em;
+                        } /*.item_edit*/
+                    } /*textarea*/
+                } /*div.menu_item*/
+            } /*div.menu_group*/
+        } /*div.data*/
+    } /*div.menu*/
+}
+
+.toggle_button_on_heading {
+    font-size: 0.8em;
+    font-weight: bold;
+}

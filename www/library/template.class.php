@@ -1,4 +1,5 @@
 <?php
+require_once('lessc.inc.php');
 
 class Template
 {
@@ -41,8 +42,8 @@ class Template
 
         $this->set('myurl', $get_url);
 
-        $this->addCss('reset');
-        $this->addCss('default');
+        //$this->addCss('reset');
+        //$this->addCss('default');
 
         // add jquery
         $this->addJs('jquery-1.7.1.min', WEB_PATH_OTHER);
@@ -185,6 +186,56 @@ class Template
         $this->addResource('js', $path . DS . $js, $bCheckIfExists);
     }
 
+    function addLess($less, $path = WEB_PATH_CSS, $bCheckIfExists = true)
+    {
+        $file = OS_PATH_PUBLIC.DS.$path.DS.$less;
+
+        $compiled_css = $this->auto_compile_less($file);
+
+        if ($compiled_css !== true)
+        {
+            Util::logit("Failed to add LESS file: {$less}", __FILE__, __LINE__);
+            return;
+        }
+
+        $this->addCss($less, $path, $bCheckIfExists);
+    }
+
+    function auto_compile_less($less)
+    {
+        $less_fname = $less.'.less';
+        $css_fname  = $less.'.css';
+
+        if (!file_exists($less_fname))
+        {
+            Util::logit("LESS file not found: {$less_fname}", __FILE__, __LINE__);
+            return false;
+        }
+
+        // load the cache
+        $cache_fname = $less_fname.'.cache';
+        if (file_exists($cache_fname))
+        {
+            //Util::logit("CSS cache exists: $css_fname");
+            $cache = unserialize(file_get_contents($cache_fname));
+        }
+        else
+        {
+            //Util::logit("CSS cache does not exists: $css_fname");
+            $cache = $less_fname;
+        }
+
+        $new_cache = lessc::cexecute($cache);
+        if (!is_array($cache) || $new_cache['updated'] > $cache['updated'])
+        {
+            //Util::logit("CSS cache is old, replacing it: $css_fname");
+            file_put_contents($cache_fname, serialize($new_cache));
+            file_put_contents($css_fname, $new_cache['compiled']);
+        }
+
+        return true;
+    }
+
     function addJqueryUi()
     {
         $version = '1.8.16';
@@ -198,7 +249,7 @@ class Template
         $this->addJs($js, WEB_PATH_OTHER);
 
         // Add default jquery-ui CSS
-        $this->addCss('default.jquery-ui');
+        //$this->addCss('default.jquery-ui');
     }
 
     function addAddThis()

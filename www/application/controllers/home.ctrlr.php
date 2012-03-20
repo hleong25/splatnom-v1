@@ -6,8 +6,9 @@ class HomeController
     function onAction_main()
     {
         $this->addJqueryUi();
-        $this->addCss('table');
-        $this->addCss('home/home');
+        //$this->addCss('table');
+        //$this->addCss('home/home');
+        $this->addLess('home/home.main');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home');

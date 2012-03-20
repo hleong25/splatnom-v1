@@ -1,0 +1,61 @@
+@import '../global.less';
+@import '../table.less';
+
+div.search {
+    text-align: center;
+
+    form#searchit {
+        input {
+            font-size: 1.1em;
+
+            .query{ width: 20em; }
+
+            .location{ width: 10em; }
+        }
+
+        .fq { display: inline-block; }
+
+        span.hint {
+            display: block;
+            text-align: left;
+            font-size: 0.75em;
+        }
+
+        button { width: 7em; }
+    }
+}
+
+div.new_menus {
+    margin-top: 1em;
+
+    div.new {
+        margin: 0em 1em 1em;
+        display: inline-block;
+        vertical-align: top;
+
+        span.name {
+            font-size: 1.0em;
+            font-weight: bold;
+        }
+
+        span.addy {
+            font-size: 0.8em;
+        }
+    }
+}
+
+
+div.metadata {
+    div.heading {
+        font-size: 18px;
+        background-color: silver;
+        width: 100%;
+        padding: 0.2em;
+        margin-bottom: 0.2em;
+    }
+
+    a.menu {
+        font-size: 0.75em !important;
+        padding: 0.3em 0.5em;
+    }
+}

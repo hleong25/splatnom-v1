@@ -94,7 +94,7 @@ EOHTML;
         </div>
     </div>
 
-    <div class="reminder" style="font-size: 0.8em; text-align: right;">Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</div>
+    <div class="reminder">Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</div>
 
     <div class="err_msgs">
         <?=implode('<br/>', $err_msgs)?>
