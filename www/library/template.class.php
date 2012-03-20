@@ -42,9 +42,6 @@ class Template
 
         $this->set('myurl', $get_url);
 
-        //$this->addCss('reset');
-        //$this->addCss('default');
-
         // add jquery
         $this->addJs('jquery-1.7.1.min', WEB_PATH_OTHER);
 
@@ -178,6 +175,12 @@ class Template
 
     function addCss($css, $path = WEB_PATH_CSS, $bCheckIfExists = true)
     {
+        if (DEVELOPMENT_ENVIRONMENT == false)
+        {
+            $this->addResource('css', WEB_PATH_CSS . DS . 'reset', $bCheckIfExists);
+            $this->addResource('css', WEB_PATH_CSS . DS . 'default', $bCheckIfExists);
+        }
+
         $this->addResource('css', $path . DS . $css, $bCheckIfExists);
     }
 
@@ -190,12 +193,15 @@ class Template
     {
         $file = OS_PATH_PUBLIC.DS.$path.DS.$less;
 
-        $compiled_css = $this->auto_compile_less($file);
-
-        if ($compiled_css !== true)
+        if (DEVELOPMENT_ENVIRONMENT)
         {
-            Util::logit("Failed to add LESS file: {$less}", __FILE__, __LINE__);
-            return;
+            $compiled_css = $this->auto_compile_less($file);
+
+            if ($compiled_css !== true)
+            {
+                Util::logit("Failed to add LESS file: {$less}", __FILE__, __LINE__);
+                return;
+            }
         }
 
         $this->addCss($less, $path, $bCheckIfExists);
