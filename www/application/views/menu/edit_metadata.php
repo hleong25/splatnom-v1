@@ -42,7 +42,7 @@ extract($params, EXTR_SKIP);
     <div class="action">
         <input class="button" type="button" value="Refresh" data-action="refresh" data-url="/<?=$myurl?>" />
         <input class="button" type="button" value="View Menu" data-action="view" data-url="/menu/view/<?=$id?>" />
-        <input class="button" type="button" value="Export Menu" data-action="export" data-url="/menu/export/<?=$id?>/json" />
+        <input class="button" type="button" value="Export Menu" data-action="export" data-url="/export/menus/<?=$id?>" />
         <hr/>
         <input id="force_db_fetch" style="width: 1em; display: inline;" type="checkbox" name="force_reload" />
         <label for="force_db_fetch">refresh db</label>
@@ -99,6 +99,9 @@ EOHTML;
     <div class="err_msgs">
         <?=implode('<br/>', $err_msgs)?>
     </div>
+<?php /*
+    NOTE: the import function is no longer supported here
+          it will be supported in the /import/list section
 
     <div class="import">
         <div class="heading onToggle">Import menu</div>
@@ -109,7 +112,7 @@ EOHTML;
             <input class="chkImport" type="checkbox" name="import_file_opts[]" value="menus"/><span>Append menus</span><br/>
         </div>
     </div>
-
+*/?>
     <div class="images">
         <div class="heading onToggle">Images <a class="img_add" href="/images/upload/<?=$id?>">Add photos</a></div>
         <div class="data toggle">

@@ -2,12 +2,15 @@
 $params = array(
     'dbg'=>false,
     'err_msg'=>'',
+    'remote_site'=>'',
     'imported_menus'=>array(),
 );
 
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg menus">
+    <p>go back to <a href="/import/list/<?=$remote_site?>">importing</a></p>
+    <br/>
 <?php if (!empty($err_msg)): ?>
     <span style="color: red;"><?=$err_msg?></span>
 <?php endif; ?>

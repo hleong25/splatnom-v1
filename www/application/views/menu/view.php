@@ -128,7 +128,7 @@ foreach ($info['status'] as $info_status)
 <div class="pg">
 <?php if ($is_metadata): ?>
 <div class="ismdt">
-    <a class="button" href="/menu/export/<?=$id?>/json">export menu</a>
+    <a class="button" href="/export/menus/<?=$id?>">export menu</a>
     <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>

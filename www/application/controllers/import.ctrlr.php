@@ -78,6 +78,8 @@ class ImportController
             return;
         }
 
+        $this->addCss('import/import.menus');
+
         $menu_ids = array();
 
         if (!empty($id))
@@ -134,35 +136,12 @@ class ImportController
         return $imported_menus;
     }
 
-    // same as menu::import_normalize
-    function import_normalize(&$datas)
-    {
-        unset($datas['info']['total_items']);
-
-        $ordinal_section = 0;
-        $ordinal_item = 0;
-
-        // make sure section_id and metadata_id are -1
-        foreach ($datas['metadatas'] as &$mtd)
-        {
-            $mtd['section_id'] = -1;
-            $mtd['ordinal'] = $ordinal_section++;
-
-            $ordinal_item = 0;
-            foreach ($mtd['items'] as &$item)
-            {
-                $item['metadata_id'] = -1;
-                $item['ordinal'] = $ordinal_item++;
-            }
-        }
-    }
-
     function import_helper($menu)
     {
         $data = $menu['data'];
         $imgs = $menu['imgs'];
 
-        $this->import_normalize($data);
+        ImportModel::menu_normalize($data);
 
         $menu = new MenuModel();
         $new_id = $menu->createMenu();

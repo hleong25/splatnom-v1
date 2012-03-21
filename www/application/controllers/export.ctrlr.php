@@ -103,7 +103,7 @@ class ExportController
                 'metadatas' => $mdts,
             );
 
-            $this->export_normalize($out);
+            ExportModel::menu_normalize($out);
             $export['menus'][] = $out;
         }
 
@@ -120,30 +120,6 @@ class ExportController
             $dbg = array('id'=>$id, 'post'=>$_POST, 'menu_ids'=>$menu_ids);
             $dbg = $export;
             $this->set('dbg', $dbg);
-        }
-    }
-
-    // same as menu::export_normalize
-    function export_normalize(&$datas)
-    {
-        // clear status
-        unset($datas['info']['status']);
-
-        // clear the section_id and metadata_id
-        foreach ($datas['metadatas'] as &$mtd)
-        {
-            $mtd['section_id'] = -1;
-
-            foreach ($mtd['items'] as &$item)
-            {
-                $item['metadata_id'] = -1;
-            }
-        }
-
-        // reset the array of images to be just image name
-        foreach ($datas['imgs'] as $idx => $img)
-        {
-            $datas['imgs'][$idx] = $img['filename'];
         }
     }
 }

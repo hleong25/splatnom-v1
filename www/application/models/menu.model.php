@@ -541,11 +541,21 @@ EOQ;
         $params = array();
         $params[':id'] = $id;
 
-        foreach ($info as $key => $val)
-        {
-            $params[":{$key}"] = $val;
-            $params[":u_{$key}"] = $val;
-        }
+        $params[':name']        = $info['name'];
+        $params[':notes']       = $info['notes'];
+        $params[':address']     = $info['address'];
+        $params[':latitude']    = $info['latitude'];
+        $params[':longitude']   = $info['longitude'];
+        $params[':numbers']     = $info['numbers'];
+        $params[':hours']       = $info['hours'];
+
+        $params[':u_name']      = $info['name'];
+        $params[':u_notes']     = $info['notes'];
+        $params[':u_address']   = $info['address'];
+        $params[':u_latitude']  = $info['latitude'];
+        $params[':u_longitude'] = $info['longitude'];
+        $params[':u_numbers']   = $info['numbers'];
+        $params[':u_hours']     = $info['hours'];
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare) return false;

@@ -81,6 +81,10 @@ class MenuController
         $this->set('is_metadata', Util::getPermissions('metadata'));
 
         $import_json = false;
+
+        /*
+        NOTE: the import function is no longer supported here
+              it will be supported in the /import/list section
         if (!empty($_FILES['import_file']['tmp_name']))
         {
             // if we're here, then there was a file uploaded...
@@ -90,6 +94,7 @@ class MenuController
 
             $this->import_normalize($import_json);
         }
+        */
 
         $load_from_db = empty($_POST);
 
@@ -464,157 +469,6 @@ class MenuController
         $this->set('is_metadata', Util::getPermissions('metadata'));
 
         $this->get_menu_metadata($id, $menu_info);
-    }
-
-    function onAction_export($id=null,$out=null)
-    {
-        if ($id == null)
-        {
-            $this->redirect('/home/main/');
-            return;
-        }
-
-        $menu = $this->Menu;
-        $info = $menu->getMenuInfo($id);
-
-        if (empty($info))
-            return;
-
-        $this->m_bRender = false;
-
-        $sections = $menu->getSection($id);
-        $links = $menu->getMenuLinks($id);
-        $mdts = $menu->getMetadata($id, $sections);
-
-        $export = array(
-            'version' => 1,
-            'info' => $info,
-            'links' => $links,
-            'metadatas' => $mdts,
-        );
-
-        $this->export_normalize($export);
-
-        $slug_name = Util::slugify($info['name']);
-        $slug_addy = Util::slugify($info['address']);
-        $file = "{$id}.{$slug_name}.{$slug_addy}.txt";
-
-        $this->set('export_data', $export);
-        $this->set('out', $out);
-        $this->set('file', $file);
-    }
-
-    function export_normalize(&$datas)
-    {
-        // clear status
-        unset($datas['info']['status']);
-
-        // clear the section_id and metadata_id
-        foreach ($datas['metadatas'] as &$mtd)
-        {
-            $mtd['section_id'] = -1;
-
-            foreach ($mtd['items'] as &$item)
-            {
-                $item['metadata_id'] = -1;
-            }
-        }
-    }
-
-    function onAction_import()
-    {
-        if (!Util::getPermissions('admin'))
-        {
-            $this->redirect('/home/main/');
-            return;
-        }
-
-        if (empty($_POST))
-        {
-            return;
-        }
-        else if (empty($_FILES['import_file']['tmp_name']))
-        {
-            $this->set('err_msg', 'No file to import');
-            return;
-        }
-
-        // if we're here, then there was a file uploaded...
-        $file = $_FILES['import_file']['tmp_name'];
-        $json_data = file_get_contents($file);
-        $json = json_decode($json_data, true);
-
-        $this->import_normalize($json);
-
-        $menu = $this->Menu;
-        $new_id = $menu->createMenu();
-
-        // import info
-        $info = $json['info'];
-        $q_info = &$info;
-
-        $import = $menu->updateMenuInfo($new_id, $q_info);
-        if (!$import)
-        {
-            $this->set('err_msg', 'Failed to import info');
-            return;
-        }
-
-        // import links
-        $links = $json['links'];
-        $q_links = &$links;
-        $import = $menu->updateMenuLinks($new_id, $q_links);
-        if (!$import)
-        {
-            $this->set('err_msg', 'Failed to import links');
-            return;
-        }
-
-        // import metadata
-        $mdts = $json['metadatas'];
-        $q_mdts = &$mdts;
-        $import = $menu->updateMenuSectionAndMetadata($new_id, $q_mdts);
-        if (!$import)
-        {
-            $this->set('err_msg', 'Failed to import menu metadata');
-            return;
-        }
-
-        // create menu image directory
-        $menu_img_path = OS_MENU_PATH . DS . $new_id;
-        if (mkdir($menu_img_path) == false)
-        {
-            $err_msg = "Failed to create menu directory: {$menu_img_path}";
-            Util::logit($err_msg, __FILE__, __LINE__);
-            $this->set('err_msg', $err_msg);
-            return false;
-        }
-
-        $this->set('menu_id', $new_id);
-        $this->set('name', $info['name']);
-        //$this->set('dbg', $json);
-    }
-
-    function import_normalize(&$datas)
-    {
-        unset($datas['info']['total_items']);
-
-        $ordinal_section = 0;
-        $ordinal_item = 0;
-
-        // make sure section_id and metadata_id are -1
-        foreach ($datas['metadatas'] as &$mtd)
-        {
-            $mtd['section_id'] = -1;
-            $mtd['ordinal'] = $ordinal_section++;
-
-            $ordinal_item = 0;
-            foreach ($mtd['items'] as &$item)
-            {
-                $item['metadata_id'] = -1;
-                $item['ordinal'] = $ordinal_item++;
-            }
-        }
     }
 
     function onAction_forkit($menu_id, $section_id, $item_id)

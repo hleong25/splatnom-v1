@@ -3,6 +3,29 @@
 class ExportModel
     extends Model
 {
+    static function menu_normalize(&$datas)
+    {
+        // clear status
+        unset($datas['info']['status']);
+
+        // clear the section_id and metadata_id
+        foreach ($datas['metadatas'] as &$mtd)
+        {
+            $mtd['section_id'] = -1;
+
+            foreach ($mtd['items'] as &$item)
+            {
+                $item['metadata_id'] = -1;
+            }
+        }
+
+        // reset the array of images to be just image name
+        foreach ($datas['imgs'] as $idx => $img)
+        {
+            $datas['imgs'][$idx] = $img['filename'];
+        }
+    }
+
     function getMenus()
     {
         $aes_key = SQL_AES_KEY;
