@@ -141,7 +141,7 @@ div.edit div.menu div.data {
   padding-left:0.3em;
 }
 div.edit div.menu div.data div.group_info input.menu_name { width:40em; }
-div.edit div.menu div.data div.group_info input.menu_notes {
+div.edit div.menu div.data div.group_info textarea.menu_notes {
   width:40em;
   height:5em;
 }
