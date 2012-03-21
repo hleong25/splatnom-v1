@@ -6,5 +6,7 @@
 </div>
 </body>
 <?php flush(); ?>
-<?php $this->includeJs(); ?>
+<?php foreach ($this->getJs() as $js): ?>
+    <script type="text/javascript" src="<?=$js?>.js"></script>
+<?php endforeach; //foreach ($allJs as $Js): ?>
 </html>

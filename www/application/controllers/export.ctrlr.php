@@ -38,7 +38,6 @@ class ExportController
 
         $this->m_bRender = empty($output);
 
-        $this->addCss('table');
         $this->addCss('export/export.list');
 
         $this->addJqueryUi();

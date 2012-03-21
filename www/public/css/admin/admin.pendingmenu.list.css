@@ -85,13 +85,16 @@ a.button, input.button, input[type=button], input[type=reset], input[type=submit
   margin:0em !important;
 }
 .ui-button-text { padding:0 !important; }
-.err {
-  font-weight:bold;
-  font-size:0.8em;
-  color:red;
+table.tblDefault {
+  border-style:solid;
+  border-width:1px;
 }
-input[type="text"] { width:20em; }
-textarea {
-  width:40em;
-  height:10em;
+table.tblDefault thead td {
+  font-weight:bold;
+  background-color:silver;
+}
+table.tblDefault td {
+  border-style:solid;
+  border-width:1px;
+  padding:4px;
 }

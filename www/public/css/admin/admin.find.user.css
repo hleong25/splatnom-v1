@@ -1,5 +1,101 @@
-input.query_user
-{
-    width: 22em;
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  font-size:100%;
+  font:inherit;
+  vertical-align:baseline;
+  font-family:Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
 }
-
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display:block; }
+body { line-height:1; }
+ol, ul { list-style:none; }
+blockquote, q { quotes:none; }
+blockquote:before, blockquote:after, q:before, q:after {
+  content:'';
+  content:none;
+}
+table {
+  border-collapse:collapse;
+  border-spacing:0;
+}
+.pg {
+  max-width:55em;
+  margin-left:auto;
+  margin-right:auto;
+}
+.pg_bottom { margin-bottom:0.5em; }
+a:link, a:visited {
+  text-decoration:none;
+  color:black;
+}
+div#header {
+  padding:0.5em;
+  background-color:#990000;
+  color:white;
+  padding-bottom:0.8em;
+  margin-bottom:1em;
+}
+div#header a:link, div#header a:visited { color:white; }
+div#header div#nav { text-align:right; }
+div#header div#nav a.nav { font-size:0.8em; }
+div#header span#welcome { font-size:2em; }
+div#footer > * {
+  font-size:0.8em;
+  text-align:right;
+}
+pre {
+  font-family:'Courier New', Courier, monospace;
+  text-align:left;
+  font-size:0.8em;
+}
+* html .clearfix {
+  height:1%;
+  overflow:visible;
+}
+*+html .clearfix { min-height:1%; }
+.clearfix:after {
+  clear:both;
+  content:".";
+  display:block;
+  height:0;
+  visibility:hidden;
+  font-size:0;
+}
+.ui-autocomplete {
+  max-height:30em;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding-right:20px;
+}
+.ui-menu-item {
+  font-size:0.8em;
+  margin-left:1em !important;
+}
+.ui-autocomplete-section {
+  font-size:0.8em;
+  font-weight:bold;
+  padding:.2em .4em;
+  margin:.8em 0 .2em;
+  line-height:1.5;
+}
+a.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+  font-size:0.8em !important;
+  padding:0.2em 1em !important;
+  margin:0em !important;
+}
+.ui-button-text { padding:0 !important; }
+table.tblDefault {
+  border-style:solid;
+  border-width:1px;
+}
+table.tblDefault thead td {
+  font-weight:bold;
+  background-color:silver;
+}
+table.tblDefault td {
+  border-style:solid;
+  border-width:1px;
+  padding:4px;
+}
+input.query_user { width:22em; }

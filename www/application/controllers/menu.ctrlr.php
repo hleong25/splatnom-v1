@@ -57,7 +57,7 @@ class MenuController
             return;
         }
 
-        $this->addLess('menu/menu.edit.metadata');
+        $this->addCss('menu/menu.edit.metadata');
 
         $this->addJqueryUi();
         $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
@@ -388,7 +388,6 @@ class MenuController
             original URL request is in $_GET format, after mod_rewrite it changes to MVC model
         */
 
-        $this->addCss('table');
         $this->addCss('menu/menu.search');
 
         $this->addJqueryUi();
@@ -457,7 +456,7 @@ class MenuController
         $this->addJqueryUi();
 
         $this->addJs('menu/menu.view');
-        $this->addLess('menu/menu.view');
+        $this->addCss('menu/menu.view');
 
         // it's in the database... let's continue
 

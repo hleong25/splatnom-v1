@@ -7,7 +7,7 @@ class LoginController
     {
         global $get_url;
 
-        $this->addCss('login/login');
+        $this->addCss('login/login.main');
 
         $this->addJqueryUi();
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);

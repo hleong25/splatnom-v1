@@ -1,20 +1,10 @@
+@import '../global.less';
+@import '../table.less';
+
 div.search
 {
     text-align: center;
-}
-
-div.new_menus
-{
-    margin-top: 1em;
-}
-
-div.heading
-{
-    font-size: 18px;
-    background-color: silver;
-    width: 100%;
-    padding: 0.2em;
-    margin-bottom: 0.2em;
+    margin-bottom: 0.8em;
 }
 
 form#searchit input{
@@ -37,25 +27,27 @@ input.location{
 button{
     width: 7em;
 }
+div.found{
+    margin: 0.8em 0;
+}
 a:link,
-a:visited
-{
+a:visited {
     color: black;
 }
-div.new{
-    margin: 0em 1em 1em;
-    display: inline-block;
-    vertical-align: top;
+li {
+    margin-bottom: 0.8em;
+}
+li span.place_no {
+    float: left;
+    text-align: right;
+}
+li div.info {
+    margin-left: 2em;
 }
 span.name{
-    font-size: 1.0em;
     font-weight: bold;
 }
-span.addy{
+span.addy,
+span.hours{
     font-size: 0.8em;
-}
-
-a.menu{
-    font-size: 0.75em !important;
-    padding: 0.3em 0.5em;
 }

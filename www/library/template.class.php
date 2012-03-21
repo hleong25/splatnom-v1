@@ -175,10 +175,18 @@ class Template
 
     function addCss($css, $path = WEB_PATH_CSS, $bCheckIfExists = true)
     {
-        if (DEVELOPMENT_ENVIRONMENT == false)
+        $less = OS_PATH_PUBLIC.$path.DS.$css;
+
+        // always try to compile the LESS to CSS first, if it exists
+        if (($path === WEB_PATH_CSS) && file_exists($less.'.less'))
         {
-            $this->addResource('css', WEB_PATH_CSS . DS . 'reset', $bCheckIfExists);
-            $this->addResource('css', WEB_PATH_CSS . DS . 'default', $bCheckIfExists);
+            $compiled_css = $this->auto_compile_less($less);
+
+            if ($compiled_css !== true)
+            {
+                Util::logit("Failed to compile LESS file: {$less}", __FILE__, __LINE__);
+                return;
+            }
         }
 
         $this->addResource('css', $path . DS . $css, $bCheckIfExists);
@@ -187,24 +195,6 @@ class Template
     function addJs($js, $path = WEB_PATH_JS, $bCheckIfExists = true)
     {
         $this->addResource('js', $path . DS . $js, $bCheckIfExists);
-    }
-
-    function addLess($less, $path = WEB_PATH_CSS, $bCheckIfExists = true)
-    {
-        $file = OS_PATH_PUBLIC.DS.$path.DS.$less;
-
-        if (DEVELOPMENT_ENVIRONMENT)
-        {
-            $compiled_css = $this->auto_compile_less($file);
-
-            if ($compiled_css !== true)
-            {
-                Util::logit("Failed to add LESS file: {$less}", __FILE__, __LINE__);
-                return;
-            }
-        }
-
-        $this->addCss($less, $path, $bCheckIfExists);
     }
 
     function auto_compile_less($less)
@@ -299,37 +289,20 @@ EOHTML;
         $this->addResource('js', $js, false);
     }
 
-    function includeCss()
+    function getCss()
     {
-        foreach ($this->m_res['css'] as $css)
-        {
-            printf('<link rel="stylesheet" href="%s.css" />', $css);
-        }
+        $css = array_unique($this->m_res['css']);
+        return $css;
     }
 
-    function includeJs()
+    function getJs()
     {
-        foreach ($this->m_res['js'] as $js)
-        {
-            printf('<script type="text/javascript" src="%s.js"></script>', $js);
-        }
+        $js = array_unique($this->m_res['js']);
+        return $js;
     }
 
-    function includeNavLinks()
+    function getNavLinks()
     {
-        $bCont = false;
-
-        foreach ($this->m_nav as $lnk)
-        {
-            if ($bCont)
-            {
-                printf('<span class="lnkspc"> | </span>');
-            }
-
-            printf('<a class="%s" href="%s">%s</a>', $lnk['css'], DS . $lnk['lnk'], $lnk['lbl']);
-
-            $bCont = true;
-        }
-
+        return $this->m_nav;
     }
 }

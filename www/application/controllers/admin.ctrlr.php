@@ -24,8 +24,7 @@ class AdminController
             }
         }
 
-        $this->addCss('table');
-        //$this->addCss('admin/admin.pendingmenu.list');
+        $this->addCss('admin/admin.pendingmenu.list');
 
         $this->addJs('admin/admin.pendingmenu.list');
 
@@ -34,7 +33,6 @@ class AdminController
 
     function onAction_find_user()
     {
-        $this->addCss('table');
         $this->addCss('admin/admin.find.user');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
@@ -107,7 +105,6 @@ class AdminController
             return;
         }
 
-        $this->addCss('table');
         $this->addCss('admin/admin.pending.menu');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
@@ -187,7 +184,7 @@ class AdminController
 
     function onAction_location($opt=null)
     {
-        $this->addCss('table');
+        $this->addCss('admin/admin.location');
 
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
 

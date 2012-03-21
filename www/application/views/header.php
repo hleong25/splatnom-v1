@@ -19,14 +19,27 @@ extract($params, EXTR_SKIP);
 <meta property="og:image" content="<?=$meta_image?>" />
 <meta property="og:description" content="<?=$meta_desc?>" />
 <title><?=SITE_NAME?><?=(empty($meta_title)?'':" - {$meta_title}")?></title>
-<?php $this->includeCss(); ?>
+<?php foreach ($this->getCss() as $css): ?>
+    <link rel="stylesheet" href="<?=$css?>.css" />
+<?php endforeach; //foreach ($allCss as $css): ?>
 </head>
 <?php
 flush();
 ?>
 <body>
 <div id="header">
-    <div id="nav" class="pg"><?=$this->includeNavLinks()?></div>
+    <div id="nav" class="pg"><?php
+        $bCont = false;
+        foreach ($this->getNavLinks() as $lnk)
+        {
+            if ($bCont)
+                printf('<span class="lnkspc"> | </span>');
+
+            printf('<a class="%s" href="/%s">%s</a>', $lnk['css'], $lnk['lnk'], $lnk['lbl']);
+
+            $bCont = true;
+        }
+    ?></div>
     <div class="pg">
         <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
         <br/>

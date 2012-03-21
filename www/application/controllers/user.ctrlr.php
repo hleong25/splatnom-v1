@@ -221,7 +221,6 @@ class UserController
         $this->addJs('jquery.watermark', WEB_PATH_OTHER);
         $this->addJs('user/user.profile');
 
-        $this->addCss('table');
         $this->addCss('user/user.profile');
 
         $this->set('user_info', $user_info);

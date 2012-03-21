@@ -16,7 +16,6 @@ class ImportController
             return;
         }
 
-        $this->addCss('table');
         $this->addCss('import/import.list');
 
         $this->addJqueryUi();

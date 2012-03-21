@@ -1,22 +1,17 @@
-form#login
-{
+@import '../global.less';
+
+form#login {
     width: 15em;
     font-size: 1.1em;
     margin: 0 auto;
-}
-form#login input.txt
-{
-    width: inherit;
-    font-size: inherit;
-    margin-bottom: 0.3em;
-}
-form#login input.button
-{
-    width: 8em;
-}
-form#login div.action
-{
-    text-align: center;
+
+    input.txt {
+        width: inherit;
+        font-size: inherit;
+        margin-bottom: 0.3em;
+    }
+    input.button { width: 8em; }
+    div.action { text-align: center; }
 }
 div#msg
 {
@@ -25,13 +20,10 @@ div#msg
     font-weight: bold;
     text-align: center;
     margin-bottom: 1em;
+
+    span { color: red; }
 }
-div#msg span
-{
-    color: red;
-}
-div.help
-{
+div.help {
     font-size: 0.6em;
     text-align: right;
     margin: 0.3em 0 0.5em;
