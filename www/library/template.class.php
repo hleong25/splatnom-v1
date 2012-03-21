@@ -16,6 +16,9 @@ class Template
         $this->m_base_name = strtolower($base_name);
         $this->m_action = $this->fixAction($action);
 
+        $this->m_res['css'] = array();
+        $this->m_res['js'] = array();
+
         $this->init();
     }
 

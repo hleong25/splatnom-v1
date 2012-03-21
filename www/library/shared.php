@@ -116,7 +116,8 @@ function callHook ()
         else
         {
             Util::logit("Function call '$ctrl::$action' does not exists", __FILE__, __LINE__);
-            Util::error_page();
+            // call the controllers error_page function
+            call_user_func_array(array($dispatch, 'error_page'), array());
         }
     }
 }

@@ -41,6 +41,12 @@ class Controller
         }
 	}
 
+    function error_page($code=404)
+    {
+        $this->m_bRedirect = true;
+        Util::error_page($code);
+    }
+
     function redirect($location)
     {
         $this->m_bRedirect = true;
