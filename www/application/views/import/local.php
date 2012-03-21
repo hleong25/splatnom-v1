@@ -9,7 +9,7 @@ extract($params, EXTR_SKIP);
 ?>
 <div class="pg menus">
 <?php if (!empty($err_msg)): ?>
-    <span style="color: red;"><?=$err_msg?></span>
+    <span style="color: red;"><?=$err_msg?></span><br/><br/>
 <?php endif; ?>
 <?php if (empty($imported_menus)): ?>
     <span>No menus imported</span>

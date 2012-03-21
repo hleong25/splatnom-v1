@@ -49,6 +49,8 @@ class ImportController
             return;
         }
 
+        $this->addCss('import/import.local');
+
         $imported_menus = $this->import_menu_file($local_file);
         if (empty($imported_menus))
         {
@@ -115,7 +117,15 @@ class ImportController
     function import_menu_file($file)
     {
         $importer = new ImportArchiver($file);
-        $importer->init();
+        $bInit = $importer->init();
+
+        if ($bInit !== true)
+        {
+            $err_msg = "Failed to init import file: {$file}";
+            $this->set('err_msg', $err_msg);
+            return false;
+        }
+
         $menus = $importer->unzip();
 
         $imported_menus = array();
@@ -125,7 +135,7 @@ class ImportController
             if (empty($imported))
             {
                 $err_msg = "Failed to import menus: {$file}";
-                $this->set('err', $err_msg);
+                $this->set('err_msg', $err_msg);
                 Util::logit($err_msg, __FILE__, __LINE__);
                 return false;
             }
@@ -277,7 +287,8 @@ class ImportArchiver
         {
             $err_str = $this->getZipError($ret);
             Util::logit("Error opening zip file '{$this->m_zfile}'. Error: {$err_str}", __FILE__, __LINE__);
-            @unlink($this->m_zfile);
+            $this->m_purge = false;
+            //@unlink($this->m_zfile);
             return false;
         }
 
