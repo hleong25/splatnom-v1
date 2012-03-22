@@ -181,7 +181,7 @@ class Template
         $less = OS_PATH_PUBLIC.$path.DS.$css;
 
         // always try to compile the LESS to CSS first, if it exists
-        if (($path === WEB_PATH_CSS) && file_exists($less.'.less'))
+        if (DEVELOPMENT_ENVIRONMENT && ($path === WEB_PATH_CSS) && file_exists($less.'.less'))
         {
             $compiled_css = $this->auto_compile_less($less);
 
