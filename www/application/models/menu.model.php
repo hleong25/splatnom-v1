@@ -453,14 +453,10 @@ EOQ;
     function createMenu()
     {
         $query =<<<EOQ
-            INSERT INTO tblMenu(
-                mode_id,
-                user_id
-            )
-            VALUES (
-                (SELECT id FROM vMenuStatus WHERE menu_status='new'),
-                :user_id
-            )
+            INSERT INTO tblMenu SET
+                mod_ts = CURRENT_TIMESTAMP,
+                mode_id = (SELECT id FROM vMenuStatus WHERE menu_status='new'),
+                user_id = :user_id
 EOQ;
 
         $rst = $this->prepareAndExecute($query, array(':user_id'=>Util::getUserId()), __FILE__, __LINE__);
@@ -494,8 +490,9 @@ EOQ;
     function updateMenu($id, $status)
     {
         $query =<<<EOQ
-            UPDATE tblMenu
-            SET mode_id = (SELECT id FROM vMenuStatus WHERE menu_status = :status)
+            UPDATE tblMenu SET
+                mode_id = (SELECT id FROM vMenuStatus WHERE menu_status = :status),
+                mod_ts = CURRENT_TIMESTAMP
             WHERE id = :id
 EOQ;
 
