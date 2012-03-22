@@ -18,7 +18,7 @@ function init()
         .on('change', chkall)
     ;
 
-    $('button,a.btnDownload').button();
+    $('.button').button();
 }
 
 function chkall()

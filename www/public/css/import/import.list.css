@@ -79,7 +79,8 @@ pre {
   margin:.8em 0 .2em;
   line-height:1.5;
 }
-a.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+a.button, button.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+  color:#2e6e9e;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
   margin:0em !important;
@@ -100,8 +101,6 @@ table.tblDefault td {
 }
 input.txtLocalFile { width:40em; }
 input.txtRemoteSite { width:30em; }
-button, a.btnDownload {
-  font-size:0.8em !important;
-  padding:0.3em 0.5em !important;
-}
 table.tblDefault { margin-bottom:0.5em; }
+table.tblDefault td { vertical-align:top; }
+table.tblDefault td.ts { font-size:0.8em; }

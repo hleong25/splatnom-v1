@@ -34,6 +34,7 @@ class ExportModel
             SELECT
                 m.id,
                 m.ts,
+                m.mod_ts,
                 AES_DECRYPT(user.username, '{$aes_key}_username') AS username,
                 info.name,
                 info.address
@@ -41,7 +42,7 @@ class ExportModel
             INNER JOIN vMenuStatus vms ON (m.mode_id = vms.id) AND (vms.menu_status = 'ready')
             LEFT JOIN tblUsers user ON m.user_id = user.id
             LEFT JOIN tblMenuInfo_us info ON (m.id = info.menu_id)
-            ORDER BY m.ts
+            ORDER BY m.mod_ts DESC
 EOQ;
 
         $rst = $this->query($query);

@@ -19,6 +19,7 @@ else:
                 <td><input id="chkAll" type="checkbox" style="display:none;"/></td>
                 <td>id</td>
                 <td>timestamp</td>
+                <td>mod timestamp</td>
                 <td>user</td>
                 <td>name</td>
                 <td>address</td>
@@ -28,26 +29,28 @@ else:
             <?php foreach ($menus as $row):
                 $id = $row['id'];
                 $ts = $row['ts'];
+                $mod_ts = $row['mod_ts'];
                 $user = $row['username'];
                 $name = $row['name'];
                 $addy = $row['address'];
 
-                $ts = explode(' ', $ts);
-                $ts = $ts[0];
+                $ts = nl2br($ts);
+                $mod_ts = nl2br($mod_ts);
             ?>
                 <tr>
                     <td><input class="menu_id" type="checkbox" name="menu_ids[]" value="<?=$id?>"/></td>
                     <td><?=$id?></td>
-                    <td><?=$ts?></td>
+                    <td class="ts"><?=$ts?></td>
+                    <td class="ts"><?=$mod_ts?></td>
                     <td><?=$user?></td>
-                    <td><?=$name?></td>
+                    <td><a href="/menu/view/<?=$id?>" target="_blank"><?=$name?></a></td>
                     <td><?=$addy?></td>
-                    <td><a class="btnDownload" href="/export/menus/<?=$id?>">Download</a></td>
+                    <td><a class="button" href="/export/menus/<?=$id?>">Download</a></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
-        <button type="submit">Download checked items</button>
+        <button class="button" type="submit">Download checked items</button>
     </div>
     </form>
 </div>
