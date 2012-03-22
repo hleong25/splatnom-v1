@@ -12,7 +12,7 @@ function init()
 
     form.find('button.search')
         .button({
-            icons: {primary: 'ui-icon-search'},
+            icons: {primary: 'ui-icon-search'}
         })
     ;
 
