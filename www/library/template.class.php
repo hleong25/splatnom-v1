@@ -272,7 +272,7 @@ class Template
             $desc = $this->m_variables['meta_desc'];
 
         $html=<<<EOHTML
-            <div class="addthis_toolbox addthis_default_style "
+            <div class="myaddthis clearfix addthis_toolbox addthis_default_style "
                 addthis:url="{$url}"
                 addthis:title="splatnom wants to tell you about '{$title}'"
                 addthis:description="{$desc}"

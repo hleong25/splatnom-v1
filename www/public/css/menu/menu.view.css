@@ -40,6 +40,15 @@ div#header a:link, div#header a:visited { color:white; }
 div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
+div.myaddthis {
+  vertical-align:baseline;
+  display:inline-block;
+  display:-moz-inline-stack;
+  zoom:1;
+  *display:inline;
+  width:15em;
+  margin-bottom:1em;
+}
 div#footer > * {
   font-size:0.8em;
   text-align:right;
@@ -49,19 +58,16 @@ pre {
   text-align:left;
   font-size:0.8em;
 }
-* html .clearfix {
-  height:1%;
-  overflow:visible;
-}
-*+html .clearfix { min-height:1%; }
 .clearfix:after {
-  clear:both;
-  content:".";
-  display:block;
-  height:0;
   visibility:hidden;
+  display:block;
   font-size:0;
+  content:" ";
+  clear:both;
+  height:0;
 }
+* html .clearfix { zoom:1; }
+*:first-child+html .clearfix { zoom:1; }
 .ui-autocomplete {
   max-height:30em;
   overflow-y:auto;
@@ -102,7 +108,7 @@ div.notready {
 }
 div.ismdt { text-align:right; }
 div.toc {
-  position:fixed;
+  float:left;
   width:10em;
   border:1px solid black;
 }
@@ -110,7 +116,7 @@ div.toc div.toc_item {
   font-size:0.8em;
   margin:0.5em;
 }
-div.notoc { margin-left:11em; }
+div.topnotoc { margin-left:11em; }
 div.biz_info { margin-bottom:0.5em; }
 div.biz_info div.name { font-size:2em; }
 div.links { margin-bottom:0.5em; }
@@ -136,8 +142,16 @@ div.menu div.group div.g_panel {
   font-size:0.8em;
 }
 div.menu div.group div.g_panel div.forkit span { vertical-align:middle; }
-div.menu div.group div.g_panel div.forkit img { opacity:0.35; }
-div.menu div.group div.g_panel div.forkit img img:hover, div.menu div.group div.g_panel div.forkit img img.forkit { opacity:1.0 !important; }
+div.menu div.group div.g_panel div.forkit img {
+  zoom:1;
+  filter:alpha(opacity= 35 );
+  opacity:0.35;
+}
+div.menu div.group div.g_panel div.forkit img:hover, div.menu div.group div.g_panel div.forkit img.forkit {
+  zoom:1;
+  filter:alpha(opacity= 100 );
+  opacity:1.0;
+}
 div.menu div.group div.g_panel div.after { display:none; }
 div.menu div.group div.g_info { margin-left:4em; }
 div.menu div.group div.g_info img.item_attr {

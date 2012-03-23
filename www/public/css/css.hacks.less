@@ -1,0 +1,29 @@
+.display-inline-block(@valign: baseline) {
+
+    vertical-align: @valign;
+
+    display: inline-block;
+
+    // FF2
+    display: -moz-inline-stack;
+
+    // IE
+    zoom: 1;
+    *display: inline;
+}
+
+.img-opacity(@opacity=1.0) {
+    // IE
+    zoom: 1;
+    filter: ~"alpha(opacity=" (@opacity * 100) ~")";
+
+    opacity = @opacity ;
+}
+
+.img-opacity-important(@opacity=1.0) {
+    // IE
+    zoom: 1;
+    filter: ~"alpha(opacity=" (@opacity * 100) ~")";
+
+    opacity = @opacity !important;
+}

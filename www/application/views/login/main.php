@@ -7,6 +7,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
+    <div class="login">
     <form id="login" method="post" action="/<?php echo $myurl.'&'.$goto_url; ?>">
         <?php if(!empty($msg)): ?>
             <div id="msg">
@@ -23,4 +24,5 @@ extract($params, EXTR_SKIP);
             <input class="button" type="reset" value="Reset" />
         </div>
     </form>
+    </div>
 </div>

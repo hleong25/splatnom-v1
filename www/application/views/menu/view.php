@@ -133,7 +133,7 @@ foreach ($info['status'] as $info_status)
 </div>
 <?php endif; //if ($is_metadata) ?>
 
-<div class="toc">
+<div class="toc clearfix">
     <div class="toc_item">
         <a class="toc_item" href="#info">Business Info</a>
     </div>
@@ -147,6 +147,7 @@ foreach ($info['status'] as $info_status)
 <?php endforeach; ?>
 </div>
 
+<div class="topnotoc ">
 <div class="biz_info notoc">
     <div class="name"><a name="info"><?=$info['name']?></a></div>
     <div class="details"><?=nl2br($info['notes'])?></div>
@@ -175,15 +176,15 @@ EOHTML;
 ?>
 </div>
 
-<?php /* no comments for now
-<div class="user_actions notoc">
-    <br/>
-    <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
-    <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
-    <br/>
-    <br/>
-</div>
-*/?>
+    <?php /* no comments for now
+    <div class="user_actions notoc">
+        <br/>
+        <a class="button" href="/menu/edit_comments/<?=$id?>-<?=$slug['menu']?>">Add comments</a>
+        <a class="button" href="/menu/comments/<?=$id?>-<?=$slug['menu']?>">View comments</a>
+        <br/>
+        <br/>
+    </div>
+    */?>
 
 <div class="menus notoc">
 <?php foreach ($mdts as $mdt):
@@ -269,5 +270,4 @@ EOHTML;
     </div>
 <?php endforeach; // foreach ($mdts as $mdt) ?>
 </div>
-
 </div>

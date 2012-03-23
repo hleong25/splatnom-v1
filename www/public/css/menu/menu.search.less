@@ -5,49 +5,51 @@ div.search
 {
     text-align: center;
     margin-bottom: 0.8em;
+
+    form#searchit {
+        input {
+            font-size: 1.1em;
+
+            &.query{ width: 20em; }
+
+            &.location{ width: 10em; }
+        }
+
+        .fq { .display-inline-block(bottom); }
+
+        span.hint {
+            display: block;
+            text-align: left;
+            font-size: 0.75em;
+        }
+
+        button { width: 7em; }
+    }
+
 }
 
-form#searchit input{
-    font-size: 1.1em;
-}
-form#searchit .fq{
-    display: inline-block;
-}
-span.hint {
-    display: block;
-    text-align: left;
-    font-size: 0.75em;
-}
-input.query{
-    width: 20em;
-}
-input.location{
-    width: 10em;
-}
-button{
-    width: 7em;
-}
-div.found{
+div.found {
     margin: 0.8em 0;
-}
-a:link,
-a:visited {
-    color: black;
-}
-li {
-    margin-bottom: 0.8em;
-}
-li span.place_no {
-    float: left;
-    text-align: right;
-}
-li div.info {
-    margin-left: 2em;
-}
-span.name{
-    font-weight: bold;
-}
-span.addy,
-span.hours{
-    font-size: 0.8em;
+
+    li {
+        vertical-align: top;
+
+        margin-bottom: 0.8em;
+
+        span.place_no {
+            .display-inline-block(top);
+            width: 1.5em;
+        }
+
+        div.info {
+            .display-inline-block(top);
+
+            span.name{ font-weight: bold; }
+
+            span.addy,
+            span.hours{
+                font-size: 0.8em;
+            }
+        }
+    }
 }

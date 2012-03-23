@@ -13,13 +13,7 @@ div.search {
             .location{ width: 10em; }
         }
 
-        .fq {
-            display: inline-block;
-
-            /* IE hack */
-            zoom: 1;
-            display: inline;
-        }
+        .fq { .display-inline-block(bottom); }
 
         span.hint {
             display: block;
@@ -37,11 +31,7 @@ div.new_menus {
     div.new {
         margin: 0em 1em 1em;
         vertical-align: top;
-        display: inline-block;
-
-        /* IE hack */
-        zoom: 1;
-        display: inline;
+        .display-inline-block(top);
 
         span.name {
             font-size: 1.0em;

@@ -21,7 +21,9 @@ extract($params, EXTR_SKIP);
                 <span class="hint">Zip code</span>
                 <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
             </div>
-            <button class="search">Search</button>
+            <div class="fq">
+                <button class="search" type="submit">Search</button>
+            </div>
         </form>
     </div>
     <div class="msg">
@@ -50,7 +52,7 @@ extract($params, EXTR_SKIP);
                 $name = sprintf($link, $slug, $name);
             ?>
                 <li id="place<?=$idx_no?>" class="place">
-                    <span class="place_no clearfix"><?=$idx_no?>.</span>
+                    <span class="place_no"><?=$idx_no?>.</span>
                     <div class="info">
                         <span class="name"><?=$name?></span><br/>
                         <span class="addy"><?=$addy?></span><br/>

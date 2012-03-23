@@ -18,7 +18,7 @@ div.ismdt {
 }
 
 div.toc {
-    position: fixed;
+    float:left;
     width: 10em;
     border: 1px solid black;
 
@@ -28,9 +28,12 @@ div.toc {
     }
 }
 
+div.topnotoc {
+    margin-left: 11em;
+}
+
 div.notoc
 {
-    margin-left: 11em;
 }
 
 div.biz_info {
@@ -75,11 +78,11 @@ div.menu {
                 span { vertical-align: middle; }
 
                 img {
-                    opacity: 0.35;
+                    .img-opacity(0.35);
 
-                    img:hover,
-                    img.forkit {
-                        opacity: 1.0 !important;
+                    &:hover,
+                    &.forkit {
+                        .img-opacity(1.0);
                     }
                 }
             }
