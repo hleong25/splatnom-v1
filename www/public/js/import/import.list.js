@@ -1,4 +1,4 @@
-var js_home = (function() {
+var js_import = (function() {
 
 init();
 

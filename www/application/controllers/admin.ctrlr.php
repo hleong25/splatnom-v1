@@ -276,4 +276,89 @@ class AdminController
         $this->addCss('admin/admin.jqueryui.test');
     }
 
+    function onAction_update_css()
+    {
+        $this->addCss('admin/admin.updatecss');
+        $this->addJqueryUi();
+        $this->addJs('admin/admin.update.css');
+
+        // ls -Rl | grep cache
+        $allCss = array(
+            'admin/admin.find.user',
+            'admin/admin.jqueryui.test',
+            'admin/admin.location',
+            'admin/admin.main',
+            'admin/admin.pending.menu',
+            'admin/admin.pendingmenu.list',
+            'admin/admin.updatecss',
+            'admin/admin.user.profile',
+            'export/export.list',
+            'home/home.feedback',
+            'home/home.main',
+            'import/import.list',
+            'import/import.local',
+            'import/import.menus',
+            'login/login.forgot',
+            'login/login.main',
+            'login/login.reset',
+            'mail/mail.sent',
+            'mail/mail.tester',
+            'menu/menu.edit.metadata',
+            'menu/menu.new',
+            'menu/menu.search',
+            'menu/menu.view',
+            'user/user.profile',
+            'user/user.register',
+        );
+
+        if (!empty($_POST))
+        {
+            $template = $this->m_template;
+
+            // auto update the css
+            $update_css = $_POST['css'];
+
+            foreach ($update_css as $css)
+            {
+                $file = OS_PATH_PUBLIC . WEB_PATH_CSS . DS . $css;
+                $template->auto_compile_less($file);
+            }
+        }
+
+        $lstCss = array();
+
+        foreach ($allCss as $css)
+        {
+            $this->addCssToList($lstCss, $css);
+        }
+
+        $this->set('lstCss', $lstCss);
+    }
+
+    function addCssToList(&$list, $css)
+    {
+        $file = OS_PATH_PUBLIC . WEB_PATH_CSS . DS . $css.'.less.cache';
+
+        $info = array(
+            'css' => $css,
+            'exists' => true,
+            'timestamp' => '',
+        );
+
+        if (file_exists($file))
+        {
+            $cache = unserialize(file_get_contents($file));
+            $timestamp = $cache['updated'];
+            $date = date('m-d-Y H:i:s', $timestamp);
+
+            $info['timestamp'] = $date;
+        }
+        else
+        {
+            //$info['css'] = $file;
+            $info['exists'] = false;
+        }
+
+        $list[] = $info;
+    }
 }

@@ -49,10 +49,9 @@ div.myaddthis {
   width:15em;
   margin-bottom:1em;
 }
-div#footer > * {
+div#footer div.feedback {
   font-size:0.8em;
-  text-align:right;
-  border:1px solid black;
+  float:right;
 }
 pre {
   font-family:'Courier New', Courier, monospace;

@@ -1,4 +1,4 @@
-var js_export = (function() {
+var js_admin = (function() {
 
 init();
 
@@ -11,7 +11,7 @@ var chk_menus;
 
 function init()
 {
-    chk_menus = $('input.menu_id:checkbox'); // cache the checkboxes
+    chk_menus = $('input.cssitem:checkbox'); // cache the checkboxes
 
     chk_all = $('input#chkAll')
         .show()

@@ -21,8 +21,8 @@ table {
 }
 .pg {
   max-width:55em;
-  margin-left:auto;
-  margin-right:auto;
+  *width:expression(document.body.clientWidth >  880 ? " 55em " : auto );
+  margin:0 auto;
 }
 .pg_bottom { margin-bottom:0.5em; }
 a:link, a:visited {
@@ -49,9 +49,9 @@ div.myaddthis {
   width:15em;
   margin-bottom:1em;
 }
-div#footer > * {
+div#footer div.feedback {
   font-size:0.8em;
-  text-align:right;
+  float:right;
 }
 pre {
   font-family:'Courier New', Courier, monospace;
@@ -60,7 +60,6 @@ pre {
 }
 .clearfix:after {
   visibility:hidden;
-  display:block;
   font-size:0;
   content:" ";
   clear:both;
