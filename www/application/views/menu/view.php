@@ -253,10 +253,10 @@ EOHTML;
                                 <img class="{$forkit_css['after']}" src="/img/fork.png" title="{$forkit_msg}" onclick="js_menu.forkit(this, '{$forkit_url['after']}');"/>
                             </div>
                         </div>
-                        <div class="g_info" style="">
-                            <div class="g_info1 clearfix">
-                                <div class="label"><a href="{$item_comment_url}">{$metadata_label}</a>{$img_spicy}</div>
-                                <div class="price">{$item['price']}</div>
+                        <div class="g_info">
+                            <div class="g_info1">
+                                <span class="label"><a href="{$item_comment_url}">{$metadata_label}</a>{$img_spicy}</span>
+                                <span class="price clearfix">{$item['price']}</span>
                             </div>
                             <div class="g_info2">
                                 <div class="notes {$notes_css}">{$item_notes}</div>

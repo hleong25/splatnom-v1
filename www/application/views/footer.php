@@ -1,6 +1,6 @@
 <hr/>
 <div id="footer" class="pg">
-    <div class="">
+    <div class="feedback clearfix">
         <a href="/home/feedback">feeback</a>
     </div>
 </div>

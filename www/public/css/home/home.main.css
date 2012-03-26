@@ -21,8 +21,8 @@ table {
 }
 .pg {
   max-width:55em;
-  margin-left:auto;
-  margin-right:auto;
+  *width:expression(document.body.clientWidth >  880 ? " 55em " : auto );
+  margin:0 auto;
 }
 .pg_bottom { margin-bottom:0.5em; }
 a:link, a:visited {
@@ -49,9 +49,10 @@ div.myaddthis {
   width:15em;
   margin-bottom:1em;
 }
-div#footer > * {
+div#footer { margin-bottom:1em; }
+div#footer div.feedback {
   font-size:0.8em;
-  text-align:right;
+  float:right;
 }
 pre {
   font-family:'Courier New', Courier, monospace;
@@ -60,7 +61,6 @@ pre {
 }
 .clearfix:after {
   visibility:hidden;
-  display:block;
   font-size:0;
   content:" ";
   clear:both;
@@ -124,7 +124,7 @@ div.search form#searchit span.hint {
 div.search form#searchit button { width:7em; }
 div.new_menus { margin-top:1em; }
 div.new_menus div.new {
-  margin:0em 1em 1em;
+  margin:0em 1em 1em 0em;
   vertical-align:top;
   vertical-align:top;
   display:inline-block;

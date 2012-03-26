@@ -21,8 +21,8 @@ table {
 }
 .pg {
   max-width:55em;
-  margin-left:auto;
-  margin-right:auto;
+  *width:expression(document.body.clientWidth >  880 ? " 55em " : auto );
+  margin:0 auto;
 }
 .pg_bottom { margin-bottom:0.5em; }
 a:link, a:visited {
@@ -40,28 +40,34 @@ div#header a:link, div#header a:visited { color:white; }
 div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
+div.myaddthis {
+  vertical-align:baseline;
+  display:inline-block;
+  display:-moz-inline-stack;
+  zoom:1;
+  *display:inline;
+  width:15em;
+  margin-bottom:1em;
+}
 div#footer > * {
   font-size:0.8em;
   text-align:right;
+  border:1px solid black;
 }
 pre {
   font-family:'Courier New', Courier, monospace;
   text-align:left;
   font-size:0.8em;
 }
-* html .clearfix {
-  height:1%;
-  overflow:visible;
-}
-*+html .clearfix { min-height:1%; }
 .clearfix:after {
-  clear:both;
-  content:".";
-  display:block;
-  height:0;
   visibility:hidden;
   font-size:0;
+  content:" ";
+  clear:both;
+  height:0;
 }
+* html .clearfix { zoom:1; }
+*:first-child+html .clearfix { zoom:1; }
 .ui-autocomplete {
   max-height:30em;
   overflow-y:auto;
@@ -79,7 +85,8 @@ pre {
   margin:.8em 0 .2em;
   line-height:1.5;
 }
-a.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+a.button, button.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+  color:#2e6e9e;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
   margin:0em !important;
