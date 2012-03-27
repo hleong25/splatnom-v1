@@ -8,39 +8,87 @@ div#thanks{
     font-size: 0.8em;
     text-align: center;
 }
-div#new_menu{
+
+div#new_menu {
+
     width: 32em;
+
+    span#err {
+        color: red;
+        font-weight: bold;
+    }
+
+    div.group_new {
+        margin-bottom: 1em;
+
+        div.header {
+            background-color: silver;
+            padding: 0.3em;
+            font-weight: bold;
+        }
+
+        div.new_site {
+            margin-top: 0.3em;
+
+            input { width: 99%; }
+        }
+
+        div.new_img {
+            margin-top: 0.3em;
+
+            input {
+                width: 95%;
+                *width: 100%;
+            }
+        }
+    }
+
+/*
+    div.header {
+        background-color: silver;
+        padding: 0.3em;
+        font-weight: bold;
+    }
+
+    .fieldset
+    {
+        border: 1px solid black;
+        padding: 0.3em 1em;
+        margin-bottom: 1em;
+        width: 32em;
+    }
+
+    div.menu_urls {
+        .fieldset;
+
+        input.site_menu {
+            width: 100%;
+        }
+    }
+
+    div.menu_files {
+        .fieldset;
+
+        div.new_img {
+            border: 1px solid black;
+            padding: 0.3em;
+
+            input.file {
+                border: 1px dashed red;
+                width: inherit;
+            }
+        }
+    }
+    */
+
+    input.button {
+        margin-top: 1em;
+    }
 }
 
-span#err {
-    color: red;
-    font-weight: bold;
-}
 
-span#msg {
-    color: black;
-    font-size: 2em;
-}
 
-fieldset#menu_urls,
-fieldset#menu_files {
-    border: 1px solid black;
-    padding: 0.3em;
-    margin-bottom: 1em;
-}
-
-div.new_img {
+div.new_img1 {
     margin: 0.3em;
 }
 
-input.file {
-    width: 100%;
-}
-
-input.site_menu {
-    width: 100%;
-}
-
-input#btnAddMore {
-    margin: 0.3em !important;
-}

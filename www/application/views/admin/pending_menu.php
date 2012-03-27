@@ -17,7 +17,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg pg_bottom" style="text-align: right;">
-    <input type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
+    <input class="button" type="button" value="Refresh" onclick="location.href='/<?php echo $myurl; ?>'"/>
     <br/>
     <span>Mission here is to just search if the menu has been entered before.  Just do a simple search.</span>
 </div>
@@ -60,7 +60,7 @@ EOHTML;
             <input type="hidden" name="action" value="search" />
             <input class="jq_watermark" type="textbox" name="name" title="Name" value="<?php echo $search_arg['name']; ?>" />
             <input class="jq_watermark" type="textbox" name="location" title="Location" value="<?php echo $search_arg['location']; ?>" />
-            <input type="submit" value="Submit"/>
+            <input class="button" type="submit" value="Submit"/>
         </form>
     </div>
     <div class="search">
@@ -111,8 +111,8 @@ EOHTML;
 <div class="pg pg_bottom">
     <div class="heading">&nbsp;</div>
     <div class="data">
-        <input type="button" value="New Menu Approve!!!" onclick="location.href='/admin/transfer_menu/<?php echo $pending_id; ?>'" />
-        <input type="button" value="Cancel" onclick="location.href='/<?php echo $myurl; ?>'"/>
+        <input class="button" type="button" value="New Menu Approve!!!" onclick="location.href='/admin/transfer_menu/<?php echo $pending_id; ?>'" />
+        <input class="button" type="button" value="Cancel" onclick="location.href='/<?php echo $myurl; ?>'"/>
     </div>
     <div class="msg">
         <span class="err"><?php echo $err_msg; ?></span>

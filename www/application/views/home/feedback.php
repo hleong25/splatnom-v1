@@ -23,7 +23,7 @@ $feedback_msg = 'How much wood would a woodchuck chuck if a woodchuck could chuc
         <br/>
         <textarea class="jq_watermark" name="msg" title="<?=$feedback_msg?>"><?=$msg?></textarea>
         <br/>
-        <input type="submit" value="Submit" />
+        <input class="button" type="submit" value="Submit" />
     </form>
 <?php else: ?>
     <span>Thanks for the feedback!</span>

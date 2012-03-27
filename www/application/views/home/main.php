@@ -20,7 +20,7 @@ extract($params, EXTR_SKIP);
             <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
         </div>
         <div class="fq">
-            <button class="search" type="submit">Search</button>
+            <button class="button search" type="submit">Search</button>
         </div>
     </form>
     <div id="results">

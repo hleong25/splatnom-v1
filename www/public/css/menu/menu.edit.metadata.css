@@ -84,13 +84,15 @@ pre {
   margin:.8em 0 .2em;
   line-height:1.5;
 }
-a.button, button.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+a.button, button.button, input.button, .ui-button {
   color:#2e6e9e;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
-  margin:0em !important;
 }
-.ui-button-text { padding:0 !important; }
+.ui-button-text {
+  margin:0 !important;
+  padding:0 !important;
+}
 div.edit .action {
   margin-left:0em !important;
   position:fixed;
@@ -126,6 +128,7 @@ div.edit div.err_msgs {
 div.edit div.images a.img_add {
   font-size:0.8em;
   font-weight:bold;
+  padding:0 !important;
 }
 div.edit div.images img.menu { padding:0.2em; }
 div.edit div.images div.new_imgs {

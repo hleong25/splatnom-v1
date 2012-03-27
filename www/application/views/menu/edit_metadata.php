@@ -114,7 +114,7 @@ EOHTML;
     </div>
 */?>
     <div class="images">
-        <div class="heading onToggle">Images <a class="img_add" href="/images/upload/<?=$id?>">Add photos</a></div>
+        <div class="heading onToggle">Images <a class="button img_add" href="/images/upload/<?=$id?>">Add photos</a></div>
         <div class="data toggle">
             <div class="new_imgs">
             <?php

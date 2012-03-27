@@ -18,7 +18,7 @@ extract($params, EXTR_SKIP);
 <div class="invite">
     <form id="invite" method="post" action="/user/invite">
         <input type="text" class="jq_watermark" name="friend" title="Friend's email"/>
-        <input type="submit" value="Invite a friend!"/>
+        <input class="button" type="submit" value="Invite a friend!"/>
     </form>
 </div>
 <div class="menus">

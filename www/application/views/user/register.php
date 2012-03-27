@@ -30,7 +30,7 @@ extract($params, EXTR_SKIP);
         <input class="jq_watermark password" type="password" name="password" title="Password" value=""/>
         <input class="jq_watermark password" type="password" name="password2" title="Confirm Password" value=""/><br/>
         <br/>
-        <input type="submit" value="Register!" />
+        <input class="button" type="submit" value="Register!" />
     </form>
 </div>
 <?php

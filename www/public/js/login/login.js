@@ -10,7 +10,7 @@ function init()
 {
     $('form#login input#username').focus();
 
-    $('input.button')
+    $('.button')
         .button()
         .on('click', onclick_button)
     ;

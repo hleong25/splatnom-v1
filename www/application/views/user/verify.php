@@ -14,7 +14,7 @@ extract($params, EXTR_SKIP);
         <br/>
         <input class="jq_watermark password" type="password" name="password" title="Password" value=""/>
         <br/>
-        <input type="submit" value="Submit!" />
+        <input class="button" type="submit" value="Submit!" />
     </form>
 </div>
 <?php

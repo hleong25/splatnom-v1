@@ -40,7 +40,7 @@ EOHTML;
 </div>
 <br/>
 <div class="pg edit_control">
-    <input type="submit" value="Save" />
-    <input type="reset" value="Reset" />
+    <input class="button" type="submit" value="Save" />
+    <input class="button" type="reset" value="Reset" />
 </div>
 </form>

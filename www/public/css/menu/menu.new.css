@@ -84,13 +84,15 @@ pre {
   margin:.8em 0 .2em;
   line-height:1.5;
 }
-a.button, button.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+a.button, button.button, input.button, .ui-button {
   color:#2e6e9e;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
-  margin:0em !important;
 }
-.ui-button-text { padding:0 !important; }
+.ui-button-text {
+  margin:0 !important;
+  padding:0 !important;
+}
 div#thanks {
   border:1px solid black;
   width:30em;
@@ -100,20 +102,22 @@ div#thanks {
   text-align:center;
 }
 div#new_menu { width:32em; }
-span#err {
+div#new_menu span#err {
   color:red;
   font-weight:bold;
 }
-span#msg {
-  color:black;
-  font-size:2em;
-}
-fieldset#menu_urls, fieldset#menu_files {
-  border:1px solid black;
+div#new_menu div.group_new { margin-bottom:1em; }
+div#new_menu div.group_new div.header {
+  background-color:silver;
   padding:0.3em;
-  margin-bottom:1em;
+  font-weight:bold;
 }
-div.new_img { margin:0.3em; }
-input.file { width:100%; }
-input.site_menu { width:100%; }
-input#btnAddMore { margin:0.3em !important; }
+div#new_menu div.group_new div.new_site { margin-top:0.3em; }
+div#new_menu div.group_new div.new_site input { width:99%; }
+div#new_menu div.group_new div.new_img { margin-top:0.3em; }
+div#new_menu div.group_new div.new_img input {
+  width:95%;
+  *width:100%;
+}
+div#new_menu input.button { margin-top:1em; }
+div.new_img1 { margin:0.3em; }

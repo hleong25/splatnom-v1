@@ -84,36 +84,38 @@ pre {
   margin:.8em 0 .2em;
   line-height:1.5;
 }
-a.button, button.button, input.button, input[type=button], input[type=reset], input[type=submit], input[type=file] {
+a.button, button.button, input.button, .ui-button {
   color:#2e6e9e;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
-  margin:0em !important;
 }
-.ui-button-text { padding:0 !important; }
-div.login { text-align:center; }
-div.login form#login {
+.ui-button-text {
+  margin:0 !important;
+  padding:0 !important;
+}
+form#login {
   width:15em;
   font-size:1.1em;
   margin:0 auto;
 }
-div.login form#login input.txt {
-  width:inherit;
-  font-size:inherit;
-  margin-bottom:0.3em;
-}
-div.login form#login input.button { width:8em; }
-div.login form#login div.action { text-align:center; }
-div#msg {
-  height:1em;
+form#login div#msg {
   font-size:0.8em;
   font-weight:bold;
   text-align:center;
   margin-bottom:1em;
 }
-div#msg span { color:red; }
-div.help {
-  font-size:0.6em;
+form#login div#msg span { color:red; }
+form#login div.help {
   text-align:right;
+  font-size:0.6em;
   margin:0.3em 0 0.5em;
+}
+form#login div.txtbox input.txt {
+  width:100%;
+  font-size:1.1em;
+}
+form#login div.action { text-align:center; }
+form#login div.action button.button {
+  padding-left:1.5em !important;
+  padding-right:1.5em !important;
 }

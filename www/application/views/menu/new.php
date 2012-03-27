@@ -27,16 +27,26 @@ extract($params, EXTR_SKIP);
     <?php endif; ?>
     <br/>
     <form id="frmNewMenu" enctype="multipart/form-data" method="post" action="/menu/new">
-        <fieldset id="menu_urls">
-            <legend style="padding: 0px 3px;">Web urls</legend>
-            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site1"/>
-            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site2"/>
-            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site3"/>
-            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site4"/>
-            <input class="jq_watermark site_menu" type="text" name="url[]" title="Site5"/>
-        </fieldset>
-        <fieldset id="menu_files">
-            <legend style="padding: 0px 3px;">Upload menus</legend>
+        <div class="group_new">
+            <div class="header">Web urls</div>
+            <div class="new_site">
+                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site1"/>
+            </div>
+            <div class="new_site">
+                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site2"/>
+            </div>
+            <div class="new_site">
+                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site3"/>
+            </div>
+            <div class="new_site">
+                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site4"/>
+            </div>
+            <div class="new_site">
+                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site5"/>
+            </div>
+        </div>
+        <div class="group_new">
+            <div class="header">Upload menus</div>
             <div class="new_img">
                 <input class="file" type="file" name="imgs[]"/>
             </div>
@@ -52,8 +62,8 @@ extract($params, EXTR_SKIP);
             <div class="new_img">
                 <input class="file" type="file" name="imgs[]"/>
             </div>
-            <input id="btnAddMore" type="button" value="Add more"/>
-        </fieldset>
-        <input type="submit" value="Submit" />
+            <input id="btnAddMore" class="button" type="button" value="Add more"/>
+        </div>
+        <input class="button" type="submit" value="Submit" />
     </form>
 </div>
