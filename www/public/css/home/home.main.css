@@ -92,6 +92,7 @@ a.button, button.button, input.button, .ui-button {
 .ui-button-text {
   margin:0 !important;
   padding:0 !important;
+  color:#2e6e9e;
 }
 table.tblDefault {
   border-style:solid;
