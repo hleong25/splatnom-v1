@@ -9,4 +9,3 @@ extract($params, EXTR_SKIP);
 <script type="text/javascript">
     var $menus = <?=json_encode($menus)?>;
 </script>
-<?php //<pre class="pg"><?=htmlentities(var_export($menus,true))?></pre> ?>

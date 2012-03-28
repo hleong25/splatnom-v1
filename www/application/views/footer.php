@@ -1,9 +1,7 @@
 <hr/>
 <div id="footer" class="pg">
-    <div class="gmap">
+    <div class="links">
         <a href="/home/gmapmenu">map menus</a>
-    </div>
-    <div class="feedback clearfix">
         <a href="/home/feedback">feeback</a>
     </div>
 </div>

@@ -49,7 +49,8 @@ div.myaddthis {
   width:15em;
   margin-bottom:1em;
 }
-div#footer div.feedback {
+div#footer div.gmap, div#footer div.feedback {
+  margin-left:1em;
   font-size:0.8em;
   float:right;
 }
