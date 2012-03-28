@@ -170,6 +170,10 @@ class Template
         {
             $file = OS_PATH_PUBLIC . DS . $value . '.js';
         }
+        else if ($type === 'remotejs')
+        {
+            // do nothing
+        }
 
         if ($bCheckIfExists && !file_exists($file))
         {
@@ -200,6 +204,11 @@ class Template
     function addJs($js, $path = WEB_PATH_JS, $bCheckIfExists = true)
     {
         $this->addResource('js', $path . DS . $js, $bCheckIfExists);
+    }
+
+    function addRemoteJs($js)
+    {
+        $this->addResource('remotejs', $js, false);
     }
 
     function auto_compile_less($less, $path = WEB_PATH_CSS)
@@ -305,6 +314,12 @@ EOHTML;
     function getJs()
     {
         $js = array_unique($this->m_res['js']);
+        return $js;
+    }
+
+    function getRemoteJs()
+    {
+        $js = array_unique($this->m_res['remotejs']);
         return $js;
     }
 

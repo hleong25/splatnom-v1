@@ -63,6 +63,11 @@ class Controller
         $this->m_template->addJs($js, $path);
     }
 
+    function addRemoteJs($js)
+    {
+        $this->m_template->addRemoteJs($js);
+    }
+
     function addJqueryUi()
     {
         $this->m_template->addJqueryUi();
