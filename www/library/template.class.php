@@ -18,6 +18,7 @@ class Template
 
         $this->m_res['css'] = array();
         $this->m_res['js'] = array();
+        $this->m_res['remotejs'] = array();
 
         $this->init();
     }
