@@ -17,7 +17,7 @@ class HomeController
             $this->set('location', $loc);
         }
 
-        $this->set('ready_menus', $this->Home->getReadyMenus());
+        $this->set('ready_menus', $this->Home->getReadyMenus(12));
 
         $bAdmin = Util::getPermissions('admin');
         $this->set('is_admin', $bAdmin);
@@ -97,12 +97,28 @@ class HomeController
     function onAction_gmapmenu()
     {
         $this->addCss('home/home.gmapmenu');
-
         $this->addJs('home/home.gmapmenu');
 
         // http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE
         $gmap_key = 'AIzaSyDPez_dxVdHnZM8COpU4-Hs3qKxTFE0vKM';
         $gmap_url = "http://maps.googleapis.com/maps/api/js?key={$gmap_key}&sensor=false";
         $this->addRemoteJs($gmap_url);
+
+        $menus = $this->Home->getReadyMenus();
+
+        foreach ($menus as &$menu)
+        {
+            $menu_id = $menu['id'];
+            $name = $menu['name'];
+            $addy = $menu['address'];
+            $slugify = Util::slugify($menu['name']);
+
+            $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
+            $menu_link = sprintf($link, $slugify, $name);
+
+            $menu['link'] = $menu_link;
+        }
+
+        $this->set('menus', $menus);
     }
 }

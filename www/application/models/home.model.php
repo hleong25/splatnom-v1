@@ -24,27 +24,33 @@ class HomeModel
 EOQ;
 
         $rst = $this->query($query);
-        $rows = $rst->fetchAll();
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
 
         return $rows;
     }
 
-    function getReadyMenus()
+    function getReadyMenus($limitResults=0)
     {
+        $limit = '';
+        if (!empty($limitResults))
+            $limit = "LIMIT {$limitResults}";
+
         $query =<<<EOQ
             SELECT
                 m.id,
                 info.name,
-                info.address
+                info.address,
+                info.latitude,
+                info.longitude
             FROM tblMenu m
             INNER JOIN vMenuStatus ms ON ms.menu_status = 'ready' AND m.mode_id = ms.id
             INNER JOIN tblMenuInfo_us info ON m.id = info.menu_id
             ORDER BY m.mod_ts DESC
-            LIMIT 12
+            {$limit}
 EOQ;
 
         $rst = $this->query($query);
-        $rows = $rst->fetchAll();
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
 
