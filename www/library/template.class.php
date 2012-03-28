@@ -178,16 +178,14 @@ class Template
 
     function addCss($css, $path = WEB_PATH_CSS, $bCheckIfExists = true)
     {
-        $less = OS_PATH_PUBLIC.$path.DS.$css;
-
         // always try to compile the LESS to CSS first, if it exists
-        if (DEVELOPMENT_ENVIRONMENT && ($path === WEB_PATH_CSS) && file_exists($less.'.less'))
+        if (DEVELOPMENT_ENVIRONMENT && ($path === WEB_PATH_CSS))
         {
-            $compiled_css = $this->auto_compile_less($less);
+            $compiled_css = $this->auto_compile_less($css, $path);
 
             if ($compiled_css !== true)
             {
-                Util::logit("Failed to compile LESS file: {$less}", __FILE__, __LINE__);
+                Util::logit("Failed to compile LESS file: {$css}", __FILE__, __LINE__);
                 return;
             }
         }
@@ -200,10 +198,12 @@ class Template
         $this->addResource('js', $path . DS . $js, $bCheckIfExists);
     }
 
-    function auto_compile_less($less)
+    function auto_compile_less($less, $path = WEB_PATH_CSS)
     {
-        $less_fname = $less.'.less';
-        $css_fname  = $less.'.css';
+        $fname = OS_PATH_PUBLIC.$path.DS.$less;
+
+        $less_fname = $fname.'.less';
+        $css_fname  = $fname.'.css';
 
         if (!file_exists($less_fname))
         {

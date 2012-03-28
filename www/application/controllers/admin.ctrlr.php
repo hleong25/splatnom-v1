@@ -320,8 +320,7 @@ class AdminController
 
             foreach ($update_css as $css)
             {
-                $file = OS_PATH_PUBLIC . WEB_PATH_CSS . DS . $css;
-                $template->auto_compile_less($file);
+                $template->auto_compile_less($css);
             }
         }
 
