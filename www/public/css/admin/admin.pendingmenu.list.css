@@ -49,10 +49,11 @@ div.myaddthis {
   width:15em;
   margin-bottom:1em;
 }
-div#footer div.feedback {
+div#footer div.links {
   font-size:0.8em;
   float:right;
 }
+div#footer div.links a { margin-left:1em; }
 pre {
   font-family:'Courier New', Courier, monospace;
   text-align:left;
