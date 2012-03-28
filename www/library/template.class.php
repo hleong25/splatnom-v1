@@ -143,6 +143,7 @@ class Template
         $file = false;
         if ($type === 'css')
         {
+            /*
             $browser_type = $this->getBrowserVersion();
             if (!empty($browser_type))
             {
@@ -161,6 +162,9 @@ class Template
 
             if (empty($file))
                 $file = OS_PATH_PUBLIC . DS . $value . '.css';
+            */
+
+            $file = OS_PATH_PUBLIC . DS . $value . '.css';
         }
         else if ($type === 'js')
         {
