@@ -19,7 +19,7 @@ extract($params, EXTR_SKIP);
 <meta property="og:image" content="<?=$meta_image?>" />
 <meta property="og:description" content="<?=$meta_desc?>" />
 <?php
-// viewport for media devices
+// viewport for mobile devices
 // http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-dont-forget-the-viewport-meta-tag/
 ?>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
