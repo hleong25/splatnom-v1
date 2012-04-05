@@ -18,6 +18,11 @@ extract($params, EXTR_SKIP);
 <meta property="og:type" content="website" />
 <meta property="og:image" content="<?=$meta_image?>" />
 <meta property="og:description" content="<?=$meta_desc?>" />
+<?php
+// viewport for media devices
+// http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-dont-forget-the-viewport-meta-tag/
+?>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title><?=SITE_NAME?><?=(empty($meta_title)?'':" - {$meta_title}")?></title>
 <?php foreach ($this->getCss() as $css): ?>
     <link rel="stylesheet" href="<?=$css?>.css" />
