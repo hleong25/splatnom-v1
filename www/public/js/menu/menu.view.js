@@ -21,6 +21,7 @@ function init()
 
     $('a.button').button();
 
+    stickyNavBar();
     scrollToLink();
 }
 
@@ -54,6 +55,29 @@ function forkit_success(objThis, data)
     }
 }
 
+var $nav_pos;
+var $nav_height;
+var $sticky_nav;
+function stickyNavBar()
+{
+    var navbar = $('div.navbar');
+    var navbar_top = navbar.offset().top;
+    $nav_pos = navbar_top;
+    $nav_height = navbar.outerHeight(true);
+
+    $sticky_nav = $('div.stickynavbar');
+
+    var $window = $(window);
+
+    $window.on('scroll', function() {
+        if ($window.scrollTop() > navbar_top) {
+            $sticky_nav.show();
+        } else {
+            $sticky_nav.hide();
+        }
+    });
+}
+
 function scrollToLink()
 {
     var body = $('body');
@@ -61,8 +85,14 @@ function scrollToLink()
     $('a[href^=#]').click(function(elem){
         var name = $(this).attr('href').substr(1);
         var pos = $('a[name='+name+']').offset();
+
+        var pos_top = pos.top;
+
+        if (pos_top > $nav_pos)
+            pos_top -= $nav_height;
+
         //body.animate({scrollTop: pos.top});
-        body.scrollTop(pos.top);
+        body.scrollTop(pos_top);
         elem.preventDefault();
     });
 }

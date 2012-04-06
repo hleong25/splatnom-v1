@@ -133,22 +133,7 @@ foreach ($info['status'] as $info_status)
 </div>
 <?php endif; //if ($is_metadata) ?>
 
-<div class="toc clearfix">
-    <div class="toc_item">
-        <a class="toc_item" href="#info">Business Info</a>
-    </div>
-<?php foreach ($mdts as $mdt):
-    $section_id = $mdt['section_id'];
-    $section_name = $mdt['name'];
-?>
-    <div class="toc_item">
-        <a class="toc_item" href="#<?=$section_id?>"><?=$section_name?></a>
-    </div>
-<?php endforeach; ?>
-</div>
-
-<div class="topnotoc ">
-<div class="biz_info notoc">
+<div class="biz_info">
     <div class="name"><a name="info"><?=$info['name']?></a></div>
     <div class="details"><?=nl2br($info['notes'])?></div>
     <?=$this->addAddThis()?>
@@ -160,7 +145,7 @@ foreach ($info['status'] as $info_status)
     <div class="hours"><?=nl2br($info['hours'])?></div>
 </div>
 
-<div class="links notoc">
+<div class="links">
 <?php
     foreach ($links as $link)
     {
@@ -186,7 +171,39 @@ EOHTML;
     </div>
     */?>
 
-<div class="menus notoc">
+<div class="navbar">
+<?php // if you change this, you must change stickynavbar?>
+    <div class="nav_item">
+        <a class="nav_item" href="#info">Business Info</a>
+    </div>
+<?php foreach ($mdts as $mdt):
+    $section_id = $mdt['section_id'];
+    $section_name = $mdt['name'];
+?>
+    <div class="nav_item">
+        <span class="lnkspc"> | </span>
+        <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
+    </div>
+<?php endforeach; ?>
+</div>
+
+<div class="stickynavbar pg" style="display: none;">
+<?php // if you change this, you must change navbar?>
+    <div class="nav_item">
+        <a class="nav_item" href="#info">Business Info</a>
+    </div>
+<?php foreach ($mdts as $mdt):
+    $section_id = $mdt['section_id'];
+    $section_name = $mdt['name'];
+?>
+    <div class="nav_item">
+        <span class="lnkspc"> | </span>
+        <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
+    </div>
+<?php endforeach; ?>
+</div>
+
+<div class="menus">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
     $section_name = $mdt['name'];
@@ -269,5 +286,4 @@ EOHTML;
         </div>
     </div>
 <?php endforeach; // foreach ($mdts as $mdt) ?>
-</div>
 </div>

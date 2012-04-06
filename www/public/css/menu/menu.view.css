@@ -110,19 +110,41 @@ div.notready {
   text-align:center;
 }
 div.ismdt { text-align:right; }
-div.toc {
-  float:left;
-  width:10em;
-  border:1px solid black;
-}
-div.toc div.toc_item {
-  font-size:0.8em;
-  margin:0.5em;
-}
-div.topnotoc { margin-left:11em; }
 div.biz_info { margin-bottom:0.5em; }
 div.biz_info div.name { font-size:2em; }
 div.links { margin-bottom:0.5em; }
+div.navbar {
+  margin-bottom:0.5em;
+  border:1px solid silver;
+  text-align:center;
+  padding:5px 3px;
+}
+div.navbar div.nav_item {
+  vertical-align:baseline;
+  display:inline-block;
+  display:-moz-inline-stack;
+  zoom:1;
+  *display:inline;
+  font-size:0.8em;
+}
+div.stickynavbar {
+  margin-bottom:0.5em;
+  border:1px solid silver;
+  text-align:center;
+  padding:5px 3px;
+  position:fixed;
+  top:0px;
+  background-color:white;
+  z-index:1;
+}
+div.stickynavbar div.nav_item {
+  vertical-align:baseline;
+  display:inline-block;
+  display:-moz-inline-stack;
+  zoom:1;
+  *display:inline;
+  font-size:0.8em;
+}
 div.menu { margin-bottom:0.5em; }
 div.menu div.info {
   width:100%;
