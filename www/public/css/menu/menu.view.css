@@ -145,6 +145,15 @@ div.stickynavbar div.nav_item {
   *display:inline;
   font-size:0.8em;
 }
+* html div.stickynavbar {
+  position:absolute;
+  bottom:auto;
+  top:expression(eval(document.documentElement.scrollTop));
+}
+* html, * html body {
+  background-image:url(about:blank);
+  background-attachment:fixed;
+}
 div.menu { margin-bottom:0.5em; }
 div.menu div.info {
   width:100%;

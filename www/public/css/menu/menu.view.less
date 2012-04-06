@@ -47,9 +47,23 @@ div.stickynavbar {
     div.navbar;
 
     position: fixed;
+
     top: 0px;
     background-color: white;
     z-index: 1;
+}
+
+// IE hack - a copy/past from .ie-position-fix-top
+* html div.stickynavbar {
+    position: absolute;
+    bottom: auto;
+    top: ~'expression(eval(document.documentElement.scrollTop))';
+}
+
+// IE hack - a copy/past from .ie-position-fix-top
+* html,* html body {
+    background-image: url(about:blank);
+    background-attachment: fixed;
 }
 
 div.menu {

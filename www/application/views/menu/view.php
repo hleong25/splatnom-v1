@@ -181,7 +181,7 @@ EOHTML;
     $section_name = $mdt['name'];
 ?>
     <div class="nav_item">
-        <span class="lnkspc"> | </span>
+        <span class="lnkspc">&nbsp;|&nbsp;</span>
         <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
     </div>
 <?php endforeach; ?>
@@ -197,7 +197,7 @@ EOHTML;
     $section_name = $mdt['name'];
 ?>
     <div class="nav_item">
-        <span class="lnkspc"> | </span>
+        <span class="lnkspc">&nbsp;|&nbsp;</span>
         <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
     </div>
 <?php endforeach; ?>

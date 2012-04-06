@@ -36,3 +36,25 @@
 
     opacity = @opacity !important;
 }
+
+/***********************************************
+  IE hack for fixed top
+  http://subtlegradient.com/articles/2009/07/29/css_position_fixed_for_ie6.html
+  https://raw.github.com/gist/158243/af5c201eab94a7da30900b9d387421e50f569435/position-fixed.css
+
+  NOTE: not used as mixin - just copy/paste it to where you need it
+  NOTE: must not be used in a namespace, must be global
+
+ **********************************************/
+.ie-position-fixed-top(@parent_elem) {
+    * html @parent_elem {
+        position: absolute;
+        bottom: auto;
+        top: ~'expression(eval(document.documentElement.scrollTop))';
+    }
+
+    * html,* html body {
+        background-image: url(about:blank);
+        background-attachment: fixed;
+    }
+}

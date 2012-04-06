@@ -80,7 +80,9 @@ function stickyNavBar()
 
 function scrollToLink()
 {
-    var body = $('body');
+    // IE - html
+    // other - body
+    var body = $('html,body');
 
     $('a[href^=#]').click(function(elem){
         var name = $(this).attr('href').substr(1);
