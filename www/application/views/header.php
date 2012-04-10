@@ -38,9 +38,9 @@ flush();
         foreach ($this->getNavLinks() as $lnk)
         {
             if ($bCont)
-                printf('<span class="lnkspc"> | </span>');
+                echo sprintf('<span class="lnkspc"> | </span>');
 
-            printf('<a class="%s" href="/%s">%s</a>', $lnk['css'], $lnk['lnk'], $lnk['lbl']);
+            echo sprintf('<a class="%s" href="/%s">%s</a>', $lnk['css'], $lnk['lnk'], $lnk['lbl']);
 
             $bCont = true;
         }
