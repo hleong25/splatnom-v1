@@ -51,7 +51,8 @@ class MenuController
 
     function onAction_edit_metadata($id=null)
     {
-        if (empty($id) || ($id < 0))
+        $user_id = Util::getUserId();
+        if (empty($id) || ($id < 0) || empty($user_id))
         {
             $this->redirect('/home/main');
             return;
