@@ -294,6 +294,7 @@ class AdminController
             'admin/admin.user.profile',
             'export/export.list',
             'home/home.feedback',
+            'home/home.gmapmenu',
             'home/home.main',
             'import/import.list',
             'import/import.local',

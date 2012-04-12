@@ -187,7 +187,7 @@ EOHTML;
 <?php endforeach; ?>
 </div>
 
-<div class="stickynavbar pg" style="display: none;">
+<div class="pg stickynavbar" style="display: none;">
 <?php // if you change this, you must change navbar?>
     <div class="nav_item">
         <a class="nav_item" href="#info">Business Info</a>

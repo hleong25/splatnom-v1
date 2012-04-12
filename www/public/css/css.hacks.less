@@ -8,16 +8,19 @@
 }
 
 .display-inline-block(@valign: baseline) {
+    // the order is very important!!!
+
     // FF2
     display: -moz-inline-stack;
+
+    // all other browsers
+    vertical-align: @valign;
+    display: inline-block;
 
     // IE
     zoom: 1;
     *display: inline;
 
-    // all other browsers
-    vertical-align: @valign;
-    display: inline-block;
 }
 
 .img-opacity(@opacity=1.0) {

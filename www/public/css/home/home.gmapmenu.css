@@ -41,9 +41,9 @@ div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
 div.myaddthis {
+  display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
-  display:-moz-inline-stack;
   zoom:1;
   *display:inline;
   width:15em;

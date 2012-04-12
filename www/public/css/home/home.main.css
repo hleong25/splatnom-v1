@@ -42,10 +42,10 @@ div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
 div.myaddthis {
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:baseline;
   display:inline-block;
+  zoom:1;
+  *display:inline;
   width:15em;
   margin-bottom:1em;
 }
@@ -114,10 +114,10 @@ div.search form#searchit input .query { width:20em; }
 div.search form#searchit input .location { width:10em; }
 div.search form#searchit .fq {
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:bottom;
   display:inline-block;
+  zoom:1;
+  *display:inline;
 }
 div.search form#searchit span.hint {
   display:block;
@@ -130,10 +130,10 @@ div.new_menus div.new {
   margin:0em 1em 1em 0em;
   vertical-align:top;
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:top;
   display:inline-block;
+  zoom:1;
+  *display:inline;
 }
 div.new_menus div.new span.name {
   font-size:1.0em;

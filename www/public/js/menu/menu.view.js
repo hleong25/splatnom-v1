@@ -63,7 +63,15 @@ function stickyNavBar()
     var navbar = $('div.navbar');
     var navbar_top = navbar.offset().top;
     $nav_pos = navbar_top;
-    $nav_height = navbar.outerHeight(true);
+
+    if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))
+    {
+        $nav_height = navbar.height();
+    }
+    else
+    {
+        $nav_height = navbar.outerHeight(true);
+    }
 
     $sticky_nav = $('div.stickynavbar');
 
@@ -71,7 +79,11 @@ function stickyNavBar()
 
     $window.on('scroll', function() {
         if ($window.scrollTop() > navbar_top) {
-            $sticky_nav.show();
+            $sticky_nav
+                .outerWidth(navbar.outerWidth())
+                .outerHeight(navbar.outerHeight())
+                .show()
+            ;
         } else {
             $sticky_nav.hide();
         }

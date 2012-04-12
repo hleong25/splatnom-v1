@@ -42,10 +42,10 @@ div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
 div.myaddthis {
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:baseline;
   display:inline-block;
+  zoom:1;
+  *display:inline;
   width:15em;
   margin-bottom:1em;
 }
@@ -121,10 +121,10 @@ div.navbar {
 }
 div.navbar div.nav_item {
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:baseline;
   display:inline-block;
+  zoom:1;
+  *display:inline;
   font-size:0.8em;
 }
 div.stickynavbar {
@@ -132,6 +132,8 @@ div.stickynavbar {
   border:1px solid silver;
   text-align:center;
   padding:5px 3px;
+  padding-left:0;
+  padding-right:0;
   position:fixed;
   top:0px;
   background-color:white;
@@ -139,10 +141,10 @@ div.stickynavbar {
 }
 div.stickynavbar div.nav_item {
   display:-moz-inline-stack;
-  zoom:1;
-  *display:inline;
   vertical-align:baseline;
   display:inline-block;
+  zoom:1;
+  *display:inline;
   font-size:0.8em;
 }
 * html div.stickynavbar {
