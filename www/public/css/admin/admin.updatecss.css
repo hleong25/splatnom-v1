@@ -41,11 +41,11 @@ div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
 div.myaddthis {
-  vertical-align:baseline;
-  display:inline-block;
   display:-moz-inline-stack;
   zoom:1;
   *display:inline;
+  vertical-align:baseline;
+  display:inline-block;
   width:15em;
   margin-bottom:1em;
 }

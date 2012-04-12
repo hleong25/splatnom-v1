@@ -8,17 +8,16 @@
 }
 
 .display-inline-block(@valign: baseline) {
-
-    vertical-align: @valign;
-
-    display: inline-block;
-
     // FF2
     display: -moz-inline-stack;
 
     // IE
     zoom: 1;
     *display: inline;
+
+    // all other browsers
+    vertical-align: @valign;
+    display: inline-block;
 }
 
 .img-opacity(@opacity=1.0) {

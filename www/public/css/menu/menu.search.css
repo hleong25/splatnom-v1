@@ -41,11 +41,11 @@ div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
 div#header span#welcome { font-size:2em; }
 div.myaddthis {
-  vertical-align:baseline;
-  display:inline-block;
   display:-moz-inline-stack;
   zoom:1;
   *display:inline;
+  vertical-align:baseline;
+  display:inline-block;
   width:15em;
   margin-bottom:1em;
 }
@@ -116,11 +116,11 @@ div.search form#searchit input { font-size:1.1em; }
 div.search form#searchit input.query { width:20em; }
 div.search form#searchit input.location { width:10em; }
 div.search form#searchit .fq {
-  vertical-align:bottom;
-  display:inline-block;
   display:-moz-inline-stack;
   zoom:1;
   *display:inline;
+  vertical-align:bottom;
+  display:inline-block;
 }
 div.search form#searchit span.hint {
   display:block;
@@ -134,19 +134,19 @@ div.found li {
   margin-bottom:0.8em;
 }
 div.found li span.place_no {
-  vertical-align:top;
-  display:inline-block;
   display:-moz-inline-stack;
   zoom:1;
   *display:inline;
+  vertical-align:top;
+  display:inline-block;
   width:1.5em;
 }
 div.found li div.info {
-  vertical-align:top;
-  display:inline-block;
   display:-moz-inline-stack;
   zoom:1;
   *display:inline;
+  vertical-align:top;
+  display:inline-block;
 }
 div.found li div.info span.name { font-weight:bold; }
 div.found li div.info span.addy, div.found li div.info span.hours { font-size:0.8em; }
