@@ -955,9 +955,92 @@ class MenuController
         $this->set('taggits', $taggits);
     }
 
-    function onAction_images($menu_id=null)
+    function onAction_images($menu_id=null, $section_id=null, $item_id=null, $view_img=null)
     {
+        if ($menu_id == null)
+        {
+            $this->redirect('/home/main/');
+            return;
+        }
+
+        $argc = func_num_args();
+        $args = func_get_args();
+        $last_arg = $args[$argc-1];
+
+        // special handler for selected viewing image
+        // 1. check if the last argument is view_img
+        // 2. if not, then parse last argument to see if it's supposed to be view_img
+        // 3. if it is a valid view_img, then set it
+        // 4. clean up the variables
+        if ($last_arg != $view_img)
+        {
+            $decode = Util::decodeUniqueString($last_arg);
+            if (!empty($decode))
+            {
+                $view_img = $last_arg;
+
+                // clean up...
+                switch ($argc)
+                {
+                    case 2:
+                        $section_id = null;
+                        break;
+                    case 3:
+                        $item_id = null;
+                        break;
+                }
+            }
+        }
+
+        $menu = $this->Menu;
+        $menu_info = $menu->getMenuInfo($menu_id);
+
+        $id_names = $menu->getIdAndNames($menu_id, $section_id, $item_id);
+
+        if (empty($menu_info) || empty($id_names))
+        {
+            $this->redirect("/menu/view/{$menu_id}");
+            return;
+        }
+
         $this->addJs('menu/menu.images');
         $this->addCss('menu/menu.images');
+
+        $this->set('info', $menu_info);
+        $this->set('id_names', $id_names);
+
+        $menu_imgs = array();
+
+        if (!empty($menu_id))
+        {
+            if (empty($section_id))
+            {
+                $menu_imgs = $menu->getMenuImgs($menu_id);
+            }
+            else
+            {
+                if (empty($item_id))
+                    $menu_imgs = $menu->getMenuSectionImgs($menu_id, $section_id);
+                else
+                    $menu_imgs = $menu->getMenuItemImgs($menu_id, $section_id, $item_id);
+            }
+        }
+
+        $this->set('imgs', $menu_imgs);
+
+        $selected_img = $view_img;
+        if (!empty($selected_img))
+            $selected_img = $menu->getImgFromArray($selected_img, $menu_imgs);
+
+        if (empty($selected_img))
+            $selected_img = @$menu_imgs[0];
+
+        $this->set('selected_img', $selected_img);
+
+        $taggits = $menu->getTaggitsByImageFile($menu_id, $selected_img['filename']);
+        $this->set('taggits', $taggits);
+
+        $tags = $menu->getMenuTags($menu_id);
+        $this->set('tags', $tags);
     }
 }
