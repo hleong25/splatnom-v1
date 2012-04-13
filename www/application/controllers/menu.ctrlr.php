@@ -955,4 +955,9 @@ class MenuController
         $this->set('taggits', $taggits);
     }
 
+    function onAction_images($menu_id=null)
+    {
+        $this->addJs('menu/menu.images');
+        $this->addCss('menu/menu.images');
+    }
 }

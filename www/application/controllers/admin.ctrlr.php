@@ -305,6 +305,7 @@ class AdminController
             'mail/mail.sent',
             'mail/mail.tester',
             'menu/menu.edit.metadata',
+            'menu/menu.images',
             'menu/menu.new',
             'menu/menu.search',
             'menu/menu.view',

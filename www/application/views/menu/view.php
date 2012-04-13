@@ -143,6 +143,8 @@ foreach ($info['status'] as $info_status)
     <div class="phone"><?=nl2br($info['numbers'])?></div>
     <br/>
     <div class="hours"><?=nl2br($info['hours'])?></div>
+    <br/>
+    <div class="images"><a href="/menu/images/<?=$id?>-<?=$slug['menu']?>">Images</a></div>
 </div>
 
 <div class="links">
