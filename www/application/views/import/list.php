@@ -54,7 +54,7 @@ extract($params, EXTR_SKIP);
                         <td class="ts"><?=$ts?></td>
                         <td class="ts"><?=$mod_ts?></td>
                         <td><?=$user?></td>
-                        <td><a href="<?=$remote_site?>/menu/view/<?=$id?>" target="_blank"><?=$name?></a></td>
+                        <td><a href="http://<?=$remote_site?>/menu/view/<?=$id?>" target="_blank"><?=$name?></a></td>
                         <td><?=$addy?></td>
                         <td><a class="button" href="/import/menus/<?=$remote_site?>/<?=$id?>">Import</a></td>
                     </tr>
