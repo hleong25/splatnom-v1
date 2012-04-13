@@ -52,7 +52,8 @@ class MenuController
     function onAction_edit_metadata($id=null)
     {
         $user_id = Util::getUserId();
-        if (empty($id) || ($id < 0) || empty($user_id))
+        $bPermMdt = Util::getPermissions('metadata');
+        if (empty($id) || ($id < 0) || empty($user_id) || empty($bPermMdt))
         {
             $this->redirect('/home/main');
             return;
@@ -571,7 +572,7 @@ class MenuController
 
     }
 
-    function onAction_images($menu_id=null, $section_id=null, $item_id=null, $view_img=null)
+    function onAction_images1($menu_id=null, $section_id=null, $item_id=null, $view_img=null)
     {
         if ($menu_id == null)
         {
