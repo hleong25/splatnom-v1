@@ -110,6 +110,7 @@ div.info { margin-bottom:1em; }
 div.info p.name { font-size:2em; }
 div.view { margin-bottom:1em; }
 div.imgs_info { margin-bottom:1em; }
+div.imgs_info span { font-size:0.8em; }
 div.imgs { margin-bottom:1em; }
 div.imgs div.img {
   display:-moz-inline-stack;
@@ -117,4 +118,6 @@ div.imgs div.img {
   display:inline-block;
   zoom:1;
   *display:inline;
+  margin-left:3px;
+  margin-bottom:3px;
 }
