@@ -1024,6 +1024,25 @@ class MenuController
                 else
                     $menu_imgs = $menu->getMenuItemImgs($menu_id, $section_id, $item_id);
             }
+
+            // set preview/thumbnail info
+            $preview_size = 'sm';
+            $preview_preferred_size = ImagesModel::getPreferredSize($preview_size);
+
+            foreach ($menu_imgs as &$img)
+            {
+                $new_size = ImageresizeUtil::resizeDimension
+                (
+                    $img['width'], $img['height'],
+                    $preview_preferred_size['width'], $preview_preferred_size['height']
+                );
+
+                $img['preview'] = array(
+                    'size' => $preview_size,
+                    'width' => $new_size['width'],
+                    'height' => $new_size['height'],
+                );
+            }
         }
 
         $this->set('imgs', $menu_imgs);
@@ -1034,6 +1053,25 @@ class MenuController
 
         if (empty($selected_img))
             $selected_img = @$menu_imgs[0];
+
+        if (!empty($selected_img))
+        {
+            // if the selected image is not empty, set the preview info
+            $preview_size = 'lg';
+            $preview_preferred_size = ImagesModel::getPreferredSize($preview_size);
+
+            $new_size = ImageresizeUtil::resizeDimension
+            (
+                $selected_img['width'], $selected_img['height'],
+                $preview_preferred_size['width'], $preview_preferred_size['height']
+            );
+
+            $selected_img['preview'] = array(
+                'size' => $preview_size,
+                'width' => $new_size['width'],
+                'height' => $new_size['height'],
+            );
+        }
 
         $this->set('selected_img', $selected_img);
 

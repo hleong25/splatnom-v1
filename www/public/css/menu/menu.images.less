@@ -11,3 +11,36 @@ div.notready {
     font-weight: bold;
     text-align: center;
 }
+
+.debugborder(@clr=black) {
+    border: 1px solid @clr;
+}
+
+div.info {
+    margin-bottom: 1em;
+
+    p {
+        &.name {
+            font-size: 2em;
+        }
+
+        &.addy {
+        }
+    }
+}
+
+div.view {
+    margin-bottom: 1em;
+}
+
+div.imgs {
+    margin-bottom: 1em;
+    div.img {
+        .display-inline-block;
+
+        a {
+            img.pv_img {
+            }
+        }
+    }
+}

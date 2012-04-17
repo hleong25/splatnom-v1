@@ -45,6 +45,13 @@ foreach ($info['status'] as $info_status)
     if ($is_selected)
         $curr_status = $status;
 }
+
+$slug = array
+(
+    'menu'=>Util::slugify($info['name']),
+    'section'=>'',
+    'item'=>'',
+);
 ?>
 
 <?php if (!$is_ready): ?>
@@ -55,16 +62,15 @@ foreach ($info['status'] as $info_status)
 
 <div class="pg">
 <div class="info">
-    <p><?=$info['name']?></p>
-    <p><?=nl2br($info['address'])?></p>
-
+    <p class="name"><a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$info['name']?></a></p>
+    <p class="addy"><?=nl2br($info['address'])?></p>
 </div>
 
 <div class="view">
     <div class="img">
     <?php if (!empty($imgs)): ?>
         <a href="/images/get/menu/org/<?=$menu_id?>/<?=$selected_img['filename']?>" target="_blank">
-            <img class="view_img" src="/images/get/menu/lg/<?=$menu_id?>/<?=$selected_img['filename']?>" />
+            <img class="view_img" src="/images/get/menu/<?=$selected_img['preview']['size']?>/<?=$menu_id?>/<?=$selected_img['filename']?>" width="<?=$selected_img['preview']['width']?>" height="<?=$selected_img['preview']['height']?>" />
         </a>
     <?php endif; //if (!empty($imgs): ?>
     </div>
@@ -84,7 +90,8 @@ foreach ($info['status'] as $info_status)
 
     $img_link .= "/{$filename}";
 
-    $thumbnail_link = "/images/get/menu/md/{$menu_id}/{$filename}";
+    $preview = $img['preview'];
+    $thumbnail_link = "/images/get/menu/{$preview['size']}/{$menu_id}/{$filename}";
 
     $selected_pv_css = '';
     if ($selected_img['filename'] === $filename)
@@ -92,12 +99,13 @@ foreach ($info['status'] as $info_status)
 
 ?>
     <div class="img">
-        <a href="<?=$img_link?>"><img class="pv_img <?=$selected_pv_css?>" src="<?=$thumbnail_link?>" /></a>
+        <a href="<?=$img_link?>"><img class="pv_img <?=$selected_pv_css?>" src="<?=$thumbnail_link?>" width="<?=$preview['width']?>" height="<?=$preview['height']?>" /></a>
     </div>
 <?php endforeach; // foreach ($imgs as $img) ?>
 </div>
-<br/>
+<?php /*
 <pre><?=var_export($info)?></pre>
 <pre><?=var_export($id_names)?></pre>
 <pre><?=var_export($imgs)?></pre>
+*/ ?>
 </div>

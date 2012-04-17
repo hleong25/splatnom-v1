@@ -106,3 +106,14 @@ div.notready {
   font-weight:bold;
   text-align:center;
 }
+div.info { margin-bottom:1em; }
+div.info p.name { font-size:2em; }
+div.view { margin-bottom:1em; }
+div.imgs { margin-bottom:1em; }
+div.imgs div.img {
+  display:-moz-inline-stack;
+  vertical-align:baseline;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
+}
