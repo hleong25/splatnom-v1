@@ -428,6 +428,9 @@ class UploadHandler
             return false;
         }
 
+        // sort it by path and filename
+        asort($extract_files);
+
         // create temp directory and extract to path
         $temp_path = OS_TEMP_PATH . DS . Util::getUniqueString();
         @mkdir($temp_path);
