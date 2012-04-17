@@ -76,6 +76,20 @@ $slug = array
     </div>
 </div>
 
+<div class="imgs_info">
+    <?php
+        $cnt_imgs = count($imgs);
+        if ($cnt_imgs == 0):
+            $imgs_msg = 'No images found';
+        elseif ($cnt_imgs == 1):
+            $imgs_msg = 'Found 1 image';
+        else:
+            $imgs_msg = "Found {$cnt_imgs} images";
+        endif;
+    ?>
+    <span><?=$imgs_msg?></span>
+</div>
+
 <div class="imgs">
 <?php foreach ($imgs as $img):
     $filename = $img['filename'];

@@ -109,6 +109,7 @@ div.notready {
 div.info { margin-bottom:1em; }
 div.info p.name { font-size:2em; }
 div.view { margin-bottom:1em; }
+div.imgs_info { margin-bottom:1em; }
 div.imgs { margin-bottom:1em; }
 div.imgs div.img {
   display:-moz-inline-stack;
