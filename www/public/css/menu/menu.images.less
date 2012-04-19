@@ -16,8 +16,12 @@ div.notready {
     border: 1px solid @clr;
 }
 
+.divspace(@space=1em) {
+    margin-bottom: @space;
+}
+
 div.info {
-    margin-bottom: 1em;
+    .divspace();
 
     p {
         &.name {
@@ -30,11 +34,35 @@ div.info {
 }
 
 div.view {
-    margin-bottom: 1em;
+    .divspace();
+
+    div.img {
+
+        form.taggit {
+            margin-top: 0.5em;
+        }
+
+        input#tags {
+            width: 20em;
+        }
+
+        input.save_taggits {
+            margin-left: 0;
+        }
+
+        div.current_tags {
+            padding-top: 0.5em;
+
+            div.tag_group {
+                margin-right: 0.5em;
+                margin-bottom: 0.5em;
+            }
+        }
+    }
 }
 
 div.imgs_info {
-    margin-bottom: 1em;
+    .divspace();
 
     span {
         font-size: 0.8em;
@@ -42,15 +70,20 @@ div.imgs_info {
 }
 
 div.imgs {
-    margin-bottom: 1em;
+    .divspace();
+
     div.img {
         .display-inline-block;
 
-        margin-left: 3px;
+        margin-right: 3px;
         margin-bottom: 3px;
 
         a {
             img.pv_img {
+            }
+
+            img.selected_pv_img {
+                border: 2px solid red;
             }
         }
     }

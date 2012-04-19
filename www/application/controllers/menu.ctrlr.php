@@ -1003,11 +1003,18 @@ class MenuController
             return;
         }
 
+        $this->addJqueryUi();
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.images');
+
         $this->addCss('menu/menu.images');
 
         $this->set('info', $menu_info);
         $this->set('id_names', $id_names);
+
+        $user_id = Util::getUserId();
+        $this->set('is_logged_in', $user_id !== false);
 
         $menu_imgs = array();
 

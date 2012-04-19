@@ -19,6 +19,7 @@ $default_selected_img = array(
 );
 
 $params = array(
+    'is_logged_in'=>false,
     'info'=>$default_info,
     'id_names'=>$default_id_names,
     'imgs'=>array(),
@@ -66,16 +67,6 @@ $slug = array
     <p class="addy"><?=nl2br($info['address'])?></p>
 </div>
 
-<div class="view">
-    <div class="img">
-    <?php if (!empty($imgs)): ?>
-        <a href="/images/get/menu/org/<?=$menu_id?>/<?=$selected_img['filename']?>" target="_blank">
-            <img class="view_img" src="/images/get/menu/<?=$selected_img['preview']['size']?>/<?=$menu_id?>/<?=$selected_img['filename']?>" width="<?=$selected_img['preview']['width']?>" height="<?=$selected_img['preview']['height']?>" />
-        </a>
-    <?php endif; //if (!empty($imgs): ?>
-    </div>
-</div>
-
 <div class="imgs_info">
     <?php
         $cnt_imgs = count($imgs);
@@ -90,11 +81,71 @@ $slug = array
     <span><?=$imgs_msg?></span>
 </div>
 
+<div class="view">
+    <div class="img">
+    <?php if (!empty($imgs)): ?>
+        <a href="/images/get/menu/org/<?=$menu_id?>/<?=$selected_img['filename']?>" target="_blank">
+            <img class="view_img" src="/images/get/menu/<?=$selected_img['preview']['size']?>/<?=$menu_id?>/<?=$selected_img['filename']?>" width="<?=$selected_img['preview']['width']?>" height="<?=$selected_img['preview']['height']?>" />
+        </a>
+
+        <?php if ($is_logged_in === true): ?>
+        <div class="tag">
+            <div class="autocomplete">
+                <script type="tmpl/taggit" id="tmpl_taggit">
+                    <div class="tag_group">
+                        <span class="label">${label}</span>
+                        <input type="hidden" name="add[]" value="1"/>
+                        <input type="hidden" name="sid[]" value="${sid}"/>
+                        <input type="hidden" name="mid[]" value="${mid}"/>
+                    </div>
+                </script>
+            </div>
+            <form class="taggit" enctype="multipart/form-data" method="post" action="/menu/taggit/images/<?=$menu_id?>/<?=$selected_img['filename']?>" >
+                <input type="hidden" name="backurl" value="<?=$myurl?>"/>
+                <input class="save_taggits" type="submit" value="Save!"/>
+                <input type="textbox" id="tags" class="jq_watermark" title="This looks delicious!!! What's that?"></input>
+                <br/>
+                <div class="current_tags">
+                <?php foreach ($taggits as $taggit): ?>
+                    <div class="tag_group">
+                        <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
+                            <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                        </a>
+                        <input type="hidden" name="add[]" value="1"/>
+                        <input type="hidden" name="sid[]" value="<?=$taggit['sid']?>"/>
+                        <input type="hidden" name="mid[]" value="<?=$taggit['mid']?>"/>
+                    </div>
+                <?php endforeach; //foreach ($taggits as $taggit): ?>
+                </div>
+            </form>
+        </div>
+        <?php else: //if ($is_logged_in): ?>
+        <div class="current_tags">
+            <?php foreach ($taggits as $taggit): ?>
+                <div class="tag_group need_login">
+                    <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$taggit['sid']?>-<?=Util::slugify($taggit['section'])?>/<?=$taggit['mid']?>-<?=Util::slugify($taggit['metadata'])?>">
+                        <span class="label">(<?=$taggit['section']?>) <?=$taggit['metadata']?></span>
+                    </a>
+                </div>
+            <?php endforeach; //foreach ($taggits as $taggit): ?>
+        </div>
+        <?php endif; //if ($is_logged_in): ?>
+
+        <?php if (empty($taggits) && !$is_logged_in): ?>
+        <div class="notags">
+            <span>Wow... I don't know what this is, but it looks delicious!! Can you login and help me find out what it is?? Please!!! With a cherry on top =D</span>
+        </div>
+        <?php endif; //if (empty($taggits) && !$is_logged_in): ?>
+
+    <?php endif; //if (!empty($imgs): ?>
+    </div>
+</div>
+
 <div class="imgs">
 <?php foreach ($imgs as $img):
     $filename = $img['filename'];
 
-    $img_link = '/menu/images/'.$menu_id;
+    $img_link = "/menu/images/{$menu_id}-{$slug['menu']}";
 
     if (!empty($section_id))
         $img_link .= "/{$section_id}";
@@ -123,3 +174,11 @@ $slug = array
 <pre><?=var_export($imgs)?></pre>
 */ ?>
 </div>
+<script type="text/javascript">
+    <?php
+        // TODO: extract parameter in script tag
+        //       http://wowmotty.blogspot.com/2010/04/get-parameters-from-your-script-tag.html
+        //       http://feather.elektrum.org/book/src.html
+    ?>
+    var menu_tags = <?= $is_logged_in ? json_encode($tags) : '[]'?>;
+</script>
