@@ -43,7 +43,7 @@ function customAutoComplete()
             'source': menu_tags,
             //'minLength': 2,
             'delay': 100, // local data -- refresh fast!
-            'select': taggitSelect,
+            'select': taggitSelect
         })
     ;
 }

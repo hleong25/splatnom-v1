@@ -114,6 +114,11 @@ div.view div.img input#tags { width:20em; }
 div.view div.img input.save_taggits { margin-left:0; }
 div.view div.img div.current_tags { padding-top:0.5em; }
 div.view div.img div.current_tags div.tag_group {
+  display:-moz-inline-stack;
+  vertical-align:baseline;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
   margin-right:0.5em;
   margin-bottom:0.5em;
 }
