@@ -5,13 +5,12 @@ var div_taggits = null;
 init();
 
 return {
-    taggit_remove: taggit_remove,
+    // empty
 };
 
 function init()
 {
     $('input.save_taggits').button();
-    //$('a.button').button();
 
     $.template('tmpl_taggit', $('script#tmpl_taggit'));
 
@@ -20,8 +19,6 @@ function init()
     div_taggits = $('div.current_tags');
 
     setup_taggit.call($('div.tag_group'));
-
-    //$('input#tags').focus();
 }
 
 function customAutoComplete()
