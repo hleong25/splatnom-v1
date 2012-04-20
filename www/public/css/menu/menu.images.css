@@ -108,6 +108,17 @@ div.notready {
 }
 div.info { margin-bottom:1em; }
 div.info p.name { font-size:2em; }
+div.menu_nav {
+  margin-bottom:1em;
+  font-size:0.9em;
+}
+div.menu_nav div.menu_nav_item {
+  display:-moz-inline-stack;
+  vertical-align:baseline;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
+}
 div.view { margin-bottom:1em; }
 div.view div.img form.taggit { margin-top:0.5em; }
 div.view div.img input#tags { width:20em; }
@@ -122,8 +133,6 @@ div.view div.img div.current_tags div.tag_group {
   margin-right:0.5em;
   margin-bottom:0.5em;
 }
-div.imgs_info { margin-bottom:1em; }
-div.imgs_info span { font-size:0.8em; }
 div.imgs { margin-bottom:1em; }
 div.imgs div.img {
   display:-moz-inline-stack;

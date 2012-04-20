@@ -69,18 +69,59 @@ $slug = array
     <p class="addy"><?=nl2br($info['address'])?></p>
 </div>
 
-<div class="imgs_info">
-    <?php
-        $cnt_imgs = count($imgs);
-        if ($cnt_imgs == 0):
-            $imgs_msg = 'No images found';
-        elseif ($cnt_imgs == 1):
-            $imgs_msg = 'Found 1 image';
-        else:
-            $imgs_msg = "Found {$cnt_imgs} images";
-        endif;
-    ?>
-    <span><?=$imgs_msg?></span>
+<div class="menu_nav">
+<?php
+    $nav = array(
+        'menu' => array(
+            'id'    => @$id_names['menu_id'],
+            'name'  => @$id_names['menu'],
+            'slug'  => @$slug['menu'],
+        ),
+        'section' => array(
+            'id'    => @$id_names['section_id'],
+            'name'  => @$id_names['section'],
+            'slug'  => @$slug['section'],
+        ),
+        'item' => array(
+            'id'    => @$id_names['item_id'],
+            'name'  => @$id_names['item'],
+            'slug'  => @$slug['item'],
+        ),
+    );
+
+    $nav_link = '/menu/images';
+    foreach ($nav as $nav_key => $nav_item)
+    {
+        $id   = $nav_item['id'];
+        $name = $nav_item['name'];
+        $slug = $nav_item['slug'];
+
+        if (empty($id))
+            continue;
+
+        $nav_link .= "/{$id}-{$slug}";
+
+        echo<<<EOHTML
+        <div class="menu_nav_item">
+            <a href="{$nav_link}">{$nav_item['name']}</a>
+            <span>&nbsp;&raquo;&nbsp;</span>
+        </div>
+EOHTML;
+    }
+
+    $cnt_imgs = count($imgs);
+    if ($cnt_imgs == 0):
+        $imgs_msg = 'No images found';
+    elseif ($cnt_imgs == 1):
+        $imgs_msg = 'Found 1 image';
+    else:
+        $imgs_msg = "Found {$cnt_imgs} images";
+    endif;
+
+    echo<<<EOHTML
+        <span class="img_cnt">{$imgs_msg}</span>
+EOHTML;
+?>
 </div>
 
 <div class="view">
