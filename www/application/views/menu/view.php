@@ -212,16 +212,13 @@ EOHTML;
     $slug['section'] = Util::slugify($section_name);
 
     $base_section_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}";
-    $section_comment_url = "/menu/comments/{$base_section_url}";
-    $section_photo_url = "/menu/images/{$base_section_url}";
-
-    $section_comment_url = '#';
+    $section_image_url = "/menu/images/{$base_section_url}";
 ?>
     <div class="menu">
         <a name="<?=$section_id?>"/>
         <div class="info zhead">
             <div class="h_name">
-                <a href="<?=$section_comment_url?>"><?=$section_name?></a>
+                <a href="<?=$section_image_url?>"><?=$section_name?></a>
             </div>
             <div class="h_notes"><?=nl2br($mdt['notes'])?></div>
         </div>
@@ -248,15 +245,12 @@ EOHTML;
 
                 // item links
                 $base_item_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}/{$metadata_id}-{$slug['item']}";
-                $item_comment_url = "/menu/comments/{$base_item_url}";
-                $item_photo_url = "/menu/images/{$base_item_url}";
+                $item_image_url = "/menu/images/{$base_item_url}";
 
                 // if spicy
                 $img_spicy = '';
                 if ($item['is_spicy'])
                     $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
-
-                $item_comment_url = '#'; // no comments for now
 
                 $item_notes = nl2br($item['notes']);
 
@@ -274,7 +268,7 @@ EOHTML;
                         </div>
                         <div class="g_info">
                             <div class="g_info1">
-                                <span class="label"><a href="{$item_comment_url}">{$metadata_label}</a>{$img_spicy}</span>
+                                <span class="label"><a href="{$item_image_url}">{$metadata_label}</a>{$img_spicy}</span>
                                 <span class="price clearfix">{$item['price']}</span>
                             </div>
                             <div class="g_info2">

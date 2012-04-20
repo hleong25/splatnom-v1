@@ -7,10 +7,10 @@ $default_info = array(
 $default_id_names = array(
     'menu_id'=>'',
     'section_id'=>'',
-    'metadata_id'=>'',
+    'item_id'=>'',
     'menu'=>'',
     'section'=>'',
-    'metadata'=>'',
+    'item'=>'',
 );
 
 $default_selected_img = array(
@@ -31,6 +31,8 @@ $params = array(
 extract($params, EXTR_SKIP);
 
 $menu_id = $id_names['menu_id'];
+$section_id = $id_names['section_id'];
+$item_id = $id_names['item_id'];
 
 // setup status info
 $is_ready = false;
@@ -49,9 +51,9 @@ foreach ($info['status'] as $info_status)
 
 $slug = array
 (
-    'menu'=>Util::slugify($info['name']),
-    'section'=>'',
-    'item'=>'',
+    'menu'=>Util::slugify($id_names['menu']),
+    'section'=>Util::slugify($id_names['section']),
+    'item'=>Util::slugify($id_names['item']),
 );
 ?>
 
@@ -148,10 +150,10 @@ $slug = array
     $img_link = "/menu/images/{$menu_id}-{$slug['menu']}";
 
     if (!empty($section_id))
-        $img_link .= "/{$section_id}";
+        $img_link .= "/{$section_id}-{$slug['section']}";
 
     if (!empty($item_id))
-        $img_link .= "/{$item_id}";
+        $img_link .= "/{$item_id}-{$slug['item']}";
 
     $img_link .= "/{$filename}";
 
