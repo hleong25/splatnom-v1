@@ -105,6 +105,35 @@ class Util
         return $decode;
     }
 
+    static function isUploadOk()
+    {
+        // http://andrewcurioso.com/2010/06/detecting-file-size-overflow-in-php/
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
+            empty($_POST) &&
+            empty($_FILES) &&
+            $_SERVER['CONTENT_LENGTH'] > 0)
+        {
+            /*
+            $displayMaxSize = ini_get('post_max_size');
+
+            switch ( substr($displayMaxSize,-1) )
+            {
+                case 'G':
+                $displayMaxSize = $displayMaxSize * 1024;
+                case 'M':
+                $displayMaxSize = $displayMaxSize * 1024;
+                case 'K':
+                $displayMaxSize = $displayMaxSize * 1024;
+            }
+            */
+
+            return false;
+        }
+
+        return true;
+    }
+
     static function handle_upload_files($path)
     {
         $uploader = new UploadHandler($path);

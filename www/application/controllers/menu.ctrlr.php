@@ -14,6 +14,12 @@ class MenuController
         $user_id = Util::getUserId();
         $this->set('is_user', !empty($user_id));
 
+        if (Util::isUploadOk() == false)
+        {
+            $uploadMaxSize = ini_get('post_max_size');
+            $this->set('err_msg', "Uploaded files exceeded {$uploadMaxSize}!");
+        }
+
         if (!empty($_POST))
         {
             $link_cnt = 0;

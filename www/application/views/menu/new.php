@@ -47,6 +47,7 @@ extract($params, EXTR_SKIP);
         </div>
         <div class="group_new">
             <div class="header">Upload menus</div>
+            <div class="hint">Supported files include: gif, jpg and png.</div>
             <div class="new_img">
                 <input class="file" type="file" name="imgs[]"/>
             </div>

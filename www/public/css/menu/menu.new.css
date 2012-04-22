@@ -114,6 +114,10 @@ div#new_menu div.group_new div.header {
   padding:0.3em;
   font-weight:bold;
 }
+div#new_menu div.group_new div.hint {
+  font-size:0.8em;
+  margin-top:0.3em;
+}
 div#new_menu div.group_new div.new_site { margin-top:0.3em; }
 div#new_menu div.group_new div.new_site input { width:99%; }
 div#new_menu div.group_new div.new_img { margin-top:0.3em; }
