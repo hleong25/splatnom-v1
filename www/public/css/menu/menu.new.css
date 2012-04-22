@@ -124,5 +124,6 @@ div#new_menu div.group_new div.new_img { margin-top:0.3em; }
 div#new_menu div.group_new div.new_img input {
   width:95%;
   *width:100%;
+  text-align:left;
 }
 div#new_menu input.button { margin-top:1em; }
