@@ -39,7 +39,8 @@ div#header {
 div#header a:link, div#header a:visited { color:white; }
 div#header div#nav { text-align:right; }
 div#header div#nav a.nav { font-size:0.8em; }
-div#header span#welcome { font-size:2em; }
+div#header div.welcome p.title { font-size:2em; }
+div#header div.welcome p.desc { font-size:0.8em; }
 div.myaddthis {
   display:-moz-inline-stack;
   vertical-align:baseline;

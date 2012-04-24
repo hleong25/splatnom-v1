@@ -45,9 +45,8 @@ flush();
             $bCont = true;
         }
     ?></div>
-    <div class="pg">
-        <span id="welcome"><a href="/home/main"><?=SITE_NAME?></a></span>
-        <br/>
-        <span style="font-size: 0.75em;">find. look. eat. comment.</span>
+    <div class="pg welcome">
+        <p class="title"><a href="/home/main"><?=SITE_NAME?></a></p>
+        <p class="desc">it's all about the food</p>
     </div>
 </div>
