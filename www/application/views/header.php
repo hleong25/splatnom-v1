@@ -8,6 +8,12 @@ $params = array(
 );
 
 extract($params, EXTR_SKIP);
+
+$title = SITE_NAME;
+
+if (!empty($meta_title))
+    $title = "{$meta_title} - {$title}";
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 //EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,7 +29,7 @@ extract($params, EXTR_SKIP);
 // http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-dont-forget-the-viewport-meta-tag/
 ?>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title><?=SITE_NAME?><?=(empty($meta_title)?'':" - {$meta_title}")?></title>
+<title><?=$title?></title>
 <?php foreach ($this->getCss() as $css): ?>
     <link rel="stylesheet" href="<?=$css?>.css" />
 <?php endforeach; //foreach ($allCss as $css): ?>
