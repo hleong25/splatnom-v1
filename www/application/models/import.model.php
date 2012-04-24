@@ -37,11 +37,12 @@ class ImportModel
         $headers = $this->getCustomHeaders();
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_POST, true);
+        //curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         $file_content = curl_exec($ch);
+        //$info = curl_getinfo($ch);
         curl_close($ch);
 
         $json = json_decode($file_content, true);
