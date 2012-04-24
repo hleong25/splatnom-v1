@@ -94,12 +94,12 @@ $slug = array
     {
         $id   = $nav_item['id'];
         $name = $nav_item['name'];
-        $slug = $nav_item['slug'];
+        $name_slug = $nav_item['slug'];
 
         if (empty($id))
             continue;
 
-        $nav_link .= "/{$id}-{$slug}";
+        $nav_link .= "/{$id}-{$name_slug}";
 
         echo<<<EOHTML
         <div class="menu_nav_item">
