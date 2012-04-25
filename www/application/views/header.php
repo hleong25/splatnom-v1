@@ -11,6 +11,10 @@ extract($params, EXTR_SKIP);
 
 $title = SITE_NAME;
 
+$meta_url   = htmlspecialchars($meta_url);
+$meta_title = htmlspecialchars($meta_title);
+$meta_desc  = htmlspecialchars($meta_desc);
+
 if (!empty($meta_title))
     $title = "{$meta_title} - {$title}";
 
@@ -19,6 +23,8 @@ if (!empty($meta_title))
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
 <meta property="og:url" content="<?=$meta_url?>" />
 <meta property="og:title" content="splatnom wants to share '<?=$meta_title?>'" />
 <meta property="og:type" content="website" />
@@ -44,9 +50,9 @@ flush();
         foreach ($this->getNavLinks() as $lnk)
         {
             if ($bCont)
-                echo sprintf('<span class="lnkspc"> | </span>');
+                echo '<span class="lnkspc"> | </span>';
 
-            echo sprintf('<a class="%s" href="/%s">%s</a>', $lnk['css'], $lnk['lnk'], $lnk['lbl']);
+            echo "<a class=\"{$lnk['css']}\" href=\"{$lnk['lnk']}/\">{$lnk['lbl']}</a>";
 
             $bCont = true;
         }

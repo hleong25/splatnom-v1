@@ -464,7 +464,7 @@ class MenuController
 
         $name = $menu_info['name'];
         $this->set('meta_title', $name);
-        $this->set('meta_desc', "Delicious food at $name... mmMmmmMmmm nom nom nom says Zoidberg! (\/)(',,,,')(\/)");
+        $this->set('meta_desc', "Delicious food at {$name}... mmMmmmMmmm nom nom nom says Zoidberg! (\/)(',,,,')(\/)");
 
         $this->addJqueryUi();
 
@@ -1021,6 +1021,10 @@ class MenuController
 
         $user_id = Util::getUserId();
         $this->set('is_logged_in', $user_id !== false);
+
+        $this->set('meta_title', $menu_info['name']);
+        $this->set('meta_desc', "Delicious food at {$menu_info['name']}... mmMmmmMmmm nom nom nom says Zoidberg! (\/)(',,,,')(\/)");
+
 
         $menu_imgs = array();
 
