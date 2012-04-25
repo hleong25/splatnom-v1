@@ -30,6 +30,9 @@
     RewriteCond     %{QUERY_STRING}     ^query=(.*)&location=(.*)$
     RewriteRule     ^menu/search$       http://%{HTTP_HOST}/menu/search/%2/%1?      [R=301,L]
 
+# redirect favicon
+    RewriteRule     favicon\.ico$       public/img/favicon.ico       [L]
+
 # SEO handlers
     RewriteRule     robots\.txt$       public/seo/robots_txt       [L]
     RewriteRule     sitemap\.xml$      public/seo/sitemap_xml      [L]
