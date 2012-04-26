@@ -52,7 +52,7 @@ flush();
             if ($bCont)
                 echo '<span class="lnkspc"> | </span>';
 
-            echo "<a class=\"{$lnk['css']}\" href=\"{$lnk['lnk']}/\">{$lnk['lbl']}</a>";
+            echo "<a class=\"{$lnk['css']}\" href=\"/{$lnk['lnk']}\">{$lnk['lbl']}</a>";
 
             $bCont = true;
         }
