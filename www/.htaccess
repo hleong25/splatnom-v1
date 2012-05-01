@@ -34,8 +34,8 @@
     RewriteRule     favicon\.ico$       public/img/favicon.ico      [L]
 
 # SEO handlers
-    RewriteRule     robots\.txt$       public/seo/robots_txt        [L]
-    RewriteRule     sitemap\.xml$      public/seo/sitemap_xml       [L]
+    RewriteRule     robots\.txt$        public/seo/robots_txt       [L]
+    RewriteRule     sitemap\.xml$       public/seo/sitemap_xml      [L]
 
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
