@@ -194,7 +194,7 @@ class Util
         return $name;
     }
 
-    static function getTopLevelDomain()
+    static function getDomain()
     {
         $url = $_SERVER['SERVER_NAME'];
         if (empty($url))

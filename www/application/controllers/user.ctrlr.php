@@ -125,7 +125,7 @@ class UserController
         $mail = new MailModel();
         $subject = 'Verify account for splatnom';
 
-        $verify_url = Util::getTopLevelDomain();
+        $verify_url = Util::getDomain();
 
         $verify_url .= '/user/verify/'.$verifyCode;
 
@@ -231,7 +231,7 @@ class UserController
 
         $pending_menus = $menu->getPendingMenus($id);
         $this->set('pending_menus', $pending_menus);
-        $invite_url = Util::getTopLevelDomain();
+        $invite_url = Util::getDomain();
 
         $ready_menus = $user->getUserMenus($id);
         $this->set('ready_menus', $ready_menus);
@@ -261,7 +261,7 @@ class UserController
         $mail = new MailModel();
         $subject = "Splatnom invitation!";
 
-        $invite_url = Util::getTopLevelDomain();
+        $invite_url = Util::getDomain();
 
         $params = array(
             'invite_url' => $invite_url,

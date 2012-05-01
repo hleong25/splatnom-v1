@@ -2,8 +2,8 @@
 $params = array(
     'user' => 'theuser',
     'code' => '80085',
-    'reset_url' => Util::getTopLevelDomain(),
-    'code_url' => Util::getTopLevelDomain(),
+    'reset_url' => Util::getDomain(),
+    'code_url' => Util::getDomain(),
 );
 
 extract($params, EXTR_SKIP);

@@ -107,7 +107,7 @@ class LoginController
 
     function send_forgot_code($user_info, $code)
     {
-        $reset_url = Util::getTopLevelDomain().'/login/reset';
+        $reset_url = Util::getDomain().'/login/reset';
         $code_url = "$reset_url/{$code}";
 
         $user = $user_info['username'];

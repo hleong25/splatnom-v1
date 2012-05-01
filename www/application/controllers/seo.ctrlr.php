@@ -19,7 +19,7 @@ class SeoController
             '/user',
         );
 
-        $site = Util::getTopLevelDomain();
+        $site = Util::getDomain();
         $sitemap = "http://{$site}/sitemap.xml";
 
         $this->set('disallow', $disallow);
@@ -35,7 +35,7 @@ class SeoController
 
         $all_menus = $this->Seo->getAllMenus();
 
-        $site = Util::getTopLevelDomain();
+        $site = Util::getDomain();
 
         $sitemap_urls = array();
         foreach ($all_menus as $menu)

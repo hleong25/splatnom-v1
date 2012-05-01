@@ -1,5 +1,5 @@
 <?php
-$site = Util::getTopLevelDomain();
+$site = Util::getDomain();
 $params = array(
     'meta_url' => "http://{$site}/{$myurl}",
     'meta_title' => '',

@@ -270,7 +270,7 @@ class Template
         // NOTE: www.addthis.com login is hleong25+addthis@gmail.com
 
         global $get_url;
-        $site = Util::getTopLevelDomain();
+        $site = Util::getDomain();
 
         $url = "http://{$site}/{$get_url}";
         $title = '';

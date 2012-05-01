@@ -26,7 +26,7 @@ class ImportModel
     function getCustomHeaders()
     {
         $headers = array();
-        $headers[] = 'X-SPLATNOM-REMOTE: '.Util::getTopLevelDomain();
+        $headers[] = 'X-SPLATNOM-REMOTE: '.Util::getDomain();
 
         return $headers;
     }
