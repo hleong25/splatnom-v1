@@ -31,11 +31,11 @@
     RewriteRule     ^menu/search$       http://%{HTTP_HOST}/menu/search/%2/%1?      [R=301,L]
 
 # redirect favicon
-    RewriteRule     favicon\.ico$       public/img/favicon.ico       [L]
+    RewriteRule     favicon\.ico$       public/img/favicon.ico      [L]
 
 # SEO handlers
-    RewriteRule     robots\.txt$       public/seo/robots_txt       [L]
-    RewriteRule     sitemap\.xml$      public/seo/sitemap_xml      [L]
+    RewriteRule     robots\.txt$       public/seo/robots_txt        [L]
+    RewriteRule     sitemap\.xml$      public/seo/sitemap_xml       [L]
 
 # default handlers
     RewriteRule     ^$      public/home/main    [L]
