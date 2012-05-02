@@ -121,4 +121,12 @@ class HomeController
 
         $this->set('menus', $menus);
     }
+
+    function onAction_about()
+    {
+        $this->addCss('home/home.about');
+
+        $this->addJs('tinymce/tinymce-3.5b3/tiny_mce', WEB_PATH_OTHER);
+        $this->addJs('home/home.about');
+    }
 }
