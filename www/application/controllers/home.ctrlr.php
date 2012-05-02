@@ -128,5 +128,11 @@ class HomeController
 
         $this->addJs('tinymce/tinymce-3.5b3/tiny_mce', WEB_PATH_OTHER);
         $this->addJs('home/home.about');
+
+        if (!empty($_POST))
+        {
+            $editor_src = $_POST['editor'];
+            $this->set('editor_src', $editor_src);
+        }
     }
 }
