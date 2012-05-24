@@ -23,6 +23,8 @@ table {
   max-width:55em;
   *width:expression(document.body.clientWidth >  880 ? " 55em " : auto );
   margin:0 auto;
+  padding-left:0.5em;
+  padding-right:0.5em;
 }
 .pg_bottom { margin-bottom:0.5em; }
 a:link, a:visited {
@@ -30,7 +32,7 @@ a:link, a:visited {
   color:black;
 }
 div#header {
-  padding:0.5em;
+  padding-top:0.5em;
   background-color:#990000;
   color:white;
   padding-bottom:0.8em;
