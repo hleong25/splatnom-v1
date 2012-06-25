@@ -8,7 +8,7 @@ username=hleong25_testusr
 dbname=hleong25_testimport
 
 file1=./menu/menu.120313.1.static.sql.gz
-file2=./menu/menu.120321.2.tables.sql.gz
+file2=./menu/menu.120624.2.tables.sql.gz
 file3=./menu/menu.120313.3.views.sql.gz
 
 view_old_user=hleong25
