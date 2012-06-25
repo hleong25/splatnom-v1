@@ -93,8 +93,8 @@ EOQ;
             ON DUPLICATE KEY UPDATE password = :u_password
 EOQ;
 
-        // TODO: SALT the password, maybe use crypt()
-        $sha_password = sha1($password);
+        $aes_key = SQL_AES_KEY;
+        $sha_password = sha1($password.$aes_key);
 
         $params = array(
             ':user_id' => $id,

@@ -15,10 +15,9 @@ class LoginModel
             AND p.password = :password
 EOQ;
 
-        // TODO: SALT the password, maybe use crypt()
         $params = array(
             ':username' => $user,
-            ':password' => sha1($pass),
+            ':password' => sha1($pass.$aes_key),
         );
 
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
