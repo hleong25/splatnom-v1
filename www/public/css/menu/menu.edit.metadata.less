@@ -124,10 +124,15 @@ div.edit {
                 span.menu_group_info { font-size: small; }
 
                 div.menu_item {
+                    & > * {
+                        vertical-align: top;
+                        margin-top: 0.5em;
+                    }
+
                     button.btnitem { width: 1.8em !important; }
 
                     textarea {
-                        display: block;
+                        display: inline-block;
 
                         &.item_label { width: 30em; }
                         &.item_price { width: 10em; }

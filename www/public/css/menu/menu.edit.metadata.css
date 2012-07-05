@@ -180,8 +180,12 @@ div.edit div.menu div.data div.menu_group {
   padding-left:0.3em;
 }
 div.edit div.menu div.data div.menu_group span.menu_group_info { font-size:small; }
+div.edit div.menu div.data div.menu_group div.menu_item > * {
+  vertical-align:top;
+  margin-top:0.5em;
+}
 div.edit div.menu div.data div.menu_group div.menu_item button.btnitem { width:1.8em !important; }
-div.edit div.menu div.data div.menu_group div.menu_item textarea { display:block; }
+div.edit div.menu div.data div.menu_group div.menu_item textarea { display:inline-block; }
 div.edit div.menu div.data div.menu_group div.menu_item textarea.item_label { width:30em; }
 div.edit div.menu div.data div.menu_group div.menu_item textarea.item_price { width:10em; }
 div.edit div.menu div.data div.menu_group div.menu_item textarea.item_notes { width:20em; }
