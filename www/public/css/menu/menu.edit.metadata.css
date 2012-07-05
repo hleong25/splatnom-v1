@@ -98,6 +98,13 @@ a.button, button.button, input.button, .ui-button {
   padding:0 !important;
   color:#2e6e9e;
 }
+div.edit {
+  max-width:75em;
+  *width:expression(document.body.clientWidth >  1200 ? " 75em " : auto );
+  margin:0 auto;
+  padding-left:0.5em;
+  padding-right:0.5em;
+}
 div.edit .action {
   margin-left:0em !important;
   position:fixed;
@@ -175,13 +182,13 @@ div.edit div.menu div.data div.menu_group {
 div.edit div.menu div.data div.menu_group span.menu_group_info { font-size:small; }
 div.edit div.menu div.data div.menu_group div.menu_item button.btnitem { width:1.8em !important; }
 div.edit div.menu div.data div.menu_group div.menu_item textarea { display:block; }
-div.edit div.menu div.data div.menu_group div.menu_item textarea.item_label { width:20em; }
-div.edit div.menu div.data div.menu_group div.menu_item textarea.item_price { width:8em; }
-div.edit div.menu div.data div.menu_group div.menu_item textarea.item_notes { width:10em; }
+div.edit div.menu div.data div.menu_group div.menu_item textarea.item_label { width:30em; }
+div.edit div.menu div.data div.menu_group div.menu_item textarea.item_price { width:10em; }
+div.edit div.menu div.data div.menu_group div.menu_item textarea.item_notes { width:20em; }
 div.edit div.menu div.data div.menu_group div.menu_item textarea.item_edit {
   position:relative;
   z-index:9999;
-  width:20em;
+  width:30em;
   height:5em;
 }
 .toggle_button_on_heading {

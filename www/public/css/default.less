@@ -1,12 +1,20 @@
 @import 'global.defines.less';
 
-.pg {
-    .max-width(@g_max_page_width_em, @g_max_page_width_px);
-
+.pg_center() {
     margin: 0 auto;
 
     padding-left: 0.5em;
     padding-right: 0.5em;
+}
+
+.pg {
+    .max-width(@g_max_page_width_em, @g_max_page_width_px);
+    .pg_center();
+}
+
+.pg_max(@width_em, @width_px) {
+    .max-width(@width_em, @width_px);
+    .pg_center();
 }
 
 .pg_bottom {

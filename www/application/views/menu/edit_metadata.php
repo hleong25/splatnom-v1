@@ -37,7 +37,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 
 ?>
-<div class="pg edit"><form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
+<div class="edit"><form id="edit_mdt" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
 
     <div class="action">
         <input class="button" type="button" value="Refresh" data-action="refresh" data-url="/<?=$myurl?>" />
@@ -138,8 +138,8 @@ EOHTML;
         <script type="tmpl/link" id="tmpl_link">
             <div class="link_item">
                 <input type="hidden" name="link[]" value="@link@"/>
-                <input type="text" class="jq_watermark link_url" style="width: 25em;" name="link[]" title="Link" value=""/>
-                <input type="text" class="jq_watermark link_lbl" style="width: 10em;" name="link[]" title="Label" value=""/>
+                <input type="text" class="jq_watermark link_url" style="width: 35em;" name="link[]" title="Link" value=""/>
+                <input type="text" class="jq_watermark link_lbl" style="width: 15em;" name="link[]" title="Label" value=""/>
                 <button class="link_add">Add link</button>
                 <button class="link_remove">Remove link</button>
             </div>
@@ -155,8 +155,8 @@ EOHTML;
                     echo<<<EOHTML
                         <div class="link_item">
                             <input type="hidden" name="link[]" value="@link@"/>
-                            <input type="text" class="jq_watermark" style="width: 25em;" name="link[]" title="Link" value="{$link['url']}"/>
-                            <input type="text" class="jq_watermark" style="width: 10em;" name="link[]" title="Label" value="{$link['label']}"/>
+                            <input type="text" class="jq_watermark" style="width: 35em;" name="link[]" title="Link" value="{$link['url']}"/>
+                            <input type="text" class="jq_watermark" style="width: 15em;" name="link[]" title="Label" value="{$link['label']}"/>
                             <button class="link_add">Add link</button>
                             <button class="link_remove">Remove link</button>
                         </div>

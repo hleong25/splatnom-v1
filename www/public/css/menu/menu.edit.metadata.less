@@ -1,6 +1,8 @@
 @import '../global.less';
 
 div.edit {
+    .pg_max(75em, 1200);
+
     .action {
         margin-left: 0em !important;
         position: fixed;
@@ -127,14 +129,14 @@ div.edit {
                     textarea {
                         display: block;
 
-                        &.item_label { width: 20em; }
-                        &.item_price { width: 8em; }
-                        &.item_notes { width: 10em; }
+                        &.item_label { width: 30em; }
+                        &.item_price { width: 10em; }
+                        &.item_notes { width: 20em; }
 
                         &.item_edit {
                             position: relative;
                             z-index: 9999;
-                            width: 20em;
+                            width: 30em;
                             height: 5em;
                         } /*.item_edit*/
                     } /*textarea*/
