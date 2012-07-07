@@ -44,13 +44,13 @@ div#header div#nav a.nav { font-size:0.8em; }
 div#header div.welcome p.title { font-size:2em; }
 div#header div.welcome p.desc { font-size:0.8em; }
 div.myaddthis {
+  width:15em;
+  margin-bottom:1em;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  width:15em;
-  margin-bottom:1em;
 }
 div#footer div.links {
   font-size:0.8em;
@@ -89,14 +89,14 @@ pre {
   line-height:1.5;
 }
 a.button, button.button, input.button, .ui-button {
-  color:#2e6e9e;
+  color:#2E6E9E;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
 }
 .ui-button-text {
   margin:0 1em !important;
   padding:0 !important;
-  color:#2e6e9e;
+  color:#2E6E9E;
 }
 .zhead { background:silver; }
 .zalt { background:#ecf6fc; }
@@ -106,7 +106,7 @@ div.notready {
   margin:0 auto 1em;
   width:20em;
   border:1px solid black;
-  background:#e9b15c;
+  background:#E9B15C;
   color:black;
   font-size:0.8em;
   font-weight:bold;
@@ -117,38 +117,38 @@ div.biz_info { margin-bottom:0.5em; }
 div.biz_info div.name { font-size:2em; }
 div.links { margin-bottom:0.5em; }
 div.navbar {
-  margin-bottom:0.5em;
   border:1px solid silver;
   text-align:center;
   padding:5px 3px;
+  margin-bottom:0.5em;
 }
 div.navbar div.nav_item {
+  font-size:0.8em;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  font-size:0.8em;
 }
 div.stickynavbar {
-  margin-bottom:0.5em;
-  border:1px solid silver;
-  text-align:center;
-  padding:5px 3px;
   padding-left:0;
   padding-right:0;
   position:fixed;
   top:0px;
   background-color:white;
   z-index:1;
+  border:1px solid silver;
+  text-align:center;
+  padding:5px 3px;
+  margin-bottom:0.5em;
 }
 div.stickynavbar div.nav_item {
+  font-size:0.8em;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  font-size:0.8em;
 }
 * html div.stickynavbar {
   position:absolute;

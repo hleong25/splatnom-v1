@@ -44,13 +44,13 @@ div#header div#nav a.nav { font-size:0.8em; }
 div#header div.welcome p.title { font-size:2em; }
 div#header div.welcome p.desc { font-size:0.8em; }
 div.myaddthis {
+  width:15em;
+  margin-bottom:1em;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  width:15em;
-  margin-bottom:1em;
 }
 div#footer div.links {
   font-size:0.8em;
@@ -89,21 +89,21 @@ pre {
   line-height:1.5;
 }
 a.button, button.button, input.button, .ui-button {
-  color:#2e6e9e;
+  color:#2E6E9E;
   font-size:0.8em !important;
   padding:0.2em 1em !important;
 }
 .ui-button-text {
   margin:0 1em !important;
   padding:0 !important;
-  color:#2e6e9e;
+  color:#2E6E9E;
 }
 div.notready {
   padding:0.3em;
   margin:0 auto 1em;
   width:20em;
   border:1px solid black;
-  background:#e9b15c;
+  background:#E9B15C;
   color:black;
   font-size:0.8em;
   font-weight:bold;
@@ -112,8 +112,8 @@ div.notready {
 div.info { margin-bottom:1em; }
 div.info p.name { font-size:2em; }
 div.menu_nav {
-  margin-bottom:1em;
   font-size:0.9em;
+  margin-bottom:1em;
 }
 div.menu_nav div.menu_nav_item {
   display:-moz-inline-stack;
@@ -128,22 +128,22 @@ div.view div.img input#tags { width:20em; }
 div.view div.img input.save_taggits { margin-left:0; }
 div.view div.img div.current_tags { padding-top:0.5em; }
 div.view div.img div.current_tags div.tag_group {
+  margin-right:0.5em;
+  margin-bottom:0.5em;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  margin-right:0.5em;
-  margin-bottom:0.5em;
 }
 div.imgs { margin-bottom:1em; }
 div.imgs div.img {
+  margin-right:3px;
+  margin-bottom:3px;
   display:-moz-inline-stack;
   vertical-align:baseline;
   display:inline-block;
   zoom:1;
   *display:inline;
-  margin-right:3px;
-  margin-bottom:3px;
 }
 div.imgs div.img a img.selected_pv_img { border:2px solid red; }
