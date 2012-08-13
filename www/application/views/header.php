@@ -58,6 +58,10 @@ flush();
         }
     ?></div>
     <div class="pg welcome">
+        <?php if (($myurl != '') && ($myurl != 'home/main')): ?>
         <a href="/home/main"><img src="/img/logo.mini.jpg" title="splatnom"/></a>
+        <?php else: ?>
+        <div class="nologo" style="height: 48px;"></div>
+        <?php endif; ?>
     </div>
 </div>
