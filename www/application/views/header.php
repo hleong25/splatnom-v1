@@ -58,7 +58,6 @@ flush();
         }
     ?></div>
     <div class="pg welcome">
-        <p class="title"><a href="/home/main"><?=SITE_NAME?></a></p>
-        <p class="desc">it's all about the food</p>
+        <a href="/home/main"><img src="/img/logo.mini.jpg" title="splatnom"/></a>
     </div>
 </div>

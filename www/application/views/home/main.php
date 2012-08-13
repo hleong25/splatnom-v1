@@ -9,6 +9,9 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 ?>
+<div class="pg logo">
+    <img src="/img/logo.jpg" title="Splatnom logo"/>
+</div>
 <div class="pg pg_bottom search">
     <form id="searchit" method="get" action="/menu/search">
         <div class="fq">

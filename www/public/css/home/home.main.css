@@ -33,7 +33,7 @@ a:link, a:visited {
 }
 div#header {
   padding-top:0.5em;
-  background-color:#990000;
+  background-color:#5f5b5a;
   color:white;
   padding-bottom:0.8em;
   margin-bottom:1em;
@@ -110,6 +110,11 @@ table.tblDefault td {
   border-style:solid;
   border-width:1px;
   padding:4px;
+}
+div.logo img {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
 div.search { text-align:center; }
 div.search form#searchit input { font-size:1.1em; }
