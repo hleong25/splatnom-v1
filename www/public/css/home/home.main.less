@@ -2,6 +2,9 @@
 @import '../table.less';
 
 div.logo {
+    margin-top: 5em;
+    margin-bottom: 4em;
+
     img {
         display: block;
         margin-left: auto;
@@ -11,25 +14,29 @@ div.logo {
 
 div.search {
     text-align: center;
+    margin-bottom: 4em;
 
-    form#searchit {
-        input {
-            font-size: 1.1em;
+    label {
+        .display-inline-block(bottom);
+        text-align: left;
+        margin-right: 0.2em;
+    }
 
-            .query{ width: 20em; }
+    span.hint {
+        font-size: 0.75em;
+        display: block;
+    }
 
-            .location{ width: 10em; }
-        }
+    input {
+        font-size: 1.1em;
 
-        .fq { .display-inline-block(bottom); }
+        &.query{ width: 15em; }
+        &.location{ width: 10em; }
+    }
 
-        span.hint {
-            display: block;
-            text-align: left;
-            font-size: 0.75em;
-        }
-
-        button { width: 7em; }
+    button {
+        font-size: 1.1em;
+        width: 7em;
     }
 }
 

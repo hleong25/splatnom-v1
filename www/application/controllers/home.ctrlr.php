@@ -8,7 +8,7 @@ class HomeController
         $this->addJqueryUi();
         $this->addCss('home/home.main');
 
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home');
 
         $loc = Util::cookie('location');

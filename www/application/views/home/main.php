@@ -9,26 +9,26 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 ?>
-<div class="pg logo">
+<div class="pg pg_bottom logo">
     <img src="/img/logo.jpg" title="Splatnom logo"/>
 </div>
 <div class="pg pg_bottom search">
-    <form id="searchit" method="get" action="/menu/search">
-        <div class="fq">
-            <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
-            <input class="jq_watermark query" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
-        </div>
-        <div class="fq">
-            <span class="hint">Zip code</span>
-            <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
-        </div>
-        <div class="fq">
-            <button class="button search" type="submit">Search</button>
-        </div>
-    </form>
-    <div id="results">
-    </div>
+<form id="searchit" method="get" action="/menu/search">
+    <label>
+        <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
+        <input class="watermark query" type="text" name="query" placeholder="Search" value="<?php echo $query; ?>"/>
+    </label>
+    <label>
+        <span class="hint">Zip code</span>
+        <input class="watermark location" type="text" name="location" placeholder="Zip code" value="<?php echo $location; ?>"/>
+    </label>
+    <label>
+        <span class="hint">&nbsp;</span>
+        <button class="button search" type="submit">Search</button>
+    </label>
+</form>
 </div>
+<?php /*
 <div class="pg pg_bottom new_menus">
 <?php if (empty($ready_menus)): ?>
     <span>No menus added...</span>
@@ -57,6 +57,7 @@ extract($params, EXTR_SKIP);
     <?php endforeach; ?>
 <?php endif; ?>
 </div>
+*/?>
 <?php if ($is_metadata && !empty($need_metadata)) : ?>
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>

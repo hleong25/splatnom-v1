@@ -16,6 +16,11 @@ function init()
         })
     ;
 
+    form.find('.watermark').each(function(){
+        var $this = $(this);
+        $this.watermark($this.attr('placeholder'));
+    });
+
     form.find('input[name="query"]').focus();
 
     $('div.metadata a.menu')
