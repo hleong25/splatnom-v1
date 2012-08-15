@@ -98,6 +98,7 @@ a.button, button.button, input.button, .ui-button {
   padding:0 !important;
   color:#2E6E9E;
 }
+div.main { margin-bottom:5em; }
 form#login {
   width:15em;
   font-size:1.1em;
@@ -107,17 +108,27 @@ form#login div#msg {
   font-size:0.8em;
   font-weight:bold;
   text-align:center;
+  margin-top:1em;
   margin-bottom:1em;
 }
 form#login div#msg span { color:red; }
-form#login div.help {
-  text-align:right;
-  font-size:0.6em;
-  margin:0.3em 0 0.5em;
+form#login label {
+  width:inherit;
+  margin-bottom:0.5em;
+  display:-moz-inline-stack;
+  vertical-align:bottom;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
 }
-form#login div.txtbox input.txt {
-  width:100%;
+form#login span.hint { font-size:0.75em; }
+form#login input {
   font-size:1.1em;
+  width:inherit;
+}
+form#login a.forgot {
+  font-size:0.6em;
+  float:right;
 }
 form#login div.action { text-align:center; }
 form#login div.action button.button {

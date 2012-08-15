@@ -1,39 +1,50 @@
 @import '../global.less';
 
+div.main {
+    margin-bottom: 5em;
+}
+
 form#login {
+    width: 15em;
+    font-size: 1.1em;
+    margin: 0 auto;
 
-        width: 15em;
+    div#msg {
+        font-size: 0.8em;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 1em;
+        margin-bottom: 1em;
+
+        span { color: red; }
+    }
+
+    label {
+        .display-inline-block(bottom);
+        width: inherit;
+        margin-bottom: 0.5em;
+    }
+
+    span.hint {
+        font-size: 0.75em;
+    }
+
+    input {
         font-size: 1.1em;
-        margin: 0 auto;
+        width: inherit;
+    }
 
-        div#msg {
-            font-size: 0.8em;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 1em;
+    a.forgot {
+        font-size: 0.6em;
+        float: right;
+    }
 
-            span { color: red; }
+    div.action {
+        text-align: center;
+
+        button.button {
+            padding-left: 1.5em !important;
+            padding-right: 1.5em !important;
         }
-
-        div.help {
-            text-align: right;
-            font-size: 0.6em;
-            margin: 0.3em 0 0.5em;
-        }
-
-        div.txtbox {
-            input.txt {
-                width: 100%;
-                font-size: 1.1em;
-            }
-        }
-
-        div.action {
-            text-align: center;
-
-            button.button {
-                padding-left: 1.5em !important;
-                padding-right: 1.5em !important;
-            }
-        }
+    }
 }

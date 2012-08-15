@@ -10,13 +10,15 @@ class LoginController
         $this->addCss('login/login.main');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login');
 
         $goto_url = '';
         if (!empty($_GET['goto']))
             $goto_url = $_GET['goto'];
-        $this->set('goto_url', 'goto='.$goto_url);
+
+        if (!empty($goto_url))
+            $this->set('goto_url', 'goto='.$goto_url);
 
         if (!empty($_POST))
         {

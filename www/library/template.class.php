@@ -62,7 +62,7 @@ class Template
         {
             global $get_url;
 
-            $goto_url = '&goto='.$get_url;
+            $goto_url = ($get_url != 'login/main') ? '&goto='.$get_url : '';
 
             // not logged in
             $links[] = array('css' => 'nav new_user', 'lbl' => 'register', 'lnk' => 'user/register');
