@@ -28,11 +28,10 @@ a:visited {
 }
 
 div#header {
-    padding-top: 0.5em;
-    //background-color: #990000;
     background-color: @clr_default_grey;
     color: white;
-    padding-bottom: 0.8em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
     margin-bottom: 1em;
 
     a:link,
@@ -42,6 +41,8 @@ div#header {
 
     div#nav {
         text-align: right;
+        margin-bottom: -1em;
+        _margin-bottom: 0em; /* no margin-bottom for IE */
 
         a.nav {
             font-size: 0.8em;
@@ -49,10 +50,10 @@ div#header {
     }
 
     div.welcome {
-
-        p.title { font-size: 2em; }
-
-        p.desc { font-size: 0.8em; }
+        img {
+            margin: 0px;
+        }
+        div.nologo { height: 48px; }
     }
 }
 

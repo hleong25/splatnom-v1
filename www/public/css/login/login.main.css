@@ -32,17 +32,21 @@ a:link, a:visited {
   color:black;
 }
 div#header {
-  padding-top:0.5em;
   background-color:#5f5b5a;
   color:white;
-  padding-bottom:0.8em;
+  padding-top:0.5em;
+  padding-bottom:0.5em;
   margin-bottom:1em;
 }
 div#header a:link, div#header a:visited { color:white; }
-div#header div#nav { text-align:right; }
+div#header div#nav {
+  text-align:right;
+  margin-bottom:-1em;
+  _margin-bottom:0em;
+}
 div#header div#nav a.nav { font-size:0.8em; }
-div#header div.welcome p.title { font-size:2em; }
-div#header div.welcome p.desc { font-size:0.8em; }
+div#header div.welcome img { margin:0px; }
+div#header div.welcome div.nologo { height:48px; }
 div.myaddthis {
   width:15em;
   margin-bottom:1em;
@@ -121,10 +125,10 @@ form#login label {
   zoom:1;
   *display:inline;
 }
-form#login span.hint { font-size:0.75em; }
+form#login .hint { font-size:0.75em; }
 form#login input {
   font-size:1.1em;
-  width:inherit;
+  width:100%;
 }
 form#login a.forgot {
   font-size:0.6em;
