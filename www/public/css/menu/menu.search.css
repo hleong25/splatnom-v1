@@ -119,10 +119,9 @@ div.search {
   text-align:center;
   margin-bottom:0.8em;
 }
-div.search form#searchit input { font-size:1.1em; }
-div.search form#searchit input.query { width:20em; }
-div.search form#searchit input.location { width:10em; }
-div.search form#searchit .fq {
+div.search form#searchit label {
+  text-align:left;
+  margin-right:0.2em;
   display:-moz-inline-stack;
   vertical-align:bottom;
   display:inline-block;
@@ -130,11 +129,16 @@ div.search form#searchit .fq {
   *display:inline;
 }
 div.search form#searchit span.hint {
-  display:block;
-  text-align:left;
   font-size:0.75em;
+  display:block;
 }
-div.search form#searchit button { width:7em; }
+div.search form#searchit input { font-size:1.1em; }
+div.search form#searchit input.query { width:15em; }
+div.search form#searchit input.location { width:10em; }
+div.search form#searchit button {
+  font-size:1.1em;
+  width:7em;
+}
 div.found { margin:0.8em 0; }
 div.found li {
   vertical-align:top;

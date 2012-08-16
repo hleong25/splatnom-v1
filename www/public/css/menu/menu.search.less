@@ -7,23 +7,28 @@ div.search
     margin-bottom: 0.8em;
 
     form#searchit {
+        label {
+            .display-inline-block(bottom);
+            text-align: left;
+            margin-right: 0.2em;
+        }
+
+        span.hint {
+            font-size: 0.75em;
+            display: block;
+        }
+
         input {
             font-size: 1.1em;
 
-            &.query{ width: 20em; }
-
+            &.query{ width: 15em; }
             &.location{ width: 10em; }
         }
 
-        .fq { .display-inline-block(bottom); }
-
-        span.hint {
-            display: block;
-            text-align: left;
-            font-size: 0.75em;
+        button {
+            font-size: 1.1em;
+            width: 7em;
         }
-
-        button { width: 7em; }
     }
 
 }

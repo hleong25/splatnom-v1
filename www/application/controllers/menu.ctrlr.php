@@ -404,7 +404,7 @@ class MenuController
         $this->addCss('menu/menu.search');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.search');
 
         $this->set('location', $location);

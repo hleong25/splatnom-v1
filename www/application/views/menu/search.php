@@ -13,17 +13,18 @@ extract($params, EXTR_SKIP);
 <div class="pg">
     <div class="search">
         <form id="searchit" method="get" action="/menu/search">
-            <div class="fq">
+            <label>
                 <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
-                <input class="jq_watermark query" type="text" name="query" title="Search" value="<?php echo $query; ?>"/>
-            </div>
-            <div class="fq">
+                <input class="watermark query" type="text" name="query" placeholder="Search" value="<?php echo $query; ?>"/>
+            </label>
+            <label>
                 <span class="hint">Zip code</span>
-                <input class="jq_watermark location" type="text" name="location" title="Zip code" value="<?php echo $location; ?>"/>
-            </div>
-            <div class="fq">
-                <button class="search" type="submit">Search</button>
-            </div>
+                <input class="watermark location" type="text" name="location" placeholder="Zip code" value="<?php echo $location; ?>"/>
+            </label>
+            <label>
+                <span class="hint">&nbsp;</span>
+                <button class="button search" type="submit">Search</button>
+            </label>
         </form>
     </div>
     <div class="msg">
