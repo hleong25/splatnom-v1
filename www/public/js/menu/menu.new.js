@@ -12,6 +12,10 @@ function init()
 
     $('form#frmNewMenu')
         .submit(form_OnSubmit)
+        .find('.watermark').each(function(){
+            var $this = $(this);
+            $this.watermark($this.attr('placeholder'));
+        })
     ;
 
     $('input:button').button();
@@ -22,8 +26,9 @@ function init()
 function btnAddMore_OnClick()
 {
     var objThis = $(this);
+
     objThis
-        .siblings('div.new_img:last')
+        .siblings('input.file:last')
         .clone()
         .insertBefore(objThis)
     ;

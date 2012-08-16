@@ -125,12 +125,17 @@ div#new_menu div.group_new div.hint {
   font-size:0.8em;
   margin-top:0.3em;
 }
-div#new_menu div.group_new div.new_site { margin-top:0.3em; }
-div#new_menu div.group_new div.new_site input { width:99%; }
-div#new_menu div.group_new div.new_img { margin-top:0.3em; }
-div#new_menu div.group_new div.new_img input {
+div#new_menu div.group_new input.site_menu {
+  margin-top:0.3em;
+  width:99%;
+  font-size:1.1em;
+}
+div#new_menu div.group_new input.file {
+  margin-top:0.3em;
   width:95%;
   *width:100%;
   text-align:left;
+  font-size:1.1em;
 }
+div#new_menu div.group_new input#btnAddMore { display:block; }
 div#new_menu input.button { margin-top:1em; }

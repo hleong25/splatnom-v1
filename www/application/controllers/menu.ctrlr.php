@@ -8,7 +8,7 @@ class MenuController
         $this->addCss('menu/menu.new');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.new');
 
         $user_id = Util::getUserId();

@@ -32,23 +32,24 @@ div#new_menu {
             margin-top: 0.3em;
         }
 
-        div.new_site {
+        input.site_menu {
             margin-top: 0.3em;
-
-            input { width: 99%; }
+            width: 99%;
+            font-size: 1.1em;
         }
 
-        div.new_img {
+        input.file {
             margin-top: 0.3em;
+            width: 95%;
+            *width: 100%; // for IE only
+            text-align: left;
+            font-size: 1.1em;
+        }
 
-            input {
-                width: 95%;
-                *width: 100%;
-                text-align: left;
-            }
+        input#btnAddMore {
+            display: block;
         }
     }
-
 
     input.button {
         margin-top: 1em;

@@ -29,40 +29,21 @@ extract($params, EXTR_SKIP);
     <form id="frmNewMenu" enctype="multipart/form-data" method="post" action="/menu/new">
         <div class="group_new">
             <div class="header">Web urls</div>
-            <div class="new_site">
-                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site1"/>
-            </div>
-            <div class="new_site">
-                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site2"/>
-            </div>
-            <div class="new_site">
-                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site3"/>
-            </div>
-            <div class="new_site">
-                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site4"/>
-            </div>
-            <div class="new_site">
-                <input class="jq_watermark site_menu" type="text" name="url[]" title="Site5"/>
-            </div>
+            <div class="hint">Include sites that are associated with this menu.</div>
+            <input class="watermark site_menu" type="text" name="url[]" placeholder="Site"/>
+            <input class="watermark site_menu" type="text" name="url[]" placeholder="Site"/>
+            <input class="watermark site_menu" type="text" name="url[]" placeholder="Site"/>
+            <input class="watermark site_menu" type="text" name="url[]" placeholder="Site"/>
+            <input class="watermark site_menu" type="text" name="url[]" placeholder="Site"/>
         </div>
         <div class="group_new">
             <div class="header">Upload menus</div>
             <div class="hint">Supported files include: gif, jpg and png.</div>
-            <div class="new_img">
-                <input class="file" type="file" name="imgs[]"/>
-            </div>
-            <div class="new_img">
-                <input class="file" type="file" name="imgs[]"/>
-            </div>
-            <div class="new_img">
-                <input class="file" type="file" name="imgs[]"/>
-            </div>
-            <div class="new_img">
-                <input class="file" type="file" name="imgs[]"/>
-            </div>
-            <div class="new_img">
-                <input class="file" type="file" name="imgs[]"/>
-            </div>
+            <input class="file" type="file" name="imgs[]"/>
+            <input class="file" type="file" name="imgs[]"/>
+            <input class="file" type="file" name="imgs[]"/>
+            <input class="file" type="file" name="imgs[]"/>
+            <input class="file" type="file" name="imgs[]"/>
             <input id="btnAddMore" class="button" type="button" value="Add more"/>
         </div>
         <input class="button" type="submit" value="Submit" />
