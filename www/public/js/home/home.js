@@ -25,8 +25,8 @@ function init()
 
     $('div.metadata a.menu')
         .button()
-        .filter('.edit').on('click', menu_edit).end()
-        .filter('.purge').on('click', menu_purge).end()
+        .find('.edit').on('click', menu_edit).end()
+        .find('.purge').on('click', menu_purge).end()
     ;
 }
 
