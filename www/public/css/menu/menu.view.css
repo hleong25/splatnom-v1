@@ -139,6 +139,8 @@ div.search button {
 }
 div.ismdt { text-align:right; }
 div.biz_info { margin-bottom:0.5em; }
+div.biz_info table { width:100%; }
+div.biz_info td { padding-bottom:0.8em; }
 div.biz_info .row { margin-bottom:0.8em; }
 div.biz_info p { font-size:0.85em; }
 div.biz_info .name {

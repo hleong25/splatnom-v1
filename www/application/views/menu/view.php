@@ -140,25 +140,24 @@ foreach ($info['status'] as $info_status)
 </div>
 
 <div class="pg biz_info">
-    <div class="row">
+<table>
+<tr>
+    <td>
         <p class="name"><a name="info"><?=$info['name']?></a></p>
         <p class="details"><?=nl2br($info['notes'])?></p>
-    </div>
-    <table style="width: 100%;"><?php // fuck it... hack it!?><tr>
+    </td>
+</tr>
+<tr>
     <td style="width: 50%;">
-        <div class="row">
-            <p class="address"><?=nl2br($info['address'])?></p>
-            <p class="phone"><?=nl2br($info['numbers'])?></p>
-        </div>
+        <p class="address"><?=nl2br($info['address'])?></p>
+        <p class="phone"><?=nl2br($info['numbers'])?></p>
     </td>
     <td>
-        <div class="row">
-            <p class="hours"><?=nl2br($info['hours'])?></p>
-        </div>
+        <p class="hours"><?=nl2br($info['hours'])?></p>
     </td>
-    </tr></table>
+</tr>
+</table>
 </div>
-
 
 <div class="pg">
 
