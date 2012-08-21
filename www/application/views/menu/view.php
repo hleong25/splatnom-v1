@@ -142,13 +142,13 @@ foreach ($info['status'] as $info_status)
 <div class="pg biz_info">
 <table>
 <tr>
-    <td>
+    <td class="spacer">
         <p class="name"><a name="info"><?=$info['name']?></a></p>
         <p class="details"><?=nl2br($info['notes'])?></p>
     </td>
 </tr>
 <tr>
-    <td style="width: 50%;">
+    <td class="spacer" style="width: 50%;">
         <p class="address"><?=nl2br($info['address'])?></p>
         <p class="phone"><?=nl2br($info['numbers'])?></p>
     </td>
