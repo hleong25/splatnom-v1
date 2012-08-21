@@ -13,6 +13,33 @@ div.notready {
     text-align: center;
 }
 
+div.search {
+    text-align: center;
+
+    label {
+        .display-inline-block(bottom);
+        text-align: left;
+        margin-right: 0.2em;
+    }
+
+    span.hint {
+        font-size: 0.75em;
+        display: block;
+    }
+
+    input {
+        font-size: 1.1em;
+
+        &.query{ width: 15em; }
+        &.location{ width: 10em; }
+    }
+
+    button {
+        font-size: 1.1em;
+        width: 7em;
+    }
+}
+
 div.ismdt {
     text-align: right;
 }
@@ -23,14 +50,48 @@ div.ismdt {
 
 div.biz_info {
     .menu-sections();
-    div.name { font-size: 2em; }
+    .row {
+        margin-bottom: 0.8em;
+    }
+    p {
+        font-size: 0.85em;
+    }
+    .title {
+    }
+    .name {
+        color: @clr_default_red;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    .details {
+    }
+    .address {
+        .row;
+    }
+    .phone {
+    }
+    .hours {
+    }
+}
+
+div.navbar {
+    border: 1px solid black;
+    width: 15em;
+    height: 15em;
+    float: left;
+}
+
+div.menubody {
+    border: 1px solid black;
+    margin-left: 15.5em;
+    height: 15em;
 }
 
 div.links {
     .menu-sections();
 }
 
-div.navbar {
+div.navbar_old {
     .menu-sections();
 
     border: 1px solid silver;

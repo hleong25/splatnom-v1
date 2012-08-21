@@ -125,6 +125,55 @@ foreach ($info['status'] as $info_status)
 </div>
 <?php endif; ?>
 
+<div class="pg pg_bottom search">
+<form id="searchit" method="get" action="/menu/search">
+    <label><span class="hint">Look for 'fish tacos' or 'Japanese'</span>
+        <input class="watermark query" type="text" name="query" placeholder="Search" value=""/>
+    </label>
+    <label><span class="hint">Zip code</span>
+        <input class="watermark location" type="text" name="location" placeholder="Zip code" value=""/>
+    </label>
+    <label><span class="hint">&nbsp;</span>
+        <button class="button search" type="submit">Search</button>
+    </label>
+</form>
+</div>
+
+<div class="pg biz_info">
+    <div class="row">
+        <p class="name"><a name="info"><?=$info['name']?></a></p>
+        <p class="details"><?=nl2br($info['notes'])?></p>
+    </div>
+    <table style="width: 100%;"><?php // fuck it... hack it!?><tr>
+    <td style="width: 50%;">
+        <div class="row">
+            <p class="address"><?=nl2br($info['address'])?></p>
+            <p class="phone"><?=nl2br($info['numbers'])?></p>
+        </div>
+    </td>
+    <td>
+        <div class="row">
+            <p class="hours"><?=nl2br($info['hours'])?></p>
+        </div>
+    </td>
+    </tr></table>
+</div>
+
+
+<div class="pg">
+
+<div class="navbar">
+navbar
+</div>
+
+<div class="menubody">
+menubody
+</div>
+
+</div>
+
+<?php return; ?>
+
 <div class="pg">
 <?php if ($is_metadata): ?>
 <div class="ismdt">

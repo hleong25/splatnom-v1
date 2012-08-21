@@ -116,17 +116,56 @@ div.notready {
   font-weight:bold;
   text-align:center;
 }
+div.search { text-align:center; }
+div.search label {
+  text-align:left;
+  margin-right:0.2em;
+  display:-moz-inline-stack;
+  vertical-align:bottom;
+  display:inline-block;
+  zoom:1;
+  *display:inline;
+}
+div.search span.hint {
+  font-size:0.75em;
+  display:block;
+}
+div.search input { font-size:1.1em; }
+div.search input.query { width:15em; }
+div.search input.location { width:10em; }
+div.search button {
+  font-size:1.1em;
+  width:7em;
+}
 div.ismdt { text-align:right; }
 div.biz_info { margin-bottom:0.5em; }
-div.biz_info div.name { font-size:2em; }
-div.links { margin-bottom:0.5em; }
+div.biz_info .row { margin-bottom:0.8em; }
+div.biz_info p { font-size:0.85em; }
+div.biz_info .name {
+  color:#b61f24;
+  font-size:1.5em;
+  font-weight:bold;
+}
+div.biz_info .address { margin-bottom:0.8em; }
 div.navbar {
+  border:1px solid black;
+  width:15em;
+  height:15em;
+  float:left;
+}
+div.menubody {
+  border:1px solid black;
+  margin-left:15.5em;
+  height:15em;
+}
+div.links { margin-bottom:0.5em; }
+div.navbar_old {
   border:1px solid silver;
   text-align:center;
   padding:5px 3px;
   margin-bottom:0.5em;
 }
-div.navbar div.nav_item {
+div.navbar_old div.nav_item {
   font-size:0.8em;
   display:-moz-inline-stack;
   vertical-align:baseline;
@@ -141,18 +180,10 @@ div.stickynavbar {
   top:0px;
   background-color:white;
   z-index:1;
-  border:1px solid silver;
-  text-align:center;
-  padding:5px 3px;
-  margin-bottom:0.5em;
-}
-div.stickynavbar div.nav_item {
-  font-size:0.8em;
-  display:-moz-inline-stack;
-  vertical-align:baseline;
-  display:inline-block;
-  zoom:1;
-  *display:inline;
+  border:1px solid black;
+  width:15em;
+  height:15em;
+  float:left;
 }
 * html div.stickynavbar {
   position:absolute;
