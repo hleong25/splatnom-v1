@@ -14,6 +14,7 @@ $params_info = array(
 $params = array(
     'dbg' => array(),
     'is_metadata' => false,
+    'location' => '',
     'info' => $params_info,
     'links' => array(),
     'mdts' => array(),
@@ -118,26 +119,25 @@ foreach ($info['status'] as $info_status)
         $curr_status = $status;
 }
 ?>
-
-<?php if (!$is_ready): ?>
-<div class="notready">
-    <span>The status of this menu is '<?=$curr_status?>'.<br/>Just like the cake... this menu is a lie.</span>
-</div>
-<?php endif; ?>
-
 <div class="pg pg_bottom search">
 <form id="searchit" method="get" action="/menu/search">
     <label><span class="hint">Look for 'fish tacos' or 'Japanese'</span>
         <input class="watermark query" type="text" name="query" placeholder="Search" value=""/>
     </label>
     <label><span class="hint">Zip code</span>
-        <input class="watermark location" type="text" name="location" placeholder="Zip code" value=""/>
+        <input class="watermark location" type="text" name="location" placeholder="Zip code" value="<?=$location?>"/>
     </label>
     <label><span class="hint">&nbsp;</span>
         <button class="button search" type="submit">Search</button>
     </label>
 </form>
 </div>
+
+<?php if (!$is_ready): ?>
+<div class="notready">
+    <span>The status of this menu is '<?=$curr_status?>'.<br/>Just like the cake... this menu is a lie.</span>
+</div>
+<?php endif; ?>
 
 <div class="pg biz_info">
 <table>
@@ -162,11 +162,25 @@ foreach ($info['status'] as $info_status)
 <div class="pg">
 
 <div class="navbar">
-navbar
+    <div class="nav_header">
+        <img src="/img/menu.home.black.gif"/>
+        <span>Our Menus</span>
+    </div>
+<?php foreach ($mdts as $mdt):
+    $section_id = $mdt['section_id'];
+    $section_name = $mdt['name'];
+?>
+    <div class="nav_item">
+        <p>
+            <img src="/img/menu.home.black.gif"/>
+            <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
+        </p>
+    </div>
+<?php endforeach; ?>
 </div>
 
 <div class="menubody">
-menubody
+<p>menubody</p>
 </div>
 
 </div>

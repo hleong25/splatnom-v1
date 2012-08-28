@@ -3,9 +3,17 @@ var js_menu = (function() {
 init();
 
 return {
-    forkit: forkit
+    //forkit: forkit
 };
 
+function init()
+{
+}
+
+
+});
+
+var js_del = (function() {
 function init()
 {
     $('div.group')

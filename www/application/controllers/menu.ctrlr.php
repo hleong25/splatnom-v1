@@ -473,6 +473,12 @@ class MenuController
 
         // it's in the database... let's continue
 
+        $loc = Util::cookie('location');
+        if (!empty($loc))
+        {
+            $this->set('location', $loc);
+        }
+
         $this->set('id', $id);
         $this->set('is_metadata', Util::getPermissions('metadata'));
 

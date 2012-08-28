@@ -67,7 +67,7 @@ div.biz_info {
     .name {
         color: @clr_default_red;
         font-size: 1.5em;
-        font-weight: bold;
+        font-weight: bolder;
     }
     .details {
     }
@@ -81,10 +81,57 @@ div.biz_info {
 }
 
 div.navbar {
-    border: 1px solid black;
+    @bgclr: #d9d7d6;
+    @size: 1.2em;
+
+    border: 2px solid darken(@bgclr, 15%);
     width: 15em;
-    height: 15em;
-    float: left;
+
+    .img_resize(@size)
+    {
+        height: @size;
+        width: @size;
+        max-height: @size;
+        max-width: @size;
+    }
+
+    div.nav_header {
+
+        background-color: @bgclr;
+        border: 1px solid darken(@bgclr, 15%);
+        border-bottom: 3px solid darken(@bgclr, 15%);
+        padding: 0.3em 1em;
+
+        img {
+            .img_resize(@size);
+            padding-right: 0.3em;
+        }
+
+        span {
+            font-size: @size;
+        }
+    }
+
+    div.nav_item {
+        @left_space = 1em;
+        @item_size: @size * 0.85;
+
+        font-size: @item_size;
+        padding: 0.2em 0em 0.2em @left_space;
+
+        //background-color: lighten(yellow, 20%);
+
+        img {
+            .img_resize(@item_size);
+            padding-right: 0.3em;
+            .display-inline-block();
+        }
+
+        p {
+            text-indent: -(@left_space + 0.5em);
+            margin-left: @left_space + 0.5em;
+        }
+    }
 }
 
 div.menubody {
