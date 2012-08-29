@@ -159,30 +159,91 @@ foreach ($info['status'] as $info_status)
 </table>
 </div>
 
-<div class="pg">
-
-<div class="navbar">
-    <div class="nav_header">
-        <img src="/img/menu.home.black.gif"/>
-        <span>Our Menus</span>
+<div class="pg themenu">
+<table><tbody><tr>
+<td class="sidebar">
+    <div class="navbar">
+        <div class="nav_header">
+            <img src="/img/menu.home.black.gif"/>
+            <span>Our Menus</span>
+        </div>
+        <?php foreach ($mdts as $mdt):
+            $section_id = $mdt['section_id'];
+            $section_name = $mdt['name'];
+        ?>
+        <div class="nav_item">
+            <p>
+                <img src="/img/menu.forkit.light.gif"/>
+                <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
+            </p>
+        </div>
+        <?php endforeach; ?>
     </div>
+</td>
+<td class="menu">
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];
     $section_name = $mdt['name'];
+    $slug['section'] = Util::slugify($section_name);
+
+    $base_section_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}";
+    $section_image_url = "/menu/images/{$base_section_url}";
 ?>
-    <div class="nav_item">
-        <p>
-            <img src="/img/menu.home.black.gif"/>
-            <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
-        </p>
+    <div class="menu">
+        <a name="<?=$section_id?>"/>
+        <div class="menu_header">
+            <p class="name"><?=$section_name?></p>
+            <p class="link_imgs clearfix">View All</p>
+        </div>
+        <p class="menu_notes"><?=nl2br($mdt['notes'])?></p>
+        <div class="items">
+        <?php foreach ($mdt['items'] as $item):
+
+            $metadata_id = $item['metadata_id'];
+            $metadata_label = $item['label'];
+            $slug['item'] = Util::slugify($metadata_label);
+
+            // notes
+            $notes_css = empty($item['notes']) ? 'empty' : '';
+
+            // fork its
+            $forkit_msg = 'Stick a fork in it if you like this item!';
+            list($forkit_url, $forkit_css, $forkit_cnt) = forkit_helper($forkits, $id, $section_id, $metadata_id);
+            if ($forkit_cnt['after'] < 1)
+                $forkit_cnt['after'] = '';
+
+            // item links
+            $base_item_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}/{$metadata_id}-{$slug['item']}";
+            $item_image_url = "/menu/images/{$base_item_url}";
+
+            // if spicy
+            $img_spicy = '';
+            if ($item['is_spicy'])
+                $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
+
+            $item_notes = nl2br($item['notes']);
+        ?>
+            <div class="group clearfix">
+                <div class="g_panel">
+                    <span class="item_imgs"><img src="/img/menu.imgs.light.gif"/></span>
+                    <span class="forkit"><img src="/img/menu.forkit.light.gif"/></span>
+                </div>
+                <div class="g_info">
+                    <p class="g_info1">
+                        <span class="label"><a href="<?=$item_image_url?>"><?=$metadata_label?></a><?=$img_spicy?></span>
+                        <span class="price clearfix"><?=$item['price']?></span>
+                    </p>
+                    <div class="g_info2">
+                        <div class="notes <?=$notes_css?>"><?=$item_notes?></div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; //foreach ($mdt['items'] as $item) ?>
+        </div>
     </div>
-<?php endforeach; ?>
-</div>
-
-<div class="menubody">
-<p>menubody</p>
-</div>
-
+<?php endforeach; // foreach ($mdts as $mdt) ?>
+</td>
+</tr></tbody></table>
 </div>
 
 <?php return; ?>
