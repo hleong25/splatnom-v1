@@ -1,5 +1,5 @@
 /* Modernizr 2.6.1 (Custom Build) | MIT & BSD
- * Build: http://modernizr.com/download/#-input
+ * Build: http://modernizr.com/download/#-input-cssclasses
  */
 ;
 
@@ -11,6 +11,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
     Modernizr = {},
 
+    enableClasses = true,
 
     docElement = document.documentElement,
 
@@ -179,6 +180,9 @@ window.Modernizr = (function( window, document, undefined ) {
 
     Modernizr._version      = version;
 
+    docElement.className = docElement.className.replace(/(^|\s)no-js(\s|$)/, '$1$2') +
+
+                                                    (enableClasses ? ' js ' + classes.join(' ') : '');
 
     return Modernizr;
 

@@ -8,10 +8,13 @@ return {
 
 function init()
 {
-    $('form#login').find('.watermark').each(function() {
-        var $this = $(this);
-        $this.watermark($this.attr('placeholder'));
-    });
+    if (!Modernizr.input.placeholder)
+    {
+        $('.watermark').each(function() {
+            var $this = $(this);
+            $this.watermark($this.attr('placeholder'));
+        });
+    }
 
     $('form#login input#username').focus();
 

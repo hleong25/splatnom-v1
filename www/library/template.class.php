@@ -46,8 +46,9 @@ class Template
 
         $this->set('myurl', $get_url);
 
-        // add jquery
-        $this->addJs('jquery-1.8.0.min', WEB_PATH_OTHER);
+        // add default javascripts
+        $this->addJs('jquery-1.8.1.min', WEB_PATH_OTHER);
+        $this->addJs('modernizr.min', WEB_PATH_OTHER);
 
         $this->setupNav();
     }

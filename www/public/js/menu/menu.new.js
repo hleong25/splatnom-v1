@@ -12,11 +12,15 @@ function init()
 
     $('form#frmNewMenu')
         .submit(form_OnSubmit)
-        .find('.watermark').each(function(){
+    ;
+
+    if (!Modernizr.input.placeholder)
+    {
+        $('.watermark').each(function(){
             var $this = $(this);
             $this.watermark($this.attr('placeholder'));
-        })
-    ;
+        });
+    }
 
     $('input:button').button();
     $('input:submit').button();
