@@ -8,10 +8,16 @@ return {
 
 function init()
 {
+    if (!Modernizr.input.placeholder)
+    {
+        $('.watermark').each(function(){
+            var $this = $(this);
+            $this.watermark($this.attr('placeholder'));
+        });
+    }
 }
 
-
-});
+})();
 
 var js_del = (function() {
 function init()
@@ -119,4 +125,4 @@ function scrollToLink()
     });
 }
 
-})();
+});

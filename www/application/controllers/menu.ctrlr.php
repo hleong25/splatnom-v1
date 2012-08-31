@@ -468,6 +468,7 @@ class MenuController
 
         $this->addJqueryUi();
 
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.view');
         $this->addCss('menu/menu.view');
 
