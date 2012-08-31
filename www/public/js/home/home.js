@@ -18,7 +18,7 @@ function init()
 
     if (!Modernizr.input.placeholder)
     {
-        form.find('.watermark').each(function(){
+        $('.watermark').each(function(){
             var $this = $(this);
             $this.watermark($this.attr('placeholder'));
         });
