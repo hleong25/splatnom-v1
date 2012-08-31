@@ -15,8 +15,71 @@ function init()
             $this.watermark($this.attr('placeholder'));
         });
     }
+
+    $('.button').button();
+
+    sticky_nav();
+
+    show_section();
 }
 
+function sticky_nav()
+{
+    var isMobile = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/);
+
+    if (isMobile)
+        return;
+
+    var $window = $(window);
+    var $nav = $('.navbar');
+    var nav_top = $nav.offset().top;
+
+    $window.scroll(function() {
+        if ($window.scrollTop() > nav_top)
+        {
+            if(!$nav.hasClass('fixed'))
+            {
+                $nav.addClass('fixed');
+            }
+        }
+        else
+        {
+            if($nav.hasClass('fixed'))
+            {
+                $nav.removeClass('fixed');
+            }
+        }
+    });
+}
+
+function show_section()
+{
+    var $menu_sections = $('td.menu div.menu');
+
+    $('a.nav_item').click(function(elem){
+        var section_id = $(this).attr('href').substr(1);
+
+        if (section_id == 0)
+        {
+            $menu_sections.show();
+        }
+        else
+        {
+            $menu_sections
+                .hide()
+                .each(function() {
+                    var $this = $(this);
+                    if ($this.hasClass(section_id))
+                    {
+                        $this.show();
+                    }
+                })
+            ;
+        }
+
+        elem.preventDefault();
+    });
+}
 })();
 
 var js_del = (function() {

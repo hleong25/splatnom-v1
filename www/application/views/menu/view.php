@@ -159,13 +159,22 @@ foreach ($info['status'] as $info_status)
 </table>
 </div>
 
+<?php if ($is_metadata): ?>
+<div class="pg ismdt">
+    <a class="button" href="/export/menus/<?=$id?>">export menu</a>
+    <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
+</div>
+<?php endif; //if ($is_metadata) ?>
+
 <div class="pg themenu">
 <table><tbody><tr>
 <td class="sidebar">
     <div class="navbar">
         <div class="nav_header">
-            <img src="/img/menu.home.black.gif"/>
-            <span>Our Menus</span>
+            <a class="nav_item" href="#0">
+                <img src="/img/menu.home.black.gif"/>
+                <span>Our Menus</span>
+            </a>
         </div>
         <?php foreach ($mdts as $mdt):
             $section_id = $mdt['section_id'];
@@ -189,7 +198,7 @@ foreach ($info['status'] as $info_status)
     $base_section_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}";
     $section_image_url = "/menu/images/{$base_section_url}";
 ?>
-    <div class="menu">
+    <div class="menu <?=$section_id?>">
         <a name="<?=$section_id?>"/>
         <div class="menu_header">
             <p class="name"><?=$section_name?></p>

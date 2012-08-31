@@ -40,10 +40,6 @@ div.search {
     }
 }
 
-div.ismdt {
-    text-align: right;
-}
-
 .menu-sections() {
     margin-bottom: 0.5em;
 }
@@ -80,19 +76,35 @@ div.biz_info {
     }
 }
 
+div.ismdt {
+    margin-bottom: 1em;
+}
+
+@sidebar_width: 15em;
+@sidebar_padding: 0.5em;
+
 div.themenu {
+
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    table {
+        width: 100%;
+        border-spacing: 5em;
+    }
+
     tr {
         width: 100%;
     }
-
-    @sidebar_width: 15em;
 
     td.sidebar {
     }
 
     td.menu {
         width: @g_max_page_width_em - @sidebar_width;
-        padding-left: 0.5em;
+        padding-left: @sidebar_padding;
+
+        vertical-align: top;
     }
 }
 
@@ -104,11 +116,17 @@ div.themenu {
     max-width: @size;
 }
 
+div.fixed { // sticky nav does not work on IE
+    position: fixed;
+    top: 0;
+}
+
 div.navbar {
     @bgclr: #d9d7d6;
     @size: 1.2em;
 
     border: 2px solid darken(@bgclr, 15%);
+    width: @sidebar_width;
 
     div.nav_header {
 
