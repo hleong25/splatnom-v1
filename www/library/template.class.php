@@ -239,7 +239,10 @@ class Template
             $cache = $less_fname;
         }
 
-        $new_cache = lessc::cexecute($cache);
+        $lessc = new lessc;
+        $lessc->setFormatter('compressed');
+
+        $new_cache = $lessc->cachedCompile($cache);
         if (!is_array($cache) || $new_cache['updated'] > $cache['updated'])
         {
             //Util::logit("CSS cache is old, replacing it: $css_fname");
