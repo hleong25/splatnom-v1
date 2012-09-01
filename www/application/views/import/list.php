@@ -11,15 +11,27 @@ extract($params, EXTR_SKIP);
 <div class="pg">
     <div class="local">
         <form id="import_config" method="post" action="/import/local">
-            <input class="jq_watermark txtLocalFile" type="text" title="Full path of local file" name="local_file" value="<?=$local_file?>"/>
-            <button class="button" type="submit">Import local file!</button>
+            <label>
+                <span class="hint">Full path of local file</span>
+                <input class="watermark txtLocalFile" type="text" placeholder="Full path of local file" name="local_file" value="<?=$local_file?>"/>
+            </label>
+            <label>
+                <span class="hint">&nbsp;</span>
+                <button class="button" type="submit">Import local file!</button>
+            </label>
         </form>
     </div>
     <hr/>
     <div class="remote">
         <form id="import_config" method="get" action="/<?=$myurl?>">
-            <input class="jq_watermark txtRemoteSite" type="text" title="Remote site to grab menus, ie. www.splatnom.com" name="remote_site" value="<?=$remote_site?>"/>
-            <button class="button" type="submit">Get remote list!</button>
+            <label>
+                <span class="hint">Remote site to grab menus, ie. www.splatnom.com</span>
+                <input class="watermark txtRemoteSite" type="text" placeholder="Remote site to grab menus, ie. www.splatnom.com" name="remote_site" value="<?=$remote_site?>"/>
+            </label>
+            <label>
+                <span class="hint">&nbsp;</span>
+                <button class="button" type="submit">Get remote list!</button>
+            </label>
         </form>
         <br/>
         <?php if (!empty($remote_menus)): ?>

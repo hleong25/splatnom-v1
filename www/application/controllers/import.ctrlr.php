@@ -19,7 +19,7 @@ class ImportController
         $this->addCss('import/import.list');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('import/import.list');
 
         $import = $this->Import;

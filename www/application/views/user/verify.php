@@ -8,13 +8,21 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
-    <span>To verify your account, please login.</span>
+    <p>To verify your account, please login.</p>
     <form id="new_user" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>">
-        <input class="jq_watermark username" type="text" name="username" title="Username" value="<?php echo $username; ?>"/>
+        <label>
+            <span class="hint">Username</span>
+            <input class="watermark txt username" type="text" name="username" placeholder="Username" value="<?php echo $username; ?>"/>
+        </label>
+        <label>
+            <span class="hint">Password</span>
+            <input class="watermark txt password" type="password" name="password" placeholder="Password" value=""/>
+        </label>
         <br/>
-        <input class="jq_watermark password" type="password" name="password" title="Password" value=""/>
-        <br/>
-        <input class="button" type="submit" value="Submit!" />
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Submit!" />
+        </label>
     </form>
 </div>
 <?php

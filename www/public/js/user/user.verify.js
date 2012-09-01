@@ -1,4 +1,4 @@
-var js_login = (function() {
+var js_user = (function() {
 
 init();
 
@@ -10,17 +10,11 @@ function init()
 {
     if (!Modernizr.input.placeholder)
     {
-        $('.watermark').each(function(){
+        $('.watermark').each(function() {
             var $this = $(this);
             $this.watermark($this.attr('placeholder'));
         });
     }
-
-    $('form input.txt:first').focus();
-
-    $('input.button')
-        .button()
-    ;
 }
 
 })();

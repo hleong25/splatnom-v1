@@ -149,7 +149,7 @@ class LoginController
         $this->addCss('login/login.reset');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login.reset');
 
         $username = '';
