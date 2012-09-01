@@ -121,16 +121,38 @@ div.fixed { // sticky nav does not work on IE
     top: 0;
 }
 
+.rounded-corner-top(@radius)
+{
+    -moz-border-radius-topleft: @radius;
+    -moz-border-radius-topright: @radius;
+    -webkit-border-top-left-radius: @radius;
+    -webkit-border-top-right-radius: @radius;
+    border-top-left-radius: @radius;
+    border-top-right-radius: @radius;
+}
+
+.rounded-corner-top-outer()
+{
+    .rounded-corner-top(0.3em);
+}
+
+.rounded-corner-top-inner()
+{
+    //.rounded-corner-top(0.1em);
+}
+
 div.navbar {
     @bgclr: #d9d7d6;
     @size: 1.2em;
 
+    .rounded-corner-top-outer();
     border: 2px solid darken(@bgclr, 15%);
     width: @sidebar_width;
 
     div.nav_header {
 
         background-color: @bgclr;
+        .rounded-corner-top-inner();
         border: 1px solid darken(@bgclr, 15%);
         border-bottom: 3px solid darken(@bgclr, 15%);
         padding: 0.3em 1em;
@@ -169,12 +191,14 @@ div.menu {
     @bgclr: @clr_default_red;
     @size: 1.2em;
 
+    .rounded-corner-top-outer();
     border: 2px solid darken(@bgclr, 15%);
     padding-bottom: 0.5em;
     margin-bottom: 0.5em;
 
     div.menu_header {
         background-color: @bgclr;
+        .rounded-corner-top-inner();
         border: 1px solid darken(@bgclr, 15%);
         border-bottom: 3px solid darken(@bgclr, 15%);
         padding: 0.3em 1em;
