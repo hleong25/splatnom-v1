@@ -35,7 +35,7 @@ class AdminController
     {
         $this->addCss('admin/admin.find.user');
 
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('admin/admin.find.user');
 
         $this->set('query_user', '%');
@@ -106,8 +106,8 @@ class AdminController
         }
 
         $this->addCss('admin/admin.pending.menu');
-
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('admin/admin.pending.menu');
 
         $menu = new MenuModel();
         $menu_data = $menu->getPendingMenu($id);
@@ -293,6 +293,7 @@ class AdminController
             'admin/admin.updatecss',
             'admin/admin.user.profile',
             'export/export.list',
+            'home/home.about',
             'home/home.feedback',
             'home/home.gmapmenu',
             'home/home.main',
@@ -311,6 +312,7 @@ class AdminController
             'menu/menu.view',
             'user/user.profile',
             'user/user.register',
+            'user/user.verify',
         );
 
         if (!empty($_POST))

@@ -33,7 +33,10 @@ extract($params, EXTR_SKIP);
         $chk = $val ? 'checked' : '';
 
         echo<<<EOHTML
-            <input class="chkPerm" type="checkbox" name="perms[]" value="{$key}" {$chk} /><span class="chkPerm">{$key}</span><br/>
+            <label>
+                <input class="chkPerm" type="checkbox" name="perms[]" value="{$key}" {$chk} />
+                <span class="chkPerm">{$key}</span>
+            </label>
 EOHTML;
     }
 ?>

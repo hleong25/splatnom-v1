@@ -15,8 +15,6 @@ function init()
             $this.watermark($this.attr('placeholder'));
         });
     }
-
-    $('form#search_user input[name="query_user"]').focus();
 }
 
 })();

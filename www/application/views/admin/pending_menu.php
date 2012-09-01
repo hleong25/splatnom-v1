@@ -58,9 +58,18 @@ EOHTML;
     <div class="data">
         <form id="pending" enctype="multipart/form-data" method="post" action="/<?php echo $myurl; ?>" >
             <input type="hidden" name="action" value="search" />
-            <input class="jq_watermark" type="textbox" name="name" title="Name" value="<?php echo $search_arg['name']; ?>" />
-            <input class="jq_watermark" type="textbox" name="location" title="Location" value="<?php echo $search_arg['location']; ?>" />
-            <input class="button" type="submit" value="Submit"/>
+            <label>
+                <span class="hint">Name</span>
+                <input class="watermark" type="textbox" name="name" placeholder="Name" value="<?php echo $search_arg['name']; ?>" />
+            </label>
+            <label>
+                <span class="hint">Location</span>
+                <input class="watermark" type="textbox" name="location" placeholder="Location" value="<?php echo $search_arg['location']; ?>" />
+            </label>
+            <label>
+                <span class="hint">&nbsp;</span>
+                <input class="button" type="submit" value="Submit"/>
+            </label>
         </form>
     </div>
     <div class="search">
