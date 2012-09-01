@@ -66,12 +66,15 @@ function show_section()
         else
         {
             $menu_sections
-                .hide()
                 .each(function() {
                     var $this = $(this);
                     if ($this.hasClass(section_id))
                     {
                         $this.show();
+                    }
+                    else
+                    {
+                        $this.hide();
                     }
                 })
             ;

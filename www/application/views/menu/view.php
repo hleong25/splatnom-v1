@@ -171,10 +171,8 @@ foreach ($info['status'] as $info_status)
 <td class="sidebar">
     <div class="navbar">
         <div class="nav_header">
-            <a class="nav_item" href="#0">
-                <img src="/img/menu.home.black.gif"/>
-                <span>Our Menus</span>
-            </a>
+            <img src="/img/menu.home.black.gif"/>
+            <a class="nav_item" href="#0"><span>Our Menus</span></a>
         </div>
         <?php foreach ($mdts as $mdt):
             $section_id = $mdt['section_id'];
