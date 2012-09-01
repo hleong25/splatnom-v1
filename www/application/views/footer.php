@@ -2,7 +2,7 @@
 <div id="footer" class="pg">
     <div class="links">
         <a href="/home/gmapmenu">map menus</a>
-        <a href="/home/feedback">feeback</a>
+        <a href="/home/feedback">feedback</a>
     </div>
 </div>
 </body>
