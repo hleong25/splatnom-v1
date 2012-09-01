@@ -220,7 +220,7 @@ class UserController
         }
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark', WEB_PATH_OTHER);
         $this->addJs('user/user.profile');
 
         $this->addCss('user/user.profile');

@@ -15,12 +15,18 @@ extract($params, EXTR_SKIP);
 <div class="info">
     <span>Hi <?=$user_info['username']?>!</span>
 </div>
-<div class="invite">
     <form id="invite" method="post" action="/user/invite">
-        <input type="text" class="jq_watermark" name="friend" title="Friend's email"/>
-        <input class="button" type="submit" value="Invite a friend!"/>
-    </form>
+<div class="invite">
+        <label>
+            <span class="hint">Friend's Email</span>
+            <input type="text" class="watermark" name="friend" placeholder="Friend's email"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Invite a friend!"/>
+        </label>
 </div>
+    </form>
 <div class="menus">
     <div class="pending">
         <?php if(!empty($pending_menus)): ?>
