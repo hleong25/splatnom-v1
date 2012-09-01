@@ -15,28 +15,58 @@ extract($params, EXTR_SKIP);
 ?>
 <div class="pg">
     <form id="byzip" enctype="multipart/form-data" method="get" action="/admin/location/zip">
-        <input class="jq_watermark" type="text" name="zip" title="Zip code" value="<?php echo $q_zip; ?>"/>
-        <input class="button" type="submit" value="Search zip code" />
+        <label>
+            <span class="hint">Zip code</span>
+            <input class="watermark" type="text" name="zip" placeholder="Zip code" value="<?php echo $q_zip; ?>"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Search zip code" />
+        </label>
     </form>
 </div>
 <div class="pg">
     <form id="bycitystate" enctype="multipart/form-data" method="get" action="/admin/location/citystate">
-        <input class="jq_watermark" type="text" name="citystate" title="City, State" value="<?php echo $q_citystate; ?>"/>
-        <input class="button" type="submit" value="Search city/state" />
+        <label>
+            <span class="hint">City, State</span>
+            <input class="watermark" type="text" name="citystate" placeholder="City, State" value="<?php echo $q_citystate; ?>"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Search city/state" />
+        </label>
     </form>
 </div>
 <div class="pg">
     <form id="byaddress" enctype="multipart/form-data" method="get" action="/admin/location/address">
-        <input class="jq_watermark" type="text" name="address" title="Address" value="<?php echo $q_address; ?>"/>
-        <input class="button" type="submit" value="Search by address" /><span> *it really just parses the city/state</span>
+        <label>
+            <span class="hint">Address</span>
+            <input class="watermark" type="text" name="address" placeholder="Address" value="<?php echo $q_address; ?>"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Search by address" /><span> *it really just parses the city/state</span>
+        </label>
     </form>
 </div>
 <div class="pg">
     <form id="bylatlong" enctype="multipart/form-data" method="get" action="/admin/location/latlong">
-        <input class="jq_watermark" type="text" name="lat" title="Latitude" value="<?php echo $q_lat; ?>"/>
-        <input class="jq_watermark" type="text" name="long" title="Longitude" value="<?php echo $q_long; ?>"/>
-        <input class="jq_watermark" type="text" name="radius" title="Radius" value="<?php echo $q_radius; ?>"/>
-        <input class="button" type="submit" value="Search lat/long" />
+        <label>
+            <span class="hint">Latitude</span>
+            <input class="watermark" type="text" name="lat" placeholder="Latitude" value="<?php echo $q_lat; ?>"/>
+        </label>
+        <label>
+            <span class="hint">Longitude</span>
+            <input class="watermark" type="text" name="long" placeholder="Longitude" value="<?php echo $q_long; ?>"/>
+        </label>
+        <label>
+            <span class="hint">Radius</span>
+            <input class="watermark" type="text" name="radius" placeholder="Radius" value="<?php echo $q_radius; ?>"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Search lat/long" />
+        </label>
     </form>
 </div>
 <div class="pg">

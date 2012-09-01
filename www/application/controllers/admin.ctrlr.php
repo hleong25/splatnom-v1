@@ -186,7 +186,8 @@ class AdminController
     {
         $this->addCss('admin/admin.location');
 
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('admin/admin.location');
 
         $param = false;
 
