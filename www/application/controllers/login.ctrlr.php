@@ -61,7 +61,7 @@ class LoginController
         $this->addCss('login/login.forgot');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login.forgot');
 
         if (empty($_POST))

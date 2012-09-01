@@ -11,7 +11,12 @@ extract($params, EXTR_SKIP);
     <p class="help">Oh noes!!! Did you forget your password? I'll help, but you gotta tell me something...</p>
     <br/>
     <form method="post" action="/<?=$myurl?>">
-        <input id="username" class="jq_watermark txt" type="text" title="Username" name="username" value=""/>
+        <label>
+            <span class="hint">Username</span>
+            <input id="username" class="watermark txt" type="text" placeholder="Username" name="username" value=""/>
+        </label>
+        <br/>
+        <br/>
         <input class="button" type="submit" name="resetme" value="Reset me!" />
     </form>
     <span class="err"><?=$err_msg?></span>
