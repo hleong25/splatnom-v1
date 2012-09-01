@@ -10,7 +10,23 @@ function init()
 {
     $('input:submit').button();
 
-    $('form input:first').focus();
+    if (!Modernizr.input.placeholder)
+    {
+        $('.watermark').each(function(){
+            var $this = $(this);
+            $this.watermark($this.attr('placeholder'));
+        });
+    }
+
+    $('.edit').each(function() {
+        var $this = $(this);
+
+        if ($this.val().length == 0)
+        {
+            $this.focus();
+            return false;
+        }
+    });
 }
 
 })();

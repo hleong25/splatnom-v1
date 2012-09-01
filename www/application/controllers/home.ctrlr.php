@@ -35,7 +35,7 @@ class HomeController
         $this->addCss('home/home.feedback');
 
         $this->addJqueryUi();
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home.feedback');
 
         if (empty($_POST))

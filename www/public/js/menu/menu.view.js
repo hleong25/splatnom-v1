@@ -18,7 +18,7 @@ function init()
 
     $('.button').button();
 
-    sticky_nav();
+    //sticky_nav();
 
     show_section();
 }

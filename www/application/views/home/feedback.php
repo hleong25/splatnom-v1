@@ -17,13 +17,22 @@ $feedback_msg = 'How much wood would a woodchuck chuck if a woodchuck could chuc
         <span class="err"><?=$err?></span>
     <?php endif; ?>
     <form method="post" action="/<?=$myurl?>">
-        <input type="text" class="jq_watermark" name="name" title="Who am I talking to?" value="<?=$name?>"/>
-        <br/>
-        <input type="text" class="jq_watermark" name="email" title="Email" value="<?=$email?>"/>
-        <br/>
-        <textarea class="jq_watermark" name="msg" title="<?=$feedback_msg?>"><?=$msg?></textarea>
-        <br/>
-        <input class="button" type="submit" value="Submit" />
+        <label>
+            <span class="hint">Who am I talking to?</span>
+            <input type="text" class="edit watermark" name="name" placeholder="Who am I talking to?" value="<?=$name?>"/>
+        </label>
+        <label>
+            <span class="hint">Email</span>
+            <input type="text" class="edit watermark" name="email" placeholder="Email" value="<?=$email?>"/>
+        </label>
+        <label>
+            <span class="hint">What's on your mind?</span>
+            <textarea class="edit watermark" name="msg" placeholder="What's on your mind?" title="<?=$feedback_msg?>"><?=$msg?></textarea>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Submit" />
+        </label>
     </form>
 <?php else: ?>
     <span>Thanks for the feedback!</span>
