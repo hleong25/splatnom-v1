@@ -157,6 +157,7 @@ class UserController
         }
 
         $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('user/user.verify');
         $this->addCss('user/user.verify');
 
         $this->set('code', $code);
