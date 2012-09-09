@@ -222,9 +222,9 @@ EOQ;
         {
             $query_match =<<<EOQ
                 MAX(MATCH(info.name, info.notes) AGAINST(:match1)) AS info_score,
-                MAX(MATCH(mdt.label) AGAINST(:match2)) AS mdt_score,
+                MAX(MATCH(mdtv_label.value) AGAINST(:match2)) AS mdt_score,
                 MATCH(info.name, info.notes) AGAINST(:match3 IN BOOLEAN MODE) AS info_score_boolean,
-                MATCH(mdt.label) AGAINST(:match4 IN BOOLEAN MODE) AS mdt_score_boolean
+                MATCH(mdtv_label.value) AGAINST(:match4 IN BOOLEAN MODE) AS mdt_score_boolean
 EOQ;
         }
 
@@ -239,6 +239,7 @@ EOQ;
                 INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
                 INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
                 INNER JOIN tblMenuMetadata mdt ON mdt.menu_id = menu.id
+                INNER JOIN tblMenuMetadataValues mdtv_label ON mdt.metadata_id = mdtv_label.metadata_id AND mdtv_label.key = 'label'
                 WHERE info.latitude > {$minLat} AND info.latitude < {$maxLat}
                 AND info.longitude > {$minLong} AND info.longitude < {$maxLong}
                 GROUP BY menu.id

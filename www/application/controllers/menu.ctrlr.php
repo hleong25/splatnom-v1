@@ -69,7 +69,7 @@ class MenuController
 
         $this->addJqueryUi();
         $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
-        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.edit.metadata');
 
         $menu = $this->Menu;
@@ -560,6 +560,7 @@ class MenuController
     {
         $menu = $this->Menu;
         $item = $menu->getMenuItem($menu_id, $section_id, $metadata_id);
+
         if (empty($item))
         {
             $this->redirect("/menu/view/{$menu_id}");

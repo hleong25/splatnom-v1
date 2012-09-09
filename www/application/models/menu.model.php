@@ -685,12 +685,10 @@ EOQ;
         if (!$this->removeUnusedSection($id, $section_ids))
             return false;
 
-        $metadata_ids = array();
-        if (!$this->updateMetadata($id, $datas, $metadata_ids))
+        if ($this->updateMetadata($id, $datas))
+        {
             return false;
-
-        if (!$this->removeUnusedMetadata($id, $metadata_ids))
-            return false;
+        }
 
         $this->commit();
         return true;
@@ -825,189 +823,170 @@ EOQ;
         return true;
     }
 
-    function updateMetadata($id, &$datas, &$metadata_ids)
+    function updateMetadata($id, &$datas)
     {
         $query =<<<EOQ
-            UPDATE tblMenuMetadata
-            SET
-                ordinal = :ordinal,
-                label = :label,
-                price = :price,
-                notes = :notes,
-                is_spicy = :is_spicy
-            WHERE metadata_id = :metadata_id
-            AND menu_id = :menu_id
+            DELETE FROM tblMenuMetadata
+            WHERE menu_id = :menu_id
             AND section_id = :section_id
 EOQ;
 
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
+        $prepareRemoveAllSection = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareRemoveAllSection) return false;
 
         $query =<<<EOQ
-            UPDATE tblMenuMetadata
+            INSERT INTO tblMenuMetadata
             SET
+                menu_id = :menu_id,
+                section_id = :section_id,
                 ordinal = -1
-            WHERE metadata_id = :metadata_id
-            AND menu_id = :menu_id
-            AND section_id = :section_id
 EOQ;
 
-        $prepareHack = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
+        $prepareInsertMdtNewId = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareInsertMdtNewId) return false;
 
-        $insertMetadatas = array();
+        $query =<<<EOQ
+            INSERT INTO tblMenuMetadata
+            SET
+                menu_id = :menu_id,
+                section_id = :section_id,
+                metadata_id = :metadata_id,
+                ordinal = -1
+EOQ;
+
+        $prepareInsertMdt = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareInsertMdt) return false;
+
+        $query =<<<EOQ
+            UPDATE tblMenuMetadataValues
+            SET `value` = ''
+            WHERE metadata_id = :metadata_id
+            AND `key` = :key
+EOQ;
+
+        $prepareClearMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareClearMdtValue) return false;
+
+        $query =<<<EOQ
+            INSERT INTO tblMenuMetadataValues
+            SET
+                metadata_id = :metadata_id,
+                `key` = :key,
+                keyindex = :keyindex,
+                `value` = :value
+            ON DUPLICATE KEY UPDATE
+                `value` = :u_value
+EOQ;
+
+        $prepareInsertMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareInsertMdtValue) return false;
+
+        $query =<<<EOQ
+            UPDATE tblMenuMetadata tmm
+            INNER JOIN tblMenuMetadataValues tmmv ON tmm.metadata_id = tmmv.metadata_id AND tmmv.key = 'ordinal'
+            SET tmm.ordinal = tmmv.value
+            WHERE tmm.menu_id = :menu_id
+EOQ;
+
+        $prepareUpdateMdtOrdinals = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareUpdateMdtOrdinals) return false;
+
         foreach ($datas as &$section)
         {
             $section_id = $section['section_id'];
+
+            $rsts[] = $prepareRemoveAllSection->bindValue(':menu_id', $id);
+            $rsts[] = $prepareRemoveAllSection->bindValue(':section_id', $section_id);
+            $rsts[] = $prepareRemoveAllSection->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
 
             foreach ($section['items'] as &$metadata)
             {
                 $metadata_id = @$metadata['metadata_id'];
                 $ordinal = @$metadata['ordinal'];
-                $label = @$metadata['label'];
-                $price = @$metadata['price'];
-                $notes = @$metadata['notes'];
-                $is_spicy = (bool) @$metadata['is_spicy'];
 
-                // update the row to be something way different.
-                // NOTE: it's because mysql < 5.3 does not support
-                //       PDO::MYSQL_ATTR_FOUND_ROWS
-                $rsts[] = $prepareHack->bindValue(':metadata_id', $metadata_id);
-                $rsts[] = $prepareHack->bindValue(':menu_id', $id);
-                $rsts[] = $prepareHack->bindValue(':section_id', $section_id);
-                $rsts[] = $prepareHack->execute();
-
-                // now for the real update!
-                $rsts[] = $prepare->bindValue(':metadata_id', $metadata_id);
-                $rsts[] = $prepare->bindValue(':menu_id', $id);
-                $rsts[] = $prepare->bindValue(':section_id', $section_id);
-                $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
-                $rsts[] = $prepare->bindValue(':label', $label);
-                $rsts[] = $prepare->bindValue(':price', $price);
-                $rsts[] = $prepare->bindValue(':notes', $notes);
-                $rsts[] = $prepare->bindValue(':is_spicy', $is_spicy);
-                $rsts[] = $prepare->execute();
-
-                // results check..
-                foreach ($rsts as $rst)
+                if (empty($metadata_id) || ($metadata_id < 0))
                 {
-                    if (!$rst)
-                    {
-                        $this->log_dberr($rst, __FILE__, __LINE__);
-                        return false;
-                    }
+                    $rsts[] = $prepareInsertMdtNewId->bindValue(':menu_id', $id);
+                    $rsts[] = $prepareInsertMdtNewId->bindValue(':section_id', $section_id);
+                    $rsts[] = $prepareInsertMdtNewId->execute();
+                    $metadata_id = $this->lastInsertId();
+
+                    // set the metadata_id back to the original structure
+                    $metadata['metadata_id'] = $metadata_id;
                 }
-
-                unset($rsts);
-
-                $rowCnt = $prepare->rowCount();
-                if ($rowCnt === 0)
-                    $insertMetadatas[$section_id][$ordinal] = &$metadata;
                 else
-                    $metadata_ids[] = $metadata_id;
-            }
-        }
-
-        if (!empty($insertMetadatas))
-            return $this->insertMetadata($id, $insertMetadatas, $metadata_ids);
-
-        return true;
-    }
-
-    function insertMetadata($id, &$datas, &$metadata_ids)
-    {
-        /*
-            $datas = array(
-                [section_id 1] = array(
-                    [metadata ordinal 0] = array(
-                        label, price, notes, is_spicy
-                    )
-                    [metadata ordinal 1] = array(
-                        label, price, notes, is_spicy
-                    )
-                    [metadata ordinal 2] = array(
-                        label, price, notes, is_spicy
-                    )
-                )
-                [section_id 2] = array(
-                    [metadata ordinal 0] = array(
-                        label, price, notes, is_spicy
-                    )
-                    [metadata ordinal 1] = array(
-                        label, price, notes, is_spicy
-                    )
-                    [metadata ordinal 2] = array(
-                        label, price, notes, is_spicy
-                    )
-                )
-            )
-        */
-        $query =<<<EOQ
-            INSERT INTO tblMenuMetadata
-            (
-                menu_id,
-                section_id,
-                ordinal,
-                label,
-                price,
-                notes,
-                is_spicy
-            )
-            VALUES
-            (
-                :menu_id,
-                :section_id,
-                :ordinal,
-                :label,
-                :price,
-                :notes,
-                :is_spicy
-            )
-EOQ;
-
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        foreach ($datas as $section_id => &$items)
-        {
-            foreach ($items as &$metadata)
-            {
-                $ordinal = @$metadata['ordinal'];
-                $label = @$metadata['label'];
-                $price = @$metadata['price'];
-                $notes = @$metadata['notes'];
-                $is_spicy = (bool) @$metadata['is_spicy'];
-
-                $rsts[] = $prepare->bindValue(':menu_id', $id);
-                $rsts[] = $prepare->bindValue(':section_id', $section_id);
-                $rsts[] = $prepare->bindValue(':ordinal', $ordinal);
-                $rsts[] = $prepare->bindValue(':label', $label);
-                $rsts[] = $prepare->bindValue(':price', $price);
-                $rsts[] = $prepare->bindValue(':notes', $notes);
-                $rsts[] = $prepare->bindValue(':is_spicy', $is_spicy);
-                $rsts[] = $prepare->execute();
-
-                // results check..
-                foreach ($rsts as $rst)
                 {
-                    if (!$rst)
-                    {
-                        $this->log_dberr($rst, __FILE__, __LINE__);
-                        return false;
-                    }
+                    $rsts[] = $prepareInsertMdt->bindValue(':menu_id', $id);
+                    $rsts[] = $prepareInsertMdt->bindValue(':metadata_id', $metadata_id);
+                    $rsts[] = $prepareInsertMdt->bindValue(':section_id', $section_id);
+                    $rsts[] = $prepareInsertMdt->execute();
                 }
 
+                if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
                 unset($rsts);
 
-                // grab the new metadata_id and set it back to the data
-                $metadata_id = $this->lastInsertId();
-                $metadata['metadata_id'] = $metadata_id;
-                $metadata_ids[] = $metadata_id;
-            }
+                foreach ($metadata as $key => $value)
+                {
+                    if ($key === 'metadata_id')
+                    {
+                        // skip these keys cause it's not needed
+                        continue;
+                    }
 
-        }
+                    $rsts[] = $prepareClearMdtValue->bindValue(':metadata_id', $metadata_id);
+                    $rsts[] = $prepareClearMdtValue->bindValue(':key', $key);
+                    $rsts[] = $prepareClearMdtValue->execute();
 
-        return true;
+                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                    unset($rsts);
+
+                    // normalize the non-string types
+                    if (is_bool($value))
+                    {
+                        $value = $value ? 'true' : 'false';
+                    }
+                    else if (is_numeric($value))
+                    {
+                        $value = "$value";
+                    }
+
+                    $rsts[] = $prepareInsertMdtValue->bindValue(':metadata_id', $metadata_id);
+                    $rsts[] = $prepareInsertMdtValue->bindValue(':key', $key);
+
+                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                    unset($rsts);
+
+                    $array_values = Util::str_split_unicode($value, 255);
+
+                    if (empty($array_values))
+                    {
+                        // add an empty item to the array
+                        $array_values[] = '';
+                    }
+
+                    foreach ($array_values as $key_index => $value_chunk)
+                    {
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':keyindex', $key_index);
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':value', $value_chunk);
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':u_value', $value_chunk);
+                        $rsts[] = $prepareInsertMdtValue->execute();
+
+                        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                        unset($rsts);
+                    } // foreach ($array_values as $key_index => $value_chunk)
+                } // foreach ($metadata as $key => $value)
+            } // foreach ($section['items'] as &$metadata)
+        } // foreach ($datas as &$section)
+
+        // finally... udpate the ordinals
+        $prepareUpdateMdtOrdinals->bindValue(':menu_id', $id);
+        $rsts[] = $prepareUpdateMdtOrdinals->execute();
+
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
     }
 
     function removeUnusedSection($id, $section_ids)
@@ -1024,32 +1003,6 @@ EOQ;
 
         $rst = $prepare->bindValue(1, $id);
         foreach ($section_ids as $idx => $id)
-        {
-            // bindValue is 1-based
-            $rst = $prepare->bindValue($idx+2, $id);
-            if (!$rst) return false;
-        }
-
-        $rst = $prepare->execute();
-        if (!$rst) return false;
-
-        return true;
-    }
-
-    function removeUnusedMetadata($id, $metadata_ids)
-    {
-        $query_in = implode(',', array_fill(0, count($metadata_ids), '?'));
-        $query =<<<EOQ
-            DELETE FROM tblMenuMetadata
-            WHERE menu_id = ?
-            AND metadata_id NOT IN ({$query_in})
-EOQ;
-
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $rst = $prepare->bindValue(1, $id);
-        foreach ($metadata_ids as $idx => $id)
         {
             // bindValue is 1-based
             $rst = $prepare->bindValue($idx+2, $id);
@@ -1096,12 +1049,22 @@ EOQ;
 
     function getMetadata($menu_id, $sections)
     {
+        // use the GROUP_CONCAT to group the rows
         $query =<<<EOQ
-            SELECT *
-            FROM tblMenuMetadata
-            WHERE menu_id = :menu_id
-            AND section_id = :section_id
-            ORDER BY ordinal
+            SELECT
+                mdt.menu_id,
+                mdt.section_id,
+                mdt.metadata_id,
+                mdt.ordinal,
+                mdt_values.key,
+                GROUP_CONCAT(mdt_values.value ORDER BY mdt_values.keyindex ASC SEPARATOR '') AS `value`
+            FROM tblMenuMetadata mdt
+            LEFT JOIN tblMenuMetadataValues mdt_values ON mdt.metadata_id = mdt_values.metadata_id
+            WHERE mdt.menu_id = :menu_id
+            AND mdt.section_id = :section_id
+            AND mdt.ordinal >= 0
+            GROUP BY mdt_values.metadata_id, mdt_values.key
+            ORDER BY mdt.ordinal, mdt_values.metadata_id, mdt_values.key
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
@@ -1115,38 +1078,37 @@ EOQ;
 
             $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
             $rsts[] = $prepare->bindValue(':section_id', $section_id);
-
             $rsts[] = $prepare->execute();
 
             // results check..
-            foreach ($rsts as $rst)
-            {
-                if (!$rst)
-                {
-                    $this->log_dberr($rst, __FILE__, __LINE__);
-                    return false;
-                }
-            }
-
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
             unset($rsts);
 
             $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row)
             {
                 $metadata_id = $row['metadata_id'];
-                $label = $row['label'];
-                $price = $row['price'];
-                $notes = $row['notes'];
-                $is_spicy = (bool)$row['is_spicy'];
+                $ordinal = $row['ordinal'];
+                $key = $row['key'];
+                $value = $row['value'];
 
-                // create the menus metadata
-                $section_info['items'][] = array(
-                    'metadata_id' => $metadata_id,
-                    'label' => $label,
-                    'price' => $price,
-                    'notes' => $notes,
-                    'is_spicy' => $is_spicy,
-                );
+                // set the right data-type to the value
+                switch ($key)
+                {
+                    case 'is_spicy':
+                        $value = $value === 'true' ? true : false;
+                        break;
+                }
+
+                // create the array if it's not been created
+                if (!isset($section_info['items'][$ordinal]))
+                {
+                    $section_info['items'][$ordinal] = array(
+                        'metadata_id' => $metadata_id,
+                    );
+                }
+
+                $section_info['items'][$ordinal][$key] = $value;
             }
 
             $mdts[] = $section_info;
@@ -1376,15 +1338,16 @@ EOQ;
             SELECT
                 m.name AS place_name,
                 s.name AS section_name,
-                mdt.label AS item_name,
-                mdt.price,
-                mdt.notes
+                mdtv.key,
+                GROUP_CONCAT(mdtv.value ORDER BY mdtv.keyindex ASC SEPARATOR '') as `value`
             FROM tblMenuMetadata mdt
             INNER JOIN tblMenuSection s ON mdt.section_id = s.section_id
             INNER JOIN tblMenuInfo_us m ON mdt.menu_id = m.menu_id
+            INNER JOIN tblMenuMetadataValues mdtv ON mdt.metadata_id = mdtv.metadata_id
             WHERE mdt.metadata_id = :metadata_id
             AND mdt.menu_id = :menu_id
             AND mdt.section_id = :section_id
+            GROUP BY mdtv.metadata_id, mdtv.key
 EOQ;
 
         $params = array(
@@ -1397,8 +1360,22 @@ EOQ;
         if (!$prepare)
             return false;
 
-        $row = $prepare->fetch(PDO::FETCH_ASSOC);
-        return $row;
+        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        // convert key/value to properties
+        $item = array(
+            'place_name' => $rows[0]['place_name'],
+            'section_name' => $rows[0]['section_name'],
+        );
+
+        foreach ($rows as $row)
+        {
+            $key = $row['key'];
+            $value = $row['value'];
+            $item[$key] = $value;
+        }
+
+        return $item;
     }
 
     function insertMenuImages($menu_id, $user_id, $imgs)
@@ -1526,15 +1503,18 @@ EOQ;
 
     function getMenuTags($menu_id)
     {
+        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 ms.section_id AS sid,
                 ms.name AS section,
                 mi.metadata_id AS mid,
-                mi.label AS label
+                GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS label
             FROM tblMenuSection ms
             INNER JOIN tblMenuMetadata mi ON (ms.menu_id = mi.menu_id) AND (ms.section_id = mi.section_id)
+            LEFT JOIN tblMenuMetadataValues mv ON (mi.metadata_id = mv.metadata_id) AND (mv.key = 'label')
             WHERE ms.menu_id = :menu_id
+            GROUP BY mv.metadata_id, mv.key
             ORDER BY ms.ordinal, mi.ordinal
 EOQ;
 
@@ -1674,18 +1654,22 @@ EOQ;
 
     function getTaggitsByImageFile($menu_id, $img_file)
     {
+        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 s.section_id AS sid,
                 s.name AS section,
                 m.metadata_id AS mid,
                 m.label AS metadata
+                GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS metadata
             FROM tblTaggitsImage t
             INNER JOIN tblMenuImages i ON t.menu_id = i.menu_id AND t.img_id = i.id
             INNER JOIN tblMenuSection s ON t.section_id = s.section_id
             INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            LEFT JOIN tblMenuMetadataValues mv ON (m.metadata_id = mv.metadata_id) AND (mv.key = 'label')
             WHERE t.menu_id = :menu_id
             AND i.file_img = :img_file
+            GROUP BY mv.metadata_id, mv.key
 EOQ;
 
         $params = array(':menu_id'=>$menu_id, ':img_file'=>$img_file);
@@ -1705,6 +1689,7 @@ EOQ;
         if (is_null($item_id))
             $item_id = 'null';
 
+        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 i.menu_id AS menu_id,
@@ -1712,11 +1697,13 @@ EOQ;
                 s.section_id AS section_id,
                 s.name AS section,
                 m.metadata_id AS item_id,
-                m.label AS item
+                GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS item
             FROM tblMenuInfo_us i
             LEFT JOIN tblMenuSection s ON i.menu_id = s.menu_id AND s.section_id = :section_id
             LEFT JOIN tblMenuMetadata m ON i.menu_id = m.menu_id AND s.section_id = m.section_id AND m.metadata_id = :metadata_id
+            LEFT JOIN tblMenuMetadataValues mv ON (m.metadata_id = mv.metadata_id) AND (mv.key = 'label')
             WHERE i.menu_id = :menu_id
+            GROUP BY mv.metadata_id, mv.key
 EOQ;
 
         $params = array
@@ -1893,18 +1880,21 @@ EOQ;
 
     function getTaggitsByCommentId($menu_id, $comment_id)
     {
+        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 s.section_id AS sid,
                 s.name AS section,
                 m.metadata_id AS mid,
-                m.label AS metadata
+                GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS metadata
             FROM tblTaggitsComment t
             INNER JOIN tblMenuComments c ON t.menu_id = c.menu_id AND t.comment_id = c.comment_id
             INNER JOIN tblMenuSection s ON t.section_id = s.section_id
             INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            LEFT JOIN tblMenuMetadataValues mv ON (m.metadata_id = mv.metadata_id) AND (mv.key = 'label')
             WHERE t.menu_id = :menu_id
             AND c.comment_id = :comment_id
+            GROUP BY mv.metadata_id, mv.key
 EOQ;
 
         $params = array(':menu_id'=>$menu_id, ':comment_id'=>$comment_id);
@@ -2042,18 +2032,21 @@ EOQ;
 
     function getTaggitsCommentByMenuId($menu_id)
     {
+        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 c.comment_id,
                 s.section_id AS sid,
                 s.name AS section,
                 m.metadata_id AS mid,
-                m.label AS metadata
+                GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS metadata
             FROM tblTaggitsComment t
             INNER JOIN tblMenuComments c ON t.menu_id = c.menu_id AND t.comment_id = c.comment_id
             INNER JOIN tblMenuSection s ON t.section_id = s.section_id
             INNER JOIN tblMenuMetadata m ON t.metadata_id = m.metadata_id
+            LEFT JOIN tblMenuMetadataValues mv ON (m.metadata_id = mv.metadata_id) AND (mv.key = 'label')
             WHERE t.menu_id = :menu_id
+            GROUP BY mv.metadata_id, mv.key
 EOQ;
 
         $params = array(':menu_id'=>$menu_id);

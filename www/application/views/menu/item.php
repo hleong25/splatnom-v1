@@ -10,7 +10,7 @@ extract($params, EXTR_SKIP);
     <a href="/menu/view/<?=$menu_id?>">Back to <?=$item['place_name']?></a>
 </div>
 <div class="pg info">
-    <span class="name"><?=$item['item_name']?></span><br/>
+    <span class="name"><?=$item['label']?></span><br/>
     <span class="notes"><?=$item['notes']?></span>
 </div>
 <div class="pg add">
