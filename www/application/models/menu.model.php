@@ -823,80 +823,80 @@ EOQ;
         return true;
     }
 
-    function updateMetadata_db($id, &$datas)
-    {
-        $query =<<<EOQ
-            INSERT INTO tblMenuMetadataValues
-            SET
-                metadata_id = :metadata_id,
-                `key` = :key,
-                keyindex = :keyindex,
-                `value` = :value
-            ON DUPLICATE KEY UPDATE
-                `value` = :u_value
-EOQ;
-
-        $prepareInsertMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepareInsertMdtValue) return false;
-
-        foreach ($datas as &$section)
-        {
-            $section_id = $section['section_id'];
-
-            foreach ($section['items'] as &$metadata)
-            {
-                $metadata_id = @$metadata['metadata_id'];
-                $ordinal = @$metadata['ordinal'];
-
-                foreach ($metadata as $key => $value)
-                {
-                    if ($key === 'metadata_id')
-                    {
-                        // skip these keys cause it's not needed
-                        continue;
-                    }
-
-                    // normalize the non-string types
-                    if (is_bool($value))
-                    {
-                        $value = $value ? 'true' : 'false';
-                    }
-                    else if (is_numeric($value))
-                    {
-                        $value = "$value";
-                    }
-
-                    $rsts[] = $prepareInsertMdtValue->bindValue(':metadata_id', $metadata_id);
-                    $rsts[] = $prepareInsertMdtValue->bindValue(':key', $key);
-
-                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-                    unset($rsts);
-
-                    $array_values = Util::str_split_unicode($value, 255);
-
-                    if (empty($array_values))
-                    {
-                        // add an empty item to the array
-                        $array_values[] = '';
-                    }
-
-                    foreach ($array_values as $key_index => $value_chunk)
-                    {
-                        echo "mid($metadata_id) key($key) index($key_index) value($value)<br/>";
-                        $rsts[] = $prepareInsertMdtValue->bindValue(':keyindex', $key_index);
-                        $rsts[] = $prepareInsertMdtValue->bindValue(':value', $value_chunk);
-                        $rsts[] = $prepareInsertMdtValue->bindValue(':u_value', $value_chunk);
-                        $rsts[] = $prepareInsertMdtValue->execute();
-
-                        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-                        unset($rsts);
-                    } // foreach ($array_values as $key_index => $value_chunk)
-                } // foreach ($metadata as $key => $value)
-            } // foreach ($section['items'] as &$metadata)
-        } // foreach ($datas as &$section)
-
-        return true;
-    }
+//    function updateMetadata_db($id, &$datas)
+//    {
+//        $query =<<<EOQ
+//            INSERT INTO tblMenuMetadataValues
+//            SET
+//                metadata_id = :metadata_id,
+//                `key` = :key,
+//                keyindex = :keyindex,
+//                `value` = :value
+//            ON DUPLICATE KEY UPDATE
+//                `value` = :u_value
+//EOQ;
+//
+//        $prepareInsertMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
+//        if (!$prepareInsertMdtValue) return false;
+//
+//        foreach ($datas as &$section)
+//        {
+//            $section_id = $section['section_id'];
+//
+//            foreach ($section['items'] as &$metadata)
+//            {
+//                $metadata_id = @$metadata['metadata_id'];
+//                $ordinal = @$metadata['ordinal'];
+//
+//                foreach ($metadata as $key => $value)
+//                {
+//                    if ($key === 'metadata_id')
+//                    {
+//                        // skip these keys cause it's not needed
+//                        continue;
+//                    }
+//
+//                    // normalize the non-string types
+//                    if (is_bool($value))
+//                    {
+//                        $value = $value ? 'true' : 'false';
+//                    }
+//                    else if (is_numeric($value))
+//                    {
+//                        $value = "$value";
+//                    }
+//
+//                    $rsts[] = $prepareInsertMdtValue->bindValue(':metadata_id', $metadata_id);
+//                    $rsts[] = $prepareInsertMdtValue->bindValue(':key', $key);
+//
+//                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+//                    unset($rsts);
+//
+//                    $array_values = Util::str_split_unicode($value, 255);
+//
+//                    if (empty($array_values))
+//                    {
+//                        // add an empty item to the array
+//                        $array_values[] = '';
+//                    }
+//
+//                    foreach ($array_values as $key_index => $value_chunk)
+//                    {
+//                        echo "mid($metadata_id) key($key) index($key_index) value($value)<br/>";
+//                        $rsts[] = $prepareInsertMdtValue->bindValue(':keyindex', $key_index);
+//                        $rsts[] = $prepareInsertMdtValue->bindValue(':value', $value_chunk);
+//                        $rsts[] = $prepareInsertMdtValue->bindValue(':u_value', $value_chunk);
+//                        $rsts[] = $prepareInsertMdtValue->execute();
+//
+//                        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+//                        unset($rsts);
+//                    } // foreach ($array_values as $key_index => $value_chunk)
+//                } // foreach ($metadata as $key => $value)
+//            } // foreach ($section['items'] as &$metadata)
+//        } // foreach ($datas as &$section)
+//
+//        return true;
+//    }
 
     function updateMetadata($id, &$datas)
     {
@@ -1124,66 +1124,66 @@ EOQ;
         return $sections;
     }
 
-    function getMetadata_old($menu_id, $sections)
-    {
-        $query =<<<EOQ
-            SELECT *
-            FROM tblMenuMetadata
-            WHERE menu_id = :menu_id
-            AND section_id = :section_id
-            ORDER BY ordinal
-EOQ;
-
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare)
-            return false;
-
-        $mdts = array();
-        foreach ($sections as $section_info)
-        {
-            $section_id = $section_info['section_id'];
-
-            $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
-            $rsts[] = $prepare->bindValue(':section_id', $section_id);
-
-            $rsts[] = $prepare->execute();
-
-            // results check..
-            foreach ($rsts as $rst)
-            {
-                if (!$rst)
-                {
-                    $this->log_dberr($rst, __FILE__, __LINE__);
-                    return false;
-                }
-            }
-
-            unset($rsts);
-
-            $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($rows as $row)
-            {
-                $metadata_id = $row['metadata_id'];
-                $label = $row['label'];
-                $price = $row['price'];
-                $notes = $row['notes'];
-                $is_spicy = (bool)$row['is_spicy'];
-
-                // create the menus metadata
-                $section_info['items'][] = array(
-                    'metadata_id' => $metadata_id,
-                    'label' => $label,
-                    'price' => $price,
-                    'notes' => $notes,
-                    'is_spicy' => $is_spicy,
-                );
-            }
-
-            $mdts[] = $section_info;
-        }
-
-        return $mdts;
-    }
+//    function getMetadata_old($menu_id, $sections)
+//    {
+//        $query =<<<EOQ
+//            SELECT *
+//            FROM tblMenuMetadata
+//            WHERE menu_id = :menu_id
+//            AND section_id = :section_id
+//            ORDER BY ordinal
+//EOQ;
+//
+//        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+//        if (!$prepare)
+//            return false;
+//
+//        $mdts = array();
+//        foreach ($sections as $section_info)
+//        {
+//            $section_id = $section_info['section_id'];
+//
+//            $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+//            $rsts[] = $prepare->bindValue(':section_id', $section_id);
+//
+//            $rsts[] = $prepare->execute();
+//
+//            // results check..
+//            foreach ($rsts as $rst)
+//            {
+//                if (!$rst)
+//                {
+//                    $this->log_dberr($rst, __FILE__, __LINE__);
+//                    return false;
+//                }
+//            }
+//
+//            unset($rsts);
+//
+//            $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+//            foreach ($rows as $row)
+//            {
+//                $metadata_id = $row['metadata_id'];
+//                $label = $row['label'];
+//                $price = $row['price'];
+//                $notes = $row['notes'];
+//                $is_spicy = (bool)$row['is_spicy'];
+//
+//                // create the menus metadata
+//                $section_info['items'][] = array(
+//                    'metadata_id' => $metadata_id,
+//                    'label' => $label,
+//                    'price' => $price,
+//                    'notes' => $notes,
+//                    'is_spicy' => $is_spicy,
+//                );
+//            }
+//
+//            $mdts[] = $section_info;
+//        }
+//
+//        return $mdts;
+//    }
 
     function getMetadata($menu_id, $sections)
     {
