@@ -1124,6 +1124,67 @@ EOQ;
         return $sections;
     }
 
+    function getMetadata_old($menu_id, $sections)
+    {
+        $query =<<<EOQ
+            SELECT *
+            FROM tblMenuMetadata
+            WHERE menu_id = :menu_id
+            AND section_id = :section_id
+            ORDER BY ordinal
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare)
+            return false;
+
+        $mdts = array();
+        foreach ($sections as $section_info)
+        {
+            $section_id = $section_info['section_id'];
+
+            $rsts[] = $prepare->bindValue(':menu_id', $menu_id);
+            $rsts[] = $prepare->bindValue(':section_id', $section_id);
+
+            $rsts[] = $prepare->execute();
+
+            // results check..
+            foreach ($rsts as $rst)
+            {
+                if (!$rst)
+                {
+                    $this->log_dberr($rst, __FILE__, __LINE__);
+                    return false;
+                }
+            }
+
+            unset($rsts);
+
+            $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row)
+            {
+                $metadata_id = $row['metadata_id'];
+                $label = $row['label'];
+                $price = $row['price'];
+                $notes = $row['notes'];
+                $is_spicy = (bool)$row['is_spicy'];
+
+                // create the menus metadata
+                $section_info['items'][] = array(
+                    'metadata_id' => $metadata_id,
+                    'label' => $label,
+                    'price' => $price,
+                    'notes' => $notes,
+                    'is_spicy' => $is_spicy,
+                );
+            }
+
+            $mdts[] = $section_info;
+        }
+
+        return $mdts;
+    }
+
     function getMetadata($menu_id, $sections)
     {
         // use the GROUP_CONCAT to group the rows

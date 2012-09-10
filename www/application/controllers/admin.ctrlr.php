@@ -398,18 +398,12 @@ class AdminController
             $menu_id = $menu['id'];
 
             $sections = $menumodel->getSection($menu_id);
-            $mdts = $menumodel->getMetadata($menu_id, $sections);
+            $mdts = $menumodel->getMetadata_old($menu_id, $sections);
 
             $update_ok = $menumodel->updateMetadata_db($menu_id, $mdts);
 
             if (!$update_ok)
                 break;
-
-            //$update_ok = $menumodel->updateMenu($menu_id, 'ready');
-
-            //if (!$update_ok)
-                break;
-
         }
 
         if ($update_ok)
