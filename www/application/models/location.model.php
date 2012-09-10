@@ -1,8 +1,6 @@
 <?php
 // http://www.movable-type.co.uk/scripts/latlong-db.html
 
-require_once ('gogeocode/GoogleGeocode.php');
-
 class LocationModel
     extends Model
 {
@@ -61,34 +59,58 @@ EOQ;
 
     function getLatLongByGoogleMap($query)
     {
-        $geo = new GoogleGeocode(GOOGLE_API_KEY);
-        $result = $geo->geocode($query);
+        // http://ygamretuta.me/2011/03/07/google-maps-v3-geocoding-with-pure-php/
 
-        $response = @$result['Response'];
-        $placemarks = @$result['Placemarks'];
-
-        if (empty($response) || ($response['Status'] != GoogleGeocode::SUCCESS))
-        {
-            Util::Logit("Failed to Google Geocode: $query");
-            Util::Logit('Google Geocode Result: '.var_export($result, true));
-            return false;
-        }
-
-        if (empty($placemarks))
-        {
-            Util::Logit("Google Geocode has no placemarks. Query: $query");
-            return false;
-        }
-
-        if (count($placemarks) > 1)
-        {
-            Util::Logit("Google Geocode has more than one placemarks for '$query'. Placemarks:\n".var_export($placemarks, true));
-        }
+        $address = urlencode($query);
+        $url = "http://maps.google.com/maps/geo?output=xml&q=$address";
 
         $latlong = array(
-            'latitude'  => $placemarks[0]['Latitude'],
-            'longitude' => $placemarks[0]['Longitude'],
+            'latitude'  => 0,
+            'longitude' => 0,
         );
+
+        $delay = 0;
+
+        $geocode_pending = true;
+
+        // load file from url
+        while ($geocode_pending)
+        {
+            try
+            {
+                $xml = simplexml_load_file($url);
+            }
+            catch(Exception $e)
+            {
+                // return an empty array for a file request exception
+                Util::logit("Failed to parse response from '$url'");
+                return false;
+            }
+
+            //get response status
+            $status = $xml->Response->Status->code;
+
+            if (strcmp($status, '200') == 0)
+            {
+                $geocode_pending = false;
+
+                // get coordinates node from xml response
+                $coordsNode = explode(',', $xml->Response->Placemark->Point->coordinates);
+
+                $latlong = array(
+                    'latitude'  => $coordsNode[1],
+                    'longitude' => $coordsNode[0],
+                );
+            }
+
+            // handle timeout responses and delay re-execution of geocoding
+            else if (strcmp($status, '620') == 0)
+            {
+                $delay += 100000;
+            }
+
+            usleep($delay);
+        }
 
         return $latlong;
     }
@@ -117,7 +139,7 @@ EOQ;
         $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$prepare)
         {
-            Util::Logit("Failed to add '$query_addy', lat:$lat, long:$long to geocoder cache.");
+            Util::logit("Failed to add '$query_addy', lat:$lat, long:$long to geocoder cache.");
             return false;
         }
 
