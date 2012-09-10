@@ -10,4 +10,5 @@
     <a href="/mail/tester">Send mail</a><br/>
     <a href="/admin/location">Search location and nearby</a><br/>
     <a href="/admin/jqueryui_test">Demo jquery-ui</a><br/>
+    <a href="/admin/update_db">Update DB</a><br/>
 </div>

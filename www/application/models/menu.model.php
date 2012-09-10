@@ -823,6 +823,97 @@ EOQ;
         return true;
     }
 
+    function updateMetadata_db($id, &$datas)
+    {
+        $query =<<<EOQ
+            UPDATE tblMenuMetadataValues
+            SET `value` = ''
+            WHERE metadata_id = :metadata_id
+            AND `key` = :key
+EOQ;
+
+        $prepareClearMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareClearMdtValue) return false;
+
+        $query =<<<EOQ
+            INSERT INTO tblMenuMetadataValues
+            SET
+                metadata_id = :metadata_id,
+                `key` = :key,
+                keyindex = :keyindex,
+                `value` = :value
+            ON DUPLICATE KEY UPDATE
+                `value` = :u_value
+EOQ;
+
+        $prepareInsertMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareInsertMdtValue) return false;
+
+        foreach ($datas as &$section)
+        {
+            $section_id = $section['section_id'];
+
+            foreach ($section['items'] as &$metadata)
+            {
+                $metadata_id = @$metadata['metadata_id'];
+                $ordinal = @$metadata['ordinal'];
+
+                foreach ($metadata as $key => $value)
+                {
+                    if ($key === 'metadata_id')
+                    {
+                        // skip these keys cause it's not needed
+                        continue;
+                    }
+
+                    $rsts[] = $prepareClearMdtValue->bindValue(':metadata_id', $metadata_id);
+                    $rsts[] = $prepareClearMdtValue->bindValue(':key', $key);
+                    $rsts[] = $prepareClearMdtValue->execute();
+
+                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                    unset($rsts);
+
+                    // normalize the non-string types
+                    if (is_bool($value))
+                    {
+                        $value = $value ? 'true' : 'false';
+                    }
+                    else if (is_numeric($value))
+                    {
+                        $value = "$value";
+                    }
+
+                    $rsts[] = $prepareInsertMdtValue->bindValue(':metadata_id', $metadata_id);
+                    $rsts[] = $prepareInsertMdtValue->bindValue(':key', $key);
+
+                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                    unset($rsts);
+
+                    $array_values = Util::str_split_unicode($value, 255);
+
+                    if (empty($array_values))
+                    {
+                        // add an empty item to the array
+                        $array_values[] = '';
+                    }
+
+                    foreach ($array_values as $key_index => $value_chunk)
+                    {
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':keyindex', $key_index);
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':value', $value_chunk);
+                        $rsts[] = $prepareInsertMdtValue->bindValue(':u_value', $value_chunk);
+                        $rsts[] = $prepareInsertMdtValue->execute();
+
+                        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                        unset($rsts);
+                    } // foreach ($array_values as $key_index => $value_chunk)
+                } // foreach ($metadata as $key => $value)
+            } // foreach ($section['items'] as &$metadata)
+        } // foreach ($datas as &$section)
+
+        return true;
+    }
+
     function updateMetadata($id, &$datas)
     {
         $query =<<<EOQ
@@ -987,6 +1078,8 @@ EOQ;
 
         if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
         unset($rsts);
+
+        return true;
     }
 
     function removeUnusedSection($id, $section_ids)
