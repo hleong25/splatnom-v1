@@ -1798,7 +1798,6 @@ EOQ;
                 s.section_id AS sid,
                 s.name AS section,
                 m.metadata_id AS mid,
-                m.label AS metadata
                 GROUP_CONCAT(mv.value ORDER BY mv.keyindex ASC SEPARATOR '') AS metadata
             FROM tblTaggitsImage t
             INNER JOIN tblMenuImages i ON t.menu_id = i.menu_id AND t.img_id = i.id
