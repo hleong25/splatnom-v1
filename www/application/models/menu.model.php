@@ -826,16 +826,6 @@ EOQ;
     function updateMetadata_db($id, &$datas)
     {
         $query =<<<EOQ
-            UPDATE tblMenuMetadataValues
-            SET `value` = ''
-            WHERE metadata_id = :metadata_id
-            AND `key` = :key
-EOQ;
-
-        $prepareClearMdtValue = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepareClearMdtValue) return false;
-
-        $query =<<<EOQ
             INSERT INTO tblMenuMetadataValues
             SET
                 metadata_id = :metadata_id,
@@ -865,13 +855,6 @@ EOQ;
                         // skip these keys cause it's not needed
                         continue;
                     }
-
-                    $rsts[] = $prepareClearMdtValue->bindValue(':metadata_id', $metadata_id);
-                    $rsts[] = $prepareClearMdtValue->bindValue(':key', $key);
-                    $rsts[] = $prepareClearMdtValue->execute();
-
-                    if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-                    unset($rsts);
 
                     // normalize the non-string types
                     if (is_bool($value))

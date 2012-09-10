@@ -405,9 +405,9 @@ class AdminController
             if (!$update_ok)
                 break;
 
-            $update_ok = $menumodel->updateMenu($menu_id, 'ready');
+            //$update_ok = $menumodel->updateMenu($menu_id, 'ready');
 
-            if (!$update_ok)
+            //if (!$update_ok)
                 break;
 
         }
