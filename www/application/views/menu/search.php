@@ -18,8 +18,8 @@ extract($params, EXTR_SKIP);
                 <input class="watermark query" type="text" name="query" placeholder="Search" value="<?php echo $query; ?>"/>
             </label>
             <label>
-                <span class="hint">Zip code</span>
-                <input class="watermark location" type="text" name="location" placeholder="Zip code" value="<?php echo $location; ?>"/>
+                <span class="hint">Location</span>
+                <input class="watermark location" type="text" name="location" placeholder="Location" value="<?php echo $location; ?>"/>
             </label>
             <label>
                 <span class="hint">&nbsp;</span>

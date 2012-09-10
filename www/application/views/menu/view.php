@@ -124,8 +124,8 @@ foreach ($info['status'] as $info_status)
     <label><span class="hint">Look for 'fish tacos' or 'Japanese'</span>
         <input class="watermark query" type="text" name="query" placeholder="Search" value=""/>
     </label>
-    <label><span class="hint">Zip code</span>
-        <input class="watermark location" type="text" name="location" placeholder="Zip code" value="<?=$location?>"/>
+    <label><span class="hint">Location</span>
+        <input class="watermark location" type="text" name="location" placeholder="Location" value="<?=$location?>"/>
     </label>
     <label><span class="hint">&nbsp;</span>
         <button class="button search" type="submit">Search</button>
