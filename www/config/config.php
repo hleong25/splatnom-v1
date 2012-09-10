@@ -51,3 +51,5 @@ define('WEB_PATH_JS',       DS . 'js');
 define('WEB_PATH_OTHER',    DS . 'other');
 
 define('PASSCODE_TROJAN',   'locomotion');
+
+define('GOOGLE_API_KEY', 'AIzaSyDPez_dxVdHnZM8COpU4-Hs3qKxTFE0vKM');

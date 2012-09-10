@@ -1,6 +1,7 @@
 <?php
 $params = array(
     'dbg'=>false,
+    'q_gmap_query'=>'',
     'q_zip'=>'',
     'q_citystate'=>'',
     'q_address' => '',
@@ -13,6 +14,19 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 ?>
+<div class="pg">
+    <form id="bygmap" enctype="multipart/form-data" method="get" action="/admin/location/gmap">
+        <label>
+            <span class="hint">Google Map Query</span>
+            <input class="watermark gmap" type="text" name="query" placeholder="Query" value="<?php echo $q_gmap_query; ?>"/>
+        </label>
+        <label>
+            <span class="hint">&nbsp;</span>
+            <input class="button" type="submit" value="Search Google Maps" />
+        </label>
+    </form>
+</div>
+<?php /*
 <div class="pg">
     <form id="byzip" enctype="multipart/form-data" method="get" action="/admin/location/zip">
         <label>
@@ -49,6 +63,7 @@ extract($params, EXTR_SKIP);
         </label>
     </form>
 </div>
+*/ ?>
 <div class="pg">
     <form id="bylatlong" enctype="multipart/form-data" method="get" action="/admin/location/latlong">
         <label>

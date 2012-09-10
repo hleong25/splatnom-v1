@@ -1,97 +1,217 @@
 <?php
 // http://www.movable-type.co.uk/scripts/latlong-db.html
 
+require_once ('gogeocode/GoogleGeocode.php');
+
 class LocationModel
     extends Model
 {
-    function getLatLongByZip($zip)
+    function getCachedLatLong($query)
+    {
+        if (empty($query))
+            return false;
+
+        $latlong = $this->getLatLongByCache($query);
+        if (!empty($latlong))
+            return $latlong;
+
+        $latlong = $this->getLatLongByGoogleMap($query);
+        if (empty($latlong))
+        {
+            // couldn't get the lat/long by gmap
+            return false;
+        }
+
+        $lat  = $latlong['latitude'];
+        $long = $latlong['longitude'];
+        $add_ok = $this->addLatLongToCache($query, $lat, $long);
+
+        if (empty($add_ok))
+        {
+            // failed to cache new query and lat/long
+            return false;
+        }
+
+        return $latlong;
+    }
+
+    function getLatLongByCache($query_addy)
     {
         $query =<<<EOQ
             SELECT
                 latitude, longitude
-            FROM tblLocation_us
-            WHERE `country code` = 'US'
-            AND `postal code` = :zip
+            FROM tblCacheGeocode
+            WHERE address_query = :query
 EOQ;
 
-        $prepare = $this->prepareAndExecute($query, array(':zip'=>$zip), __FILE__, __LINE__);
+        $prepare = $this->prepareAndExecute($query, array(':query'=>$query_addy), __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $row = array_shift($rows);
-        return $row;
-    }
+        $row_cache = $prepare->fetch(PDO::FETCH_ASSOC);
 
-    function parseCityState($citystate)
-    {
-        $split = explode(',', $citystate);
-        $n_split = count($split);
-        if ($n_split < 2)
-            return false;
-
-        $city = trim($split[$n_split -2]);
-        $state = trim($split[$n_split -1]);
-
-        return array('city'=>$city, 'state'=>$state);
-    }
-
-    function getLatLongByCityState($city, $state)
-    {
-        $query =<<<EOQ
-            SELECT
-                AVG(DISTINCT latitude) AS latitude,
-                AVG(DISTINCT longitude) AS longitude
-            FROM tblLocation_us
-            WHERE `country code` = 'US'
-            AND `place name` = :city
-            AND `state code1` = :state
-EOQ;
-
-        $prepare = $this->prepareAndExecute($query, array(':city'=>$city, ':state'=>$state), __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $row = array_shift($rows);
-        return $row;
-
-    }
-
-    function getLocationsByAddress($address, $state_filters)
-    {
-        $query_in = implode(',', array_fill(0, count($state_filters), '?'));
-        $query =<<<EOQ
-            SELECT * FROM
-            (
-                SELECT
-                    latitude, longitude,
-                    `postal code` AS zip,
-                    `place name` AS city, `state code1` AS state,
-                    MATCH(`state code1`, `place name`) AGAINST(?) AS score
-                FROM tblLocation_us
-                WHERE MATCH(`state code1`, `place name`) AGAINST(?)
-                AND `state code1` IN ({$query_in})
-            ) tblLocations
-            ORDER BY score DESC, zip
-EOQ;
-
-        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepare) return false;
-
-        $rst = $prepare->bindValue(1, $address);
-        $rst = $prepare->bindValue(2, $address);
-
-        foreach ($state_filters as $idx => $filter)
+        if (!empty($row_cache))
         {
-            $rst = $prepare->bindValue($idx+3, $filter);
-            if (!$rst) return false;
+            // return the cached
+            //Util::logit("Geocoder Cache hit: $query_addy");
+            return $row_cache;
         }
 
-        $rst = $prepare->execute();
-        if (!$rst) return false;
-
-        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        return $rows;
+        return false;
     }
+
+    function getLatLongByGoogleMap($query)
+    {
+        $geo = new GoogleGeocode(GOOGLE_API_KEY);
+        $result = $geo->geocode($query);
+
+        $response = @$result['Response'];
+        $placemarks = @$result['Placemarks'];
+
+        if (empty($response) || ($response['Status'] != GoogleGeocode::SUCCESS))
+        {
+            Util::Logit("Failed to Google Geocode: $query");
+            Util::Logit('Google Geocode Result: '.var_export($result, true));
+            return false;
+        }
+
+        if (empty($placemarks))
+        {
+            Util::Logit("Google Geocode has no placemarks. Query: $query");
+            return false;
+        }
+
+        if (count($placemarks) > 1)
+        {
+            Util::Logit("Google Geocode has more than one placemarks for '$query'. Placemarks:\n".var_export($placemarks, true));
+        }
+
+        $latlong = array(
+            'latitude'  => $placemarks[0]['Latitude'],
+            'longitude' => $placemarks[0]['Longitude'],
+        );
+
+        return $latlong;
+    }
+
+    function addLatLongToCache($query_addy, $lat, $long)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblCacheGeocode
+            SET
+                address_query = :query,
+                latitude = :latitude,
+                longitude = :longitude
+            ON DUPLICATE KEY UPDATE
+                latitude = :u_latitude,
+                longitude = :u_longitude
+EOQ;
+
+        $params = array(
+            ':query'        => $query_addy,
+            ':latitude'     => $lat,
+            ':longitude'    => $long,
+            ':u_latitude'   => $lat,
+            ':u_longitude'  => $long,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare)
+        {
+            Util::Logit("Failed to add '$query_addy', lat:$lat, long:$long to geocoder cache.");
+            return false;
+        }
+
+        return true;
+    }
+
+//    function getLatLongByZip($zip)
+//    {
+//        $query =<<<EOQ
+//            SELECT
+//                latitude, longitude
+//            FROM tblLocation_us
+//            WHERE `country code` = 'US'
+//            AND `postal code` = :zip
+//EOQ;
+//
+//        $prepare = $this->prepareAndExecute($query, array(':zip'=>$zip), __FILE__, __LINE__);
+//        if (!$prepare) return false;
+//
+//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+//        $row = array_shift($rows);
+//        return $row;
+//    }
+//
+//    function parseCityState($citystate)
+//    {
+//        $split = explode(',', $citystate);
+//        $n_split = count($split);
+//        if ($n_split < 2)
+//            return false;
+//
+//        $city = trim($split[$n_split -2]);
+//        $state = trim($split[$n_split -1]);
+//
+//        return array('city'=>$city, 'state'=>$state);
+//    }
+//
+//    function getLatLongByCityState($city, $state)
+//    {
+//        $query =<<<EOQ
+//            SELECT
+//                AVG(DISTINCT latitude) AS latitude,
+//                AVG(DISTINCT longitude) AS longitude
+//            FROM tblLocation_us
+//            WHERE `country code` = 'US'
+//            AND `place name` = :city
+//            AND `state code1` = :state
+//EOQ;
+//
+//        $prepare = $this->prepareAndExecute($query, array(':city'=>$city, ':state'=>$state), __FILE__, __LINE__);
+//        if (!$prepare) return false;
+//
+//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+//        $row = array_shift($rows);
+//        return $row;
+//
+//    }
+//
+//    function getLocationsByAddress($address, $state_filters)
+//    {
+//        $query_in = implode(',', array_fill(0, count($state_filters), '?'));
+//        $query =<<<EOQ
+//            SELECT * FROM
+//            (
+//                SELECT
+//                    latitude, longitude,
+//                    `postal code` AS zip,
+//                    `place name` AS city, `state code1` AS state,
+//                    MATCH(`state code1`, `place name`) AGAINST(?) AS score
+//                FROM tblLocation_us
+//                WHERE MATCH(`state code1`, `place name`) AGAINST(?)
+//                AND `state code1` IN ({$query_in})
+//            ) tblLocations
+//            ORDER BY score DESC, zip
+//EOQ;
+//
+//        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+//        if (!$prepare) return false;
+//
+//        $rst = $prepare->bindValue(1, $address);
+//        $rst = $prepare->bindValue(2, $address);
+//
+//        foreach ($state_filters as $idx => $filter)
+//        {
+//            $rst = $prepare->bindValue($idx+3, $filter);
+//            if (!$rst) return false;
+//        }
+//
+//        $rst = $prepare->execute();
+//        if (!$rst) return false;
+//
+//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+//        return $rows;
+//    }
 
     function getLocationsWithinLatLong($lat, $long, $withinRadius)
     {

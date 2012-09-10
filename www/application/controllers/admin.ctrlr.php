@@ -200,34 +200,11 @@ class AdminController
 
         switch ($opt)
         {
-            case 'zip':
-                $zip = $param['zip'];
-                $this->set('q_zip', $zip);
+            case 'gmap':
+                $query = $param['query'];
+                $this->set('q_gmap_query', $query);
 
-                $latlong = $loc->getLatLongByZip($zip);
-
-                if (!$latlong)
-                    break;
-
-                $lat = $latlong['latitude'];
-                $long = $latlong['longitude'];
-
-                $this->set('q_lat', $lat);
-                $this->set('q_long', $long);
-
-                break;
-            case 'citystate':
-                $citystate = $param['citystate'];
-                $this->set('q_citystate', $citystate);
-
-                $citystate = $loc->parseCityState($citystate);
-                if (!$citystate)
-                    break;
-
-                $city = $citystate['city'];
-                $state = $citystate['state'];
-
-                $latlong = $loc->getLatLongByCityState($city, $state);
+                $latlong = $loc->getCachedLatLong($query);
 
                 if (!$latlong)
                     break;
@@ -239,21 +216,61 @@ class AdminController
                 $this->set('q_long', $long);
 
                 break;
-            case 'address':
-                $address = $param['address'];
-                $this->set('q_address', $address);
 
-                $filter = explode(',', $address);
-                foreach ($filter as &$key)
-                {
-                    $key = trim($key);
-                }
-
-                $locations = $loc->getLocationsByAddress($address, $filter);
-                $this->set('found_locations', $locations);
-
-                break;
-
+//            case 'zip':
+//                $zip = $param['zip'];
+//                $this->set('q_zip', $zip);
+//
+//                $latlong = $loc->getLatLongByZip($zip);
+//
+//                if (!$latlong)
+//                    break;
+//
+//                $lat = $latlong['latitude'];
+//                $long = $latlong['longitude'];
+//
+//                $this->set('q_lat', $lat);
+//                $this->set('q_long', $long);
+//
+//                break;
+//            case 'citystate':
+//                $citystate = $param['citystate'];
+//                $this->set('q_citystate', $citystate);
+//
+//                $citystate = $loc->parseCityState($citystate);
+//                if (!$citystate)
+//                    break;
+//
+//                $city = $citystate['city'];
+//                $state = $citystate['state'];
+//
+//                $latlong = $loc->getLatLongByCityState($city, $state);
+//
+//                if (!$latlong)
+//                    break;
+//
+//                $lat = $latlong['latitude'];
+//                $long = $latlong['longitude'];
+//
+//                $this->set('q_lat', $lat);
+//                $this->set('q_long', $long);
+//
+//                break;
+//            case 'address':
+//                $address = $param['address'];
+//                $this->set('q_address', $address);
+//
+//                $filter = explode(',', $address);
+//                foreach ($filter as &$key)
+//                {
+//                    $key = trim($key);
+//                }
+//
+//                $locations = $loc->getLocationsByAddress($address, $filter);
+//                $this->set('found_locations', $locations);
+//
+//                break;
+//
             case 'latlong':
                 $lat = $param['lat'];
                 $long = $param['long'];

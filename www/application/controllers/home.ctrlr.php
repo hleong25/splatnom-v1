@@ -100,7 +100,7 @@ class HomeController
         $this->addJs('home/home.gmapmenu');
 
         // http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE
-        $gmap_key = 'AIzaSyDPez_dxVdHnZM8COpU4-Hs3qKxTFE0vKM';
+        $gmap_key = GOOGLE_API_KEY;
         $gmap_url = "http://maps.googleapis.com/maps/api/js?key={$gmap_key}&sensor=false";
         $this->addRemoteJs($gmap_url);
 
