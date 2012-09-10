@@ -415,6 +415,6 @@ class AdminController
         if ($update_ok)
             $menumodel->commit();
 
-        $this->redirect('/admin/main');
+        //$this->redirect('/admin/main');
     }
 }

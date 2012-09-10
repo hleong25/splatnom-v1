@@ -882,6 +882,7 @@ EOQ;
 
                     foreach ($array_values as $key_index => $value_chunk)
                     {
+                        echo "mid($metadata_id) key($key) index($key_index) value($value)<br/>";
                         $rsts[] = $prepareInsertMdtValue->bindValue(':keyindex', $key_index);
                         $rsts[] = $prepareInsertMdtValue->bindValue(':value', $value_chunk);
                         $rsts[] = $prepareInsertMdtValue->bindValue(':u_value', $value_chunk);
