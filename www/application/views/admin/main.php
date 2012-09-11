@@ -9,6 +9,7 @@
     <hr/>
     <a href="/mail/tester">Send mail</a><br/>
     <a href="/admin/location">Search location and nearby</a><br/>
+    <a href="/admin/clear_geocode_cache">Clear geocode cache</a><br/>
     <a href="/admin/jqueryui_test">Demo jquery-ui</a><br/>
     <?php //<a href="/admin/update_db">Update DB</a><br/> ?>
 </div>

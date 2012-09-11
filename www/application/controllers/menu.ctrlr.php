@@ -411,7 +411,14 @@ class MenuController
         $this->set('query', $query);
 
         $loc = new LocationModel();
-        $latlong = $loc->getCachedLatLong($location);
+        $cached_latlong = $loc->getCachedLatLong($location);
+        if (!$cached_latlong['status'])
+        {
+            $this->set('msg', 'Location not valid');
+            return;
+        }
+
+        $latlong = $cached_latlong['coords'];
         if (empty($latlong))
         {
             $this->set('msg', 'Location not valid');

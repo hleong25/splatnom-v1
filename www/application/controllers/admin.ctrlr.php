@@ -204,10 +204,20 @@ class AdminController
                 $query = $param['query'];
                 $this->set('q_gmap_query', $query);
 
-                $latlong = $loc->getCachedLatLong($query);
+                $cached_latlong = $loc->getCachedLatLong($query);
 
-                if (!$latlong)
+                if (!empty($cached_latlong['details']))
+                {
+                    //$this->set('dbg', $cached_latlong['details']);
+                    $this->set('map_request', @$cached_latlong['details']['json']['results'][0]['locations']);
+                }
+
+                if (!$cached_latlong['status'])
+                {
                     break;
+                }
+
+                $latlong = $cached_latlong['coords'];
 
                 $lat = $latlong['latitude'];
                 $long = $latlong['longitude'];
@@ -381,6 +391,13 @@ class AdminController
         }
 
         $list[] = $info;
+    }
+
+    function onAction_clear_geocode_cache()
+    {
+        $location = new LocationModel();
+        $location->clear_geocode_cache();
+        $this->redirect('/admin/main');
     }
 
 //    function onAction_update_db()

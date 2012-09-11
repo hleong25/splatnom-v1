@@ -4,36 +4,70 @@
 class LocationModel
     extends Model
 {
+    function clear_geocode_cache()
+    {
+        $query =<<<EOQ
+            TRUNCATE TABLE tblCacheGeocode
+EOQ;
+
+        $prepare = $this->query($query);
+    }
+
     function getCachedLatLong($query)
     {
         if (empty($query))
             return false;
 
-        $latlong = $this->getLatLongByCache($query);
-        if (!empty($latlong))
-            return $latlong;
+        $query = ucwords(strtolower(trim($query)));
 
-        $latlong = $this->getLatLongByGoogleMap($query);
+        $ret_latlong = array(
+            'status' => false,
+            'details' => array(),
+            'coords' => array(
+                'latitude' => 0,
+                'longitude' => 0,
+            ),
+        );
+
+        $status  = &$ret_latlong['status'];
+        $details = &$ret_latlong['details'];
+        $coords  = &$ret_latlong['coords'];
+
+        $latlong = $this->getLatLongByCache($details, $query);
+        if (!empty($latlong))
+        {
+            $status = true;
+            $coords['latitude']  = $latlong['latitude'];
+            $coords['longitude'] = $latlong['longitude'];
+            return $ret_latlong;
+        }
+
+        $latlong = $this->getLatLongByOpenMapQuest($details, $query);
         if (empty($latlong))
         {
-            // couldn't get the lat/long by gmap
-            return false;
+            // couldn't get the lat/long
+            return $ret_latlong;
+        }
+        else
+        {
+            $status = true;
+            $coords['latitude']  = $latlong['latitude'];
+            $coords['longitude'] = $latlong['longitude'];
         }
 
         $lat  = $latlong['latitude'];
         $long = $latlong['longitude'];
-        $add_ok = $this->addLatLongToCache($query, $lat, $long);
-
+        $add_ok = $this->addLatLongToCache($details, $query, $lat, $long);
         if (empty($add_ok))
         {
             // failed to cache new query and lat/long
-            return false;
+            Util::logit("Failed to cache lat/long. Lat: $lat, Long: $long, Query: $query");
         }
 
-        return $latlong;
+        return $ret_latlong;
     }
 
-    function getLatLongByCache($query_addy)
+    function getLatLongByCache(&$details, $query_addy)
     {
         $query =<<<EOQ
             SELECT
@@ -57,65 +91,55 @@ EOQ;
         return false;
     }
 
-    function getLatLongByGoogleMap($query)
+    function getLatLongByOpenMapQuest(&$details, $query_addy)
     {
-        // http://ygamretuta.me/2011/03/07/google-maps-v3-geocoding-with-pure-php/
-
-        $address = urlencode($query);
-        $url = "http://maps.google.com/maps/geo?output=xml&q=$address";
-
-        $latlong = array(
-            'latitude'  => 0,
-            'longitude' => 0,
+        $params = array(
+            'inFormat' => 'kvp',
+            'outFormat' => 'json',
+            'ignoreLatLngInput' => 'true',
+            'thumbMaps' => 'false',
+            'location' => $query_addy,
         );
 
-        $delay = 0;
+        $url  = 'http://open.mapquestapi.com/geocoding/v1/address?';
+        $url .= http_build_query($params, '', '&');
 
-        $geocode_pending = true;
+        $get_data = file_get_contents($url);
+        $json_data = json_decode($get_data, true);
 
-        // load file from url
-        while ($geocode_pending)
+        $details['json'] = $json_data;
+
+        // statuscode and message
+        $info = $json_data['info'];
+        if ($info['statuscode'] != 0)
         {
-            try
-            {
-                $xml = simplexml_load_file($url);
-            }
-            catch(Exception $e)
-            {
-                // return an empty array for a file request exception
-                Util::logit("Failed to parse response from '$url'");
-                return false;
-            }
-
-            //get response status
-            $status = $xml->Response->Status->code;
-
-            if (strcmp($status, '200') == 0)
-            {
-                $geocode_pending = false;
-
-                // get coordinates node from xml response
-                $coordsNode = explode(',', $xml->Response->Placemark->Point->coordinates);
-
-                $latlong = array(
-                    'latitude'  => $coordsNode[1],
-                    'longitude' => $coordsNode[0],
-                );
-            }
-
-            // handle timeout responses and delay re-execution of geocoding
-            else if (strcmp($status, '620') == 0)
-            {
-                $delay += 100000;
-            }
-
-            usleep($delay);
+            Util::logit("[Open Map Quest] Query: $query_addy. Status Code: ${info['statuscode']}. Messages:".print_r($info['messages'],true));
         }
 
-        return $latlong;
+        $results = $json_data['results'];
+        if (empty($results))
+            return false;
+
+        $locations = $results[0]['locations'];
+
+        $latlng = false;
+        foreach ($locations as $loc)
+        {
+            if ($loc['adminArea1'] === 'United States of America')
+            {
+                // only get the first US lat/long
+                $latlng = array(
+                    'latitude'  => $loc['latLng']['lat'],
+                    'longitude' => $loc['latLng']['lng'],
+                );
+                break;
+            }
+        }
+
+        return $latlng;
     }
 
-    function addLatLongToCache($query_addy, $lat, $long)
+    function addLatLongToCache(&$details, $query_addy, $lat, $long)
     {
         $query =<<<EOQ
             INSERT INTO tblCacheGeocode

@@ -10,6 +10,7 @@ $params = array(
     'q_radius'=>'2',
     'found_locations'=>array(),
     'nearby_query'=>array(),
+    'map_request'=>array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -17,12 +18,12 @@ extract($params, EXTR_SKIP);
 <div class="pg">
     <form id="bygmap" enctype="multipart/form-data" method="get" action="/admin/location/gmap">
         <label>
-            <span class="hint">Google Map Query</span>
+            <span class="hint">Map Query</span>
             <input class="watermark gmap" type="text" name="query" placeholder="Query" value="<?php echo $q_gmap_query; ?>"/>
         </label>
         <label>
             <span class="hint">&nbsp;</span>
-            <input class="button" type="submit" value="Search Google Maps" />
+            <input class="button" type="submit" value="Search Maps" />
         </label>
     </form>
 </div>
@@ -145,13 +146,52 @@ EOHTML;
         </tbody>
     </table>
     <?php } // if (!empty($nearby_query)) ?>
+    <?php if (!empty($map_request)): ?>
+    <br/>
+    <table class="tblDefault">
+        <thead>
+            <td>idx</td>
+            <td>geocodeQualityCode</td>
+            <td>latitude</td>
+            <td>longitude</td>
+            <td>country</td>
+            <td>state</td>
+            <td>city</td>
+            <td>county</td>
+            <td></td>
+            <td></td>
+        </thead>
+        <tbody>
+        <?php foreach ($map_request as $idx_row => $row):
+            $lat = $row['latLng']['lat'];
+            $lng = $row['latLng']['lng'];
+            $link_splatnom = 'http://splatnom.local/admin/location/latlong';
+            $link_google = 'https://maps.google.com/maps';
+            $gmap_zoom = 13;
+        ?>
+                <tr>
+                    <td><?=$idx_row?></td>
+                    <td><?=$row['geocodeQualityCode']?></td>
+                    <td><?=$lat?></td>
+                    <td><?=$lng?></td>
+                    <td><?=$row['adminArea1']?></td>
+                    <td><?=$row['adminArea3']?></td>
+                    <td><?=$row['adminArea5']?></td>
+                    <td><?=$row['adminArea4']?></td>
+                    <td><a target="_blank" href="<?=$link_splatnom?>?lat=<?=$lat?>&long=<?=$lng?>&radius=<?=$q_radius?>">Splatnom lat/long</a></td>
+                    <td><a target="_blank" href="<?=$link_google?>?q=<?=$lat?>,+<?=$lng?>&z=<?=$gmap_zoom?>">Google Maps</a></td>
+                </tr>
+        <?php endforeach; //foreach ($nearby_query as $row): ?>
+        </tbody>
+    </table>
+    <?php endif; // if (!empty($map_request)) ?>
 </div>
 <?php
 if (!empty($dbg))
 {
-    $sdbg = var_export($dbg);
+    $sdbg = print_r($dbg, true);
     echo<<<EOHTML
-        <div class="pg dbg"><pre>{$sdbg}</pre></div>
+        <div class="dbg"><pre>{$sdbg}</pre></div>
 EOHTML;
 }
 ?>
