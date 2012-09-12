@@ -13,11 +13,18 @@ EOQ;
         $prepare = $this->query($query);
     }
 
-    function getCachedLatLong($query)
+    function getCachedLatLong($query, $force_lookup = 0)
     {
         if (empty($query))
             return false;
 
+        // for each ',', add a space
+        $query = preg_replace('/,/', ', ', $query);
+
+        // for each multiple spaces, make it single space
+        $query = preg_replace('/\s\s+/', ' ', $query);
+
+        // trim it, make it all lowercase, and make the first letter in each word upper case
         $query = ucwords(strtolower(trim($query)));
 
         $ret_latlong = array(
@@ -33,7 +40,7 @@ EOQ;
         $details = &$ret_latlong['details'];
         $coords  = &$ret_latlong['coords'];
 
-        $latlong = $this->getLatLongByCache($details, $query);
+        $latlong = $force_lookup ? false : $this->getLatLongByCache($details, $query);
         if (!empty($latlong))
         {
             $status = true;
@@ -80,15 +87,28 @@ EOQ;
         if (!$prepare) return false;
 
         $row_cache = $prepare->fetch(PDO::FETCH_ASSOC);
+        unset($prepare);
 
-        if (!empty($row_cache))
+        if (empty($row_cache))
+            return false;
+
+        //Util::logit("Geocoder Cache hit: $query_addy");
+
+        // update the hit counter for the cache hit
+
+        $query =<<<EOQ
+            UPDATE tblCacheGeocode
+            SET hits = hits + 1
+            WHERE address_query = :query
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':query'=>$query_addy), __FILE__, __LINE__);
+        if (!$prepare)
         {
-            // return the cached
-            //Util::logit("Geocoder Cache hit: $query_addy");
-            return $row_cache;
+            Util::logit("Failed to update hit counter for query: $query_addy");
         }
 
-        return false;
+        return $row_cache;
     }
 
     function getLatLongByOpenMapQuest(&$details, $query_addy)

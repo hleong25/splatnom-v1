@@ -204,7 +204,7 @@ class AdminController
                 $query = $param['query'];
                 $this->set('q_gmap_query', $query);
 
-                $cached_latlong = $loc->getCachedLatLong($query);
+                $cached_latlong = $loc->getCachedLatLong($query, true);
 
                 if (!empty($cached_latlong['details']))
                 {
