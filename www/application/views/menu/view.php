@@ -156,6 +156,18 @@ foreach ($info['status'] as $info_status)
         <p class="hours"><?=nl2br($info['hours'])?></p>
     </td>
 </tr>
+<tr>
+<?php foreach ($links as $link):
+    $label = $link['label'];
+    $url = $link['url'];
+
+    if (empty($label)) $label = $url;
+?>
+        <td>
+            <p class="link">Link: <a target="_blank" href="<?=$url?>"><?=$label?></a></p>
+        </td>
+<?php endforeach; // foreach ($links as $link): ?>
+</tr>
 </table>
 </div>
 
