@@ -180,8 +180,7 @@ EOHTML;
             <br/>
             <input class="watermark info_latitude" type="text" style="width: 15em;" name="info_latitude" placeholder="Latitude" value="<?=$info['latitude']?>"/>
             <input class="watermark info_longitude" type="text" style="width: 15em;" name="info_longitude" placeholder="Longitude" value="<?=$info['longitude']?>"/>
-            <script type="text/javascript">var GOOGLE_API_KEY = '<?=$google_api_key?>';</script>
-            <input class="map_addy" type="button" value="Google Map lat/long and addy" />
+            <input class="map_addy" type="button" value="Google Map lat/long and addy" data-google-api-key="<?=$google_api_key?>"/>
             <br/>
             <textarea class="watermark phone_numbers" rows="5"  name="info_numbers" placeholder="Phone numbers"><?=$info['numbers']?></textarea>
             <br/>

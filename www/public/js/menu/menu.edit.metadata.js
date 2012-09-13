@@ -348,6 +348,8 @@ function getLatLongFromAddress()
 
 function showGoogleMapAddy()
 {
+    var $this = $(this);
+
     var lat = $('.info_latitude').val();
     var lng = $('.info_longitude').val();
 
@@ -355,7 +357,7 @@ function showGoogleMapAddy()
     txtAddress = txtAddress.replace('\n', ',');
 
     var params = $.param({
-        'key': GOOGLE_API_KEY,
+        'key': $this.data('google-api-key'),
         'sensor': 'false',
         'maptype': 'roadmap',
         'size': '800x800'
