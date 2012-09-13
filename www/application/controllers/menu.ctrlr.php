@@ -87,6 +87,7 @@ class MenuController
         $this->set('id', $id);
         $this->set('is_admin', Util::getPermissions('admin'));
         $this->set('is_metadata', Util::getPermissions('metadata'));
+        $this->set('google_api_key', GOOGLE_API_KEY);
 
         $import_json = false;
 

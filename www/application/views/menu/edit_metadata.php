@@ -29,6 +29,7 @@ $params = array(
     'err_msgs' => array(),
     'is_admin' => false,
     'is_metadata' => false,
+    'google_api_key' => '',
     'info' => $params_info,
     'links' => array(),
     'mdts' => $params_mdts,
@@ -138,8 +139,8 @@ EOHTML;
         <script type="tmpl/link" id="tmpl_link">
             <div class="link_item">
                 <input type="hidden" name="link[]" value="@link@"/>
-                <input type="text" class="jq_watermark link_url" style="width: 35em;" name="link[]" title="Link" value=""/>
-                <input type="text" class="jq_watermark link_lbl" style="width: 15em;" name="link[]" title="Label" value=""/>
+                <input type="text" class="watermark link_url" style="width: 35em;" name="link[]" placeholder="Link" value=""/>
+                <input type="text" class="watermark link_lbl" style="width: 15em;" name="link[]" placeholder="Label" value=""/>
                 <button class="link_add">Add link</button>
                 <button class="link_remove">Remove link</button>
             </div>
@@ -155,8 +156,8 @@ EOHTML;
                     echo<<<EOHTML
                         <div class="link_item">
                             <input type="hidden" name="link[]" value="@link@"/>
-                            <input type="text" class="jq_watermark" style="width: 35em;" name="link[]" title="Link" value="{$link['url']}"/>
-                            <input type="text" class="jq_watermark" style="width: 15em;" name="link[]" title="Label" value="{$link['label']}"/>
+                            <input type="text" class="watermark" style="width: 35em;" name="link[]" placeholder="Link" value="{$link['url']}"/>
+                            <input type="text" class="watermark" style="width: 15em;" name="link[]" placeholder="Label" value="{$link['label']}"/>
                             <button class="link_add">Add link</button>
                             <button class="link_remove">Remove link</button>
                         </div>
@@ -169,22 +170,22 @@ EOHTML;
     <div class="info">
         <div class="heading onToggle">Business Information</div>
         <div class="data toggle">
-            <input class="jq_watermark" type="text" style="width: 25em;" name="info_name" title="Name of the place" value="<?=$info['name']?>"/>
+            <input class="watermark" type="text" style="width: 25em;" name="info_name" placeholder="Name of the place" value="<?=$info['name']?>"/>
             <br/>
-            <input class="jq_watermark" type="text" style="width: 35em;" name="info_notes" title="Notes" value="<?=$info['notes']?>"/>
+            <input class="watermark" type="text" style="width: 35em;" name="info_notes" placeholder="Notes" value="<?=$info['notes']?>"/>
             <br/>
-            <textarea class="jq_watermark address" rows="5"  name="info_address" title="Address"><?=$info['address']?></textarea>
+            <textarea class="watermark address" rows="5"  name="info_address" placeholder="Address"><?=$info['address']?></textarea>
             <br/>
-            <input class="search_address" type="button" value="Google search address" />
-            <input class="jq_watermark" type="text" style="width: 400px;" title="javascript get lat long" value="javascript:void(prompt('',gApplication.getMap().getCenter()));"/>
+            <input class="find_latlong" type="button" value="Get lat/long for address" />
             <br/>
-            <input class="jq_watermark" type="text" style="width: 15em;" name="info_latitude" title="Latitude" value="<?=$info['latitude']?>"/>
-            <input class="jq_watermark" type="text" style="width: 15em;" name="info_longitude" title="Longitude" value="<?=$info['longitude']?>"/>
-            <span class="latlong_info">If latitude is in (###,###) format, it will parse it to lat/long.</span>
+            <input class="watermark info_latitude" type="text" style="width: 15em;" name="info_latitude" placeholder="Latitude" value="<?=$info['latitude']?>"/>
+            <input class="watermark info_longitude" type="text" style="width: 15em;" name="info_longitude" placeholder="Longitude" value="<?=$info['longitude']?>"/>
+            <script type="text/javascript">var GOOGLE_API_KEY = '<?=$google_api_key?>';</script>
+            <input class="map_addy" type="button" value="Google Map lat/long and addy" />
             <br/>
-            <textarea class="jq_watermark phone_numbers" rows="5"  name="info_numbers" title="Phone numbers"><?=$info['numbers']?></textarea>
+            <textarea class="watermark phone_numbers" rows="5"  name="info_numbers" placeholder="Phone numbers"><?=$info['numbers']?></textarea>
             <br/>
-            <textarea class="jq_watermark hours" rows="5" name="info_hours" title="Hours of operation"><?=$info['hours']?></textarea>
+            <textarea class="watermark hours" rows="5" name="info_hours" placeholder="Hours of operation"><?=$info['hours']?></textarea>
         </div>
     </div>
 
@@ -208,9 +209,9 @@ EOHTML;
                 <!-- new group info -->
                 <input type="hidden" name="mdt[]" value="@mdt@"/>
                 <input type="hidden" class="sid" name="mdt[]" value=""/>
-                <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="" />
+                <input type="text" class="watermark menu_name" name="mdt[]" placeholder="Group (ie. Appetizers)" value="" />
                 <br/>
-                <textarea class="jq_watermark menu_notes" name="mdt[]" title="Group notes"></textarea>
+                <textarea class="watermark menu_notes" name="mdt[]" placeholder="Group notes"></textarea>
             </div>
             <div class="subheading">Menu items</div>
             <div class="menu_group">
@@ -228,9 +229,9 @@ EOHTML;
         <button class="btnitem item_down">Move down</button>
         <input type="hidden" name="mdt[]" value="@item@"/>
         <input type="hidden" class="mid" name="mdt[]" value=""/>
-        <textarea class="jq_watermark item_label" name="mdt[]" title="Label" rows="1"></textarea>
-        <textarea class="jq_watermark item_price" name="mdt[]" title="Price" rows="1"></textarea>
-        <textarea class="jq_watermark item_notes" name="mdt[]" title="Notes" rows="1"></textarea>
+        <textarea class="watermark item_label" name="mdt[]" placeholder="Label" rows="1"></textarea>
+        <textarea class="watermark item_price" name="mdt[]" placeholder="Price" rows="1"></textarea>
+        <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes" rows="1"></textarea>
         <input type="hidden" name="mdt[]" value="@item_attr@"/>
         <input type="hidden" name="mdt[]" value="is_spicy"/>
         <input type="checkbox" name="mdt[]" ><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>
@@ -257,9 +258,9 @@ EOHTML;
                 <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']}"; ?> -->
                 <input type="hidden" name="mdt[]" value="@mdt@"/>
                 <input type="hidden" class="sid" name="mdt[]" value="<?=$mdt['section_id']?>"/>
-                <input type="text" class="jq_watermark menu_name" name="mdt[]" title="Group (ie. Appetizers)" value="<?=$mdt['name']?>" />
+                <input type="text" class="watermark menu_name" name="mdt[]" placeholder="Group (ie. Appetizers)" value="<?=$mdt['name']?>" />
                 <br/>
-                <textarea class="jq_watermark menu_notes" name="mdt[]" title="Group notes"><?=$mdt['notes']?></textarea>
+                <textarea class="watermark menu_notes" name="mdt[]" placeholder="Group notes"><?=$mdt['notes']?></textarea>
             </div>
             <div class="subheading">Menu items</div>
             <div class="menu_group">
@@ -271,9 +272,9 @@ EOHTML;
                     <button class="btnitem item_down">Move down</button>
                     <input type="hidden" name="mdt[]" value="@item@"/>
                     <input type="hidden" class="mid" name="mdt[]" value="<?=$item['metadata_id']?>"/>
-                    <textarea class="jq_watermark item_label" name="mdt[]" title="Label" rows="1"><?=$item['label']?></textarea>
-                    <textarea class="jq_watermark item_price" name="mdt[]" title="Price" rows="1"><?=$item['price']?></textarea>
-                    <textarea class="jq_watermark item_notes" name="mdt[]" title="Notes" rows="1"><?=$item['notes']?></textarea>
+                    <textarea class="watermark item_label" name="mdt[]" placeholder="Label" rows="1"><?=$item['label']?></textarea>
+                    <textarea class="watermark item_price" name="mdt[]" placeholder="Price" rows="1"><?=$item['price']?></textarea>
+                    <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes" rows="1"><?=$item['notes']?></textarea>
                     <input type="hidden" name="mdt[]" value="@item_attr@"/>
                     <input type="hidden" name="mdt[]" value="is_spicy"/>
                     <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>

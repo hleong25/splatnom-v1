@@ -17,9 +17,14 @@ function init()
         .each(onAction_button)
     ;
 
-    $('.search_address')
+    $('.find_latlong')
         .button()
-        .on('click', googleSearchAddress)
+        .on('click', getLatLongFromAddress)
+    ;
+
+    $('.map_addy')
+        .button()
+        .on('click', showGoogleMapAddy)
     ;
 
     $('a.img_add')
@@ -291,18 +296,77 @@ function link_remove()
     return false;
 }
 
-function googleSearchAddress()
+function getLatLongFromAddress()
 {
+    var $this = $(this);
+
     var txtAddress = $('textarea[name="info_address"]').val();
+    txtAddress = txtAddress.replace('\n', ',');
+
+    var params = {
+        'inFormat' : 'kvp',
+        'outFormat' : 'json',
+        'ignoreLatLngInput' : 'true',
+        'thumbMaps' : 'false',
+        'location' : txtAddress,
+    };
+
+    var url_params = $.param(params);
+
+    var url = 'http://open.mapquestapi.com/geocoding/v1/address?callback=?&'+url_params;
+
+    $this.attr('disabled','disabled');
+
+    $.getJSON(url, function (data) {
+            if (data.info.statuscode != 0)
+                return;
+
+            if (data.results.length < 1)
+                return;
+
+            var locations = data.results[0].locations;
+
+            for (var ii = 0, jj = locations.length; ii < jj; ii++)
+            {
+                var loc = locations[ii];
+
+                if (loc.adminArea1 === 'United States of America')
+                {
+                    var latlng = loc.latLng;
+
+                    $('.info_latitude').val(latlng.lat);
+                    $('.info_longitude').val(latlng.lng);
+                    break;
+                }
+            }
+
+        })
+    .complete(function (){
+        $this.removeAttr('disabled');
+    });
+}
+
+function showGoogleMapAddy()
+{
+    var lat = $('.info_latitude').val();
+    var lng = $('.info_longitude').val();
+
+    var txtAddress = $('textarea[name="info_address"]').val();
+    txtAddress = txtAddress.replace('\n', ',');
+
     var params = $.param({
-            'q': txtAddress
+        'key': GOOGLE_API_KEY,
+        'sensor': 'false',
+        'maptype': 'roadmap',
+        'size': '800x800'
     });
 
-    var url = 'http://maps.google.com/maps?' + params;
+    var delim = '%7C';
+    params += '&markers=color:blue' + delim + 'label:L' + delim + lat + ',' + lng;
+    params += '&markers=color:green' + delim + 'label:A' + delim + txtAddress;
 
-    var map_window = window.open(url, 'gmaps');
-
-    return false;
+    var url = 'http://maps.google.com/maps/api/staticmap?'+params;
+    window.open(url, '_blank');
 }
 
 function move_menu(elem, position)
