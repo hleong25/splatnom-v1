@@ -4,11 +4,13 @@
 # gunzip -c file.gz | mysql -h[database host] -u[username] -p[password] [database-name]
 
 hostname=localhost
-username=hleong25_testusr
-dbname=hleong25_testimport
+username=henry
+dbname=menudb
+
+# $dbname must exists
 
 file1=./menu/menu.120313.1.static.sql.gz
-file2=./menu/menu.120624.2.tables.sql.gz
+file2=./menu/menu.120911.2.tables.sql.gz
 file3=./menu/menu.120313.3.views.sql.gz
 
 view_old_user=hleong25
