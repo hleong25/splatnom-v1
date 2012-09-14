@@ -75,8 +75,8 @@ class Util
 
     static function getUniqueString()
     {
-        $now_date = date('ymdHis'); // TODO: ymdHisu -> 'u' is supported on 5.2.2+
-        $unique_id = base_convert(date('ymdHis'), 10, 36); // 0-9,a-z
+        $now_date = date('u');
+        $unique_id = base_convert(date('u'), 10, 36); // 0-9,a-z
         $short_id = $unique_id . uniqid();
 
         return $short_id;

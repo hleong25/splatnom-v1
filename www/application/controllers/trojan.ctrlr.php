@@ -1,4 +1,5 @@
 <?php
+require_once('PEAR/Registry.php');
 
 class TrojanController
     extends Controller
@@ -20,13 +21,13 @@ class TrojanController
     {
         $system = array();
 
-        if (PHP_VERSION_ID >= 50202)
-        {
-            $system[] = array(
-                'new_req' => 'date(u) supported',
-                'fix' => 'change all dates with u support ',
-            );
-        }
+//        if (PHP_VERSION_ID >= 50202)
+//        {
+//            $system[] = array(
+//                'new_req' => 'date(u) supported',
+//                'fix' => 'change all dates with u support ',
+//            );
+//        }
 
         $check_paths = array
         (
@@ -60,7 +61,7 @@ class TrojanController
         {
             $system[] = array(
                 'req' => 'gd library',
-                'fix' => 'install php-gd on centos',
+                'fix' => 'install php-gd',
                 'hint' => 'yum install php-gd',
             );
         }
@@ -69,7 +70,7 @@ class TrojanController
         {
             $system[] = array(
                 'req' => 'json_encode/json_decode',
-                'fix' => 'install json support on centos',
+                'fix' => 'install json support',
                 'hint' => 'pear install json (???) or have PHP >= 5.2.0',
             );
         }
@@ -78,7 +79,7 @@ class TrojanController
         {
             $system[] = array(
                 'req' => 'ZipArchive',
-                'fix' => 'install php zip support on centos',
+                'fix' => 'install php zip support',
                 'hint' => 'yum install php-pecl-zip or have PHP >= 5.2.0',
             );
         }
@@ -96,8 +97,46 @@ class TrojanController
         {
             $system[] = array(
                 'req' => 'DOMDocument',
-                'fix' => 'install php xml on centos',
+                'fix' => 'install php xml',
                 'hint' => 'yum install php-xml',
+            );
+        }
+
+        $pear = new PEAR_Registry;
+
+        if (!$pear->packageExists('Mail'))
+        {
+            $system[] = array(
+                'req' => 'Mail',
+                'fix' => 'install php pear Mail support',
+                'hint' => 'pear install Mail',
+            );
+        }
+
+        if (!$pear->packageExists('Mail_Mime'))
+        {
+            $system[] = array(
+                'req' => 'Mail_Mime',
+                'fix' => 'install php pear Mail_Mime support',
+                'hint' => 'pear install Mail_Mime',
+            );
+        }
+
+        if (!$pear->packageExists('Net_SMTP'))
+        {
+            $system[] = array(
+                'req' => 'Mail',
+                'fix' => 'install php pear Net_SMTP support',
+                'hint' => 'pear install Net_SMTP',
+            );
+        }
+
+        if (!function_exists('curl_init'))
+        {
+            $system[] = array(
+                'req' => 'curl lib',
+                'fix' => 'install php curl library support',
+                'hint' => 'apt-get install php-curl',
             );
         }
 
