@@ -16,8 +16,8 @@ class Controller
 		$this->m_model = $base_name . 'Model';
 		$this->m_action = $action;
 
-		$this->$base_name = & new $this->m_model;
-		$this->m_template = & new Template($base_name, $action);
+		$this->$base_name = new $this->m_model;
+		$this->m_template = new Template($base_name, $action);
 	}
 
 	function set($name, $value)

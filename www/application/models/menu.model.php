@@ -685,10 +685,8 @@ EOQ;
         if (!$this->removeUnusedSection($id, $section_ids))
             return false;
 
-        if ($this->updateMetadata($id, $datas))
-        {
+        if (!$this->updateMetadata($id, $datas))
             return false;
-        }
 
         $this->commit();
         return true;
