@@ -54,7 +54,7 @@ function sticky_nav()
 
 function show_section()
 {
-    var $menu_sections = $('td.menu div.menu');
+    var $menu_sections = $('ul.menu');
 
     $('a.nav_item').click(function(elem){
         var section_id = $(this).attr('href').substr(1);

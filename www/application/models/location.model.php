@@ -124,7 +124,15 @@ EOQ;
         $url  = 'http://open.mapquestapi.com/geocoding/v1/address?';
         $url .= http_build_query($params, '', '&');
 
+        ob_start();
         $get_data = file_get_contents($url);
+        $json_error = ob_get_clean();
+        if (empty($get_data))
+        {
+            Util::logit("Failed to get json data from $url. Error: $json_error");
+            return false;
+        }
+
         $json_data = json_decode($get_data, true);
 
         $details['json'] = $json_data;
