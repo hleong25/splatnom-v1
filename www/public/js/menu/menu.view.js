@@ -16,7 +16,11 @@ function init()
         });
     }
 
-    $('.button').button();
+    $('.button')
+        .button({
+            icons: {primary: 'ui-icon-search'}
+        })
+    ;
 
     //sticky_nav();
 
