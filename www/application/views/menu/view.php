@@ -175,55 +175,7 @@ foreach ($info['status'] as $info_status)
     <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
-<?php /*
-<style type="text/css">
-.pg {
-    width: 55em;
-    margin: 0 auto;
-}
 
-.navbar {
-    width: 15em;
-    border: 1px solid black;
-    float: left;
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-li {
-}
-
-li.nav_header {
-}
-
-li.nav_item {
-}
-
-.nav_header {
-    background-color: gray;
-}
-
-.nav_item {
-}
-
-ul.menu {
-    border: 1px solid blue;
-    margin-left: 16em;
-}
-
-ul.menu_item {
-    list-style-type: none;
-}
-
-li.menu_item {
-    display: inline;
-}
-</style>
-*/ ?>
 <div class="pg themenu clearfix">
     <ul class="navbar">
         <li class="nav_header">
