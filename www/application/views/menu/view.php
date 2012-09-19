@@ -236,11 +236,7 @@ foreach ($info['status'] as $info_status)
             if ($item['is_spicy'])
                 $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
 
-            $item_price = $item['price'];
-            $item_price = explode(',', $item_price);
-            $item_price = array_map('trim', $item_price);
-            $item_price = implode('<br/>', $item_price);
-
+            $item_price = nl2br($item_price);
             $item_notes = nl2br($item['notes']);
 
         ?>
