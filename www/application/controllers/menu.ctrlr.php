@@ -271,6 +271,8 @@ class MenuController
                         'label' => trim($post_mdts[++$ii]),
                         'price' => trim($post_mdts[++$ii]),
                         'notes' => trim($post_mdts[++$ii]),
+                        'is_hide' => false,
+                        'is_header' => false,
                         'is_spicy' => false,
                     );
 
@@ -314,12 +316,23 @@ class MenuController
                 case '@item_attr@':
                     $item = array_pop($mdt['items']);
 
-                    $is_spicy = false;
+                    $attributes = array(
+                        'is_hide',
+                        'is_header',
+                        'is_nopanel',
+                        'is_spicy',
+                    );
 
-                    if (($post_mdts[++$ii] === 'is_spicy') && ($post_mdts[$ii + 1] === 'on'))
+                    ++$ii; // point to the next item so we can get the attribute name
+
+                    foreach ($attributes as $attr)
                     {
-                        ++$ii;
-                        $item['is_spicy'] = true;
+                        if (($post_mdts[$ii] === $attr) && ($post_mdts[$ii + 1] === 'on'))
+                        {
+                            ++$ii;
+                            $item[$attr] = true;
+                            break;
+                        }
                     }
 
                     $mdt['items'][] = $item;

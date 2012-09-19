@@ -9,6 +9,9 @@ $params_mdts[] = array(
         'label'=>'',
         'price'=>'',
         'notes'=>'',
+        'is_hide'=>false,
+        'is_header'=>false,
+        'is_spicy'=>false,
     )),
 );
 
@@ -100,20 +103,7 @@ EOHTML;
     <div class="err_msgs">
         <?=implode('<br/>', $err_msgs)?>
     </div>
-<?php /*
-    NOTE: the import function is no longer supported here
-          it will be supported in the /import/list section
 
-    <div class="import">
-        <div class="heading onToggle">Import menu</div>
-        <div class="data toggle">
-            <span>Choose the import menu file: </span><input class="file" type="file" name="import_file"/><br/>
-            <input class="chkImport" type="checkbox" name="import_file_opts[]" value="infos"/><span>Overwrite business info</span><br/>
-            <input class="chkImport" type="checkbox" name="import_file_opts[]" value="links"/><span>Append links</span><br/>
-            <input class="chkImport" type="checkbox" name="import_file_opts[]" value="menus"/><span>Append menus</span><br/>
-        </div>
-    </div>
-*/?>
     <div class="images">
         <div class="heading onToggle">Images <a class="button img_add" href="/images/upload/<?=$id?>">Add photos</a></div>
         <div class="data toggle">
@@ -224,18 +214,54 @@ EOHTML;
 <script type="tmpl/item" id="tmpl_item">
     <div class="menu_item">
         <!-- new menu item -->
-        <button class="btnitem item_up">Move down</button>
-        <button class="btnitem item_down">Move down</button>
+
+        <div class="buttons move">
+            <button class="btnitem item_up">Move down</button>
+            <button class="btnitem item_down">Move down</button>
+        </div>
+
         <input type="hidden" name="mdt[]" value="@item@"/>
         <input type="hidden" class="mid" name="mdt[]" value=""/>
-        <textarea class="watermark item_label" name="mdt[]" placeholder="Label" rows="1"></textarea>
-        <textarea class="watermark item_price" name="mdt[]" placeholder="Price" rows="1"></textarea>
-        <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes" rows="1"></textarea>
-        <input type="hidden" name="mdt[]" value="@item_attr@"/>
-        <input type="hidden" name="mdt[]" value="is_spicy"/>
-        <input type="checkbox" name="mdt[]" ><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>
-        <button class="btnitem item_add">Add item</button>
-        <button class="btnitem item_remove">Remove item</button>
+
+        <div class="textarea">
+            <textarea class="watermark item_label" name="mdt[]" placeholder="Label"></textarea>
+            <textarea class="watermark item_price" name="mdt[]" placeholder="Price"></textarea>
+            <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes"></textarea>
+        </div>
+
+        <div class="attrs">
+
+            <input type="hidden" name="mdt[]" value="@item_attr@"/>
+            <input type="hidden" name="mdt[]" value="is_hide"/>
+            <label>
+                <input type="checkbox" name="mdt[]" />Hide!
+            </label>
+
+            <input type="hidden" name="mdt[]" value="@item_attr@"/>
+            <input type="hidden" name="mdt[]" value="is_header"/>
+            <label>
+                <input type="checkbox" name="mdt[]" />Header!
+            </label>
+
+            <input type="hidden" name="mdt[]" value="@item_attr@"/>
+            <input type="hidden" name="mdt[]" value="is_nopanel"/>
+            <label>
+                <input type="checkbox" name="mdt[]" />NoPanel!
+            </label>
+
+            <input type="hidden" name="mdt[]" value="@item_attr@"/>
+            <input type="hidden" name="mdt[]" value="is_spicy"/>
+            <label>
+                <input type="checkbox" name="mdt[]" /><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
+            </label>
+
+        </div>
+
+        <div class="buttons mod">
+            <button class="btnitem item_add">Add item</button>
+            <button class="btnitem item_remove">Remove item</button>
+        </div>
+
     </div>
 </script>
 
@@ -263,22 +289,56 @@ EOHTML;
             </div>
             <div class="subheading">Menu items</div>
             <div class="menu_group">
-                <span class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</span><br/>
+                <p class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</p>
                 <?php foreach ($mdt['items'] as $item_idx => $item): ?>
                 <div class="menu_item">
                     <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->
-                    <button class="btnitem item_up">Move down</button>
-                    <button class="btnitem item_down">Move down</button>
+
+                    <div class="buttons move">
+                        <button class="btnitem item_up">Move down</button>
+                        <button class="btnitem item_down">Move down</button>
+                    </div>
+
                     <input type="hidden" name="mdt[]" value="@item@"/>
                     <input type="hidden" class="mid" name="mdt[]" value="<?=$item['metadata_id']?>"/>
-                    <textarea class="watermark item_label" name="mdt[]" placeholder="Label" rows="1"><?=$item['label']?></textarea>
-                    <textarea class="watermark item_price" name="mdt[]" placeholder="Price" rows="1"><?=$item['price']?></textarea>
-                    <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes" rows="1"><?=$item['notes']?></textarea>
-                    <input type="hidden" name="mdt[]" value="@item_attr@"/>
-                    <input type="hidden" name="mdt[]" value="is_spicy"/>
-                    <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/></input>
-                    <button class="btnitem item_add">Add item</button>
-                    <button class="btnitem item_remove">Remove item</button>
+
+                    <div class="textarea">
+                        <textarea class="watermark item_label" name="mdt[]" placeholder="Label"><?=$item['label']?></textarea>
+                        <textarea class="watermark item_price" name="mdt[]" placeholder="Price"><?=$item['price']?></textarea>
+                        <textarea class="watermark item_notes" name="mdt[]" placeholder="Notes"><?=$item['notes']?></textarea>
+                    </div>
+
+                    <div class="attrs">
+                        <input type="hidden" name="mdt[]" value="@item_attr@"/>
+                        <input type="hidden" name="mdt[]" value="is_hide"/>
+                        <label>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_hide']))?'CHECKED':''?>/>Hide!
+                        </label>
+
+                        <input type="hidden" name="mdt[]" value="@item_attr@"/>
+                        <input type="hidden" name="mdt[]" value="is_header"/>
+                        <label>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_header']))?'CHECKED':''?>/>Header!
+                        </label>
+
+                        <input type="hidden" name="mdt[]" value="@item_attr@"/>
+                        <input type="hidden" name="mdt[]" value="is_nopanel"/>
+                        <label>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_nopanel']))?'CHECKED':''?>/>NoPanel!
+                        </label>
+
+                        <input type="hidden" name="mdt[]" value="@item_attr@"/>
+                        <input type="hidden" name="mdt[]" value="is_spicy"/>
+                        <label>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>/><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
+                        </label>
+                    </div>
+
+                    <div class="buttons mod">
+                        <button class="btnitem item_add">Add item</button>
+                        <button class="btnitem item_remove">Remove item</button>
+                    </div>
+
                 </div>
                 <?php endforeach; // foreach ($mdt['items'] as $item_idx => $item) ?>
             </div>

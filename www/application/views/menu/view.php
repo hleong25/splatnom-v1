@@ -214,6 +214,12 @@ foreach ($info['status'] as $info_status)
         <table class="menu_items">
         <?php foreach ($mdt['items'] as $item):
 
+            if ($item['is_hide'])
+                continue;
+
+            $is_header = $item['is_header'];
+            $is_nopanel = $item['is_nopanel'];
+
             $metadata_id = $item['metadata_id'];
             $metadata_label = $item['label'];
             $slug['item'] = Util::slugify($metadata_label);
@@ -236,28 +242,39 @@ foreach ($info['status'] as $info_status)
             if ($item['is_spicy'])
                 $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
 
-            $item_price = nl2br($item_price);
+            $item_price = nl2br($item['price']);
             $item_notes = nl2br($item['notes']);
 
         ?>
-            <tr>
-                <td class="item_panel">
-                    <img src="/img/menu.imgs.light.gif"/>
-                    <img src="/img/menu.forkit.light.gif"/>
-                </td>
-                <td class="item_info1">
-                    <span class="goright clearfix"><?=$item_price?></span>
-                    <?=$metadata_label?>
-                    <?=$img_spicy?>
-                </td>
-            </tr>
-            <tr>
-                <td class="item_panel">
-                </td>
-                <td class="item_info2">
-                    <?=$item_notes?>
-                </td>
-            </tr>
+            <?php if ($is_header): ?>
+                <tr class="header">
+                    <td class="item_panel">
+                    </td>
+                    <td class="item_info1">
+                        <span class="goright clearfix"><?=$item_price?></span>
+                        <?=$metadata_label?>
+                    </td>
+                </tr>
+            <?php else: ?>
+                <tr class="item_info1">
+                    <td class="item_panel" rowspan="2">
+                        <?php if (!$is_nopanel): ?>
+                            <img src="/img/menu.imgs.light.gif"/>
+                            <img src="/img/menu.forkit.light.gif"/>
+                        <?php endif; //if (!$is_nopanel): ?>
+                    </td>
+                    <td class="item_info1">
+                        <span class="goright clearfix"><?=$item_price?></span>
+                        <?=$metadata_label?>
+                        <?=$img_spicy?>
+                    </td>
+                </tr>
+                <tr class="item_info2">
+                    <td class="item_info2">
+                        <?=$item_notes?>
+                    </td>
+                </tr>
+            <? endif; // if ($is_header): ?>
         <?php endforeach; //foreach ($mdts as $mdt): ?>
         </table>
         </li>

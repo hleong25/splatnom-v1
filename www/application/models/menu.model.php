@@ -1066,6 +1066,9 @@ EOQ;
 
     function removeUnusedSection($id, $section_ids)
     {
+        if (empty($section_ids))
+            return true;
+
         $query_in = implode(',', array_fill(0, count($section_ids), '?'));
         $query =<<<EOQ
             DELETE FROM tblMenuSection
@@ -1231,6 +1234,9 @@ EOQ;
                 // set the right data-type to the value
                 switch ($key)
                 {
+                    case 'is_hide':
+                    case 'is_header':
+                    case 'is_nopanel':
                     case 'is_spicy':
                         $value = $value === 'true' ? true : false;
                         break;
@@ -1241,6 +1247,14 @@ EOQ;
                 {
                     $section_info['items'][$ordinal] = array(
                         'metadata_id' => $metadata_id,
+                        'ordinal' => $ordinal,
+                        'label' => '',
+                        'price' => '',
+                        'notes' => '',
+                        'is_hide' => false,
+                        'is_header' => false,
+                        'is_nopanel' => false,
+                        'is_spicy' => false,
                     );
                 }
 

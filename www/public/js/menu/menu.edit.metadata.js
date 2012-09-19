@@ -45,8 +45,6 @@ function init()
 function setup_link()
 {
     $(this)
-        .find('.jq_watermark').watermark().end()
-
         .find('.link_add')
             .button({
                 text: false,
@@ -68,8 +66,6 @@ function setup_link()
 function setup_menu()
 {
     $(this)
-        .find('.jq_watermark').watermark().end()
-
         .find('div.onToggle')
             .on({
                 click: toggle_onClick,
@@ -155,8 +151,6 @@ function setup_menu()
 function setup_item()
 {
     $(this)
-        .find('.jq_watermark').watermark().end()
-
         .find('.item_add')
             .button({
                 text: false,
@@ -455,7 +449,7 @@ function move_item(elem, position)
 
 function item_add(event)
 {
-    var $this = $(this).parent('div.menu_item');
+    var $this = $(this).parents('div.menu_item');
     var item_label = $this.find('.item_label').val();
 
     if (event && event.ctrlKey && (item_label.length > 0) && (item_label.search(/@@/) >= 0) && (item_label.search(/\n/) >= 0))
@@ -487,7 +481,7 @@ function item_add(event)
         parsed_dom.remove();
 
         // get the group of items so we can set all them up at one shot
-        var group = $this.parent('.menu_group');
+        var group = $this.parents('.menu_group');
         setup_item.call(group);
     }
     else
@@ -505,7 +499,7 @@ function item_add(event)
 
 function item_remove()
 {
-    var $this = $(this).parent('div.menu_item');
+    var $this = $(this).parents('div.menu_item');
 
     if ($this.siblings('div.menu_item').length == 0)
     {
@@ -559,7 +553,7 @@ function keyboardNavigation(event)
             case 38: // up
             case 40: // down
                 var $this = $(this);
-                var title = $this.attr('title');
+                var placeholder = $this.attr('placeholder');
                 var newThis = null;
 
                 if (event.keyCode == 38)
@@ -567,7 +561,7 @@ function keyboardNavigation(event)
                 else
                     newThis = $this.parents('div.menu_item').next();
 
-                newThis.find('textarea.item_'+title.toLowerCase()).focus();
+                newThis.find('textarea.item_'+placeholder.toLowerCase()).focus();
 
                 break;
         }

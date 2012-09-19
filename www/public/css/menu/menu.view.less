@@ -208,6 +208,26 @@ ul.menu {
     table.menu_items {
         width: 100%;
 
+        tr.header {
+            @clr: gray;
+            color: @clr;
+            font-size: @size * 0.75;
+            font-weight: bold;
+
+            border-bottom: 1px solid @clr;
+            border-spacing: 1em;
+
+            td {padding: 0.5em 0 0.25em; }
+        }
+
+        tr.item_info1 {
+            td { padding-top: 0.5em; }
+        }
+
+        tr.item_info2 {
+            //td { padding-bottom: 0.5em; }
+        }
+
         td.item_panel {
             width: 4em;
         }
@@ -224,6 +244,7 @@ ul.menu {
 
         td.item_info2 {
             font-size: @size * 0.75;
+            vertical-align: top;
         }
     }
 
