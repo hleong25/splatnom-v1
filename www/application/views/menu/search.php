@@ -11,7 +11,7 @@ extract($params, EXTR_SKIP);
 
 ?>
 <div class="pg">
-    <div class="search">
+    <div class="pg_bottom search">
         <form id="searchit" method="get" action="/menu/search">
             <label>
                 <span class="hint">Look for 'fish tacos' or 'Japanese'</span>

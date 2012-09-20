@@ -1,4 +1,5 @@
 @import '../global.less';
+@import '../default.search.less';
 @import '../table.less';
 
 // default logo
@@ -52,31 +53,7 @@ div.logo {
 }
 
 div.search {
-    text-align: center;
     margin-bottom: 4em;
-
-    label {
-        .display-inline-block(bottom);
-        text-align: left;
-        margin-right: 0.2em;
-    }
-
-    span.hint {
-        font-size: 0.75em;
-        display: block;
-    }
-
-    input {
-        font-size: 1.1em;
-
-        &.query{ width: 15em; }
-        &.location{ width: 10em; }
-    }
-
-    button {
-        font-size: 1.1em;
-        width: 7em;
-    }
 }
 
 div.new_menus {

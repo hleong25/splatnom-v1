@@ -1,5 +1,5 @@
 @import '../global.less';
-@import '../zebra.less';
+@import '../default.search.less';
 
 div.notready {
     padding: 0.3em;
@@ -11,33 +11,6 @@ div.notready {
     font-size: 0.8em;
     font-weight: bold;
     text-align: center;
-}
-
-div.search {
-    text-align: center;
-
-    label {
-        .display-inline-block(bottom);
-        text-align: left;
-        margin-right: 0.2em;
-    }
-
-    span.hint {
-        font-size: 0.75em;
-        display: block;
-    }
-
-    input {
-        font-size: 1.1em;
-
-        &.query{ width: 15em; }
-        &.location{ width: 10em; }
-    }
-
-    button {
-        font-size: 1.1em;
-        width: 7em;
-    }
 }
 
 .menu-sections() {
@@ -117,6 +90,11 @@ div.fixed { // sticky nav does not work on IE
     .rounded-corner-top(8px);
 }
 
+.rounded-inner-corner-top()
+{
+    .rounded-corner-top(5px);
+}
+
 ul.navbar {
     @bgclr: #d9d7d6;
     @size: 1.2em;
@@ -159,6 +137,39 @@ ul.navbar {
         //    text-indent: -(@left_space + 0.5em);
         //    margin-left: @left_space + 0.5em;
         //}
+    }
+}
+
+// Smartphones (portrait and landscape)
+@media only screen
+    and (max-width: 540px)
+{
+    ul.navbar {
+        @bgclr: #d9d7d6;
+
+        float: none;
+        width: 100%;
+        padding-bottom: 0.5em;
+        margin-bottom: 0.5em;
+        text-align: center;
+
+        background-color: white;
+
+        li.nav_header {
+            .rounded-inner-corner-top();
+            background-color: @bgclr;
+        }
+
+        li.nav_item {
+            display: inline-block;
+            border-bottom: 1px solid @bgclr;
+            padding: 0.25em 0.25em;
+            margin-right: 0.5em;
+
+            img {
+                padding-right: 0em;
+            }
+        }
     }
 }
 
@@ -249,3 +260,20 @@ ul.menu {
     }
 
 }
+
+// Smartphones (portrait and landscape)
+@media only screen
+    and (max-width: 540px)
+{
+    ul.menu {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+
+        li {
+            padding-right: 0;
+            margin-right: 0;
+        }
+    }
+}
+

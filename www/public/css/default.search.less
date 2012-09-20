@@ -1,0 +1,36 @@
+div.search {
+    text-align: center;
+
+    label {
+        .display-inline-block(bottom);
+        text-align: left;
+        margin-right: 0.2em;
+    }
+
+    span.hint {
+        font-size: 0.75em;
+        display: block;
+    }
+
+    input {
+        font-size: 1.1em;
+
+        &.query{ width: 15em; }
+        &.location{ width: 10em; }
+
+        // Smartphones
+        @media only screen
+            and (max-width: 540px)
+        {
+            &.query{ width: 10em; }
+            &.location{ width: 7em; }
+        }
+
+    }
+
+    button {
+        font-size: 1.1em;
+        width: 7em;
+    }
+}
+
