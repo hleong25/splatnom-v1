@@ -1,14 +1,53 @@
 @import '../global.less';
 @import '../table.less';
 
+// default logo
 div.logo {
     margin-top: 5em;
     margin-bottom: 4em;
 
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    padding: 0 !important;
+
+    width: 415px;
+    height: 152px;
+
+    background: url('/img/logo.jpg') no-repeat center;
+}
+
+// Smartphones (portrait and landscape)
+@media only screen
+    and (min-device-width : 320px)
+    and (max-device-width : 480px)
+{
+    div.logo {
+        width: 207px;
+        height: 76px;
+
+        background: url('/img/logo.smartphone.jpg') no-repeat center;
+    }
+}
+
+// Smartphones (landscape)
+@media only screen
+    and (min-width : 321px)
+{
+    div.logo {
+        width: 207px;
+        height: 76px;
+
+        background: url('/img/logo.smartphone.jpg') no-repeat center;
+    }
+}
+
+// Desktops and laptops
+@media only screen
+    and (min-width : @g_max_page_width_px_px + 1)
+{
+    div.logo {
+        width: 415px;
+        height: 152px;
+
+        background: url('/img/logo.jpg') no-repeat center;
     }
 }
 

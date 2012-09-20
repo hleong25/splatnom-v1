@@ -60,9 +60,9 @@ flush();
         ?></div>
         <div class="welcome">
             <?php if (($myurl != '') && ($myurl != 'home/main')): ?>
-            <a href="/home/main"><img src="/img/logo.mini.jpg" title="splatnom"/></a>
+            <a href="/home/main"><div class="logo"></div></a>
             <?php else: ?>
-            <div class="nologo" style="height: 48px;"></div>
+            <div class="nologo"></div>
             <?php endif; ?>
         </div>
     </div>
