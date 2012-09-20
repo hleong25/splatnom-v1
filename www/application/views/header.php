@@ -45,23 +45,25 @@ flush();
 ?>
 <body>
 <div id="header">
-    <div id="nav" class="pg"><?php
-        $bCont = false;
-        foreach ($this->getNavLinks() as $lnk)
-        {
-            if ($bCont)
-                echo '<span class="lnkspc"> | </span>';
+    <div class="pg">
+        <div id="nav" class="clearfix"><?php
+            $bCont = false;
+            foreach ($this->getNavLinks() as $lnk)
+            {
+                if ($bCont)
+                    echo '<span class="lnkspc"> | </span>';
 
-            echo "<a class=\"{$lnk['css']}\" href=\"/{$lnk['lnk']}\">{$lnk['lbl']}</a>";
+                echo "<a class=\"{$lnk['css']}\" href=\"/{$lnk['lnk']}\">{$lnk['lbl']}</a>";
 
-            $bCont = true;
-        }
-    ?></div>
-    <div class="pg welcome">
-        <?php if (($myurl != '') && ($myurl != 'home/main')): ?>
-        <a href="/home/main"><img src="/img/logo.mini.jpg" title="splatnom"/></a>
-        <?php else: ?>
-        <div class="nologo" style="height: 48px;"></div>
-        <?php endif; ?>
+                $bCont = true;
+            }
+        ?></div>
+        <div class="welcome">
+            <?php if (($myurl != '') && ($myurl != 'home/main')): ?>
+            <a href="/home/main"><img src="/img/logo.mini.jpg" title="splatnom"/></a>
+            <?php else: ?>
+            <div class="nologo" style="height: 48px;"></div>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
