@@ -64,7 +64,6 @@ div#header {
 
         // Smartphones (portrait and landscape)
         @media only screen
-            and (min-device-width : 320px)
             and (max-device-width : 480px)
         {
             div.logo {
@@ -72,34 +71,6 @@ div#header {
                 height: 44px;
 
                 background: url('/img/logo.mini.smartphone.jpg') no-repeat center;
-            }
-
-            div.nologo { height: 44px; }
-        }
-
-        // Smartphones (landscape)
-        @media only screen
-            and (min-width : 321px)
-        {
-            div.logo {
-                width: 128px;
-                height: 44px;
-
-                background: url('/img/logo.mini.smartphone.jpg') no-repeat center;
-            }
-
-            div.nologo { height: 44px; }
-        }
-
-        // Desktops and laptops
-        @media only screen
-            and (min-width : @g_max_page_width_px_px + 1)
-        {
-            div.logo {
-                width: 139px;
-                height: 48px;
-
-                background: url('/img/logo.mini.jpg') no-repeat center;
             }
 
             div.nologo { height: 44px; }
