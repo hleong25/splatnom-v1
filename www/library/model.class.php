@@ -9,7 +9,9 @@ class Model
         $dsn = sprintf('mysql:dbname=%s;host=%s', DB_NAME, DB_HOST);
         $username = DB_USERNAME;
         $password = DB_PASSWORD;
-        $options = null;
+        $options = array(
+            PDO::MYSQL_ATTR_FOUND_ROWS => true,
+        );
 
         parent::__construct($dsn, $username, $password, $options);
 	}
