@@ -581,8 +581,9 @@ EOQ;
 
         $query =<<<EOQ
             SELECT COUNT(*) AS total_items
-            FROM tblMenuMetadata
-            WHERE menu_id = :id
+            FROM tblMenuMetadata mm
+            INNER JOIN tblMenuSection ms ON mm.section_id = ms.section_id
+            WHERE mm.menu_id = :id
 EOQ;
 
         $prepare = $this->prepareAndExecute($query, $menu_id, __FILE__, __LINE__);
