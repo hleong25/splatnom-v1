@@ -59,7 +59,7 @@ extract($params, EXTR_SKIP);
         <input class="button" type="button" value="Hide all" data-action="hideall" />
         <input class="button" type="button" value="Show all" data-action="showall" />
         <hr/>
-        <div class="status">
+        <div class="status pg_bottom">
             <span>Status: </span>
             <?php if ($is_admin): ?>
                 <select name="info_status">
@@ -95,6 +95,7 @@ EOHTML;
         </div>
         <div class="stats">
             <p>Items: <span id="stats_items"><?=$info['total_items']?><span></p>
+            <p>Input Cnt: <span id="input_items"><span></p>
         </div>
     </div>
 

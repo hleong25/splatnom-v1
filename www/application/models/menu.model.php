@@ -707,17 +707,6 @@ EOQ;
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepare) return false;
 
-        $query =<<<EOQ
-            UPDATE tblMenuSection
-            SET
-                ordinal = -1
-            WHERE section_id = :section_id
-            AND menu_id = :menu_id
-EOQ;
-
-        $prepareHack = $this->prepare_log($query, __FILE__, __LINE__);
-        if (!$prepareHack) return false;
-
         $insertSections = array();
         foreach ($datas as &$section)
         {
@@ -726,14 +715,6 @@ EOQ;
             $name = $section['name'];
             $notes = $section['notes'];
 
-            // update the row to be something way different.
-            // NOTE: it's because mysql < 5.3 does not support
-            //       PDO::MYSQL_ATTR_FOUND_ROWS
-            $rsts[] = $prepareHack->bindValue(':menu_id', $id);
-            $rsts[] = $prepareHack->bindValue(':section_id', $section_id);
-            $rsts[] = $prepareHack->execute();
-
-            // now for the real update!
             $rsts[] = $prepare->bindValue(':menu_id', $id);
             $rsts[] = $prepare->bindValue(':section_id', $section_id);
             $rsts[] = $prepare->bindValue(':ordinal', $ordinal);

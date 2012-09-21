@@ -6,6 +6,7 @@ AddType application/x-httpd-php53 .php
 # TODO: update php.ini file -- 30M is random... choose a better value
     #php_value   post_max_size           30M
     #php_value   upload_max_filesize     30M
+    #php_value   max_input_vars          10000 #default is 1000 -- not enough for data input
 
 # start rewrite engine
     RewriteEngine   on

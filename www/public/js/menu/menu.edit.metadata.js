@@ -6,6 +6,9 @@ return {
     //empty
 };
 
+var $edit_form;
+var $input_items;
+
 function init()
 {
     $('button').on('click', function(e){
@@ -40,6 +43,23 @@ function init()
 
     setup_link.call(document);
     setup_menu.call(document);
+
+    $edit_form = $('#edit_mdt');
+    $input_items = $('#input_items');
+
+    show_form_input_count();
+    autoupdate_show_form_input_count();
+}
+
+function show_form_input_count()
+{
+    $input_items.text($edit_form.serializeArray().length);
+}
+
+function autoupdate_show_form_input_count()
+{
+    show_form_input_count();
+    setTimeout(autoupdate_show_form_input_count, 60000); // update very minute
 }
 
 function setup_link()
@@ -273,6 +293,8 @@ function link_add()
     setup_link.call(new_dom);
 
     new_dom.find('.link_url').focus();
+
+    show_form_input_count();
     return false;
 }
 
@@ -287,6 +309,7 @@ function link_remove()
 
     $this.remove();
 
+    show_form_input_count();
     return false;
 }
 
@@ -494,6 +517,7 @@ function item_add(event)
         new_dom.find('.item_label').focus().end()
     }
 
+    show_form_input_count();
     return false;
 }
 
@@ -509,6 +533,7 @@ function item_remove()
     // remove it...
     $this.remove();
 
+    show_form_input_count();
     return false;
 }
 
@@ -526,6 +551,8 @@ function menu_add()
     setup_menu.call(new_dom);
 
     new_dom.find('.menu_name').focus().end()
+
+    show_form_input_count();
     return false;
 }
 
@@ -541,6 +568,7 @@ function menu_remove()
     // remove it...
     $this.remove();
 
+    show_form_input_count();
     return false;
 }
 
