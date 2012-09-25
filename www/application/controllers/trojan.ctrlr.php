@@ -21,14 +21,6 @@ class TrojanController
     {
         $system = array();
 
-//        if (PHP_VERSION_ID >= 50202)
-//        {
-//            $system[] = array(
-//                'new_req' => 'date(u) supported',
-//                'fix' => 'change all dates with u support ',
-//            );
-//        }
-
         $check_paths = array
         (
             OS_UPLOAD_PATH,

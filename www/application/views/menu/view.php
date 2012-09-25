@@ -143,7 +143,7 @@ foreach ($info['status'] as $info_status)
 <table>
 <tr>
     <td class="spacer" colspan="2">
-        <p class="name"><a name="info"><?=$info['name']?></a></p>
+        <p class="name"><a href="/<?=$myurl?>"><?=$info['name']?></a></p>
         <p class="details"><?=nl2br($info['notes'])?></p>
     </td>
 </tr>
