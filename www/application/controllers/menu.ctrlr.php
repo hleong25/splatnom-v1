@@ -274,6 +274,7 @@ class MenuController
                         'is_hide' => false,
                         'is_header' => false,
                         'is_spicy' => false,
+                        'is_veggie' => false,
                     );
 
                     $post_mid = $item['metadata_id'];
@@ -321,6 +322,7 @@ class MenuController
                         'is_header',
                         'is_nopanel',
                         'is_spicy',
+                        'is_veggie',
                     );
 
                     ++$ii; // point to the next item so we can get the attribute name

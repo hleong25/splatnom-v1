@@ -1220,6 +1220,7 @@ EOQ;
                     case 'is_header':
                     case 'is_nopanel':
                     case 'is_spicy':
+                    case 'is_veggie':
                         $value = $value === 'true' ? true : false;
                         break;
                 }
@@ -1237,6 +1238,7 @@ EOQ;
                         'is_header' => false,
                         'is_nopanel' => false,
                         'is_spicy' => false,
+                        'is_veggie' => false,
                     );
                 }
 

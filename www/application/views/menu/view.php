@@ -242,6 +242,11 @@ foreach ($info['status'] as $info_status)
             if ($item['is_spicy'])
                 $img_spicy = '<img class="item_attr" src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>';
 
+            // if veggie
+            $img_veggie = '';
+            if ($item['is_veggie'])
+                $img_veggie = '<img class="item_attr" src="/img/veggie.png" alt="Veggie!" title="Veggie!"/>';
+
             $item_price = nl2br($item['price']);
             $item_notes = nl2br($item['notes']);
 
@@ -267,6 +272,7 @@ foreach ($info['status'] as $info_status)
                         <span class="goright clearfix"><?=$item_price?></span>
                         <?=$metadata_label?>
                         <?=$img_spicy?>
+                        <?=$img_veggie?>
                     </td>
                 </tr>
                 <tr class="item_info2">
