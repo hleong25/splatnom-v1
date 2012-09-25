@@ -232,35 +232,39 @@ EOHTML;
         </div>
 
         <div class="attrs">
-
             <input type="hidden" name="mdt[]" value="@item_attr@"/>
             <input type="hidden" name="mdt[]" value="is_hide"/>
             <label>
-                <input type="checkbox" name="mdt[]" />Hide!
+                <input type="checkbox" name="mdt[]" />
+                <img src="/img/hide.png" alt="Hide!" title="Hide!"/>
             </label>
 
             <input type="hidden" name="mdt[]" value="@item_attr@"/>
             <input type="hidden" name="mdt[]" value="is_header"/>
             <label>
-                <input type="checkbox" name="mdt[]" />Header!
+                <input type="checkbox" name="mdt[]" />
+                <img src="/img/layout-header.png" alt="Header!" title="Header!"/>
             </label>
 
             <input type="hidden" name="mdt[]" value="@item_attr@"/>
             <input type="hidden" name="mdt[]" value="is_nopanel"/>
             <label>
-                <input type="checkbox" name="mdt[]" />NoPanel!
+                <input type="checkbox" name="mdt[]" />
+                <img src="/img/layout-content.png" alt="NoPanel!" title="NoPanel!"/>
             </label>
 
             <input type="hidden" name="mdt[]" value="@item_attr@"/>
             <input type="hidden" name="mdt[]" value="is_spicy"/>
             <label>
-                <input type="checkbox" name="mdt[]" /><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
+                <input type="checkbox" name="mdt[]" />
+                <img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
             </label>
 
             <input type="hidden" name="mdt[]" value="@item_attr@"/>
             <input type="hidden" name="mdt[]" value="is_veggie"/>
             <label>
-                <input type="checkbox" name="mdt[]" /><img src="/img/veggie.png" alt="Veggie!" title="Veggie!"/>
+                <input type="checkbox" name="mdt[]" />
+                <img src="/img/veggie.png" alt="Veggie!" title="Veggie!"/>
             </label>
         </div>
 
@@ -319,31 +323,36 @@ EOHTML;
                         <input type="hidden" name="mdt[]" value="@item_attr@"/>
                         <input type="hidden" name="mdt[]" value="is_hide"/>
                         <label>
-                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_hide']))?'CHECKED':''?>/><img src="/img/hide.png" alt="Hide!" title="Hide!"/>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_hide']))?'CHECKED':''?>/>
+                            <img src="/img/hide.png" alt="Hide!" title="Hide!"/>
                         </label>
 
                         <input type="hidden" name="mdt[]" value="@item_attr@"/>
                         <input type="hidden" name="mdt[]" value="is_header"/>
                         <label>
-                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_header']))?'CHECKED':''?>/><img src="/img/layout-header.png" alt="Header!" title="Header!"/>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_header']))?'CHECKED':''?>/>
+                            <img src="/img/layout-header.png" alt="Header!" title="Header!"/>
                         </label>
 
                         <input type="hidden" name="mdt[]" value="@item_attr@"/>
                         <input type="hidden" name="mdt[]" value="is_nopanel"/>
                         <label>
-                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_nopanel']))?'CHECKED':''?>/><img src="/img/layout-content.png" alt="NoPanel!" title="NoPanel!"/>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_nopanel']))?'CHECKED':''?>/>
+                            <img src="/img/layout-content.png" alt="NoPanel!" title="NoPanel!"/>
                         </label>
 
                         <input type="hidden" name="mdt[]" value="@item_attr@"/>
                         <input type="hidden" name="mdt[]" value="is_spicy"/>
                         <label>
-                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>/><img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_spicy']))?'CHECKED':''?>/>
+                            <img src="/img/spicy.png" alt="Spicy!" title="Spicy!"/>
                         </label>
 
                         <input type="hidden" name="mdt[]" value="@item_attr@"/>
                         <input type="hidden" name="mdt[]" value="is_veggie"/>
                         <label>
-                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_veggie']))?'CHECKED':''?>/><img src="/img/veggie.png" alt="Veggie!" title="Veggie!"/>
+                            <input type="checkbox" name="mdt[]" <?=(!empty($item['is_veggie']))?'CHECKED':''?>/>
+                            <img src="/img/veggie.png" alt="Veggie!" title="Veggie!"/>
                         </label>
                     </div>
 
