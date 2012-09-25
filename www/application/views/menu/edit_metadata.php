@@ -300,7 +300,7 @@ EOHTML;
             </div>
             <div class="subheading">Menu items</div>
             <div class="menu_group">
-                <p class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=S}]]].<br/>Ctrl+Up/Down to move up/down.</p>
+                <p class="menu_group_info">Item can be parsed with {item}[@@{price}[@@{notes}[@@{attrs=hide,header,nopanel,spicy,veggie}]]].<br/>Ctrl+Up/Down to move up/down.</p>
                 <?php foreach ($mdt['items'] as $item_idx => $item): ?>
                 <div class="menu_item">
                     <!-- <?php echo "menu_id={$id} AND section_id={$mdt['section_id']} AND ordinal_id={$item_idx}"; ?> -->

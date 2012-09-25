@@ -294,21 +294,38 @@ class MenuController
                     }
 
                     // parse 'item' for easier input
-                    // format is '{item}@@{price}@@{notes}@@{attrs}
+                    // format is '{item}@@{price}@@{notes}@@{attrs=hide,header,nopanel,spicy,veggie}
                     if (empty($item['price']) && empty($item['notes']))
                     {
-                        $parsed = explode('@@', $item['label'], 4);
+                        $parse_label = str_replace('\n', "\n", $item['label']);
+                        $parsed = explode('@@', $parse_label, 4);
 
                         $item['label'] = trim(array_shift($parsed));
                         $item['price'] = trim(array_shift($parsed));
                         $item['notes'] = trim(array_shift($parsed));
 
                         $attrs = trim(array_shift($parsed));
-                        $attrs_len = strlen($attrs);
-                        for ($attrs_idx = 0; $attrs_idx < $attrs_len; $attrs_idx++)
+                        $attrs = explode(',', $attrs);
+                        foreach ($attrs as $item_attr)
                         {
-                            if ($attrs[$attrs_idx] === 'S')
-                                $item['is_spicy'] = true;
+                            switch ($item_attr)
+                            {
+                                case 'hide':
+                                    $item['is_hide'] = true;
+                                    break;
+                                case 'header':
+                                    $item['is_header'] = true;
+                                    break;
+                                case 'nopanel':
+                                    $item['is_nopanel'] = true;
+                                    break;
+                                case 'spicy':
+                                    $item['is_spicy'] = true;
+                                    break;
+                                case 'veggie':
+                                    $item['is_veggie'] = true;
+                                    break;
+                            }
                         }
                     }
 
