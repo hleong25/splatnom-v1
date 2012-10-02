@@ -27,10 +27,20 @@ class MailController
         $this->set('subject', $subject);
         $this->set('message', $message);
 
-        $sent = $this->Mail->send_tester(null, $to, $subject, $message);
-        if ($sent !== true)
+        //$sent = $this->Mail->send_tester(null, $to, $subject, $message);
+        //if ($sent !== true)
+        //{
+        //    $this->set('err', 'Error sending mail. Try again');
+        //}
+        //else
+        //{
+        //    $this->redirect('/mail/sent');
+        //}
+
+        $mail_id = $this->Mail->queue(null, $to, $subject, $message);
+        if (empty($mail_id))
         {
-            $this->set('err', 'Error sending mail. Try again');
+            $this->set('err', 'Error queuing email. Try again');
         }
         else
         {
