@@ -98,7 +98,7 @@ EOQ;
                 subject,
                 message
             FROM tblEmailQueue
-            WHERE status_id IN (SELECT id FROM vMailStatus WHERE mail_status != 'pending')
+            WHERE status_id IN (SELECT id FROM vMailStatus WHERE mail_status != 'sent')
             AND attempts < :max_attempts
             ORDER BY ts ASC
             LIMIT $max_rows
