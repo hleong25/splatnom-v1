@@ -16,13 +16,6 @@ require_once("$root_path/application/models/mail.model.php");
 
 
 $model = new MailModel;
-for ($ii = 0, $jj = 6; $ii < $jj; ++$ii)
-{
-    if ($ii > 0)
-    {
-        sleep(8);
-    }
 
-    // process the unsent emails
-    $model->process_queue();
-}
+// process the unsent emails
+$model->process_queue();
