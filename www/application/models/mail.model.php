@@ -69,7 +69,6 @@ EOQ;
         );
 
         $mail = Mail::factory('smtp', $smtp_cfg);
-        $mime = new Mail_mime($crlf);
 
         $query =<<<EOQ
             UPDATE tblEmailQueue
@@ -133,6 +132,7 @@ EOQ;
                 'Subject'       => $subject
             );
 
+            $mime = new Mail_mime($crlf);
             $mime->setHTMlBody($message);
             $body = $mime->get();
             $headers = $mime->headers($headers);
