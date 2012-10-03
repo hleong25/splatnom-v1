@@ -1,6 +1,7 @@
 <?php
 require_once('Mail.php');
 require_once('Mail/mime.php');
+require_once('Mail/mime.php');
 
 class MailModel
     extends Model
@@ -109,6 +110,11 @@ EOQ;
 
         $rows = $rst->fetchAll();
 
+        $sent_stats = array(
+            'sent' => 0,
+            'fail' => 0,
+        );
+
         foreach ($rows as $row)
         {
             $mail_id    = $row['mail_id'];
@@ -136,6 +142,7 @@ EOQ;
             $rsts = array();
             if (PEAR::isError($send))
             {
+                $sent_stats['fail']++;
                 Util::logit('Mail error: '.$send->getMessage(), __FILE__, __LINE__);
                 $rsts[] = $prepareFailed->bindValue(':mail_id', $mail_id);
                 $rsts[] = $prepareFailed->execute();
@@ -145,11 +152,19 @@ EOQ;
             {
                 $rsts[] = $prepareSent->bindValue(':mail_id', $mail_id);
                 $rsts[] = $prepareSent->execute();
-                $this->areDbResultsGood($rst, __FILE__, __LINE__);
+
+                if ($this->areDbResultsGood($rst, __FILE__, __LINE__))
+                {
+                    $sent_stats['sent']++;
+                }
+                else
+                {
+                    $sent_stats['fail']++;
+                }
             }
         }
 
-        return true;
+        return $sent_stats;
     }
 
     function send_smtp($from, $to, $subject, $message)
