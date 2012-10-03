@@ -132,7 +132,7 @@ class LoginController
             return false;
         }
 
-        $sent = $mail->send_smtp(null, $email, $subject, $message);
+        $sent = $mail->queue(null, $email, $subject, $message);
 
         return $sent;
     }
@@ -238,7 +238,7 @@ class LoginController
             return false;
         }
 
-        $sent = $mail->send_smtp(null, $email, $subject, $message);
+        $sent = $mail->queue(null, $email, $subject, $message);
 
         return $sent;
     }

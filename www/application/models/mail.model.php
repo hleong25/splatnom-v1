@@ -167,64 +167,6 @@ EOQ;
         return $sent_stats;
     }
 
-    function send_smtp($from, $to, $subject, $message)
-    {
-        // TODO: send this request to a queue so
-        // it can be returned fast and then the
-        // process queue can spend time sending
-        // it out
-
-        $crlf = "\n";
-
-        if (empty($from))
-            $from = $this->DEFAULT_EMAIL;
-
-        $headers = array(
-            'From' => $from,
-            'To' => $to,
-            'Return-Path' => $from,
-            'Subject' => $subject
-        );
-
-        $host = 'ssl://smtp.gmail.com';
-        $port = '465';
-
-        $username = 'support@splatnom.com';
-        $password = 'alhambra1234';
-
-        $smtp_cfg = array();
-        $smtp_cfg['host'] = $host;
-        $smtp_cfg['port'] = $port;
-        $smtp_cfg['auth'] = true;
-        $smtp_cfg['username'] = $username;
-        $smtp_cfg['password'] = $password;
-
-        $mail = Mail::factory('smtp', $smtp_cfg);
-        $mime = new Mail_mime($crlf);
-
-        $mime->setHTMlBody($message);
-        $body = $mime->get();
-        $headers = $mime->headers($headers);
-
-        self::$m_email_sent = true;
-        $send = $mail->send($to, $headers, $body);
-
-        if (PEAR::isError($send))
-        {
-            Util::logit('Mail error: '.$send->getMessage(), __FILE__, __LINE__);
-            return false;
-        }
-
-        return true;
-    }
-
-    function send_tester($from, $to, $subject, $message)
-    {
-        $send = $this->send_smtp($from, $to, $subject, $message);
-
-        return $send === true;
-    }
-
     function grab_data($ctrl, $page, $params)
     {
         $view_page = $ctrl . DS . $page . '.php';

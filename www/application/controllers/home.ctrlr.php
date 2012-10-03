@@ -82,8 +82,8 @@ class HomeController
 
         $to = 'support+feedback@splatnom.com';
         $subject = 'Feedback!!';
-        $bSent = $mail->send_smtp(null, $to, $subject, $message);
-        if ($bSent !== true)
+        $bSent = $mail->queue(null, $to, $subject, $message);
+        if (empty($bSent))
         {
             $err = 'Failed to send email feedback';
             Util::logit($err, __FILE__, __LINE__);

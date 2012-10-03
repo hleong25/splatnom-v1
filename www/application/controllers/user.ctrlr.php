@@ -105,7 +105,7 @@ class UserController
         {
             // the verifcation code worked, lets email it to the user...
             $bSent = $this->sendVerificationToUser($username, $email1, $sVerifyCode);
-            if ($bSent !== true)
+            if (empty($bSent))
             {
                 $this->set('err_msg', 'Sending verification to user failed');
                 $new_id = false;
@@ -141,7 +141,7 @@ class UserController
             return false;
         }
 
-        $sent = $mail->send_smtp(null, $emailTo, $subject, $message);
+        $sent = $mail->queue(null, $emailTo, $subject, $message);
 
         return $sent;
     }
@@ -283,8 +283,8 @@ class UserController
             return;
         }
 
-        $bSent = $mail->send_smtp(null, $friend, $subject, $message);
-        if ($bSent !== true)
+        $bSent = $mail->queue(null, $friend, $subject, $message);
+        if (empty($bSent))
         {
             Util::logit("Failed to send email invitation to '{$friend}' from user {$id}", __FILE__, __LINE__);
         }
