@@ -9,9 +9,9 @@ dbname=menudb
 
 # $dbname must exists
 
-file1=./menu/menu.120313.1.static.sql.gz
-file2=./menu/menu.120911.2.tables.sql.gz
-file3=./menu/menu.120313.3.views.sql.gz
+file1=./menu/menu.121001.1.static.sql.gz
+file2=./menu/menu.121001.2.tables.sql.gz
+file3=./menu/menu.121001.3.views.sql.gz
 
 view_old_user=hleong25
 view_new_user=$username
