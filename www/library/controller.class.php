@@ -31,7 +31,7 @@ class Controller
             $this->m_template->render($this->m_bRender);
 
         $exec_time = scriptExecutionTime();
-        $max_exec_time = MailModel::hasEmailSent() ? 4.0 : 2.0;
+        $max_exec_time = 2.0;
 
         if ($exec_time > $max_exec_time)
         {

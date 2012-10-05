@@ -8,13 +8,6 @@ class MailModel
 {
     public $DEFAULT_EMAIL = 'support@splatnom.com';
 
-    private static $m_email_sent = false;
-
-    public function hasEmailSent()
-    {
-        return self::$m_email_sent;
-    }
-
     function queue($from, $to, $subject, $message)
     {
         if (empty($from))
@@ -46,8 +39,6 @@ EOQ;
 
     function process_queue()
     {
-        self::$m_email_sent = true;
-
         $max_rows = 50;
         $max_attempts = 5;
         $crlf = "\n";
