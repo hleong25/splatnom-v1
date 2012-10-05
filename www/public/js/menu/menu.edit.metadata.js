@@ -145,24 +145,6 @@ function setup_menu()
             })
             .end()
 
-        .find('.menu_group')
-            .on('focusin.menu', 'textarea', function(){
-                var $this = $(this);
-                $this
-                    .addClass('item_edit')
-                ;
-            })
-            .on('focusout.menu', 'textarea', function(){
-                var $this = $(this);
-                $this
-                    .removeClass('item_edit')
-                ;
-            })
-            .on('keyup.menu', function(e){
-                if (e.keyCode == 27)
-                    $(e.target).focusout();
-            })
-            .end()
     ;
 
     setup_item.call(this);
@@ -170,49 +152,71 @@ function setup_menu()
 
 function setup_item()
 {
-    $(this)
-        .find('.item_add')
-            .button({
-                text: false,
-                icons: {primary: 'ui-icon-plusthick'},
-            })
-            .on('click.item_add', item_add)
-            .end()
+    var items = $('.item_add,.item_remove,.item_up,.item_down,.item_label,.item_price,.item_notes', this);
 
-        .find('.item_remove')
-            .button({
-                text: false,
-                icons: {primary: 'ui-icon-closethick'},
-            })
-            .on('click.item_remove', item_remove)
-            .end()
+    for (var ii = 0, jj = items.length; ii < jj; ii++)
+    {
+        var $this = $(items[ii]);
 
-        .find('.item_up')
-            .button({
-                text: false,
-                icons: {primary: 'ui-icon-arrowthick-1-n'},
-            })
-            .on('click.item_up', function(){
-                move_item(this, -1);
-                return false;
-            })
-            .end()
+        if ($this.hasClass('item_add'))
+        {
+            $this
+                .button({
+                    text: false,
+                    icons: {primary: 'ui-icon-plusthick'},
+                })
+                .on('click.item_add', item_add)
+            ;
+        }
 
-        .find('.item_down')
-            .button({
-                text: false,
-                icons: {primary: 'ui-icon-arrowthick-1-s'},
-            })
-            .on('click.item_down', function(){
-                move_item(this, 1);
-                return false;
-            })
-            .end()
+        if ($this.hasClass('item_remove'))
+        {
+            $this
+                .button({
+                    text: false,
+                    icons: {primary: 'ui-icon-closethick'},
+                })
+                .on('click.item_remove', item_remove)
+            ;
+        }
 
-        .find('.item_label,.item_price,.item_notes')
-            .on('keyup', keyboardNavigation)
-            .end()
-    ;
+        if ($this.hasClass('item_up'))
+        {
+            $this
+                .button({
+                    text: false,
+                    icons: {primary: 'ui-icon-arrowthick-1-n'},
+                })
+                .on('click.item_up', function(){
+                    move_item(this, -1);
+                    return false;
+                })
+           ;
+        }
+
+        if ($this.hasClass('item_down'))
+        {
+            $this
+                .button({
+                    text: false,
+                    icons: {primary: 'ui-icon-arrowthick-1-s'},
+                })
+                .on('click.item_down', function(){
+                    move_item(this, 1);
+                    return false;
+                })
+           ;
+        }
+
+        if (($this.hasClass('item_label')) ||
+            ($this.hasClass('item_price')) ||
+            ($this.hasClass('item_notes')) )
+        {
+            $this
+                .on('keyup', keyboardNavigation)
+           ;
+        }
+    }
 }
 
 function onAction_button()
