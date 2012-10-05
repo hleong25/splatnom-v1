@@ -299,9 +299,7 @@ class AdminController
 
     function onAction_jqueryui_test()
     {
-        $this->addJqueryUi();
-        $this->addJs('admin/admin.jqueryui.test');
-        $this->addCss('admin/admin.jqueryui.test');
+        $this->redirect('/public/other/jquery-ui/jquery-ui-1.8.24.custom');
     }
 
     function onAction_update_css()
@@ -313,7 +311,6 @@ class AdminController
         // ls -Rl | grep cache
         $allCss = array(
             'admin/admin.find.user',
-            'admin/admin.jqueryui.test',
             'admin/admin.location',
             'admin/admin.main',
             'admin/admin.pending.menu',

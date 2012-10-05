@@ -255,10 +255,11 @@ class Template
 
     function addJqueryUi()
     {
-        $version = '1.8.16';
+        $version = '1.8.24';
+        $package = 'custom';
         $theme = 'redmond';
 
-        $path = "jquery-ui/jquery-ui-{$version}.{$theme}";
+        $path = "jquery-ui/jquery-ui-{$version}.{$package}";
         $css  = "{$path}/css/{$theme}/jquery-ui-{$version}.custom";
         $js   = "{$path}/js/jquery-ui-{$version}.custom.min";
 
