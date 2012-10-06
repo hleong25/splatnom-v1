@@ -37,22 +37,21 @@ function removeMagicQuotes ()
 /** Check register globals and remove them * */
 function unregisterGlobals ()
 {
-// should not need this... it is turned off
-//    if (ini_get('register_globals'))
-//    {
-//        $array = array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
-//        foreach ($array as $value)
-//        {
-//            foreach ($GLOBALS[$value] as $key => $var)
-//            {
-//
-//                if ((isset($GLOBALS[$key])) && ($var === $GLOBALS[$key]))
-//                {
-//                    unset($GLOBALS[$key]);
-//                }
-//            }
-//        }
-//    }
+    if (ini_get('register_globals'))
+    {
+        $array = array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
+        foreach ($array as $value)
+        {
+            foreach ($GLOBALS[$value] as $key => $var)
+            {
+
+                if ((isset($GLOBALS[$key])) && ($var === $GLOBALS[$key]))
+                {
+                    unset($GLOBALS[$key]);
+                }
+            }
+        }
+    }
 }
 
 /** Main Call Function * */
