@@ -29,7 +29,7 @@ if ($total > 0)
 {
     date_default_timezone_set('UTC');
     printf('[%s] Sent: %d, Fail: %d, Elapsed Time: %0.3f'."\n",
-           date('c'),
+           date('r'),
            $stats['sent'],
            $stats['fail'],
            $ts_diff
