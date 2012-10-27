@@ -46,7 +46,7 @@ function form_OnSubmit()
 function funcValidateForm()
 {
     var imgs =
-        $('div.new_img > input[type="file"]')
+        $('input.file')
             .filter(function(){
                 return $(this).val() != '';
             })
