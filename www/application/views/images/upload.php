@@ -36,15 +36,15 @@ $slug = array
 </div>
 <div class="pg upload">
 <form id="upload_photos" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
-    <input class="file" type="file" name="imgs[]"/>
-    <input class="file" type="file" name="imgs[]"/>
-    <input class="file" type="file" name="imgs[]"/>
-    <input class="file" type="file" name="imgs[]"/>
-    <input class="file" type="file" name="imgs[]"/>
-    <input class="button" id="btnAddMore" type="button" value="Add more"/>
-    <br/>
-    <br/>
-    <input type="submit" value="Submit" />
+    <div class="group_new">
+        <input class="file" type="file" name="imgs[]"/>
+        <input class="file" type="file" name="imgs[]"/>
+        <input class="file" type="file" name="imgs[]"/>
+        <input class="file" type="file" name="imgs[]"/>
+        <input class="file" type="file" name="imgs[]"/>
+        <input id="btnAddMore" class="button" type="button" value="Add more"/>
+    </div>
+    <input class="button" type="submit" value="Submit" />
 </form>
 </div>
 <?php if ($is_upload): ?>
