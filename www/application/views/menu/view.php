@@ -177,21 +177,39 @@ foreach ($info['status'] as $info_status)
 <?php endif; //if ($is_metadata) ?>
 
 <div class="pg themenu clearfix">
-    <ul class="navbar">
-        <li class="nav_header">
-            <img src="/img/menu.home.black.gif"/>
-            <a class="nav_item" href="#0"><span>Our Menus</span></a>
-        </li>
-        <?php foreach ($mdts as $mdt):
-            $section_id = $mdt['section_id'];
-            $section_name = $mdt['name'];
-        ?>
-        <li class="nav_item">
-            <img src="/img/menu.forkit.light.gif"/>
-            <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
-        </li>
-        <?php endforeach; ?>
-    </ul>
+
+    <div class="sidebar pg_bottom">
+        <ul class="navbar pg_bottom">
+            <li class="nav_header">
+                <img src="/img/menu.home.black.gif"/>
+                <a class="nav_item" href="#0"><span>Our Menus</span></a>
+            </li>
+            <?php foreach ($mdts as $mdt):
+                $section_id = $mdt['section_id'];
+                $section_name = $mdt['name'];
+            ?>
+            <li class="nav_item">
+                <img src="/img/menu.forkit.light.gif"/>
+                <a class="nav_item" href="#<?=$section_id?>"><?=$section_name?></a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        <ul class="img_gallery pg_bottom">
+            <li class="img_header">
+                <img src="/img/menu.imgs.black.gif"/>
+                <?php
+                //<a class="img_item" href="#0"><span>Gallery</span></a>
+                ?>
+                <span>Gallery</span>
+            </li>
+            <li class="img_item">
+                Add Image
+            </li>
+            <li class="img_item">
+                View All
+            </li>
+        </ul>
+    </div>
 
 <?php foreach ($mdts as $mdt):
     $section_id = $mdt['section_id'];

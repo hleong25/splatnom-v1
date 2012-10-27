@@ -99,6 +99,15 @@ div.fixed { // sticky nav does not work on IE
     .rounded-corner-top(5px);
 }
 
+// Non-Smartphones
+@media only screen
+    and (min-width: 541px)
+{
+    div.sidebar {
+        float: left;
+    }
+}
+
 ul.navbar {
     @bgclr: #d9d7d6;
     @size: 1.2em;
@@ -107,7 +116,6 @@ ul.navbar {
     border: 2px solid darken(@bgclr, 15%);
     background-color: @bgclr;
     width: @sidebar_width;
-    float: left;
 
     li.nav_header {
         border-bottom: 3px solid darken(@bgclr, 15%);
@@ -151,7 +159,6 @@ ul.navbar {
     ul.navbar {
         @bgclr: #d9d7d6;
 
-        float: none;
         width: 100%;
         padding-bottom: 0.5em;
         margin-bottom: 0.5em;
@@ -165,6 +172,77 @@ ul.navbar {
         }
 
         li.nav_item {
+            display: inline-block;
+            border-bottom: 1px solid @bgclr;
+            padding: 0.25em 0.25em;
+            margin-right: 0.5em;
+
+            img {
+                padding-right: 0em;
+            }
+        }
+    }
+}
+
+ul.img_gallery {
+    @bgclr: #d9d7d6;
+    @size: 1.2em;
+
+    .rounded-corner-top();
+    border: 2px solid darken(@bgclr, 15%);
+    background-color: @bgclr;
+    width: @sidebar_width;
+
+    li.img_header {
+        border-bottom: 3px solid darken(@bgclr, 15%);
+        padding: 0.3em 1em;
+
+        img {
+            //.img_resize(@size);
+            padding-right: 0.3em;
+        }
+
+        span {
+            font-size: @size;
+        }
+    }
+
+    li.img_item {
+        @left_space = 1em;
+        @item_size: @size * 0.85;
+
+        background-color: white;
+        font-size: @item_size;
+        padding: 0.2em 0.2em 0.2em @left_space;
+
+        img {
+            .img_resize(@item_size);
+            padding-right: 0.3em;
+            .display-inline-block();
+        }
+    }
+}
+
+// Smartphones (portrait and landscape)
+@media only screen
+    and (max-width: 540px)
+{
+    ul.img_gallery {
+        @bgclr: #d9d7d6;
+
+        width: 100%;
+        padding-bottom: 0.5em;
+        margin-bottom: 0.5em;
+        text-align: center;
+
+        background-color: white;
+
+        li.img_header {
+            .rounded-inner-corner-top();
+            background-color: @bgclr;
+        }
+
+        li.img_item {
             display: inline-block;
             border-bottom: 1px solid @bgclr;
             padding: 0.25em 0.25em;
