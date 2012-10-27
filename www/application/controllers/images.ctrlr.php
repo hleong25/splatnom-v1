@@ -3,7 +3,7 @@
 class ImagesController
     extends Controller
 {
-    function onAction_get($where, $max_size, $where_id=null, $img_id=null)
+    function onAction_get($where, $max_size, $where_id=null, $img_filename=null)
     {
         $this->m_bRender = false;
 
@@ -15,10 +15,10 @@ class ImagesController
         switch ($where)
         {
             case 'pending':
-                $img_file = $images->getPendingImage($where_id, $img_id);
+                $img_file = $images->getPendingImage($where_id, $img_filename);
                 break;
             case 'menu':
-                $img_file = $images->getMenuImage($where_id, $img_id);
+                $img_file = $images->getMenuImage($where_id, $img_filename);
                 break;
         }
 

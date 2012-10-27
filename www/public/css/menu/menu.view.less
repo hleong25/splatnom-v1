@@ -209,17 +209,11 @@ ul.img_gallery {
 
     li.img_item {
         @left_space = 1em;
-        @item_size: @size * 0.85;
 
         background-color: white;
         font-size: @item_size;
         padding: 0.2em 0.2em 0.2em @left_space;
 
-        img {
-            .img_resize(@item_size);
-            padding-right: 0.3em;
-            .display-inline-block();
-        }
     }
 }
 

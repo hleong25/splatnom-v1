@@ -17,6 +17,7 @@ $params = array(
     'location' => '',
     'info' => $params_info,
     'links' => array(),
+    'imgs' => array(),
     'mdts' => array(),
     'forkits' => array(),
 );
@@ -201,6 +202,21 @@ foreach ($info['status'] as $info_status)
                 //<a class="img_item" href="#0"><span>Gallery</span></a>
                 ?>
                 <span>Gallery</span>
+            </li>
+            <li class="img_item">
+                <?php $img_cnt = 0; foreach ($imgs as $img):
+                    $img_cnt++;
+                    if ($img_cnt > 6) break; // maximum of 6 images
+
+                    $img_id     = $img['id'];
+                    $img_file   = $img['filename'];
+                    $img_width  = $img['width'];
+                    $img_height = $img['height'];
+
+                    $img_url = "/images/get/menu/sm/$id/$img_file";
+                ?>
+                    <a href="<?=$img_url?>"><img src="<?=$img_url?>"></a>
+                <?php endforeach; ?>
             </li>
             <li class="img_item">
                 Add Image
