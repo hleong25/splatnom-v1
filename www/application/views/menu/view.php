@@ -213,9 +213,10 @@ foreach ($info['status'] as $info_status)
                     $img_width  = $img['width'];
                     $img_height = $img['height'];
 
-                    $img_url = "/images/get/menu/sm/$id/$img_file";
+                    $sm_img_url  = "/images/get/menu/sm/$id/$img_file";
+                    $org_img_url = "/images/get/menu/org/$id/$img_file";
                 ?>
-                    <a href="<?=$img_url?>"><img src="<?=$img_url?>"></a>
+                    <a href="<?=$org_img_url?>"><img src="<?=$sm_img_url?>"></a>
                 <?php endforeach; ?>
             </li>
             <li class="img_item">
