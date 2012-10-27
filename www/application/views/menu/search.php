@@ -62,6 +62,10 @@ extract($params, EXTR_SKIP);
                 </li>
             <?php endforeach; ?>
         </ul>
+    <?php else: ?>
+        <p>
+            Nothing was found, try the <a href="/home/gmapmenu" class="showlink">map menus</a> feature to see what we have.
+        </p>
     <?php endif; ?>
     </div>
 </div>
