@@ -19,8 +19,28 @@ function init()
     }
 
     $('.button')
-        .button({
-            icons: {primary: 'ui-icon-search'}
+        .each(function(){
+            var $this = $(this);
+            var $icons = new Object();
+
+            if ($this.hasClass('search'))
+            {
+                $icons.primary = 'ui-icon-search';
+            }
+            else if ($this.hasClass('export'))
+            {
+                $icons.primary = 'ui-icon-document';
+            }
+            else if ($this.hasClass('editmenu'))
+            {
+                $icons.primary = 'ui-icon-pencil';
+            }
+            else if ($this.hasClass('addimg'))
+            {
+                $icons.primary = 'ui-icon-plus';
+            }
+
+            $this.button({icons: $icons});
         })
     ;
 

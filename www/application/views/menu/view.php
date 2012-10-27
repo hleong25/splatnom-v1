@@ -172,8 +172,8 @@ foreach ($info['status'] as $info_status)
 
 <?php if ($is_metadata): ?>
 <div class="pg ismdt">
-    <a class="button" href="/export/menus/<?=$id?>">export menu</a>
-    <a class="button" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
+    <a class="button export" href="/export/menus/<?=$id?>">export menu</a>
+    <a class="button editmenu" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
 
@@ -220,11 +220,9 @@ foreach ($info['status'] as $info_status)
                 <?php endforeach; ?>
             </li>
             <li class="img_item">
-                Add Image
+                <a class="button addimg" href="/images/upload/<?=$id?>">Add More Images</a>
             </li>
-            <li class="img_item">
-                View All
-            </li>
+            <li class="img_item empty"></li>
         </ul>
     </div>
 
