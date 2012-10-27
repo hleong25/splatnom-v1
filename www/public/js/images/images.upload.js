@@ -13,13 +13,15 @@ function init()
     $('form#upload_photos')
         .submit(form_OnSubmit)
     ;
+
+    $('input:button,input:submit,input:file').button();
 }
 
 function btnAddMore_OnClick()
 {
     var objThis = $(this);
     objThis
-        .siblings('div.new_img:last')
+        .siblings('input.file:last')
         .clone()
         .insertBefore(objThis)
     ;
@@ -33,7 +35,7 @@ function form_OnSubmit()
 function funcValidateForm()
 {
     var imgs =
-        $('div.new_img > input[type="file"]')
+        $('input.file')
             .filter(function(){
                 return $(this).val() != '';
             })

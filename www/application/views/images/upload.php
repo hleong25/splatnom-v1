@@ -26,7 +26,7 @@ $slug = array
 
 ?>
 <div class="pg info">
-    <span>Adding images to <a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a></span>
+    <span>Adding images to <a class="showlink" href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$menu_str?></a></span>
     <?php if (!empty($section_str) && !empty($item_str)): ?>
         <br/>
         <span>Tagging them to <a href="/menu/images/<?=$menu_id?>-<?=$slug['menu']?>/<?=$section_id?>-<?=$slug['section']?>/<?=$item_id?>-<?=$slug['item']?>">(<?=$section_str?>) <?=$item_str?></a></span>
@@ -36,22 +36,12 @@ $slug = array
 </div>
 <div class="pg upload">
 <form id="upload_photos" enctype="multipart/form-data" method="post" action="/<?=$myurl?>" >
-    <div class="new_img">
-        <input class="file" type="file" name="imgs[]"/>
-    </div>
-    <div class="new_img">
-        <input class="file" type="file" name="imgs[]"/>
-    </div>
-    <div class="new_img">
-        <input class="file" type="file" name="imgs[]"/>
-    </div>
-    <div class="new_img">
-        <input class="file" type="file" name="imgs[]"/>
-    </div>
-    <div class="new_img">
-        <input class="file" type="file" name="imgs[]"/>
-    </div>
-    <input id="btnAddMore" type="button" value="Add more"/>
+    <input class="file" type="file" name="imgs[]"/>
+    <input class="file" type="file" name="imgs[]"/>
+    <input class="file" type="file" name="imgs[]"/>
+    <input class="file" type="file" name="imgs[]"/>
+    <input class="file" type="file" name="imgs[]"/>
+    <input class="button" id="btnAddMore" type="button" value="Add more"/>
     <br/>
     <br/>
     <input type="submit" value="Submit" />

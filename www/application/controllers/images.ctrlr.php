@@ -105,6 +105,7 @@ class ImagesController
         }
 
         $this->addCss('images/images.upload');
+        $this->addJqueryUi();
         $this->addJs('images/images.upload');
 
         $this->set('id', $menu_id);

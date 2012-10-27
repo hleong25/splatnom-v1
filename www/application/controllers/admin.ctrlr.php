@@ -322,6 +322,7 @@ class AdminController
             'home/home.feedback',
             'home/home.gmapmenu',
             'home/home.main',
+            'images/images.upload',
             'import/import.list',
             'import/import.local',
             'import/import.menus',

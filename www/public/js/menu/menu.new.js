@@ -22,9 +22,7 @@ function init()
         });
     }
 
-    $('input:button').button();
-    $('input:submit').button();
-    $('input:file').button();
+    $('input:button,input:submit,input:file').button();
 }
 
 function btnAddMore_OnClick()
