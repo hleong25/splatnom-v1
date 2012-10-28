@@ -172,8 +172,8 @@ foreach ($info['status'] as $info_status)
 
 <?php if ($is_metadata): ?>
 <div class="pg ismdt">
-    <a class="button export" href="/export/menus/<?=$id?>">export menu</a>
-    <a class="button editmenu" href="/menu/edit_metadata/<?=$id?>">edit menu</a>
+    <a class="button export" href="/export/menus/<?=$id?>-<?=$slug['menu']?>">export menu</a>
+    <a class="button editmenu" href="/menu/edit_metadata/<?=$id?>-<?=$slug['menu']?>">edit menu</a>
 </div>
 <?php endif; //if ($is_metadata) ?>
 
@@ -198,10 +198,7 @@ foreach ($info['status'] as $info_status)
         <ul class="img_gallery pg_bottom">
             <li class="img_header">
                 <img src="/img/menu.imgs.black.gif"/>
-                <?php
-                //<a class="img_item" href="#0"><span>Gallery</span></a>
-                ?>
-                <span>Gallery</span>
+                <a class="img_item" href="/menu/images/<?=$id?>-<?=$slug['menu']?>"><span>Gallery</span></a>
             </li>
             <li class="img_item">
                 <?php $img_cnt = 0; foreach ($imgs as $img):
@@ -214,13 +211,13 @@ foreach ($info['status'] as $info_status)
                     $img_height = $img['height'];
 
                     $sm_img_url  = "/images/get/menu/sm/$id/$img_file";
-                    $org_img_url = "/images/get/menu/org/$id/$img_file";
+                    $org_img_url = "/menu/images/$id-{$slug['menu']}/$img_file";
                 ?>
                     <a href="<?=$org_img_url?>"><img src="<?=$sm_img_url?>"></a>
                 <?php endforeach; ?>
             </li>
             <li class="img_item">
-                <a class="button addimg" href="/images/upload/<?=$id?>">Add More Images</a>
+                <a class="button addimg" href="/images/upload/<?=$id?>-<?=$slug['menu']?>">Add More Images</a>
             </li>
             <li class="img_item empty"></li>
         </ul>
