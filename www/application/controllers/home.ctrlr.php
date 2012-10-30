@@ -113,7 +113,7 @@ class HomeController
             $addy = $menu['address'];
             $slugify = Util::slugify($menu['name']);
 
-            $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
+            $link = '<a class="showlink" href="/menu/view/'.$menu_id.'-%s">%s</a>';
             $menu_link = sprintf($link, $slugify, $name);
 
             $menu['link'] = $menu_link;
