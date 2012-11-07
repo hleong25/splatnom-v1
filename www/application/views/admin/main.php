@@ -6,6 +6,7 @@
     <a href="/export/list">Export menus</a><br/>
     <a href="/import/list">Import menus from server</a><br/>
     <a href="/admin/update_css">Update CSS</a><br/>
+    <a href="/admin/process_email_queue">Process email queue</a><br/>
     <hr/>
     <a href="/mail/tester">Send mail</a><br/>
     <a href="/admin/location">Search location and nearby</a><br/>

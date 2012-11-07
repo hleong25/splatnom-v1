@@ -100,6 +100,10 @@ class UserController
         $new_id = $this->User->addNewUser($info);
         $this->set('user_add', $new_id);
 
+        $mail = new MailModel();
+        $preview_email = $mail->grab_data('user', 'email_newuser', $info);
+        $mail->queue($mail->DEFAULT_EMAIL, $mail->DEFAULT_EMAIL, 'New user register', $preview_email);
+
         $sVerifyCode = $this->User->setUserVerifyCode($new_id);
         if ($sVerifyCode !== false)
         {

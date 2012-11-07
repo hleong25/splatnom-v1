@@ -426,4 +426,11 @@ class AdminController
 //
 //        //$this->redirect('/admin/main');
 //    }
+
+    function onAction_process_email_queue()
+    {
+        $email = new MailModel();
+        $email->process_queue();
+        $this->redirect('/admin/main');
+    }
 }
