@@ -3,7 +3,7 @@ var js_menu = (function() {
 init();
 
 return {
-    //forkit: forkit
+    // none
 };
 
 var $body;
@@ -47,6 +47,8 @@ function init()
     $body = $('html,body');
 
     show_section();
+
+    setup_forkit();
 }
 
 function show_section()
@@ -82,4 +84,37 @@ function show_section()
         elem.preventDefault();
     });
 }
+
+function setup_forkit()
+{
+    var links_forkit = $('a.forkit');
+
+    links_forkit.click(function(event){
+        event.preventDefault();
+
+        var $this = $(this);
+        var $this_after = $this.siblings('a.forkit');
+
+        $.getJSON(this.href)
+            .error(function(){alert('Failed to fork it!');})
+            .success(function(data){
+                if (data.status === 'error')
+                {
+                    alert(data.msg);
+                }
+                else if ((data.status === 'forkit') || (data.status === 'unforkit'))
+                {
+                    $this.toggle();
+                    $this_after.toggle();
+                }
+                else
+                {
+                    alert('Unexpected result...');
+                }
+            })
+        ;
+
+    });
+}
+
 })();

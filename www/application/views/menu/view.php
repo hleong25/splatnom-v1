@@ -26,76 +26,65 @@ extract($params, EXTR_SKIP);
 
 function forkit_helper($forkits, $id, $section_id, $metadata_id)
 {
-    if (isset($forkits[$section_id][$metadata_id]))
+    $url_forkit   = "/menu/forkit/{$id}/{$section_id}/{$metadata_id}";
+    $url_unforkit = "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}";
+
+    $forkit = @$forkits[$section_id][$metadata_id];
+    if (empty($forkit))
     {
-        $forkit = $forkits[$section_id][$metadata_id];
+        $forkit = array('cnt'=>0, 'me'=>false);
+    }
 
-        if ($forkit['me'])
-        {
-            // if this forkit is me... then the "after" is everything before me
-            $forkit_url = array
-            (
-                'now'   => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
-                'after' => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-            );
+    $img_dark = '/img/menu.forkit.dark.gif';
+    $img_lite = '/img/menu.forkit.light.gif';
 
-            $forkit_css = array
-            (
-                'now'   => 'forkit',
-                'after' => '',
-            );
+    $cnt = $forkit['cnt'];
 
-            $forkit_cnt = array
-            (
-                'now'   => $forkit['cnt'],
-                'after' => $forkit['cnt']-1,
-            );
-        }
-        else
-        {
-            // this forkit is not me, so the "after" is everything after me
-            $forkit_url = array
-            (
-                'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-                'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
-            );
+    $custom_hide_style = 'display: none;';
+    $custom_show_style = 'display: inline;';
 
-            $forkit_css = array
-            (
-                'now'   => '',
-                'after' => 'forkit',
-            );
+    $out_frag =<<<EOHTML
+    <a class="forkit" href="%s" style="%s">
+        <div class="forkit %s" title="Fork it if you like it!">
+            <span class="forkit_cnt">%s</span>
+        </div>
+    </a>
+EOHTML;
 
-            $forkit_cnt = array
-            (
-                'now'   => $forkit['cnt'],
-                'after' => $forkit['cnt']+1,
-            );
-        }
+    if ($forkit['me'])
+    {
+        $cnt_after = $cnt - 1;
+        if ($cnt_after < 1)
+            $cnt_after = '';
 
+        $forkit_now = sprintf(
+            $out_frag,
+            $url_unforkit, $custom_show_style, 'me_forkit_now', $cnt
+        );
+
+        $forkit_after = sprintf(
+            $out_frag,
+            $url_forkit, $custom_hide_style, 'forkit_after', $cnt_after
+        );
     }
     else
     {
-        $forkit_url = array
-        (
-            'now'   => "/menu/forkit/{$id}/{$section_id}/{$metadata_id}",
-            'after' => "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}",
+        $cnt_after = $cnt + 1;
+        if ($cnt < 1)
+            $cnt = '';
+
+        $forkit_now = sprintf(
+            $out_frag,
+            $url_forkit, $custom_show_style, 'forkit_now', $cnt
         );
 
-        $forkit_css = array
-        (
-            'now'   => '',
-            'after' => 'forkit',
-        );
-
-        $forkit_cnt = array
-        (
-            'now'   => '',
-            'after' => 1,
+        $forkit_after = sprintf(
+            $out_frag,
+            $url_unforkit, $custom_hide_style, 'me_forkit_after', $cnt_after
         );
     }
 
-    return array($forkit_url, $forkit_css, $forkit_cnt);
+    return array($forkit_now, $forkit_after);
 }
 
 $slug = array
@@ -258,10 +247,7 @@ foreach ($info['status'] as $info_status)
             $notes_css = empty($item['notes']) ? 'empty' : '';
 
             // fork its
-            $forkit_msg = 'Stick a fork in it if you like this item!';
-            list($forkit_url, $forkit_css, $forkit_cnt) = forkit_helper($forkits, $id, $section_id, $metadata_id);
-            if ($forkit_cnt['after'] < 1)
-                $forkit_cnt['after'] = '';
+            list($forkit_now, $forkit_after) = forkit_helper($forkits, $id, $section_id, $metadata_id);
 
             // item links
             $base_item_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}/{$metadata_id}-{$slug['item']}";
@@ -295,7 +281,8 @@ foreach ($info['status'] as $info_status)
                     <td class="item_panel" rowspan="2">
                         <?php if (!$is_nopanel): ?>
                             <img src="/img/menu.imgs.light.gif"/>
-                            <img src="/img/menu.forkit.light.gif"/>
+                            <?=$forkit_now?>
+                            <?=$forkit_after?>
                         <?php endif; //if (!$is_nopanel): ?>
                     </td>
                     <td class="item_info1">

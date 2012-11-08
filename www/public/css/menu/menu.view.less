@@ -313,6 +313,7 @@ ul.menu {
 
         tr.item_info1 {
             td { padding-top: 0.5em; }
+
         }
 
         tr.item_info2 {
@@ -320,7 +321,47 @@ ul.menu {
         }
 
         td.item_panel {
-            width: 4em;
+            width: 4.5em;
+
+            div.forkit {
+                .display-inline-block();
+
+                @width = 16px + 8px; // width of image + extra for text
+                @height = 24px + 4px; // height of image + extra for text
+
+                // using backround images so gotta adjust margin/padding/width/height
+                margin: 0 !important;
+                padding: 0 !important;
+                width: @width;
+                height: @height;
+
+                // helps position the forkit_cnt
+                position: relative;
+
+                // make sure it's at the top to align with the other elements
+                vertical-align: top;
+
+                span.forkit_cnt {
+                    font-size: 0.5em;
+                    font-weight: bold;
+
+                    // helps position this element to the bottom right
+                    width: @width;
+                    text-align: right;
+                    position: absolute;
+                    bottom: 0px;
+                }
+            }
+
+            div.me_forkit_now,
+            div.me_forkit_after {
+                background: url('/img/menu.forkit.dark.gif') no-repeat top;
+            }
+
+            div.forkit_now,
+            div.forkit_after {
+                background: url('/img/menu.forkit.light.gif') no-repeat top;
+            }
         }
 
         td.item_price {
