@@ -395,6 +395,7 @@ class MenuController
         $sections = $menu->getSection($id);
         $mdts = $menu->getMetadata($id, $sections);
         $forkits = $menu->getForkit($id, $user_id);
+        $img_taggit_cnt = $menu->getTaggitCntForImages($id);
 
         $this->set('info', $info);
         $this->set('links', $links);
@@ -405,6 +406,9 @@ class MenuController
 
         if (!empty($forkits))
             $this->set('forkits', $forkits);
+
+        if (!empty($img_taggit_cnt))
+            $this->set('img_taggit_cnt', $img_taggit_cnt);
     }
 
     function onAction_purge($id)

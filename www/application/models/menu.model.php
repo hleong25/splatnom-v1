@@ -1637,7 +1637,6 @@ EOQ;
 
     function getMenuTags($menu_id)
     {
-        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 ms.section_id AS sid,
@@ -1788,7 +1787,6 @@ EOQ;
 
     function getTaggitsByImageFile($menu_id, $img_file)
     {
-        // Note sure if this is "correct" after add tblMenuMetadataValues
         $query =<<<EOQ
             SELECT
                 s.section_id AS sid,
@@ -1812,6 +1810,45 @@ EOQ;
 
         $taggits = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $taggits;
+    }
+
+    function getTaggitCntForImages($menu_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                m.section_id,
+                m.metadata_id,
+                COUNT(t.img_id) AS tag_cnt
+            FROM tblMenuMetadata m
+            LEFT JOIN tblTaggitsImage t ON m.metadata_id = t.metadata_id
+            WHERE m.menu_id = :menu_id
+            GROUP BY m.section_id, m.metadata_id
+EOQ;
+
+        $params = array(':menu_id'=>$menu_id);
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $taggit_cnt = array();
+        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as $row)
+        {
+            $sid = $row['section_id'];
+            $mid = $row['metadata_id'];
+            $cnt = $row['tag_cnt'];
+
+            if (!isset($taggit_cnt[$sid]))
+                $taggit_cnt[$sid] = array();
+
+            if (!isset($taggit_cnt[$sid][$mid]))
+                $taggit_cnt[$sid][$mid] = 0;
+
+            $taggit_cnt[$sid][$mid] = $cnt;
+        }
+
+        return $taggit_cnt;
     }
 
     function getIdAndNames($menu_id, $section_id, $item_id)

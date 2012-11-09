@@ -20,23 +20,51 @@ $params = array(
     'imgs' => array(),
     'mdts' => array(),
     'forkits' => array(),
+    'img_taggit_cnt' => array(),
 );
 
 extract($params, EXTR_SKIP);
 
-function forkit_helper($forkits, $id, $section_id, $metadata_id)
+function img_taggit_cnt_helper($img_taggit_cnt, $img_url, $section_id, $metadata_id)
 {
-    $url_forkit   = "/menu/forkit/{$id}/{$section_id}/{$metadata_id}";
-    $url_unforkit = "/menu/unforkit/{$id}/{$section_id}/{$metadata_id}";
+    $url_image = "/menu/images/{$img_url}";
+
+    $cnt = @$img_taggit_cnt[$section_id][$metadata_id];
+
+    $out_frag =<<<EOHTML
+    <a class="img_mdt" href="%s">
+        <div class="img_mdt %s">
+            <span class="img_cnt">%s</span>
+        </div>
+    </a>
+EOHTML;
+
+    $css_style = 'img_taggits';
+
+    if ($cnt < 1)
+    {
+        $cnt = '';
+        $css_style = 'img_taggits_none';
+    }
+
+    $out_frag = sprintf(
+        $out_frag,
+        $img_url, $css_style, $cnt
+    );
+
+    return $out_frag;
+}
+
+function forkit_helper($forkits, $menu_id, $section_id, $metadata_id)
+{
+    $url_forkit   = "/menu/forkit/{$menu_id}/{$section_id}/{$metadata_id}";
+    $url_unforkit = "/menu/unforkit/{$menu_id}/{$section_id}/{$metadata_id}";
 
     $forkit = @$forkits[$section_id][$metadata_id];
     if (empty($forkit))
     {
         $forkit = array('cnt'=>0, 'me'=>false);
     }
-
-    $img_dark = '/img/menu.forkit.dark.gif';
-    $img_lite = '/img/menu.forkit.light.gif';
 
     $cnt = $forkit['cnt'];
 
@@ -224,7 +252,7 @@ foreach ($info['status'] as $info_status)
     <ul class="menu <?=$section_id?>">
         <li class="menu_header">
             <span class="name"><?=$section_name?></span>
-            <span class="link_imgs">View All</span>
+            <a class="link_imgs" href="<?=$section_image_url?>">View All</a>
         </li>
         <li class="menu_notes">
             <?=nl2br($mdt['notes'])?>
@@ -253,6 +281,9 @@ foreach ($info['status'] as $info_status)
             $base_item_url = "{$id}-{$slug['menu']}/{$section_id}-{$slug['section']}/{$metadata_id}-{$slug['item']}";
             $item_image_url = "/menu/images/{$base_item_url}";
 
+            // image link with taggit count
+            $mdt_image_link = img_taggit_cnt_helper($img_taggit_cnt, $item_image_url, $section_id, $metadata_id);
+
             // if spicy
             $img_spicy = '';
             if ($item['is_spicy'])
@@ -280,7 +311,7 @@ foreach ($info['status'] as $info_status)
                 <tr class="item_info1">
                     <td class="item_panel" rowspan="2">
                         <?php if (!$is_nopanel): ?>
-                            <img src="/img/menu.imgs.light.gif"/>
+                            <?=$mdt_image_link?>
                             <?=$forkit_now?>
                             <?=$forkit_after?>
                         <?php endif; //if (!$is_nopanel): ?>
