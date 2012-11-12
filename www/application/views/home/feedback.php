@@ -14,7 +14,7 @@ $feedback_msg = 'How much wood would a woodchuck chuck if a woodchuck could chuc
 <div class="pg">
 <?php if ($feedback_done === false): ?>
     <?php if (!empty($err)): ?>
-        <span class="err"><?=$err?></span>
+        <p class="err"><?=$err?></p>
     <?php endif; ?>
     <form method="post" action="/<?=$myurl?>">
         <label>
@@ -29,6 +29,7 @@ $feedback_msg = 'How much wood would a woodchuck chuck if a woodchuck could chuc
             <span class="hint">What's on your mind?</span>
             <textarea class="edit watermark" name="msg" placeholder="What's on your mind?" title="<?=$feedback_msg?>"><?=$msg?></textarea>
         </label>
+        <label> <?=recaptcha_get_html(RECAPTCHA_PUBLIC_KEY)?> </label>
         <label>
             <span class="hint">&nbsp;</span>
             <input class="button" type="submit" value="Submit" />

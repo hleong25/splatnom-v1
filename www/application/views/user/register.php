@@ -30,6 +30,8 @@ extract($params, EXTR_SKIP);
         <input class="watermark password" type="password" name="password" placeholder="Password" value=""/>
         <input class="watermark password" type="password" name="password2" placeholder="Confirm Password" value=""/><br/>
         <br/>
+        <?=recaptcha_get_html(RECAPTCHA_PUBLIC_KEY)?>
+        <br/>
         <input class="button" type="submit" value="Register!" />
     </form>
 </div>

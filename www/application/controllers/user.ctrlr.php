@@ -1,5 +1,7 @@
 <?php
 
+require_once(RECAPTCHA_LIB);
+
 class UserController
     extends Controller
 {
@@ -85,6 +87,17 @@ class UserController
         if (!$this->User->isUsernameAvailable($username))
         {
             $this->set('err_msg', 'Username is unavailable');
+            return;
+        }
+
+        $recaptcha_resp = recaptcha_check_answer(RECAPTCHA_PRIVATE_KEY,
+            $_SERVER["REMOTE_ADDR"],
+            $_POST["recaptcha_challenge_field"],
+            $_POST["recaptcha_response_field"]);
+
+        if (!$recaptcha_resp->is_valid)
+        {
+            $this->set('err_msg', 'Failed to verify reCAPTCHA.');
             return;
         }
 

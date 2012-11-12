@@ -53,3 +53,7 @@ define('WEB_PATH_OTHER',    DS . 'other');
 define('PASSCODE_TROJAN',   'locomotion');
 
 define('GOOGLE_API_KEY', 'AIzaSyDPez_dxVdHnZM8COpU4-Hs3qKxTFE0vKM');
+
+define('RECAPTCHA_LIB',         ROOT.'/library/recaptcha-php-1.11/recaptchalib.php');
+define('RECAPTCHA_PUBLIC_KEY',  '6Lcq9NgSAAAAAAzmN0KDTtJj3AfqhZfLdBIwUCo7');
+define('RECAPTCHA_PRIVATE_KEY', '6Lcq9NgSAAAAAGgizt-b6t65dgUqo8WtdHDPP6SZ');

@@ -1,5 +1,7 @@
 <?php
 
+require_once(RECAPTCHA_LIB);
+
 class HomeController
     extends Controller
 {
@@ -70,6 +72,17 @@ class HomeController
             'email' => $email,
             'msg' => $msg,
         );
+
+        $recaptcha_resp = recaptcha_check_answer(RECAPTCHA_PRIVATE_KEY,
+            $_SERVER["REMOTE_ADDR"],
+            $_POST["recaptcha_challenge_field"],
+            $_POST["recaptcha_response_field"]);
+
+        if (!$recaptcha_resp->is_valid)
+        {
+            $this->set('err', 'Failed to verify reCAPTCHA.');
+            return;
+        }
 
         $mail = new MailModel();
         $message = $mail->grab_data('home', 'email_feedback', $params);
