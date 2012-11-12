@@ -27,6 +27,11 @@ class Controller
 
 	function __destruct()
     {
+        if (!isset($this->m_template))
+        {
+            return;
+        }
+
         if (!$this->m_bRedirect)
             $this->m_template->render($this->m_bRender);
 

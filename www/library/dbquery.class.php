@@ -5,17 +5,35 @@ class DBQuery
 {
     function __construct ($dsn, $username, $passwd, $options = null)
     {
-        parent::__construct($dsn, $username, $passwd, $options);
+        try
+        {
+            parent::__construct($dsn, $username, $passwd, $options);
+        }
+        catch (PDOException $e)
+        {
+            $code = $e->getCode();
+            $msg = $e->getMessage();
+            $trace = $e->getTraceAsString();
+
+            Util::logit("PDOException Error Code: $code. Reason: $msg\n$trace");
+            print "Error: $msg<br/>";
+            die();
+        }
 
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     }
 
-    function log_dberr($stmt, $file, $lineno)
+    function log_dberr($err_obj, $file, $lineno)
     {
-        if (get_class($stmt) === 'PDOStatement')
+        if (get_class($err_obj) === 'PDOStatement')
         {
-            $err_code = $stmt->errorCode();
-            $err_info = $stmt->errorInfo();
+            $err_code = $err_obj->errorCode();
+            $err_info = $err_obj->errorInfo();
+        }
+        else if (get_class($err_obj) === 'PDOException')
+        {
+            $err_code = $err_obj->getCode();
+            $err_info = $err_obj->getMessage();
         }
         else
         {
