@@ -7,6 +7,7 @@ class MailModel
     extends Model
 {
     public $DEFAULT_EMAIL = 'support@splatnom.com';
+    public $MAX_ATTEMPTS = 5;
 
     function queue($from, $to, $subject, $message)
     {
@@ -40,7 +41,6 @@ EOQ;
     function process_queue()
     {
         $max_rows = 50;
-        $max_attempts = 5;
         $crlf = "\n";
 
         // these should be in a config file...
@@ -95,10 +95,10 @@ EOQ;
             LIMIT $max_rows
 EOQ;
 
-        $rst = $this->prepareAndExecute($query, array(':max_attempts'=>$max_attempts), __FILE__, __LINE__);
+        $rst = $this->prepareAndExecute($query, array(':max_attempts'=>$this->MAX_ATTEMPTS), __FILE__, __LINE__);
         if (!$this->areDbResultsGood($rst, __FILE__, __LINE__)) return false;
 
-        $rows = $rst->fetchAll();
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
 
         $sent_stats = array(
             'sent' => 0,
@@ -176,5 +176,48 @@ EOQ;
         $data = ob_get_clean();
 
         return $data;
+    }
+
+    function get_pending_emails()
+    {
+        $query =<<<EOQ
+            SELECT
+                mail_id,
+                ts,
+                ms.mail_status,
+                attempts,
+                from_addy,
+                to_addy,
+                subject,
+                message
+            FROM tblEmailQueue eq
+            INNER JOIN vMailStatus ms ON eq.status_id = ms.id
+            WHERE status_id IN (SELECT id FROM vMailStatus WHERE mail_status != 'sent')
+            AND attempts < :max_attempts
+            ORDER BY ts ASC
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, array(':max_attempts'=>$this->MAX_ATTEMPTS), __FILE__, __LINE__);
+        if (!$this->areDbResultsGood($rst, __FILE__, __LINE__)) return false;
+
+        return $rst->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function get_email_src($email_id)
+    {
+        $query =<<<EOQ
+            SELECT
+                message
+            FROM tblEmailQueue
+            WHERE mail_id = :mail_id
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, array(':mail_id'=>$email_id), __FILE__, __LINE__);
+        if (!$this->areDbResultsGood($rst, __FILE__, __LINE__)) return false;
+
+        $row = $rst->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($row)) return '';
+        return $row['message'];
     }
 }

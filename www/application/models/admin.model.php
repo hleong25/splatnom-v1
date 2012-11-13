@@ -27,6 +27,6 @@ EOQ;
 
         $rst = $this->query($query);
 
-        return $rst->fetchAll();
+        return $rst->fetchAll(PDO::FETCH_ASSOC);
     }
 }

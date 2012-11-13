@@ -310,6 +310,7 @@ class AdminController
 
         // ls -Rl | grep cache
         $allCss = array(
+            'admin/admin.email.queue',
             'admin/admin.find.user',
             'admin/admin.location',
             'admin/admin.main',
@@ -432,5 +433,30 @@ class AdminController
         $email = new MailModel();
         $email->process_queue();
         $this->redirect('/admin/main');
+    }
+
+    function onAction_email_queue()
+    {
+        $this->addCss('admin/admin.email.queue');
+        $mail = new MailModel();
+        $queue = $mail->get_pending_emails();
+
+        foreach ($queue as &$q)
+        {
+            $q['message'] = trim(strip_tags($q['message']));
+        }
+
+        $this->set('queue', $queue);
+        $this->set('dbg', $queue);
+    }
+
+    function onAction_preview_email($email_id=null)
+    {
+        $this->m_bRender = false;
+
+        $mail = new MailModel();
+        $msg = $mail->get_email_src($email_id);
+
+        $this->set('src', $msg);
     }
 }
