@@ -76,7 +76,7 @@ class Util
     static function getUniqueString()
     {
         $now_date = date('u');
-        $unique_id = base_convert(date('u'), 10, 36); // 0-9,a-z
+        $unique_id = base_convert($now_date, 10, 36); // 0-9,a-z
         $short_id = $unique_id . uniqid();
 
         return $short_id;
