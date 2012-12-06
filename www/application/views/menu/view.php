@@ -33,23 +33,15 @@ function img_taggit_cnt_helper($img_taggit_cnt, $img_url, $section_id, $metadata
 
     $out_frag =<<<EOHTML
     <a class="img_mdt" href="%s">
-        <div class="img_mdt %s">
-            <span class="img_cnt">%s</span>
-        </div>
+        <img src="%s"/><span class="img_cnt">%s images</span>
     </a>
 EOHTML;
 
-    $css_style = 'img_taggits';
-
-    if ($cnt < 1)
-    {
-        $cnt = '';
-        $css_style = 'img_taggits_none';
-    }
+    $img_icon = '/img/menu.imgs.light.sm.gif';
 
     $out_frag = sprintf(
         $out_frag,
-        $img_url, $css_style, $cnt
+        $img_url, $img_icon, $cnt
     );
 
     return $out_frag;
@@ -71,44 +63,42 @@ function forkit_helper($forkits, $menu_id, $section_id, $metadata_id)
     $custom_hide_style = 'display: none;';
     $custom_show_style = 'display: inline;';
 
-    $out_frag =<<<EOHTML
+    $out_frag =<<<eohtml
     <a class="forkit" href="%s" style="%s">
-        <div class="forkit %s" title="Fork it if you like it!">
-            <span class="forkit_cnt">%s</span>
-        </div>
+        <img src="%s" title="fork it if you like it!"/><span class="forkit_cnt">%s forkits</span>
     </a>
-EOHTML;
+eohtml;
 
     if ($forkit['me'])
     {
         $cnt_after = $cnt - 1;
-        if ($cnt_after < 1)
+        if (false && $cnt_after < 1)
             $cnt_after = '';
 
         $forkit_now = sprintf(
             $out_frag,
-            $url_unforkit, $custom_show_style, 'me_forkit_now', $cnt
+            $url_unforkit, $custom_show_style, '/img/menu.forkit.dark.sm.gif', $cnt
         );
 
         $forkit_after = sprintf(
             $out_frag,
-            $url_forkit, $custom_hide_style, 'forkit_after', $cnt_after
+            $url_forkit, $custom_hide_style, '/img/menu.forkit.light.sm.gif', $cnt_after
         );
     }
     else
     {
         $cnt_after = $cnt + 1;
-        if ($cnt < 1)
+        if (false && $cnt < 1)
             $cnt = '';
 
         $forkit_now = sprintf(
             $out_frag,
-            $url_forkit, $custom_show_style, 'forkit_now', $cnt
+            $url_forkit, $custom_show_style, '/img/menu.forkit.light.sm.gif', $cnt
         );
 
         $forkit_after = sprintf(
             $out_frag,
-            $url_unforkit, $custom_hide_style, 'me_forkit_after', $cnt_after
+            $url_unforkit, $custom_hide_style, '/img/menu.forkit.dark.sm.gif', $cnt_after
         );
     }
 
@@ -264,6 +254,8 @@ foreach ($info['status'] as $info_status)
             if ($item['is_hide'])
                 continue;
 
+            $row_cnt = 3; // 3 = number of rows when you have name, comments, and panel
+
             $is_header = $item['is_header'];
             $is_nopanel = $item['is_nopanel'];
 
@@ -297,35 +289,44 @@ foreach ($info['status'] as $info_status)
             $item_price = nl2br($item['price']);
             $item_notes = nl2br($item['notes']);
 
+            if (empty($item_notes))
+            {
+                $row_cnt--; // no notes means no row
+            }
+
         ?>
             <?php if ($is_header): ?>
                 <tr class="header">
-                    <td class="item_panel">
-                    </td>
-                    <td class="item_info1">
+                    <td class="" colspan="2">
                         <span class="goright clearfix"><?=$item_price?></span>
-                        <?=$metadata_label?>
+                        <a href="<?=$item_image_url?>"><?=$metadata_label?></a>
                     </td>
                 </tr>
             <?php else: ?>
-                <tr class="item_info1">
-                    <td class="item_panel" rowspan="2">
-                        <?php if (!$is_nopanel): ?>
-                            <?=$mdt_image_link?>
-                            <?=$forkit_now?>
-                            <?=$forkit_after?>
-                        <?php endif; //if (!$is_nopanel): ?>
-                    </td>
-                    <td class="item_info1">
-                        <span class="goright clearfix"><?=$item_price?></span>
-                        <?=$metadata_label?>
+                <tr class="info">
+                    <td class="name">
+                        <a href="<?=$item_image_url?>"><?=$metadata_label?></a>
                         <?=$img_spicy?>
                         <?=$img_veggie?>
                     </td>
+                    <td class="price" rowspan="<?=$row_cnt?>">
+                        <?=$item_price?>
+                    </td>
                 </tr>
-                <tr class="item_info2">
-                    <td class="item_info2">
+                <?php if (!empty($item_notes)): ?>
+                <tr class="info">
+                    <td class="comments">
                         <?=$item_notes?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <tr class="info">
+                    <td class="user_actions">
+                        <?php if (!$is_nopanel): ?>
+                            <?=$forkit_now?>
+                            <?=$forkit_after?>
+                            <?=$mdt_image_link?>
+                        <?php endif; //if (!$is_nopanel): ?>
                     </td>
                 </tr>
             <? endif; // if ($is_header): ?>

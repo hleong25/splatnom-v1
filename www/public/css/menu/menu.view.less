@@ -312,114 +312,51 @@ ul.menu {
             td {padding: 0.5em 0 0.25em; }
         }
 
-        tr.item_info1 {
-            td { padding-top: 0.5em; }
-
+        td {
+            vertical-align: top;
+            padding-bottom: 0.25em;
         }
 
-        tr.item_info2 {
-            //td { padding-bottom: 0.5em; }
+        td.top_space {
+            padding-top: 1em !important;
         }
 
-        td.item_panel {
-            width: 4.2em;
-
-            div.img_mdt {
-                .display-inline-block();
-
-                @width = 27px + 4px; // width of image + extra for text
-                @height = 26px + 4px; // height of image + extra for text
-
-                // using backround images so gotta adjust margin/padding/width/height
-                margin: 0 !important;
-                padding: 0 !important;
-                width: @width;
-                height: @height;
-
-                // helps position the forkit_cnt
-                position: relative;
-
-                // make sure it's at the top to align with the other elements
-                vertical-align: top;
-
-                span.img_cnt {
-                    font-size: 0.5em;
-                    font-weight: bold;
-
-                    // helps position this element to the bottom right
-                    width: @width;
-                    text-align: right;
-                    position: absolute;
-                    bottom: 0px;
-                }
-            }
-
-            div.img_taggits {
-                //background: url('/img/menu.imgs.dark.gif') no-repeat top left;
-                background: url('/img/menu.imgs.light.gif') no-repeat top left;
-            }
-
-            div.img_taggits_none {
-                background: url('/img/menu.imgs.light.gif') no-repeat top left;
-            }
-
-            div.forkit {
-                .display-inline-block();
-
-                @width = 16px + 4px; // width of image + extra for text
-                @height = 26px + 4px; // height of image + extra for text
-
-                // using backround images so gotta adjust margin/padding/width/height
-                margin: 0 !important;
-                padding: 0 !important;
-                width: @width;
-                height: @height;
-
-                // helps position the forkit_cnt
-                position: relative;
-
-                // make sure it's at the top to align with the other elements
-                vertical-align: top;
-
-                span.forkit_cnt {
-                    font-size: 0.5em;
-                    font-weight: bold;
-
-                    // helps position this element to the bottom right
-                    width: @width;
-                    text-align: right;
-                    position: absolute;
-                    bottom: 0px;
-                }
-            }
-
-            div.me_forkit_now,
-            div.me_forkit_after {
-                background: url('/img/menu.forkit.dark.gif') no-repeat top left;
-            }
-
-            div.forkit_now,
-            div.forkit_after {
-                background: url('/img/menu.forkit.light.gif') no-repeat top left;
-            }
-        }
-
-        td.item_price {
-        }
-
-        td.item_info1 {
+        tr.info {
             span.goright {
                 float: right;
                 text-align: right;
             }
-        }
 
-        td.item_info2 {
-            font-size: @size * 0.75;
-            vertical-align: top;
+            span.img_cnt,
+            span.forkit_cnt,
+            img {
+                margin-right: 0.5em;
+            }
+
+            .row_spacing() {
+                padding-top: 0.5em !important;
+            }
+
+            td.name {
+                .row_spacing();
+            }
+
+            td.price {
+                .row_spacing();
+                font-size: @size * 0.75;
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            td.comments {
+                font-size: @size * 0.65;
+            }
+
+            td.user_actions {
+                font-size: @size * 0.65;
+            }
         }
     }
-
 }
 
 // Smartphones (portrait and landscape)
