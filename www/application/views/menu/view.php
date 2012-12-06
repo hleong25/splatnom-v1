@@ -33,7 +33,7 @@ function img_taggit_cnt_helper($img_taggit_cnt, $img_url, $section_id, $metadata
 
     $out_frag =<<<EOHTML
     <a class="img_mdt" href="%s">
-        <img src="%s"/><span class="img_cnt">%s images</span>
+        <img class="img_panel" src="%s"/><span class="img_cnt">%s images</span>
     </a>
 EOHTML;
 
@@ -65,7 +65,7 @@ function forkit_helper($forkits, $menu_id, $section_id, $metadata_id)
 
     $out_frag =<<<eohtml
     <a class="forkit" href="%s" style="%s">
-        <img src="%s" title="fork it if you like it!"/><span class="forkit_cnt">%s forkits</span>
+        <img class="img_panel" src="%s" title="fork it if you like it!"/><span class="forkit_cnt">%s forkits</span>
     </a>
 eohtml;
 
