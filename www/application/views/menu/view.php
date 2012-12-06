@@ -255,6 +255,7 @@ foreach ($info['status'] as $info_status)
                 continue;
 
             $row_cnt = 3; // 3 = number of rows when you have name, comments, and panel
+            $col_cnt = 2; // 2 = number of columns if there is a single line in price
 
             $is_header = $item['is_header'];
             $is_nopanel = $item['is_nopanel'];
@@ -294,6 +295,11 @@ foreach ($info['status'] as $info_status)
                 $row_cnt--; // no notes means no row
             }
 
+            if (substr_count($item['price'], "\n") > 0)
+            {
+                $col_cnt = 1; // prices are multiple lines, so comments should be 1 column
+            }
+
         ?>
             <?php if ($is_header): ?>
                 <tr class="header">
@@ -315,7 +321,7 @@ foreach ($info['status'] as $info_status)
                 </tr>
                 <?php if (!empty($item_notes)): ?>
                 <tr class="info">
-                    <td class="comments">
+                    <td class="comments" colspan="<?=$col_cnt?>">
                         <?=$item_notes?>
                     </td>
                 </tr>
