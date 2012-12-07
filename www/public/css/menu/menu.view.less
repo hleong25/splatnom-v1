@@ -300,6 +300,10 @@ ul.menu {
     table.menu_items {
         width: 100%;
 
+        .row_spacing() {
+            padding-top: 0.5em !important;
+        }
+
         tr.header {
             @clr: gray;
             color: @clr;
@@ -309,7 +313,12 @@ ul.menu {
             border-bottom: 1px solid @clr;
             border-spacing: 1em;
 
-            td {padding: 0.5em 0 0.25em; }
+            td { padding: 0.5em 0 0.25em; }
+
+            td.price {
+                text-align: right;
+                white-space: nowrap;
+            }
         }
 
         td {
@@ -318,10 +327,6 @@ ul.menu {
         }
 
         tr.info {
-            span.goright {
-                float: right;
-                text-align: right;
-            }
 
             img.img_panel {
             }
@@ -334,10 +339,6 @@ ul.menu {
 
             img.item_attr {
                 margin-left: 0.1em;
-            }
-
-            .row_spacing() {
-                padding-top: 0.5em !important;
             }
 
             td.name {

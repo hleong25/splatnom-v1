@@ -303,9 +303,11 @@ foreach ($info['status'] as $info_status)
         ?>
             <?php if ($is_header): ?>
                 <tr class="header">
-                    <td class="" colspan="2">
-                        <span class="goright clearfix"><?=$item_price?></span>
+                    <td class="name">
                         <a href="<?=$item_image_url?>"><?=$metadata_label?></a>
+                    </td>
+                    <td class="price">
+                        <?=$item_price?>
                     </td>
                 </tr>
             <?php else: ?>
