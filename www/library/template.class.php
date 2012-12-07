@@ -109,6 +109,7 @@ class Template
         }
 
         $body = ROOT . DS . 'application' . DS . 'views' . DS . $this->m_base_name . DS . $this->m_action . '.php';
+        $body_lib = ROOT . DS . 'application' . DS . 'views' . DS . 'body.lib.php';
 
         if (!file_exists($body))
         {
@@ -118,13 +119,15 @@ class Template
 
         if ($bRender)
         {
-            include($header);
-            include($body);
-            include($footer);
+            include $header;
+            include $body_lib;
+            include $body;
+            include $footer;
         }
         else
         {
-            include($body);
+            include $body_lib;
+            include $body;
         }
     }
 

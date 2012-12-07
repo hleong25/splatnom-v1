@@ -127,20 +127,7 @@ foreach ($info['status'] as $info_status)
         $curr_status = $status;
 }
 ?>
-<div class="pg pg_bottom search">
-<form id="searchit" method="get" action="/menu/search">
-    <label><span class="hint">Look for 'fish tacos' or 'Japanese'</span>
-        <input class="watermark query" type="text" name="query" placeholder="Search" value=""/>
-    </label>
-    <label><span class="hint">Location</span>
-        <input class="watermark location" type="text" name="location" placeholder="Location" value="<?=$location?>"/>
-    </label>
-    <label><span class="hint">&nbsp;</span>
-        <button class="button search" type="submit">Search</button>
-    </label>
-</form>
-</div>
-
+<?=get_html_searchit($location)?>
 <?php if (!$is_ready): ?>
 <div class="notready">
     <span>The status of this menu is '<?=$curr_status?>'.<br/>Just like the cake... this menu is a lie.</span>

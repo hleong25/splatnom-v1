@@ -11,22 +11,7 @@ extract($params, EXTR_SKIP);
 
 ?>
 <div class="pg">
-    <div class="pg_bottom search">
-        <form id="searchit" method="get" action="/menu/search">
-            <label>
-                <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
-                <input class="watermark query" type="text" name="query" placeholder="Search" value="<?php echo $query; ?>"/>
-            </label>
-            <label>
-                <span class="hint">Location</span>
-                <input class="watermark location" type="text" name="location" placeholder="Location" value="<?php echo $location; ?>"/>
-            </label>
-            <label>
-                <span class="hint">&nbsp;</span>
-                <button class="button search" type="submit">Search</button>
-            </label>
-        </form>
-    </div>
+    <?=get_html_searchit($location)?>
     <div class="msg">
         <span><?=$msg;?></span>
     </div>

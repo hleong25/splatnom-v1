@@ -10,52 +10,7 @@ $params = array(
 extract($params, EXTR_SKIP);
 ?>
 <div class="pg pg_bottom logo"></div>
-<div class="pg pg_bottom search">
-<form id="searchit" method="get" action="/menu/search">
-    <label>
-        <span class="hint">Look for 'fish tacos' or 'Japanese'</span>
-        <input class="watermark query" type="text" name="query" placeholder="Search" value="<?php echo $query; ?>"/>
-    </label>
-    <label>
-        <span class="hint">Location</span>
-        <input class="watermark location" type="text" name="location" placeholder="Location" value="<?php echo $location; ?>"/>
-    </label>
-    <label>
-        <span class="hint">&nbsp;</span>
-        <button class="button search" type="submit">Search</button>
-    </label>
-</form>
-</div>
-<?php /*
-<div class="pg pg_bottom new_menus">
-<?php if (empty($ready_menus)): ?>
-    <span>No menus added...</span>
-    <a href="/menu/new">Click here to help me out!</a>
-<?php else: ?>
-    <?php foreach ($ready_menus as $menu):
-        $menu_id = $menu['id'];
-        $name = $menu['name'];
-        $address = $menu['address'];
-        $slug = Util::slugify($name);
-
-        $address = nl2br($address);
-
-        $link = '<a href="/menu/view/'.$menu_id.'-%s">%s</a>';
-
-        $id = sprintf($link, $slug, $menu_id);
-        $name = sprintf($link, $slug, $name);
-        $address = sprintf($link, $slug, $address);
-
-        $slug = Util::slugify($name);
-    ?>
-        <div class="new">
-            <span class="name"><?=$name?></span><br/>
-            <span class="addy"><?=$address?></span>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
-</div>
-*/?>
+<?=get_html_searchit($location)?>
 <?php if ($is_metadata && !empty($need_metadata)) : ?>
 <div class="pg pg_bottom metadata">
     <div class="heading">Need metadata</div>
