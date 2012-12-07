@@ -10,6 +10,28 @@ return {
 
 function init()
 {
+    if (!Modernizr.input.placeholder)
+    {
+        $('.watermark').each(function(){
+            var $this = $(this);
+            $this.watermark($this.attr('placeholder'));
+        });
+    }
+
+    $('.button')
+        .each(function(){
+            var $this = $(this);
+            var $icons = new Object();
+
+            if ($this.hasClass('search'))
+            {
+                $icons.primary = 'ui-icon-search';
+            }
+
+            $this.button({icons: $icons});
+        })
+    ;
+
     $('input.save_taggits').button();
 
     $.template('tmpl_taggit', $('script#tmpl_taggit'));

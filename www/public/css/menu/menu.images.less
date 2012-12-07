@@ -1,4 +1,5 @@
 @import '../global.less';
+@import '../default.search.less';
 
 div.notready {
     padding: 0.3em;
@@ -20,31 +21,51 @@ div.notready {
     margin-bottom: @space;
 }
 
-div.info {
-    .divspace();
+div.biz_info {
 
+    table {
+        width: 100%;
+    }
+    td.spacer {
+        padding-bottom: 0.8em;
+    }
+    .row {
+        margin-bottom: 0.8em;
+    }
     p {
-        &.name {
-            font-size: 2em;
-        }
+        font-size: 0.85em;
+    }
+    .title {
+    }
+    .name {
+        font-size: 1.5em;
+        font-weight: bolder;
 
-        &.addy {
+        a:link,
+        a:visited {
+            color: @clr_default_red;
         }
+    }
+    .details {
+    }
+    .address {
+        .row;
+    }
+    .phone {
+    }
+    .hours {
     }
 }
 
-div.menu_nav {
-    .divspace();
+div.thenav {
 
-    font-size: 0.9em;
-
-    div.menu_nav_item {
-        .display-inline-block;
-
-        //margin-right: 0.5em;
+    ul.navbar {
+        font-size: 0.9em;
+        list-style-type: none;
     }
 
-    span.img_cnt {
+    li {
+        .display-inline-block();
     }
 }
 

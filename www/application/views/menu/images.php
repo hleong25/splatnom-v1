@@ -19,6 +19,7 @@ $default_selected_img = array(
 );
 
 $params = array(
+    'location'=>'',
     'is_logged_in'=>false,
     'info'=>$default_info,
     'id_names'=>$default_id_names,
@@ -57,74 +58,92 @@ $slug = array
 );
 ?>
 
+<?=get_html_searchit($location)?>
+
 <?php if (!$is_ready): ?>
 <div class="notready">
     <span>The status of this menu is '<?=$curr_status?>'.<br/>Just like the cake... this menu is a lie.</span>
 </div>
 <?php endif; ?>
 
-<div class="pg">
-<div class="info">
-    <p class="name"><a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$info['name']?></a></p>
-    <p class="addy"><?=nl2br($info['address'])?></p>
+<div class="pg biz_info">
+<table>
+<tr>
+    <td class="spacer" colspan="2">
+        <p class="name"><a href="/menu/view/<?=$menu_id?>-<?=$slug['menu']?>"><?=$info['name']?></a></p>
+        <p class="details"><?=nl2br($info['notes'])?></p>
+    </td>
+</tr>
+<tr>
+    <td class="spacer" style="width: 50%;">
+        <p class="address"><?=nl2br($info['address'])?></p>
+        <p class="phone"><?=nl2br($info['numbers'])?></p>
+    </td>
+    <td>
+        <p class="hours"><?=nl2br($info['hours'])?></p>
+    </td>
+</tr>
+</table>
 </div>
 
-<div class="menu_nav">
-<?php
-    $nav = array(
-        'menu' => array(
-            'id'    => @$id_names['menu_id'],
-            'name'  => @$id_names['menu'],
-            'slug'  => @$slug['menu'],
-        ),
-        'section' => array(
-            'id'    => @$id_names['section_id'],
-            'name'  => @$id_names['section'],
-            'slug'  => @$slug['section'],
-        ),
-        'item' => array(
-            'id'    => @$id_names['item_id'],
-            'name'  => @$id_names['item'],
-            'slug'  => @$slug['item'],
-        ),
-    );
+<div class="pg pg_bottom thenav">
+    <ul class="navbar">
+    <?php
+        $nav = array(
+            'menu' => array(
+                'id'    => @$id_names['menu_id'],
+                'name'  => @$id_names['menu'],
+                'slug'  => @$slug['menu'],
+            ),
+            'section' => array(
+                'id'    => @$id_names['section_id'],
+                'name'  => @$id_names['section'],
+                'slug'  => @$slug['section'],
+            ),
+            'item' => array(
+                'id'    => @$id_names['item_id'],
+                'name'  => @$id_names['item'],
+                'slug'  => @$slug['item'],
+            ),
+        );
 
-    $nav_link = '/menu/images';
-    foreach ($nav as $nav_key => $nav_item)
-    {
-        $id   = $nav_item['id'];
-        $name = $nav_item['name'];
-        $name_slug = $nav_item['slug'];
+        $nav_link = '/menu/images';
+        foreach ($nav as $nav_key => $nav_item)
+        {
+            $id   = $nav_item['id'];
+            $name = $nav_item['name'];
+            $name_slug = $nav_item['slug'];
 
-        if (empty($id))
-            continue;
+            if (empty($id))
+                continue;
 
-        $nav_link .= "/{$id}-{$name_slug}";
+            $nav_link .= "/{$id}-{$name_slug}";
+
+            echo<<<EOHTML
+            <li class="menu_nav_item">
+                <a href="{$nav_link}">{$nav_item['name']}</a>
+                <span>&nbsp;&raquo;&nbsp;</span>
+            </li>
+EOHTML;
+        }
+
+        $cnt_imgs = count($imgs);
+        if ($cnt_imgs == 0):
+            $imgs_msg = 'No images found';
+        elseif ($cnt_imgs == 1):
+            $imgs_msg = 'Found 1 image';
+        else:
+            $imgs_msg = "Found {$cnt_imgs} images";
+        endif;
 
         echo<<<EOHTML
-        <div class="menu_nav_item">
-            <a href="{$nav_link}">{$nav_item['name']}</a>
-            <span>&nbsp;&raquo;&nbsp;</span>
-        </div>
+            <span class="img_cnt">{$imgs_msg}</span>
 EOHTML;
-    }
-
-    $cnt_imgs = count($imgs);
-    if ($cnt_imgs == 0):
-        $imgs_msg = 'No images found';
-    elseif ($cnt_imgs == 1):
-        $imgs_msg = 'Found 1 image';
-    else:
-        $imgs_msg = "Found {$cnt_imgs} images";
-    endif;
-
-    echo<<<EOHTML
-        <span class="img_cnt">{$imgs_msg}</span>
-EOHTML;
-?>
+    ?>
+    </li>
 </div>
 
-<div class="view">
+<div class="pg view">
     <div class="img">
     <?php if (!empty($imgs)): ?>
         <a href="/images/get/menu/org/<?=$menu_id?>/<?=$selected_img['filename']?>" target="_blank">
@@ -184,7 +203,7 @@ EOHTML;
     </div>
 </div>
 
-<div class="imgs">
+<div class="pg imgs">
 <?php foreach ($imgs as $img):
     $filename = $img['filename'];
 
@@ -216,7 +235,6 @@ EOHTML;
 <pre><?=var_export($id_names)?></pre>
 <pre><?=var_export($imgs)?></pre>
 */ ?>
-</div>
 <script type="text/javascript">
     <?php
         // TODO: extract parameter in script tag
