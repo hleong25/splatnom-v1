@@ -8,7 +8,7 @@ class MenuController
         $this->addCss('menu/menu.new');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.new');
 
         $user_id = Util::getUserId();
@@ -69,7 +69,7 @@ class MenuController
 
         $this->addJqueryUi();
         $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.edit.metadata');
 
         $menu = $this->Menu;
@@ -441,7 +441,7 @@ class MenuController
         $this->addCss('menu/menu.search');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.search');
 
         $this->set('location', $location);
@@ -512,7 +512,7 @@ class MenuController
 
         $this->addJqueryUi();
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('menu/menu.view');
         $this->addCss('menu/menu.view');
 

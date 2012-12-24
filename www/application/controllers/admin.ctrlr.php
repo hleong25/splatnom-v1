@@ -35,7 +35,7 @@ class AdminController
     {
         $this->addCss('admin/admin.find.user');
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('admin/admin.find.user');
 
         $this->set('query_user', '%');
@@ -106,7 +106,7 @@ class AdminController
         }
 
         $this->addCss('admin/admin.pending.menu');
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('admin/admin.pending.menu');
 
         $menu = new MenuModel();
@@ -186,7 +186,7 @@ class AdminController
     {
         $this->addCss('admin/admin.location');
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('admin/admin.location');
 
         $param = false;

@@ -10,7 +10,7 @@ class LoginController
         $this->addCss('login/login.main');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login');
 
         $goto_url = '';
@@ -61,7 +61,7 @@ class LoginController
         $this->addCss('login/login.forgot');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login.forgot');
 
         if (empty($_POST))
@@ -149,7 +149,7 @@ class LoginController
         $this->addCss('login/login.reset');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('login/login.reset');
 
         $username = '';

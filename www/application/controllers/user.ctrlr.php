@@ -18,7 +18,7 @@ class UserController
         $this->addCss('user/user.register');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('user/user.register');
 
         if (empty($_POST))
@@ -173,7 +173,7 @@ class UserController
             return;
         }
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('user/user.verify');
         $this->addCss('user/user.verify');
 
@@ -237,7 +237,7 @@ class UserController
         }
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('user/user.profile');
 
         $this->addCss('user/user.profile');

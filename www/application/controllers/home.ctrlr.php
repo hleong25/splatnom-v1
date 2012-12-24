@@ -10,7 +10,7 @@ class HomeController
         $this->addJqueryUi();
         $this->addCss('home/home.main');
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home');
 
         $loc = Util::cookie('location');
@@ -37,7 +37,7 @@ class HomeController
         $this->addCss('home/home.feedback');
 
         $this->addJqueryUi();
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('home/home.feedback');
 
         if (empty($_POST))

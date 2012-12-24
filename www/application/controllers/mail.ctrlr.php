@@ -13,7 +13,7 @@ class MailController
     {
         $this->addCss('mail/mail.tester');
 
-        $this->addJs('new.jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
         $this->addJs('mail/mail.tester');
 
         if (empty($_POST))
