@@ -12,6 +12,8 @@ var $infowindow;
 
 function init()
 {
+    $.template('tmpl_places', $('script#tmpl_places'));
+
     var centerlatlng = new google.maps.LatLng(33.735911, -117.787177);
     var myOptions = {
         center: centerlatlng,
@@ -24,20 +26,24 @@ function init()
     $bounds = new google.maps.LatLngBounds();
     $infowindow = new google.maps.InfoWindow();
 
-    for (var idx in $menus)
+    for (var idx in $menus_tmpl_data)
     {
-        var menu = $menus[idx];
-
-        addMarker(menu);
+        var $objLatLng = $menus_tmpl_data[idx];
+        addMarker($objLatLng);
     }
 
     $map.fitBounds($bounds);
 }
 
-function addMarker(menu)
+function addMarker(places)
 {
-    var lat = menu['latitude'];
-    var lng = menu['longitude'];
+    if (!places.length)
+    {
+        return;
+    }
+
+    var lat = places[0]['lat'];
+    var lng = places[0]['lng'];
     var latlng = new google.maps.LatLng(lat, lng);
 
     var marker = new google.maps.Marker({
@@ -48,11 +54,13 @@ function addMarker(menu)
     $bounds.extend(latlng);
 
     google.maps.event.addListener(marker, 'click', function() {
-        var name = menu['name'];
-        var addy = menu['address'];
-        var link = menu['link'];
 
-        var info = '<div>'+link+'<br/><span>'+addy+'</span></div>';
+        var info = '';
+
+        for (var idx in places)
+        {
+            info += $.tmpl('tmpl_places', places[idx]).outerHTML();
+        }
 
         $infowindow.setContent(info);
         $infowindow.open($map, marker);

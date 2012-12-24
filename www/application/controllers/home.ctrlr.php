@@ -110,6 +110,7 @@ class HomeController
     function onAction_gmapmenu()
     {
         $this->addCss('home/home.gmapmenu');
+        $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
         $this->addJs('home/home.gmapmenu');
 
         // http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE
@@ -118,6 +119,7 @@ class HomeController
         $this->addRemoteJs($gmap_url);
 
         $menus = $this->Home->getReadyMenus();
+        $menus_tmpl_data = array();
 
         foreach ($menus as &$menu)
         {
@@ -126,13 +128,22 @@ class HomeController
             $addy = $menu['address'];
             $slugify = Util::slugify($menu['name']);
 
-            $link = '<a class="showlink" href="/menu/view/'.$menu_id.'-%s">%s</a>';
-            $menu_link = sprintf($link, $slugify, $name);
+            $link = '/menu/view/%d-%s';
+            $menu_link = sprintf($link, $menu_id, $slugify);
 
-            $menu['link'] = $menu_link;
+            $lat = $menu['latitude'];
+            $lng = $menu['longitude'];
+
+            $menus_tmpl_data["$lat:$lng"][] = array(
+                'lat'  => $lat,
+                'lng'  => $lng,
+                'link' => $menu_link,
+                'name' => $name,
+                'addy' => $addy
+            );
         }
 
-        $this->set('menus', $menus);
+        $this->set('menus_tmpl_data', $menus_tmpl_data);
     }
 
     function onAction_about()
