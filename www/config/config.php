@@ -57,3 +57,8 @@ define('GOOGLE_API_KEY', 'AIzaSyDPez_dxVdHnZM8COpU4-Hs3qKxTFE0vKM');
 define('RECAPTCHA_LIB',         ROOT.'/library/recaptcha-php-1.11/recaptchalib.php');
 define('RECAPTCHA_PUBLIC_KEY',  '6Lcq9NgSAAAAAAzmN0KDTtJj3AfqhZfLdBIwUCo7');
 define('RECAPTCHA_PRIVATE_KEY', '6Lcq9NgSAAAAAGgizt-b6t65dgUqo8WtdHDPP6SZ');
+
+define('FB_SDK',            ROOT.'/library/facebook-php-sdk-src/facebook.php');
+define('FB_APP_ID',         '464190443640562');
+define('FB_APP_SECRET',     'df377ab3ccf6b47d656c75dba94d84f4');
+

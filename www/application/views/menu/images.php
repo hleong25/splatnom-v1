@@ -87,6 +87,9 @@ $slug = array
 </div>
 
 <div class="pg pg_bottom thenav">
+    <?php
+        $share_fb = false;
+    ?>
     <ul class="navbar">
     <?php
         $nav = array(
@@ -118,6 +121,7 @@ $slug = array
                 continue;
 
             $nav_link .= "/{$id}-{$name_slug}";
+            $share_fb .= "/{$id}-{$name_slug}";
 
             echo<<<EOHTML
             <li class="menu_nav_item">
@@ -141,6 +145,9 @@ EOHTML;
 EOHTML;
     ?>
     </li>
+    <?php if (!empty($share_fb)): ?>
+        <p><a href="/share/facebook<?=$share_fb?>">Share this on facebook!</a></p>
+    <?php endif; ?>
 </div>
 
 <div class="pg view">
