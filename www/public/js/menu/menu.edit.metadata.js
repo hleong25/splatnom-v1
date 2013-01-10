@@ -338,14 +338,29 @@ function getLatLongFromAddress()
 
     $this.attr('disabled','disabled');
 
+    var latlong_dbg = $('.latlong_js_msg');
+    latlong_dbg.val('Calling mapquest api...');
+
     $.getJSON(url, function (data) {
             if (data.info.statuscode != 0)
+            {
+                latlong_dbg.val('Failed. Status code is '+data.info.statuscode);
                 return;
+            }
 
             if (data.results.length < 1)
+            {
+                latlong_dbg.val('Failed. Results length is '+data.results.length);
                 return;
+            }
 
             var locations = data.results[0].locations;
+
+            if (locations.length < 1)
+            {
+                latlong_dbg.val('No location found.');
+                return;
+            }
 
             for (var ii = 0, jj = locations.length; ii < jj; ii++)
             {
@@ -357,9 +372,13 @@ function getLatLongFromAddress()
 
                     $('.info_latitude').val(latlng.lat);
                     $('.info_longitude').val(latlng.lng);
-                    break;
+
+                    latlong_dbg.val('Found ('+latlng.lat+','+latlng.lng+')');
+                    return;
                 }
             }
+
+            latlong_dbg.val('No locations are valid.');
 
         })
     .complete(function (){

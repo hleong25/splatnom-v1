@@ -168,7 +168,9 @@ EOHTML;
             <br/>
             <textarea class="watermark address" rows="5"  name="info_address" placeholder="Address"><?=$info['address']?></textarea>
             <br/>
-            <input class="find_latlong" type="button" value="Get lat/long for address" />
+            <input class="find_latlong" type="button" value="Get lat/long for address" /><span class="latlong_js">javascript:alert(window.gApplication.getMap().getCenter());</span>
+            <br/>
+            <input class="latlong_js_msg" type="textbox" placeholder="Open MapQuest API" value="" readonly>
             <br/>
             <input class="watermark info_latitude" type="text" style="width: 15em;" name="info_latitude" placeholder="Latitude" value="<?=$info['latitude']?>"/>
             <input class="watermark info_longitude" type="text" style="width: 15em;" name="info_longitude" placeholder="Longitude" value="<?=$info['longitude']?>"/>
