@@ -4,14 +4,29 @@ class Util
 {
     static function logit($obj, $file=null, $line=null)
     {
-        $from = "";
+        $msg = '';
         if (!empty($file) && !empty($line))
-            $from = "({$file}:{$line}): ";
+            $msg = "({$file}:{$line}): ";
 
         if (is_string($obj))
-            error_log($from.$obj);
+            $msg .= $obj;
         else
-            error_log($from.var_export($obj, true));
+            $msg .= var_export($obj, true);
+
+        $bUseErrorLog = false;
+        if ($bUseErrorLog)
+        {
+            error_log($msg);
+        }
+        else
+        {
+            $path = ROOT.'/logs';
+            $log_file = $path.'/splatnom_log';
+
+            $date = date('r');
+            $msg = "[$date] $msg\n";
+            file_put_contents($log_file, $msg, FILE_APPEND | LOCK_EX);
+        }
     }
 
     static function redirect($location)
