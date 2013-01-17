@@ -259,7 +259,7 @@ class Template
 
     function addJqueryUi()
     {
-        $version = '1.8.24';
+        $version = '1.9.2';
         $package = 'custom';
         $theme = 'redmond';
 

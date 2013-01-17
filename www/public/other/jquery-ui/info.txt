@@ -1,0 +1,6 @@
+Theme: redmond
+
+Components:
+Core - all
+Interactions - draggable, resizable
+Widgets - autocomplete, button, dialog, menu
