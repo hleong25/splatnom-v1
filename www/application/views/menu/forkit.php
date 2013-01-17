@@ -10,6 +10,6 @@ $json = json_encode($data);
 $size = strlen($json);
 
 header('Content-type: application/json');
-header('Content-Length: ' . $size);
+//header('Content-Length: ' . $size);
 
 echo $json;
