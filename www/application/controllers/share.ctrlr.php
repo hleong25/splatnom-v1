@@ -8,27 +8,71 @@ class ShareController
 
     function onAction_facebook($menu_id=null,$section_id=null, $item_id=null)
     {
+        $is_json = isset($_GET['json']);
+
+        $out = $this->go_facebook($menu_id, $section_id, $item_id);
+
+        Util::logit($out);
+
+        if (!empty($out['fb_error']['description']))
+        {
+            // if error, just go back to menu
+            $this->redirect($out['menu_link']);
+            return;
+        }
+
+        $this->set('is_json', $is_json);
+
+        if (!$is_json)
+        {
+            $this->addCss('share/share.facebook');
+
+            $this->set('status',        $out['status']);
+            $this->set('from_url',      $out['menu_link']);
+            $this->set('login_url',     $out['fb_login_url']);
+            $this->set('fb_error',      $out['fb_error']['description']);
+        }
+        else
+        {
+            $this->m_bRender = false;
+            $this->set('json_data', $out);
+        }
+    }
+
+    function go_facebook($menu_id=null,$section_id=null, $item_id=null)
+    {
+        $fb_out = array(
+            'status' => false,
+            'menu_link' => '',
+            'fb_login_url' => '',
+            'redirect' => '',
+            'fb_error' => array(
+                'error' => '',
+                'reason' => '',
+                'description' => '',
+            ),
+        );
+
+        if (!Util::getUserId())
+        {
+            $fb_out['redirect'] = '/home/main';
+            Util::logit('[Share::Facebook] Must login to share on facebook');
+            return $fb_out;
+        }
+
         if (!empty($_GET))
         {
-            $is_json = isset($_GET['json']);
-
             // fb will have errors in $_GET
             // error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.
             $fb_err         = @$_GET['error'];
             $fb_err_reason  = @$_GET['error_reason'];
             $fb_err_desc    = @$_GET['error_description'];
-        }
 
-        // set the default to not show header/footer
-        $this->m_bRender = false;
-
-        // set the default response as a failure
-        $this->set('share_ok', false);
-
-        if (empty($menu_id))
-        {
-            $this->redirect('/home/main');
-            return;
+            $fb_out['fb_error'] = array(
+                'error'         => $fb_err,
+                'reason'        => $fb_err_reason,
+                'description'   => $fb_err_desc,
+            );
         }
 
         $menu = new MenuModel();
@@ -36,9 +80,9 @@ class ShareController
 
         if (empty($info))
         {
-            // weird... no info
-            $this->redirect('/home/main');
-            return;
+            $fb_out['redirect'] = '/home/main';
+            Util::logit("[Share::Facebook] Menu '$menu_id' not available");
+            return $fb_out;
         }
 
         // setup slug info
@@ -67,15 +111,18 @@ class ShareController
             $msg  = "I stuck a fork in {$info['item']} at {$info['menu']}!";
         }
 
+        $fb_out['menu_link'] = $link;
+
         // finally... lets update facebook!
         $fb_config = array(
             'appId'     => FB_APP_ID,
             'secret'    => FB_APP_SECRET,
-            'cookie'    => true,
         );
 
         $facebook = new Facebook($fb_config);
         $user_id = $facebook->getUser();
+
+        //Util::logit('[Share::Facebook] user id:'. $user_id);
 
         if ($user_id)
         {
@@ -93,14 +140,22 @@ class ShareController
                     $params
                 );
 
-                $this->set('share_ok', true);
+                $fb_out['status'] = true;
 
-                return;
+                return $fb_out;
             } catch (FacebookApiException $e) {
                 $user_id = false;
                 $type = $e->getType();
                 $msg  = $e->getMessage();
+
                 Util::logit("[Share::Facebook] Type:$type Message:$msg");
+
+                // do we need this? The next if stmt should tell the user to login
+                $fb_out['fb_error'] = array(
+                    'error'         => $type,
+                    'reason'        => $type,
+                    'description'   => $msg,
+                );
             }
         }
 
@@ -111,14 +166,10 @@ class ShareController
                 'scope' => 'publish_stream',
             );
 
-            //$redirect_url = sprintf('http://%s%s', Util::getDomain(), $link);
-            //$params['redirect_uri'] = $link;
-
             $login_url = $facebook->getLoginUrl($params);
-            $this->set('share_ok', false);
-            $this->set('login_url', $login_url);
-
+            $fb_out['fb_login_url'] = $login_url;
         }
-    }
 
+        return $fb_out;
+    }
 }
