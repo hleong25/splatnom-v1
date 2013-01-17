@@ -47,7 +47,7 @@ class Template
         $this->set('myurl', $get_url);
 
         // add default javascripts
-        $this->addJs('jquery-1.8.1.min', WEB_PATH_OTHER);
+        $this->addJs('jquery-1.9.0.min', WEB_PATH_OTHER);
         $this->addJs('jq.outerhtml', WEB_PATH_OTHER);
         $this->addJs('modernizr.min', WEB_PATH_OTHER);
 
