@@ -56,16 +56,15 @@ class Template
 
     function setupNav()
     {
+        global $get_url;
         $links = array();
 
         $links[] = array('css' => 'nav ', 'lbl' => 'new menu', 'lnk' => 'menu/new');
 
+        $goto_url = ($get_url != 'login/main') ? '&goto='.$get_url : '';
+
         if (!Util::getUserId())
         {
-            global $get_url;
-
-            $goto_url = ($get_url != 'login/main') ? '&goto='.$get_url : '';
-
             // not logged in
             $links[] = array('css' => 'nav new_user', 'lbl' => 'register', 'lnk' => 'user/register');
             $links[] = array('css' => 'nav login', 'lbl' => 'login', 'lnk' => "login/main{$goto_url}");
@@ -77,7 +76,7 @@ class Template
                 $links[] = array('css' => 'nav ', 'lbl' => 'admin', 'lnk' => 'admin/main');
 
             $links[] = array('css' => 'nav', 'lbl' => 'profile', 'lnk' => 'user/profile');
-            $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => 'login/end');
+            $links[] = array('css' => 'nav logoff', 'lbl' => 'logoff', 'lnk' => "login/end{$goto_url}");
         }
 
         foreach ($links as $lnk)

@@ -46,7 +46,15 @@ class LoginController
     function onAction_end()
     {
         session_destroy();
-        $this->redirect('/home/main');
+
+        $redirect_url = @$_GET['goto'];
+
+        if (empty($redirect_url))
+        {
+            $redirect_url = 'home/main';
+        }
+
+        $this->redirect("/$redirect_url");
     }
 
     function onAction_forgot()
@@ -142,7 +150,9 @@ class LoginController
         $user_id = Util::getUserId();
         if (!empty($user_id))
         {
-            $this->redirect('/home/main');
+            $redirect = 'login/reset/'.$code;
+            $url = '/login/end?goto='.$redirect;
+            $this->redirect($url);
             return;
         }
 
