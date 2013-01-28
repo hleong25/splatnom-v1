@@ -55,7 +55,7 @@ function customAutoComplete()
                     ul.append('<li class="ui-autocomplete-section">'+item.section+'</li>');
                     currentSection = item.section;
                 }
-                self._renderItem(ul, item);
+                self._renderItemData(ul, item);
             });
         }
     });
