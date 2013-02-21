@@ -208,10 +208,10 @@ class ImportController
 
         // transfer the images to the image directory
         $uploader = new UploadHandler($menu_img_path);
+        $uploaded_imgs = array();
 
         if (!empty($imgs))
         {
-            $uploaded_imgs = array();
             foreach ($imgs as $imported_img)
             {
                 $tmp_name = $imported_img;
@@ -246,6 +246,22 @@ class ImportController
             }
         }
 
+        // setup the img_taggits
+        $img_taggits = $data['img_taggits'];
+        $q_img_taggits = &$img_taggits;
+        $this->fix_imported_image_taggits($q_img_taggits, $uploaded_imgs, $q_mdts);
+
+        // let's tag the images it!
+        foreach ($q_img_taggits as &$img_taggits)
+        {
+            $new_filename = $img_taggits['new_img_name'];
+
+            if (empty($new_filename))
+                continue;
+
+            $menu->updateTaggitsImage($new_id, $new_filename, $img_taggits, array());
+        }
+
         // finally... set menu status as 'new' first.
         $import = $menu->updateMenu($new_id, 'new');
         if (!$import)
@@ -255,6 +271,68 @@ class ImportController
         }
 
         return array('id'=>$new_id, 'name'=>$info['name']);
+    }
+
+    function fix_imported_image_taggits(&$import_taggits, $uploaded_imgs, $db_mdts)
+    {
+        // fix the filename -> when files are uploaded here, it gets a new name.
+        // we need to get that new name
+        foreach ($import_taggits as $file_img => &$img_taggits)
+        {
+            $img_taggits['new_img_name'] = '';
+
+            foreach ($img_taggits as &$taggit)
+            {
+                $taggit['new_img_name'] = '';
+
+                foreach ($uploaded_imgs as $img)
+                {
+                    if (Util::strEndsWith($img['source_filename'], $file_img))
+                    {
+                        // yes -- the new_img_name is in two places.
+                        // why?? I don't know... it's late
+                        $taggit['new_img_name'] = $img['filename'];
+                        $img_taggits['new_img_name'] = $img['filename'];
+                    }
+                }
+            }
+        }
+
+        // go through all taggits and find the section_id and metadata_id for the corresponding section and metadata
+        foreach ($import_taggits as $file_img => &$img_taggits)
+        {
+            foreach ($img_taggits as &$taggit)
+            {
+                // set a default sid/mid
+                $taggit['sid'] = 0;
+                $taggit['mid'] = 0;
+
+                // go through all sections
+                foreach ($db_mdts as &$db_section)
+                {
+                    // we found a matching section, let's go through all metadata
+                    if ($db_section['name'] == $taggit['section'])
+                    {
+                        $sid = $db_section['section_id'];
+
+                        // go through all metadata items from the section
+                        foreach ($db_section['items'] as &$db_metadata)
+                        {
+                            // we found a matching metadata from the section
+                            if ($db_metadata['label'] == $taggit['metadata'])
+                            {
+                                $mid = $db_metadata['metadata_id'];
+
+                                // wow... we finally found the sid/mid
+                                $taggit['sid'] = $sid;
+                                $taggit['mid'] = $mid;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
 

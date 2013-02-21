@@ -280,6 +280,17 @@ class Util
         return preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
     }
 
+    static function strEndsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if ($length == 0)
+        {
+            return true;
+        }
+
+        return (substr($haystack, -$length) === $needle);
+    }
+
 }
 
 class UploadHandler
@@ -433,6 +444,7 @@ class UploadHandler
 
             $move_file = array
             (
+                'source_filename' => $tmp_name,
                 'filename' => $rand_file,
                 'width' => $img->getWidth(),
                 'height' => $img->getHeight(),

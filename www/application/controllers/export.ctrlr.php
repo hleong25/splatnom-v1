@@ -95,12 +95,28 @@ class ExportController
             $sections = $menu->getSection($menu_id);
             $mdts = $menu->getMetadata($menu_id, $sections);
 
+            $img_taggits = array();
+            foreach ($imgs as $img)
+            {
+                $img_file = $img['filename'];
+
+                $taggits = $menu->getTaggitsByImageFile($menu_id, $img_file);
+                foreach ($taggits as $tag)
+                {
+                    $img_taggits[$img_file][] = array(
+                        'section' => $tag['section'],
+                        'metadata' => $tag['metadata'],
+                    );
+                }
+            }
+
             $out = array(
                 'id' => $menu_id,
                 'info' => $info,
                 'links' => $links,
                 'imgs' => $imgs,
                 'metadatas' => $mdts,
+                'img_taggits' => $img_taggits,
             );
 
             ExportModel::menu_normalize($out);
