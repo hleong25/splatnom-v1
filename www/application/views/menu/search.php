@@ -11,7 +11,7 @@ extract($params, EXTR_SKIP);
 
 ?>
 <div class="pg">
-    <?=get_html_searchit($location)?>
+    <?=get_html_searchit($location, $query)?>
     <div class="msg">
         <span><?=$msg;?></span>
     </div>
