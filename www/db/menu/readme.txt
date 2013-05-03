@@ -6,6 +6,7 @@ Import in this order
 2. Tables
     NOTE: no AUTO_INCREMENT
 3. Views
+    - vMailStatus
     - vMenuStatus
     - vPermissions
     - vUserStatus
