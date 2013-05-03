@@ -189,7 +189,7 @@ class ImportController
         // import metadata
         $mdts = $data['metadatas'];
         $q_mdts = &$mdts;
-        $import = $menu->updateMenuSectionAndMetadata($new_id, $q_mdts);
+        $import = $menu->updateMenuSectionAndMetadata($new_id, $q_info, $q_mdts);
         if (!$import)
         {
             $this->set('err_msg', 'Failed to import menu metadata');

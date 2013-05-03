@@ -368,7 +368,7 @@ class MenuController
             $mdts = array_merge($mdts, $import_mdts);
         }
 
-        if (!$menu->updateMenuSectionAndMetadata($id, $mdts))
+        if (!$menu->updateMenuSectionAndMetadata($id, $info_save, $mdts))
             $err_msgs[] = 'Failed to save menu data';
 
         // recount the mdt items and set the info property

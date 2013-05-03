@@ -198,95 +198,6 @@ EOQ;
         return true;
     }
 
-//    function getLatLongByZip($zip)
-//    {
-//        $query =<<<EOQ
-//            SELECT
-//                latitude, longitude
-//            FROM tblLocation_us
-//            WHERE `country code` = 'US'
-//            AND `postal code` = :zip
-//EOQ;
-//
-//        $prepare = $this->prepareAndExecute($query, array(':zip'=>$zip), __FILE__, __LINE__);
-//        if (!$prepare) return false;
-//
-//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-//        $row = array_shift($rows);
-//        return $row;
-//    }
-//
-//    function parseCityState($citystate)
-//    {
-//        $split = explode(',', $citystate);
-//        $n_split = count($split);
-//        if ($n_split < 2)
-//            return false;
-//
-//        $city = trim($split[$n_split -2]);
-//        $state = trim($split[$n_split -1]);
-//
-//        return array('city'=>$city, 'state'=>$state);
-//    }
-//
-//    function getLatLongByCityState($city, $state)
-//    {
-//        $query =<<<EOQ
-//            SELECT
-//                AVG(DISTINCT latitude) AS latitude,
-//                AVG(DISTINCT longitude) AS longitude
-//            FROM tblLocation_us
-//            WHERE `country code` = 'US'
-//            AND `place name` = :city
-//            AND `state code1` = :state
-//EOQ;
-//
-//        $prepare = $this->prepareAndExecute($query, array(':city'=>$city, ':state'=>$state), __FILE__, __LINE__);
-//        if (!$prepare) return false;
-//
-//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-//        $row = array_shift($rows);
-//        return $row;
-//
-//    }
-//
-//    function getLocationsByAddress($address, $state_filters)
-//    {
-//        $query_in = implode(',', array_fill(0, count($state_filters), '?'));
-//        $query =<<<EOQ
-//            SELECT * FROM
-//            (
-//                SELECT
-//                    latitude, longitude,
-//                    `postal code` AS zip,
-//                    `place name` AS city, `state code1` AS state,
-//                    MATCH(`state code1`, `place name`) AGAINST(?) AS score
-//                FROM tblLocation_us
-//                WHERE MATCH(`state code1`, `place name`) AGAINST(?)
-//                AND `state code1` IN ({$query_in})
-//            ) tblLocations
-//            ORDER BY score DESC, zip
-//EOQ;
-//
-//        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
-//        if (!$prepare) return false;
-//
-//        $rst = $prepare->bindValue(1, $address);
-//        $rst = $prepare->bindValue(2, $address);
-//
-//        foreach ($state_filters as $idx => $filter)
-//        {
-//            $rst = $prepare->bindValue($idx+3, $filter);
-//            if (!$rst) return false;
-//        }
-//
-//        $rst = $prepare->execute();
-//        if (!$rst) return false;
-//
-//        $rows = $prepare->fetchAll(PDO::FETCH_ASSOC);
-//        return $rows;
-//    }
-
     function getLocationsWithinLatLong($lat, $long, $withinRadius)
     {
         // radius of earth
@@ -379,52 +290,22 @@ EOQ;
         $lat = deg2rad($lat);
         $long = deg2rad($long);
 
-/*
-        $query_bounds =<<<EOQ
-            SELECT *
-            FROM (
-                SELECT
-                    info.*,
-                    MATCH(info.name, info.notes) AGAINST(:match1) AS info_score,
-                    MATCH(mdt.label) AGAINST(:match2) AS mdt_score
-                FROM tblMenu menu
-                INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
-                INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
-                INNER JOIN tblMenuMetadata mdt ON mdt.menu_id = menu.id
-                WHERE info.latitude > {$minLat} AND info.latitude < {$maxLat}
-                AND info.longitude > {$minLong} AND info.longitude < {$maxLong}
-                AND (
-                    MATCH(info.name, info.notes) AGAINST(:match3) > 0
-                    OR MATCH(mdt.label) AGAINST(:match4) > 0
-                )
-                GROUP BY menu.id
-            ) tblPlaces
-EOQ;
-*/
-
         $query_match = '';
         if (empty($user_query))
         {
             $query_match =<<<EOQ
-                1 AS info_score,
-                1 AS mdt_score,
-                1 AS info_score_boolean,
-                1 AS mdt_score_boolean
+                1 AS score
 EOQ;
         }
         else
         {
             $query_match =<<<EOQ
-                MAX(MATCH(info.name, info.notes) AGAINST(:match1)) AS info_score,
-                MAX(MATCH(mdtv_label.value) AGAINST(:match2)) AS mdt_score,
-                MATCH(info.name, info.notes) AGAINST(:match3 IN BOOLEAN MODE) AS info_score_boolean,
-                MATCH(mdtv_label.value) AGAINST(:match4 IN BOOLEAN MODE) AS mdt_score_boolean
+                MAX(MATCH(search.search_text) AGAINST (:match1)) as score
 EOQ;
         }
 
         $query_bounds =<<<EOQ
-            SELECT *,
-                (info_score + mdt_score + info_score_boolean + mdt_score_boolean) AS score
+            SELECT *
             FROM (
                 SELECT
                     info.*,
@@ -432,13 +313,12 @@ EOQ;
                 FROM tblMenu menu
                 INNER JOIN vMenuStatus status ON status.id = menu.mode_id AND status.menu_status = 'ready'
                 INNER JOIN tblMenuInfo_us info ON info.menu_id = menu.id
-                INNER JOIN tblMenuMetadata mdt ON mdt.menu_id = menu.id
-                INNER JOIN tblMenuMetadataValues mdtv_label ON mdt.metadata_id = mdtv_label.metadata_id AND mdtv_label.key = 'label'
+                INNER JOIN tblMenuSearch search ON search.menu_id = info.menu_id
                 WHERE info.latitude > {$minLat} AND info.latitude < {$maxLat}
                 AND info.longitude > {$minLong} AND info.longitude < {$maxLong}
                 GROUP BY menu.id
             ) tblPlaces
-            WHERE info_score > 0 OR mdt_score > 0
+            WHERE score > 0
 EOQ;
 
         $query_distance =<<<EOQ
@@ -461,9 +341,8 @@ EOQ;
                 {$query_distance}
             ) AS tblDistance
             WHERE distance < :withinRadius
-            ORDER BY score DESC, distance ASC
+            ORDER BY distance ASC, score DESC
 EOQ;
-            //ORDER BY info_score DESC, mdt_score DESC, info_score_boolean DESC, mdt_score_boolean DESC, distance ASC
 
         $opts = array(
             ':withinRadius'=>$withinRadius,
@@ -472,9 +351,6 @@ EOQ;
         if (!empty($user_query))
         {
             $opts[':match1'] = $user_query;
-            $opts[':match2'] = $user_query;
-            $opts[':match3'] = $user_query;
-            $opts[':match4'] = $user_query;
         }
 
         //Util::logit($query, __FILE__, __LINE__);

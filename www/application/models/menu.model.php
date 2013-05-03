@@ -675,7 +675,7 @@ EOQ;
         return $menu_imgs;
     }
 
-    function updateMenuSectionAndMetadata($id, &$datas)
+    function updateMenuSectionAndMetadata($id, $info, &$datas)
     {
         $this->beginTransaction();
 
@@ -687,6 +687,9 @@ EOQ;
             return false;
 
         if (!$this->updateMetadata($id, $datas))
+            return false;
+
+        if (!$this->updateSearch($id, $info, $datas))
             return false;
 
         $this->commit();
@@ -1071,6 +1074,58 @@ EOQ;
 
         $rst = $prepare->execute();
         if (!$rst) return false;
+
+        return true;
+    }
+
+    function updateSearch($id, $info, &$datas)
+    {
+        $query =<<<EOQ
+            INSERT INTO tblMenuSearch
+            SET
+                menu_id = :menu_id,
+                section_id = :section_id,
+                metadata_id = :mdt_id,
+                search_text = :search_text
+            ON DUPLICATE KEY UPDATE
+                search_text = :u_search_text
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($datas as &$section)
+        {
+            $section_id = @$section['section_id'];
+
+            foreach ($section['items'] as &$metadata)
+            {
+                $metadata_id = @$metadata['metadata_id'];
+
+                foreach ($metadata as $key => $value)
+                {
+                    if ($key != 'label')
+                        continue;
+
+                    $search_text = sprintf('%s | %s | %s',
+                            $info['name'],
+                            $section['name'],
+                            $value
+                        );
+
+                    $params = array(
+                        ':menu_id' => $id,
+                        ':section_id' => $section_id,
+                        ':mdt_id' => $metadata_id,
+                        ':search_text' => $search_text,
+                        ':u_search_text' => $search_text,
+                    );
+
+                    $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+                    if (!$prepare) return false;
+                }
+            }
+        }
 
         return true;
     }
