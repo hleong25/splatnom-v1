@@ -153,7 +153,8 @@ EOQ;
         $latlng = false;
         foreach ($locations as $loc)
         {
-            if ($loc['adminArea1'] === 'United States of America')
+            if (($loc['adminArea1'] === 'US') ||
+                ($loc['adminArea1'] === 'United States of America') )
             {
                 // only get the first US lat/long
                 $latlng = array(
