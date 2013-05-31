@@ -114,6 +114,7 @@ class Template
         if (!file_exists($body))
         {
             Util::logit("Render failed. File not found: {$body}");
+            Util::error_page();
             return;
         }
 
