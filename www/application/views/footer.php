@@ -1,6 +1,7 @@
 <hr/>
 <div id="footer" class="pg">
     <div class="links">
+        <a href="http://www.facebook.com/splatnom">facebook</a>
         <a href="http://www.twitter.com/splatnom">twitter</a>
         <a href="http://blog.splatnom.com">blog</a>
         <a href="/home/gmapmenu">map menus</a>
