@@ -1,23 +1,20 @@
 <?php
 $params_info = array(
     'status'=>array(),
-    'total_items' => 0,
     'name'=>'',
     'notes'=>'',
     'address'=>'',
     'latitude'=>0,
     'longitude'=>0,
-    'numbers'=>'',
     'dates'=>'',
-    'cover_img'=>'',
+    'imgs'=>array(),
 );
 
 $params = array(
     'dbg' => array(),
     'err_msgs' => array(),
-    //'is_admin' => false,
-    //'is_metadata' => false,
     'google_api_key' => '',
+    'event_id' => 0,
     'info' => $params_info,
 );
 
@@ -103,6 +100,8 @@ EOHTML;
             <input class="map_addy" type="button" value="Google Map lat/long and addy" data-google-api-key="<?=$google_api_key?>"/>
             <br/>
             <textarea class="watermark dates" rows="5" name="info_dates" placeholder="Event dates"><?=$info['dates']?></textarea>
+            <br/>
+            <p class="cover_img">Cover image: <img src="/images/get/event/md/<?=$event_id?>/<?=$info['cover_img']['file_img']?>" /></p>
         </div>
     </div>
 

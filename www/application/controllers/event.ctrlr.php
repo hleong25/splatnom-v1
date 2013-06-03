@@ -40,7 +40,10 @@ class EventController
                 $event_path = OS_EVENT_PATH . DS . $new_event_id;
                 $files = Util::handle_upload_files($event_path);
 
-                $saved_event_imgs = $this->Event->add_images($new_event_id, $files);
+                if (!empty($files))
+                {
+                    $saved_event_imgs = $this->Event->add_images($new_event_id, $files);
+                }
             }
 
             $this->redirect("/event/edit/$new_event_id");
@@ -49,12 +52,17 @@ class EventController
 
     function onAction_edit($event_id=null)
     {
-        if (!Util::getPermissions('admin'))
+        if (empty($event_id) || ($event_id < 0) || !Util::getPermissions('admin'))
         {
             $this->redirect('/home/main');
             return;
         }
 
         $this->addCss('event/event.edit');
+
+        $this->set('event_id', $event_id);
+
+        $event_info = $this->Event->get_event($event_id);
+        $this->set('info', $event_info);
     }
 }

@@ -20,6 +20,9 @@ class ImagesController
             case 'menu':
                 $img_file = $images->getMenuImage($where_id, $img_filename);
                 break;
+            case 'event':
+                $img_file = $images->getEventImage($where_id, $img_filename);
+                break;
         }
 
         $this->set('img_file', $img_file);

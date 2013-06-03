@@ -76,6 +76,14 @@ EOQ;
                     AND file_img = :img
 EOQ;
                 break;
+            case 'event':
+                $query =<<<EOQ
+                    SELECT width, height
+                    FROM tblEventImages
+                    WHERE event_id = :id
+                    AND file_img = :img
+EOQ;
+                break;
         }
 
         if ($query === false)
@@ -123,6 +131,25 @@ EOQ;
                 $img_file = $this->getImageDimensions('menu', $menu_id, $img);
                 $img_file['filename'] = $img;
                 $img_file['path'] = $menu_path;
+            }
+        }
+
+        return $img_file;
+    }
+
+    function getEventImage($event_id, $img)
+    {
+        $img_file = ImagesModel::getDefaultNoImage();
+
+        if (!empty($event_id) && !empty($img))
+        {
+            $event_path = OS_EVENT_PATH . DS . $event_id;
+            $event_img = $event_path . DS . $img;
+            if (file_exists($event_img))
+            {
+                $img_file = $this->getImageDimensions('event', $event_id, $img);
+                $img_file['filename'] = $img;
+                $img_file['path'] = $event_path;
             }
         }
 
