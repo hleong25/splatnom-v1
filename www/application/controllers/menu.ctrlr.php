@@ -184,6 +184,7 @@ class MenuController
 
         if ($bImport_infos)
         {
+            // TODO: I don't think we use import_json anymore. Need to cleanup
             // override business info with the imported info
             $info_save = $import_json['info'];
         }

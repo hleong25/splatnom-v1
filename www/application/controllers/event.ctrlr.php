@@ -52,17 +52,75 @@ class EventController
 
     function onAction_edit($event_id=null)
     {
-        if (empty($event_id) || ($event_id < 0) || !Util::getPermissions('admin'))
+        $user_id = Util::getUserId();
+        $bPermMdt = Util::getPermissions('admin');
+        if (empty($event_id) || ($event_id < 0) || empty($user_id) || empty($bPermMdt))
         {
             $this->redirect('/home/main');
             return;
         }
 
-        $this->addCss('event/event.edit');
+        $this->addCss('event/edit');
+
+        $this->addJqueryUi();
+        $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
+        $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
+        $this->addJs('tinymce/tinymce-3.5b3/tiny_mce', WEB_PATH_OTHER);
+        $this->addJs('event/edit');
 
         $this->set('event_id', $event_id);
+        $this->set('google_api_key', GOOGLE_API_KEY);
 
-        $event_info = $this->Event->get_event($event_id);
+        $load_from_db = empty($_POST);
+
+        if (!$load_from_db)
+        {
+            $load_from_db = !$this->edit_onPost($event_id);
+        }
+
+        if ($load_from_db)
+        {
+            $this->get_event_details($event_id);
+        }
+    }
+
+    function edit_onPost($event_id)
+    {
+        if (empty($_POST)) return false;
+
+        //Util::logit($_POST);
+
+        $event = $this->Event;
+
+        $info = array(
+            'name' => $_POST['info_name'],
+            'notes' => $_POST['info_notes'],
+            'address' => $_POST['info_address'],
+            'latitude' => $_POST['info_latitude'],
+            'longitude' => $_POST['info_longitude'],
+            'dates' => $_POST['info_dates'],
+            'cover_img' => array(
+                'file_img' => $_POST['info_cover_img'],
+            ),
+        );
+
+        $update_info_ok = $event->update_event_info($event_id, $info);
+        if (empty($update_info_ok)) return false;
+        // TODO: what to do if fail when update
+
+        $this->set('info', $info);
+
+        return true;
+    }
+
+    function get_event_details($event_id)
+    {
+        $event = $this->Event;
+
+        $event_info = $event->get_event($event_id);
+
         $this->set('info', $event_info);
+
+        return true;
     }
 }

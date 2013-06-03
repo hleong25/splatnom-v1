@@ -154,4 +154,48 @@ EOQ;
 
         return $event_data;
     }
+
+    function update_event_info($event_id, $info)
+    {
+        $query =<<<EOQ
+            UPDATE tblEvent
+            SET
+                mod_ts = CURRENT_DATE
+            WHERE id = :event_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+        );
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst) return false;
+
+        $query =<<<EOQ
+            UPDATE tblEventInfo_us
+            SET
+                name = :name,
+                notes = :notes,
+                address = :addy,
+                latitude = :latitude,
+                longitude = :longitude,
+                dates = :dates
+            WHERE event_id = :event_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+            ':name' => $info['name'],
+            ':notes' => $info['notes'],
+            ':addy' => $info['address'],
+            ':latitude' => $info['latitude'],
+            ':longitude' => $info['longitude'],
+            ':dates' => $info['dates'],
+        );
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst) return false;
+
+        return true;
+    }
 }

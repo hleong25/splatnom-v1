@@ -19,6 +19,18 @@ $params = array(
 );
 
 extract($params, EXTR_SKIP);
+
+
+$cover_img = '';
+$cover_img_thmb = '';
+$cover_img_full = '';
+if (!empty($info['cover_img']['file_img']))
+{
+    $cover_img = $info['cover_img']['file_img'];
+    $cover_img_thmb = "/images/get/event/md/$event_id/{$info['cover_img']['file_img']}";
+    $cover_img_full = "/images/get/event/org/$event_id/{$info['cover_img']['file_img']}";
+}
+
 ?>
 <div class="pg edit"><form id="edit_event" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
 
@@ -82,6 +94,11 @@ EOHTML;
         <?=implode('<br/>', $err_msgs)?>
     </div>
 
+    <p class="save">
+        <input type="submit" name="Save"/>
+        <a href="/<?=$myurl?>">Refresh</a>
+    </p>
+
     <div class="info">
         <div class="heading onToggle">Event Information</div>
         <div class="data toggle">
@@ -101,8 +118,34 @@ EOHTML;
             <br/>
             <textarea class="watermark dates" rows="5" name="info_dates" placeholder="Event dates"><?=$info['dates']?></textarea>
             <br/>
-            <p class="cover_img">Cover image: <img src="/images/get/event/md/<?=$event_id?>/<?=$info['cover_img']['file_img']?>" /></p>
+            <p class="cover_img">Cover image:
+                <input type="hidden" name="info_cover_img" value="<?=$cover_img?>"/>
+                <a href="<?=$cover_img_full?>"><img src="<?=$cover_img_thmb?>" /></a>
+            </p>
         </div>
     </div>
 
+    <script type="tmpl/vendor" id="tmpl_vendor">
+        <div class="vendor_info">
+            <input type="hidden" name="vendor[]" value="@vendor@"/>
+            <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="" placeholder="Name"/></p>
+            <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" value="" rows="5" placeholder=""></textarea></p>
+            <div class="vendor_action">
+                <button class="vendor_add">Add Vendor</button>
+                <button class="vendor_delete">Delete Vendor</button>
+            </div>
+        </div>
+    </script>
+
+    <div class="vendors">
+        <div class="vendor_info">
+            <input type="hidden" name="vendor[]" value="@vendor@"/>
+            <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="" placeholder="Name"/></p>
+            <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" value="" rows="5" placeholder=""></textarea></p>
+            <div class="vendor_action">
+                <button class="vendor_add">Add Vendor</button>
+                <button class="vendor_delete">Delete Vendor</button>
+            </div>
+        </div>
+    </div>
 </form></div>
