@@ -13,4 +13,6 @@
     <a href="/admin/clear_geocode_cache">Clear geocode cache</a><br/>
     <a href="/admin/jqueryui_test">Demo jquery-ui</a><br/>
     <?php //<a href="/admin/update_db">Update DB</a><br/> ?>
+    <hr/>
+    <a href="/event/new">Create event</a><br/>
 </div>
