@@ -40,6 +40,22 @@ p.warning {
     .rounded-corner-top(5px);
 }
 
+div.list_vendors {
+    @bgclr: #d9d7d6;
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin-bottom: 1em;
+
+    ul.list_vendors {
+        li.goto_vendor {
+            display: inline-block;
+            border-bottom: 1px solid @bgclr;
+            padding: 0.25em 0.25em;
+            margin-right: 0.5em;
+        }
+    }
+}
 
 ul.vendor {
     @bgclr: @clr_default_red;

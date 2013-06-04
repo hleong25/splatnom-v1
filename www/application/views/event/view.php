@@ -38,6 +38,19 @@ if (!empty($info['cover_img']['file_img']))
         <p class="notes"><?=$info['notes']?></p>
     </div>
 
+    <div class="list_vendors">
+        <ul class="list_vendors">
+        <?php foreach ($vendors as $vendor):
+            $ordinal = $vendor['ordinal'];
+            $name = $vendor['name'];
+        ?>
+            <li class="goto_vendor">
+                <a class="goto_vendor" href="#<?=$ordinal?>"><?=$name?></a>
+            </li>
+        <?php endforeach; // foreach ($vendors as $vendor): ?>
+        </ul>
+    </div>
+
 <?php foreach ($vendors as $vendor):
     $ordinal = $vendor['ordinal'];
     $name = $vendor['name'];
