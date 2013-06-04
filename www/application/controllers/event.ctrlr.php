@@ -149,6 +149,11 @@ class EventController
 
         $event_info = $event->get_event($event_id);
 
+        if (empty($event_info))
+        {
+            return false;
+        }
+
         $this->set('info', $event_info);
 
         $vendors = $event->get_vendors($event_id);
@@ -168,7 +173,11 @@ class EventController
         $this->addCss('event/view');
 
         $this->set('event_id', $event_id);
-        $this->get_event_details($event_id);
 
+        $get_event_ok = $this->get_event_details($event_id);
+        if (empty($get_event_ok))
+        {
+            $this->redirect('/home/main');
+        }
     }
 }
