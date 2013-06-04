@@ -250,8 +250,13 @@ EOQ;
                 return false;
 
             if (!$this->update_vendor_data($event_id, $vendor))
-                $saved_vendor_ids[] = $vendor['vendor_id'];
+                return false;
+
+            $saved_vendor_ids[] = $vendor['vendor_id'];
         }
+
+        if (!$this->remove_vendors($event_id, $saved_vendor_ids))
+            return false;
 
         $this->commit();
         return true;
@@ -362,6 +367,11 @@ EOQ;
         // 3. save the description
         $array_values = Util::str_split_unicode($vendor['description'], 255);
 
+        if (empty($array_values))
+        {
+            $array_values[] = '';
+        }
+
         $rsts[] = $prepareInsertVendorValues->bindValue(':key', 'description');
         foreach ($array_values as $key_index => $value_chunk)
         {
@@ -373,6 +383,53 @@ EOQ;
             if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
             unset($rsts);
         }
+
+        return true;
+    }
+
+    function remove_vendors($event_id, $vendor_ids)
+    {
+        if (empty($vendor_ids))
+            return true;
+
+        // 1. remove vendor data
+        $query_in = implode(',', array_fill(0, count($vendor_ids), '?'));
+        $query =<<<EOQ
+            DELETE FROM tblEventVendorValues
+            WHERE vendor_id NOT IN ({$query_in})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        foreach ($vendor_ids as $idx => $vendor_id)
+        {
+            $rsts[] = $prepare->bindValue($idx+1, $vendor_id);
+        }
+
+        $rsts[] = $prepare->execute();
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        // 2. remove vendor info
+        $query =<<<EOQ
+            DELETE FROM tblEventVendor
+            WHERE event_id = ?
+            AND vendor_id NOT IN ({$query_in})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rsts[] = $prepare->bindValue(1, $event_id);
+        foreach ($vendor_ids as $idx => $vendor_id)
+        {
+            $rsts[] = $prepare->bindValue($idx+2, $vendor_id);
+        }
+
+        $rsts[] = $prepare->execute();
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
 
         return true;
     }
