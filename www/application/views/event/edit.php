@@ -16,6 +16,7 @@ $params = array(
     'google_api_key' => '',
     'event_id' => 0,
     'info' => $params_info,
+    'vendors' => array(),
 );
 
 extract($params, EXTR_SKIP);
@@ -29,6 +30,15 @@ if (!empty($info['cover_img']['file_img']))
     $cover_img = $info['cover_img']['file_img'];
     $cover_img_thmb = "/images/get/event/md/$event_id/{$info['cover_img']['file_img']}";
     $cover_img_full = "/images/get/event/org/$event_id/{$info['cover_img']['file_img']}";
+}
+
+if (empty($vendors))
+{
+    $vendors[] = array(
+        'vendor_id' => 0,
+        'name' => '',
+        'description' => '',
+    );
 }
 
 ?>
@@ -120,16 +130,19 @@ EOHTML;
             <br/>
             <p class="cover_img">Cover image:
                 <input type="hidden" name="info_cover_img" value="<?=$cover_img?>"/>
-                <a href="<?=$cover_img_full?>"><img src="<?=$cover_img_thmb?>" /></a>
+                <a target="_blank" href="<?=$cover_img_full?>"><img src="<?=$cover_img_thmb?>" /></a>
             </p>
         </div>
     </div>
 
+    <div class="vendors">
+
     <script type="tmpl/vendor" id="tmpl_vendor">
         <div class="vendor_info">
             <input type="hidden" name="vendor[]" value="@vendor@"/>
+            <input type="hidden" name="vendor[]" value="0"/>
             <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="" placeholder="Name"/></p>
-            <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" value="" rows="5" placeholder=""></textarea></p>
+            <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="5" placeholder=""></textarea></p>
             <div class="vendor_action">
                 <button class="vendor_add">Add Vendor</button>
                 <button class="vendor_delete">Delete Vendor</button>
@@ -137,15 +150,17 @@ EOHTML;
         </div>
     </script>
 
-    <div class="vendors">
-        <div class="vendor_info">
-            <input type="hidden" name="vendor[]" value="@vendor@"/>
-            <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="" placeholder="Name"/></p>
-            <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" value="" rows="5" placeholder=""></textarea></p>
-            <div class="vendor_action">
-                <button class="vendor_add">Add Vendor</button>
-                <button class="vendor_delete">Delete Vendor</button>
+        <?php foreach ($vendors as $vendor): ?>
+            <div class="vendor_info">
+                <input type="hidden" name="vendor[]" value="@vendor@"/>
+                <input type="hidden" name="vendor[]" value="<?=$vendor['vendor_id']?>"/>
+                <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="<?=$vendor['name']?>" placeholder="Name"/></p>
+                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="5" placeholder=""><?=$vendor['description']?></textarea></p>
+                <div class="vendor_action">
+                    <button class="vendor_add">Add Vendor</button>
+                    <button class="vendor_delete">Delete Vendor</button>
+                </div>
             </div>
-        </div>
+        <?php endforeach; // foreach ($vendors as $vendor) ?>
     </div>
 </form></div>

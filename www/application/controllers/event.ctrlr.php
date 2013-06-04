@@ -110,6 +110,36 @@ class EventController
 
         $this->set('info', $info);
 
+        $post_vendors = $_POST['vendor'];
+
+        $vendors = array();
+        $ordinal_vendor = 0;
+
+        for ($ii = 0, $jj = count($post_vendors); $ii < $jj; $ii++)
+        {
+            switch ($post_vendors[$ii])
+            {
+                case '@vendor@':
+                    $info = array(
+                        'vendor_id' => (int)$post_vendors[++$ii],
+                        'ordinal' => $ordinal_vendor++,
+                        'name' => trim($post_vendors[++$ii]),
+                        'description' => trim($post_vendors[++$ii]),
+                    );
+                    $vendors[] = $info;
+
+                    break;
+            }
+        }
+
+        $update_vendors_ok = $event->update_vendors($event_id, $vendors);
+        if (empty($update_vendors_ok))
+        {
+            $this->set('err_msg', 'Failed to save vendor information');
+        }
+
+        $this->set('vendors', $vendors);
+
         return true;
     }
 
@@ -120,6 +150,9 @@ class EventController
         $event_info = $event->get_event($event_id);
 
         $this->set('info', $event_info);
+
+        $vendors = $event->get_vendors($event_id);
+        $this->set('vendors', $vendors);
 
         return true;
     }
