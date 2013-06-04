@@ -28,8 +28,8 @@ $cover_img_full = '';
 if (!empty($info['cover_img']['file_img']))
 {
     $cover_img = $info['cover_img']['file_img'];
-    $cover_img_thmb = "/images/get/event/md/$event_id/{$info['cover_img']['file_img']}";
-    $cover_img_full = "/images/get/event/org/$event_id/{$info['cover_img']['file_img']}";
+    $cover_img_thmb = "/images/get/event/md/$event_id/$cover_img";
+    $cover_img_full = "/images/get/event/org/$event_id/$cover_img";
 }
 
 if (empty($vendors))
