@@ -54,6 +54,9 @@ if (!empty($info['cover_img']['file_img']))
     </ul>
 <?php endforeach; // foreach ($vendors as $vendor): ?>
 
+    <p class="warning">
+        ** Information subject to change without notice **
+    </p>
 </div>
 <?php if (false && !empty($info)): ?><pre class="pg"><?=var_export($info)?></pre><?php endif; ?>
 <?php if (false && !empty($vendors)): ?><pre class="pg"><?=var_export($vendors)?></pre><?php endif; ?>
