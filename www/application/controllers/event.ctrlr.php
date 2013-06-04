@@ -156,4 +156,19 @@ class EventController
 
         return true;
     }
+
+    function onAction_view($event_id)
+    {
+        if (empty($event_id) || ($event_id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $this->addCss('event/view');
+
+        $this->set('event_id', $event_id);
+        $this->get_event_details($event_id);
+
+    }
 }

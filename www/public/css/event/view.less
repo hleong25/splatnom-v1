@@ -1,0 +1,65 @@
+@import '../global.less';
+
+div.cover_img {
+    margin-bottom: 1em;
+}
+
+div.info {
+    margin-bottom: 1em;
+
+    .name {
+        font-size: 1.5em;
+        font-weight: bolder;
+
+        color: @clr_default_red;
+    }
+}
+
+.rounded-corner-top(@radius)
+{
+    -moz-border-radius-topleft: @radius;
+    -moz-border-radius-topright: @radius;
+    -webkit-border-top-left-radius: @radius;
+    -webkit-border-top-right-radius: @radius;
+    border-top-left-radius: @radius;
+    border-top-right-radius: @radius;
+}
+
+.rounded-corner-top()
+{
+    .rounded-corner-top(8px);
+}
+
+.rounded-inner-corner-top()
+{
+    .rounded-corner-top(5px);
+}
+
+
+ul.vendor {
+    @bgclr: @clr_default_red;
+    @size: 1.2em;
+
+    .rounded-corner-top();
+    border: 2px solid darken(@bgclr, 15%);
+    background-color: @bgclr;
+
+    margin-bottom: 1em;
+
+    li.name {
+        border-bottom: 3px solid darken(@bgclr, 15%);
+        padding: 0.3em 1em;
+
+        color: white;
+        font-weight: bold;
+
+        span.name {
+            font-size: @size;
+        }
+    }
+
+    li.description {
+        background-color: white;
+        padding: 0.3em 1em;
+    }
+}
