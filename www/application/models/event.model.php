@@ -163,12 +163,12 @@ EOQ;
 	            vendor.vendor_id,
 	            vendor.ordinal,
                 vendor_values.key,
-                GROUP_CONCAT(vendor_values.value ORDER BY vendor_values.keyindex ASC SEPARATOR '') AS `value`
+                vendor_values.keyindex,
+                vendor_values.value
             FROM tblEventVendor vendor
             INNER JOIN tblEventVendorValues vendor_values ON vendor.vendor_id = vendor_values.vendor_id
             WHERE vendor.event_id = :event_id
-            GROUP BY vendor_values.vendor_id, vendor_values.key
-            ORDER BY vendor.ordinal
+            ORDER BY vendor.ordinal, vendor_values.key, vendor_values.keyindex
 EOQ;
 
         $params = array(
@@ -188,7 +188,15 @@ EOQ;
 
             $vendors[$vendor_id]['vendor_id'] = $vendor_id;
             $vendors[$vendor_id]['ordinal'] = $ordinal;
-            $vendors[$vendor_id][$key] = $value;
+
+            if (empty($vendors[$vendor_id][$key]))
+            {
+                $vendors[$vendor_id][$key] = $value;
+            }
+            else
+            {
+                $vendors[$vendor_id][$key] .= $value;
+            }
         }
 
         return $vendors;
