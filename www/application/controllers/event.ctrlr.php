@@ -181,4 +181,13 @@ class EventController
             $this->redirect('/home/main');
         }
     }
+
+    function onAction_upcoming()
+    {
+        $this->addCss('event/upcoming');
+
+        $list = $this->Event->get_upcoming();
+
+        $this->set('upcoming_list', $list);
+    }
 }

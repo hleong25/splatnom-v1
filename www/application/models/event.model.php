@@ -442,4 +442,18 @@ EOQ;
         return true;
     }
 
+    function get_upcoming()
+    {
+        $query =<<<EOQ
+            SELECT event_id, name, notes, address, dates
+            FROM tblEventInfo_us
+            ORDER BY name ASC
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, null, __FILE__, __LINE__);
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
 }

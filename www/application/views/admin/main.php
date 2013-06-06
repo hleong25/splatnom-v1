@@ -15,4 +15,5 @@
     <?php //<a href="/admin/update_db">Update DB</a><br/> ?>
     <hr/>
     <a href="/event/new">Create event</a><br/>
+    <a href="/event/upcoming">Upcoming event</a><br/>
 </div>
