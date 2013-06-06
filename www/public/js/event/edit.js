@@ -31,7 +31,18 @@ function init()
     setup_vendor_info.call(document);
 
     tinyMCE.init({
-        selector: 'textarea.vendor_desc'
+        selector: 'textarea.vendor_desc',
+        plugins: 'code,preview,visualblocks',
+        toolbars: 'preview',
+
+        // custom CSS
+        content_css: '/css/event/view.css',
+        style_formats: [
+            //{title: 'Food Info', block: 'p', classes: 'food_info'},
+            {title: 'Food Name', inline: 'span', classes: 'food_name'},
+            {title: 'Food Description', inline: 'span', classes: 'food_desc'}
+        ]
+
     });
 }
 

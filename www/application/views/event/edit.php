@@ -155,7 +155,7 @@ EOHTML;
                 <input type="hidden" name="vendor[]" value="@vendor@"/>
                 <input type="hidden" name="vendor[]" value="<?=$vendor['vendor_id']?>"/>
                 <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="<?=$vendor['name']?>" placeholder="Name"/></p>
-                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="5" placeholder=""><?=$vendor['description']?></textarea></p>
+                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$vendor['description']?></textarea></p>
                 <div class="vendor_action">
                     <button class="vendor_add">Add Vendor</button>
                     <button class="vendor_delete">Delete Vendor</button>

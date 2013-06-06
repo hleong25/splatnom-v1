@@ -61,11 +61,12 @@ class EventController
         }
 
         $this->addCss('event/edit');
+        $this->addCss('event/view'); // to force update of /css/event/view.css
 
         $this->addJqueryUi();
         $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
         $this->addJs('jquery.watermark.min', WEB_PATH_OTHER);
-        $this->addJs('tinymce/tinymce-3.5b3/tiny_mce', WEB_PATH_OTHER);
+        $this->addJs('tinymce/tinymce-4.0b2-jquery/tinymce.min', WEB_PATH_OTHER);
         $this->addJs('event/edit');
 
         $this->set('event_id', $event_id);
