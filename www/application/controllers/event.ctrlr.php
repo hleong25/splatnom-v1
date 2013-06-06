@@ -11,7 +11,7 @@ class EventController
             return;
         }
 
-        $this->addCss('event/event.new');
+        $this->addCss('event/new');
 
         if (!empty($_POST))
         {
