@@ -108,9 +108,13 @@ EOHTML;
         <input type="submit" name="Save"/>
         <a href="/<?=$myurl?>">Refresh</a>
     </p>
+    <br/>
 
     <div class="info">
-        <div class="heading onToggle">Event Information</div>
+        <?php
+            $view_url = '/event/view/'.$event_id.'-'.Util::slugify($info['name']);
+        ?>
+        <div class="heading onToggle">Event Information - <a target="_blank" href="<?=$view_url?>">View event</a></div>
         <div class="data toggle">
             <input class="watermark" type="text" style="width: 25em;" name="info_name" placeholder="Name of the event" value="<?=$info['name']?>"/>
             <br/>
