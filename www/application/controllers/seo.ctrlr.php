@@ -12,6 +12,7 @@ class SeoController
 
         $disallow = array(
             '/admin',
+            '/event/edit',
             '/login',
             '/menu/edit_metadata',
             '/menu/new',
@@ -33,17 +34,18 @@ class SeoController
         // xml file
         header('Content-type: text/xml');
 
-        $all_menus = $this->Seo->getAllMenus();
+        $all_items = $this->Seo->getAllSeoItems();
 
         $site = Util::getDomain();
 
         $sitemap_urls = array();
-        foreach ($all_menus as $menu)
+        foreach ($all_items as $item)
         {
-            $id = $menu['id'];
-            $name = $menu['name'];
-            $ts = $menu['ts'];
-            $mod_ts = $menu['mod_ts'];
+            $type = $item['type'];
+            $id = $item['id'];
+            $name = $item['name'];
+            $ts = $item['ts'];
+            $mod_ts = $item['mod_ts'];
 
             $slug = Util::slugify($name);
 
@@ -52,7 +54,7 @@ class SeoController
 
             $mod_ts = substr($mod_ts, 0, 10);
 
-            $url = "http://{$site}/menu/view/{$id}-{$slug}";
+            $url = "http://{$site}/{$type}/view/{$id}-{$slug}";
 
             $sitemap_urls[] = array(
                 'loc' => $url,
