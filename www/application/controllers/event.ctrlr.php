@@ -125,6 +125,8 @@ class EventController
                         'vendor_id' => (int)$post_vendors[++$ii],
                         'ordinal' => $ordinal_vendor++,
                         'name' => trim($post_vendors[++$ii]),
+                        'section_group' => trim($post_vendors[++$ii]),
+                        'section' => trim($post_vendors[++$ii]),
                         'description' => trim($post_vendors[++$ii]),
                     );
                     $vendors[] = $info;

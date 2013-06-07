@@ -43,61 +43,6 @@ if (empty($vendors))
 
 ?>
 <div class="pg edit"><form id="edit_event" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
-
-    <?php /*
-    <div class="action">
-        <input class="button" type="button" value="Refresh" data-action="refresh" data-url="/<?=$myurl?>" />
-        <input class="button" type="button" value="View Event" data-action="view" data-url="/event/view/<?=$id?>" />
-        <input class="button" type="button" value="Export Event" data-action="export" data-url="/export/menus/<?=$id?>" />
-        <hr/>
-        <input id="force_db_fetch" style="width: 1em; display: inline;" type="checkbox" name="force_reload" />
-        <label for="force_db_fetch">refresh db</label>
-        <input class="button" type="submit" value="Save Event" data-action="save" />
-        <?php if($is_admin): ?>
-            <input class="button" type="button" value="Delete Event" data-action="delete" data-url="/event/purge/<?=$id?>" />
-        <?php endif; //if($is_admin): ?>
-        <hr/>
-        <div class="status pg_bottom">
-            <span>Status: </span>
-            <?php if ($is_admin): ?>
-                <select name="info_status">
-                    <?php
-                        foreach ($info['status'] as $status)
-                        {
-                            $label = $status['status'];
-                            $selected = ($status['selected'] == 1) ? 'selected' : '';
-
-                            echo<<<EOHTML
-                                <option value="{$label}" {$selected}>{$label}</option>
-EOHTML;
-                        }
-                    ?>
-                </select>
-            <?php else:
-                foreach ($info['status'] as $status)
-                {
-                    $label = $status['status'];
-                    $selected = $status['selected'] == 1;
-
-                    if ($status['selected'] == 1)
-                    {
-                        echo<<<EOHTML
-                            <strong>{$status['status']}</strong>
-                            <input type="hidden" name="info_status" value="{$status['status']}" />
-EOHTML;
-                        break;
-                    }
-                }
-            ?>
-            <?php endif; ?>
-        </div>
-        <div class="stats">
-            <p>Items: <span id="stats_items"><?=$info['total_items']?><span></p>
-            <p>Input Cnt: <span id="input_items"><span></p>
-        </div>
-    </div>
-    */?>
-
     <div class="reminder">Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</div>
 
     <div class="err_msgs">
@@ -146,6 +91,10 @@ EOHTML;
             <input type="hidden" name="vendor[]" value="@vendor@"/>
             <input type="hidden" name="vendor[]" value="0"/>
             <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="" placeholder="Name"/></p>
+            <p class="vendor_booth">
+                Section Group: <input class="section" type="text" name="vendor[]" value="" placeholder="Group"/>
+                Section: <input class="section" type="text" name="vendor[]" value="" placeholder="Section"/>
+            </p>
             <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="5" placeholder=""></textarea></p>
             <div class="vendor_action">
                 <button class="vendor_add">Add Vendor</button>
@@ -154,12 +103,22 @@ EOHTML;
         </div>
     </script>
 
-        <?php foreach ($vendors as $vendor): ?>
+        <?php foreach ($vendors as $vendor):
+            $vendor_id = @$vendor['vendor_id'];
+            $name = @$vendor['name'];
+            $section_group = @$vendor['section_group'];
+            $section = @$vendor['section'];
+            $description = @$vendor['description'];
+        ?>
             <div class="vendor_info">
                 <input type="hidden" name="vendor[]" value="@vendor@"/>
-                <input type="hidden" name="vendor[]" value="<?=$vendor['vendor_id']?>"/>
-                <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="<?=$vendor['name']?>" placeholder="Name"/></p>
-                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$vendor['description']?></textarea></p>
+                <input type="hidden" name="vendor[]" value="<?=$vendor_id?>"/>
+                <p class="vendor_name">Name: <input class="vendor_name" type="text" name="vendor[]" value="<?=$name?>" placeholder="Name"/></p>
+                <p class="vendor_booth">
+                    Section Group: <input class="section" type="text" name="vendor[]" value="<?=$section_group?>" placeholder="Group"/>
+                    Section: <input class="section" type="text" name="vendor[]" value="<?=$section?>" placeholder="Section"/>
+                </p>
+                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$description?></textarea></p>
                 <div class="vendor_action">
                     <button class="vendor_add">Add Vendor</button>
                     <button class="vendor_delete">Delete Vendor</button>

@@ -332,21 +332,7 @@ EOQ;
         $prepareClearEventValue = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepareClearEventValue) return false;
 
-        $rsts[] = $prepareClearEventValue->bindValue(':vendor_id', $vendor['vendor_id']);
-        $rsts[] = $prepareClearEventValue->bindValue(':key', 'name');
-        $rsts[] = $prepareClearEventValue->execute();
-
-        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-        unset($rsts);
-
-        $rsts[] = $prepareClearEventValue->bindValue(':vendor_id', $vendor['vendor_id']);
-        $rsts[] = $prepareClearEventValue->bindValue(':key', 'description');
-        $rsts[] = $prepareClearEventValue->execute();
-
-        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-        unset($rsts);
-
-        // 2. save the name
+        // 2. save all items as it's own key/value pair
         $query =<<<EOQ
             INSERT INTO tblEventVendorValues
             SET
@@ -361,35 +347,41 @@ EOQ;
         $prepareInsertVendorValues = $this->prepare_log($query, __FILE__, __LINE__);
         if (!$prepareInsertVendorValues) return false;
 
-        $rsts[] = $prepareInsertVendorValues->bindValue(':vendor_id', $vendor['vendor_id']);
-
-        $rsts[] = $prepareInsertVendorValues->bindValue(':key', 'name');
-        $rsts[] = $prepareInsertVendorValues->bindValue(':keyindex', 0);
-        $rsts[] = $prepareInsertVendorValues->bindValue(':value', $vendor['name']);
-        $rsts[] = $prepareInsertVendorValues->bindValue(':u_value', $vendor['name']);
-        $rsts[] = $prepareInsertVendorValues->execute();
-
-        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
-        unset($rsts);
-
-        // 3. save the description
-        $array_values = Util::str_split_unicode($vendor['description'], 255);
-
-        if (empty($array_values))
+        foreach ($vendor as $key => $value)
         {
-            $array_values[] = '';
-        }
+            if ($key === 'vendor_id')
+            {
+                // skip these keys cause it's not needed
+                continue;
+            }
 
-        $rsts[] = $prepareInsertVendorValues->bindValue(':key', 'description');
-        foreach ($array_values as $key_index => $value_chunk)
-        {
-            $rsts[] = $prepareInsertVendorValues->bindValue(':keyindex', $key_index);
-            $rsts[] = $prepareInsertVendorValues->bindValue(':value', $value_chunk);
-            $rsts[] = $prepareInsertVendorValues->bindValue(':u_value', $value_chunk);
-            $rsts[] = $prepareInsertVendorValues->execute();
+            $vendor_id = $vendor['vendor_id'];
+
+            // 1. clear the values first
+            $rsts[] = $prepareClearEventValue->bindValue(':vendor_id', $vendor_id);
+            $rsts[] = $prepareClearEventValue->bindValue(':key', $key);
+            $rsts[] = $prepareClearEventValue->execute();
 
             if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
             unset($rsts);
+
+            $array_values = Util::str_split_unicode($value, 255);
+            if (empty($array_values))
+                $array_values[] = '';
+
+            // 2. set the values in chunks
+            foreach ($array_values as $key_index => $value_chunk)
+            {
+                $rsts[] = $prepareInsertVendorValues->bindValue(':vendor_id', $vendor_id);
+                $rsts[] = $prepareInsertVendorValues->bindValue(':key', $key);
+                $rsts[] = $prepareInsertVendorValues->bindValue(':keyindex', $key_index);
+                $rsts[] = $prepareInsertVendorValues->bindValue(':value', $value_chunk);
+                $rsts[] = $prepareInsertVendorValues->bindValue(':u_value', $value_chunk);
+                $rsts[] = $prepareInsertVendorValues->execute();
+
+                if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+                unset($rsts);
+            }
         }
 
         return true;
