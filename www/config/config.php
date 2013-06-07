@@ -37,6 +37,7 @@ else
     define('OS_PURGE_PATH',         OS_ASSET_PATH.'/www.purge');
     define('OS_MENU_PATH',          OS_ASSET_PATH.'/www.menus');
     define('OS_TEMP_PATH',          OS_ASSET_PATH.'/www.temp');
+    define('OS_EVENT_PATH',         OS_ASSET_PATH.'/www.events');
 
     define('OS_DEFAULT_NO_IMAGE_PATH',      OS_IMAGE_PATH);
     define('OS_DEFAULT_NO_IMAGE_FILE',      'noimage.jpg');
