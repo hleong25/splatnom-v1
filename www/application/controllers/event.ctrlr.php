@@ -128,9 +128,35 @@ class EventController
                         'section_group' => trim($post_vendors[++$ii]),
                         'section' => trim($post_vendors[++$ii]),
                         'description' => trim($post_vendors[++$ii]),
+                        'is_detailed' => false,
                     );
-                    $vendors[] = $info;
 
+                    $vendors[] = $info;
+                    break;
+
+                case '@vendor_attr@':
+                    $info = array_pop($vendors);
+
+                    $attributes = array(
+                        'is_detailed',
+                    );
+
+                    ++$ii; // point to the next item so we can get the attribute name
+
+                    foreach ($attributes as $attr)
+                    {
+                        if (($post_vendors[$ii] === $attr) && ($post_vendors[$ii + 1] === 'on'))
+                        {
+                            ++$ii;
+                            $info[$attr] = true;
+                            break;
+                        }
+                    }
+
+                    $vendors[] = $info;
+                    break;
+
+                case '@end_of_vendor@':
                     break;
             }
         }

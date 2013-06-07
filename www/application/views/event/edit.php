@@ -96,9 +96,17 @@ if (empty($vendors))
                 Section: <input class="section" type="text" name="vendor[]" value="" placeholder="Section"/>
             </p>
             <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="5" placeholder=""></textarea></p>
+            <p class="vendor_attrs">
+                <input type="hidden" name="vendor[]" value="@vendor_attr@"/>
+                <input type="hidden" name="vendor[]" value="is_detailed"/>
+                <label>
+                    <input type="checkbox" name="vendor[]" /> Detailed menu
+                </label>
+            </p>
             <div class="vendor_action">
                 <button class="vendor_add">Add Vendor</button>
                 <button class="vendor_delete">Delete Vendor</button>
+                <input type="hidden" name="vendor[]" value="@end_of_vendor@"/>
             </div>
         </div>
     </script>
@@ -109,6 +117,7 @@ if (empty($vendors))
             $section_group = @$vendor['section_group'];
             $section = @$vendor['section'];
             $description = @$vendor['description'];
+            $is_detailed = !empty($vendor['is_detailed']) ? 'CHECKED' : '';
         ?>
             <div class="vendor_info">
                 <input type="hidden" name="vendor[]" value="@vendor@"/>
@@ -119,9 +128,17 @@ if (empty($vendors))
                     Section: <input class="section" type="text" name="vendor[]" value="<?=$section?>" placeholder="Section"/>
                 </p>
                 <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$description?></textarea></p>
+                <p class="vendor_attrs">
+                    <input type="hidden" name="vendor[]" value="@vendor_attr@"/>
+                    <input type="hidden" name="vendor[]" value="is_detailed"/>
+                    <label>
+                        <input type="checkbox" name="vendor[]" <?=$is_detailed?> /> Detailed menu
+                    </label>
+                </p>
                 <div class="vendor_action">
                     <button class="vendor_add">Add Vendor</button>
                     <button class="vendor_delete">Delete Vendor</button>
+                    <input type="hidden" name="vendor[]" value="@end_of_vendor@"/>
                 </div>
             </div>
         <?php endforeach; // foreach ($vendors as $vendor) ?>

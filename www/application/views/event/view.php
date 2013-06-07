@@ -43,9 +43,10 @@ if (!empty($info['cover_img']['file_img']))
         <?php foreach ($vendors as $vendor):
             $ordinal = $vendor['ordinal'];
             $name = $vendor['name'];
+            $style_detailed = $vendor['is_detailed'] ? 'detailed' : '';
         ?>
             <li class="goto_vendor">
-                <a class="goto_vendor" href="#<?=$ordinal?>"><?=$name?></a>
+                <a class="goto_vendor <?=$style_detailed?>" href="#<?=$ordinal?>"><?=$name?></a>
             </li>
         <?php endforeach; // foreach ($vendors as $vendor): ?>
         </ul>
@@ -54,12 +55,16 @@ if (!empty($info['cover_img']['file_img']))
 <?php foreach ($vendors as $vendor):
     $ordinal = $vendor['ordinal'];
     $name = $vendor['name'];
+    $section = $vendor['section'];
     $description = $vendor['description'];
+
+    if (!empty($section))
+        $section = " ($section)";
 ?>
     <a name="<?=$ordinal?>"></a>
     <ul class="vendor">
         <li class="name">
-            <span class="name"><?=$name?></span>
+            <span class="name"><?=$name?><?=$section?></span>
         </li>
         <li class="description">
             <?=$description?>
