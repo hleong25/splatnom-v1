@@ -71,7 +71,6 @@ function getLatLongFromAddress()
     latlong_dbg.val('Calling mapquest api...');
 
     $.getJSON(url, function (data) {
-            console.log(data);
             if (data.info.statuscode != 0)
             {
                 latlong_dbg.val('Failed. Status code is '+data.info.statuscode);
@@ -167,8 +166,6 @@ function vendor_add()
 {
     $new_vendor_cnt++;
     var dom_id = 'new_vendor_' + $new_vendor_cnt;
-
-    console.log("id:"+$new_vendor_cnt+" dom:"+dom_id);
 
     var $this = $(this).parents('div.vendor_info');
     var new_dom = $.tmpl('tmpl_vendor')
