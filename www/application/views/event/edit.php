@@ -12,6 +12,8 @@ $params_info = array(
 
 $params = array(
     'dbg' => array(),
+    'is_admin' => false,
+    'is_metadata' => false,
     'err_msgs' => array(),
     'google_api_key' => '',
     'event_id' => 0,
@@ -54,6 +56,41 @@ if (empty($vendors))
         <a href="/<?=$myurl?>">Refresh</a>
     </p>
     <br/>
+
+    <div class="status">
+        <span>Status: </span>
+        <?php if ($is_admin): ?>
+            <select name="info_status">
+                <?php
+                    foreach ($info['status'] as $status)
+                    {
+                        $label = $status['status'];
+                        $selected = ($status['selected'] == 1) ? 'selected' : '';
+
+                        echo<<<EOHTML
+                            <option value="{$label}" {$selected}>{$label}</option>
+EOHTML;
+                    }
+                ?>
+            </select>
+        <?php else:
+            foreach ($info['status'] as $status)
+            {
+                $label = $status['status'];
+                $selected = $status['selected'] == 1;
+
+                if ($status['selected'] == 1)
+                {
+                    echo<<<EOHTML
+                        <strong>{$status['status']}</strong>
+                        <input type="hidden" name="info_status" value="{$status['status']}" />
+EOHTML;
+                    break;
+                }
+            }
+        ?>
+        <?php endif; ?>
+    </div>
 
     <div class="info">
         <?php

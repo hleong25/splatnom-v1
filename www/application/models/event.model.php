@@ -92,6 +92,21 @@ EOQ;
         return true;
     }
 
+    function update_event($event_id, $status)
+    {
+        $query =<<<EOQ
+            UPDATE tblEvent SET
+                mode_id = (SELECT id FROM vEventStatus WHERE event_status = :status),
+                mod_ts = CURRENT_TIMESTAMP
+            WHERE id = :event_id
+EOQ;
+
+        $prepare = $this->prepareAndExecute($query, array(':event_id'=>$event_id, ':status'=>$status), __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        return true;
+    }
+
     function get_event($event_id)
     {
         // 0. return object
@@ -150,6 +165,28 @@ EOQ;
         {
             $event_data['cover_img'] = $imgs[0];
         }
+
+        // 3. get the status of the event
+        $query =<<<EOQ
+            SELECT
+                es.event_status AS status,
+                NOT ISNULL(e.id) AS selected
+            FROM vEventStatus es
+            LEFT JOIN tblEvent e ON e.id = :event_id AND es.id = e.mode_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $status = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        $prepare->closeCursor();
+        unset($prepare);
+
+        $event_data['status'] = $status;
 
         // TODO: a way to assign cover image
 
@@ -437,9 +474,12 @@ EOQ;
     function get_upcoming()
     {
         $query =<<<EOQ
-            SELECT event_id, name, notes, address, dates
-            FROM tblEventInfo_us
-            ORDER BY name ASC
+            SELECT
+                ei.event_id, ei.name, ei.notes, ei.address, ei.dates
+            FROM tblEvent e
+            INNER JOIN tblEventInfo_us ei ON e.id = ei.event_id
+            INNER JOIN vEventStatus es ON e.mode_id = es.id AND es.event_status = 'ready'
+            ORDER BY ei.name ASC
 EOQ;
 
         $rst = $this->prepareAndExecute($query, null, __FILE__, __LINE__);

@@ -60,6 +60,13 @@ class EventController
             return;
         }
 
+        $event_info = $this->Event->get_event($event_id);
+        if (empty($event_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
         $this->addCss('event/edit');
         $this->addCss('event/view'); // to force update of /css/event/view.css
 
@@ -70,22 +77,24 @@ class EventController
         $this->addJs('event/edit');
 
         $this->set('event_id', $event_id);
+        $this->set('is_admin', Util::getPermissions('admin'));
+        $this->set('is_metadata', Util::getPermissions('metadata'));
         $this->set('google_api_key', GOOGLE_API_KEY);
 
         $load_from_db = empty($_POST);
 
         if (!$load_from_db)
         {
-            $load_from_db = !$this->edit_onPost($event_id);
+            $load_from_db = !$this->edit_onPost($event_id, $event_info);
         }
 
         if ($load_from_db)
         {
-            $this->get_event_details($event_id);
+            $this->get_event_details($event_id, $event_info);
         }
     }
 
-    function edit_onPost($event_id)
+    function edit_onPost($event_id, $event_info)
     {
         if (empty($_POST)) return false;
 
@@ -93,6 +102,12 @@ class EventController
 
         $event = $this->Event;
 
+        // update status
+        $status = $_POST['info_status'];
+        if (!$event->update_event($event_id, $status))
+            $err_msgs[] = 'Failed to update event status.';
+
+        // update event info
         $info = array(
             'name' => $_POST['info_name'],
             'notes' => $_POST['info_notes'],
@@ -109,8 +124,19 @@ class EventController
         if (empty($update_info_ok)) return false;
         // TODO: what to do if fail when update
 
+        // reuse event_info['status'] and set the value
+        foreach ($event_info['status'] as $ei_status)
+        {
+            $info['status'][] = array(
+                'status'=>$ei_status['status'],
+                'selected'=> ($ei_status['status'] == $status) ? 1 : 0,
+            );
+        }
+
+        // set the info so the renderer can use it
         $this->set('info', $info);
 
+        // update vendor data
         $post_vendors = $_POST['vendor'];
 
         $vendors = array();
@@ -172,16 +198,14 @@ class EventController
         return true;
     }
 
-    function get_event_details($event_id)
+    function get_event_details($event_id, $event_info)
     {
-        $event = $this->Event;
-
-        $event_info = $event->get_event($event_id);
-
         if (empty($event_info))
         {
             return false;
         }
+
+        $event = $this->Event;
 
         $this->set('info', $event_info);
 
@@ -207,7 +231,14 @@ class EventController
 
         $this->set('event_id', $event_id);
 
-        $get_event_ok = $this->get_event_details($event_id);
+        $event_info = $this->Event->get_event($event_id);
+        if (empty($event_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $get_event_ok = $this->get_event_details($event_id, $event_info);
         if (empty($get_event_ok))
         {
             $this->redirect('/home/main');
