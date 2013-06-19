@@ -26,6 +26,14 @@ function init()
         .on('click', showGoogleMapAddy)
     ;
 
+    $('.date_add')
+        .button({
+        })
+        .on('click.date_add', date_add)
+        .end()
+    ;
+
+    $.template('tmpl_date', $('script#tmpl_date'));
     $.template('tmpl_vendor', $('script#tmpl_vendor'));
 
     setup_vendor_info.call(document);
@@ -197,6 +205,13 @@ function vendor_delete()
     $this.remove();
 
     return false;
+}
+
+function date_add()
+{
+    var new_dom = $.tmpl('tmpl_date')
+        .insertBefore(this)
+    ;
 }
 
 })();

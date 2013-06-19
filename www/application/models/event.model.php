@@ -120,7 +120,6 @@ EOQ;
                 address,
                 latitude,
                 longitude,
-                dates,
                 '' AS cover_img
             FROM tblEvent event
             LEFT JOIN tblEventInfo_us info ON event.id = info.event_id
@@ -179,16 +178,30 @@ EOQ;
             ':event_id' => $event_id,
         );
 
-        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
-        if (!$prepare) return false;
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst) return false;
 
-        $status = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        $prepare->closeCursor();
-        unset($prepare);
+        $status = $rst->fetchAll(PDO::FETCH_ASSOC);
 
         $event_data['status'] = $status;
 
         // TODO: a way to assign cover image
+
+        // 4. get event dates
+        $query =<<<EOQ
+            SELECT
+                DATE_FORMAT(dt_start, '%Y-%m-%d') AS label
+            FROM tblEventDates
+            WHERE event_id = :event_id
+            ORDER BY dt_start ASC
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst) return false;
+
+        $dates = $rst->fetchAll(PDO::FETCH_ASSOC);
+
+        $event_data['dates'] = $dates;
 
         return $event_data;
     }
@@ -262,8 +275,7 @@ EOQ;
                 notes = :notes,
                 address = :addy,
                 latitude = :latitude,
-                longitude = :longitude,
-                dates = :dates
+                longitude = :longitude
             WHERE event_id = :event_id
 EOQ;
 
@@ -274,11 +286,49 @@ EOQ;
             ':addy' => $info['address'],
             ':latitude' => $info['latitude'],
             ':longitude' => $info['longitude'],
-            ':dates' => $info['dates'],
         );
 
         $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$rst) return false;
+
+        // remove all dates first before adding dates
+        $query =<<<EOQ
+            DELETE FROM tblEventDates
+            WHERE event_id = :event_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+        );
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$rst) return false;
+
+        // add event dates
+        $query =<<<EOQ
+            INSERT INTO tblEventDates
+            SET
+                event_id = :event_id,
+                dt_start = :dt_start,
+                dt_end = :dt_end
+EOQ;
+
+        $prepareDates = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepareDates) return false;
+
+        foreach ($info['dates'] as $info_date)
+        {
+            $dt_start = $info_date['start'];
+            $dt_end = $info_date['end'];
+
+            $rsts[] = $prepareDates->bindValue(':event_id', $event_id);
+            $rsts[] = $prepareDates->bindValue(':dt_start', $dt_start);
+            $rsts[] = $prepareDates->bindValue(':dt_end', $dt_end);
+            $rsts[] = $prepareDates->execute();
+
+            if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+            unset($rsts);
+        }
 
         return true;
     }

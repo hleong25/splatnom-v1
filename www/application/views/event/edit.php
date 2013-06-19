@@ -6,7 +6,7 @@ $params_info = array(
     'address'=>'',
     'latitude'=>0,
     'longitude'=>0,
-    'dates'=>'',
+    'dates'=>array(),
     'imgs'=>array(),
 );
 
@@ -23,6 +23,10 @@ $params = array(
 
 extract($params, EXTR_SKIP);
 
+if (empty($info['dates']))
+{
+    $info['dates'][] = '';
+}
 
 $cover_img = '';
 $cover_img_thmb = '';
@@ -112,7 +116,17 @@ EOHTML;
             <input class="watermark info_longitude" type="text" style="width: 15em;" name="info_longitude" placeholder="Longitude" value="<?=$info['longitude']?>"/>
             <input class="map_addy" type="button" value="Google Map lat/long and addy" data-google-api-key="<?=$google_api_key?>"/>
             <br/>
-            <textarea class="watermark dates" rows="5" name="info_dates" placeholder="Event dates"><?=$info['dates']?></textarea>
+            <div class="dates">
+                <script type="tmpl/date" id="tmpl_date">
+                    <p class="info_dates"><input class="watermark info_dates" type="text" style="width: 20em;" name="info_dates[]" placeholder="Event date: YYYY-MM-DD" value="" /></p>
+                </script>
+
+                <?php foreach ($info['dates'] as $info_date): ?>
+                    <p class="info_dates"><input class="watermark info_dates" type="text" style="width: 20em;" name="info_dates[]" placeholder="Event date: YYYY-MM-DD" value="<?=@$info_date['label']?>" /></p>
+                <?php endforeach; //foreach ($info['dates'] as $info_date): ?>
+
+                <button class="date_add">Add date</button>
+            </div>
             <br/>
             <p class="cover_img">Cover image:
                 <input type="hidden" name="info_cover_img" value="<?=$cover_img?>"/>

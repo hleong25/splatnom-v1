@@ -107,6 +107,26 @@ class EventController
         if (!$event->update_event($event_id, $status))
             $err_msgs[] = 'Failed to update event status.';
 
+        // get event dates
+        $info_dates = array();
+        foreach ($_POST['info_dates'] as $info_date)
+        {
+            $info_date = trim($info_date);
+
+            $date = DateTime::createFromFormat('Y-m-d', $info_date);
+            if (empty($date))
+                continue;
+
+            $dt_start = $date->format('Y-m-d').' 00:00:00';
+            $dt_end = $date->format('Y-m-d').' 23:59:59';
+
+            $info_dates[] = array(
+                'label' => $info_date,
+                'start' => $dt_start,
+                'end' => $dt_end,
+            );
+        }
+
         // update event info
         $info = array(
             'name' => $_POST['info_name'],
@@ -114,7 +134,7 @@ class EventController
             'address' => $_POST['info_address'],
             'latitude' => $_POST['info_latitude'],
             'longitude' => $_POST['info_longitude'],
-            'dates' => $_POST['info_dates'],
+            'dates'=> $info_dates,
             'cover_img' => array(
                 'file_img' => $_POST['info_cover_img'],
             ),
