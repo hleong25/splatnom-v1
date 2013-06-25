@@ -308,7 +308,7 @@ class AdminController
         $this->addJqueryUi();
         $this->addJs('admin/admin.update.css');
 
-        // ls -Rl | grep cache
+        // find . | grep cache | sort
         $allCss = array(
             'admin/admin.email.queue',
             'admin/admin.find.user',
@@ -318,12 +318,17 @@ class AdminController
             'admin/admin.pendingmenu.list',
             'admin/admin.updatecss',
             'admin/admin.user.profile',
+            'event/edit',
+            'event/new',
+            'event/upcoming',
+            'event/view',
             'export/export.list',
             'home/home.about',
             'home/home.feedback',
             'home/home.gmapmenu',
             'home/home.main',
-            'images/images.upload',
+            'images/images.event.upload',
+            'images/images.menu.upload',
             'import/import.list',
             'import/import.local',
             'import/import.menus',
@@ -337,6 +342,7 @@ class AdminController
             'menu/menu.new',
             'menu/menu.search',
             'menu/menu.view',
+            'share/share.facebook',
             'user/user.profile',
             'user/user.register',
             'user/user.verify',
