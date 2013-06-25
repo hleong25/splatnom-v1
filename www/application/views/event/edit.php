@@ -179,7 +179,10 @@ EOHTML;
                     Section Group: <input class="section" type="text" name="vendor[]" value="<?=$section_group?>" placeholder="Group"/>
                     Section: <input class="section" type="text" name="vendor[]" value="<?=$section?>" placeholder="Section"/>
                 </p>
-                <p class="vendor_desc">Description: <textarea class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$description?></textarea></p>
+                <p class="vendor_desc">Description:
+                    <button class="vendor_desc_edit">Show WYSIWYG</button>
+                    <textarea id="vendor_desc_<?=$vendor_id?>" class="vendor_desc" name="vendor[]" rows="10" placeholder=""><?=$description?></textarea>
+                </p>
                 <p class="vendor_attrs">
                     <input type="hidden" name="vendor[]" value="@vendor_attr@"/>
                     <input type="hidden" name="vendor[]" value="is_detailed"/>

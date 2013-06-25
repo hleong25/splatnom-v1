@@ -33,13 +33,20 @@ function init()
         .end()
     ;
 
+    $('.vendor_desc_edit')
+        .button({
+        })
+        .on('click.vendor_desc_edit', vendor_desc_edit)
+        .end()
+    ;
+
     $.template('tmpl_date', $('script#tmpl_date'));
     $.template('tmpl_vendor', $('script#tmpl_vendor'));
 
     setup_vendor_info.call(document);
 
     tinyMCE.init({
-        selector: 'textarea.vendor_desc',
+        //selector: 'textarea.vendor_desc',
         plugins: 'code,preview,visualblocks',
         toolbars: 'preview',
 
@@ -212,6 +219,15 @@ function date_add()
     var new_dom = $.tmpl('tmpl_date')
         .insertBefore(this)
     ;
+}
+
+function vendor_desc_edit()
+{
+    var $this = $(this).parents('.vendor_desc');
+    var dom_id = $this.find('textarea.vendor_desc').attr('id');
+
+    // set tinymce to edit the description
+    tinyMCE.execCommand('mceAddEditor', true, dom_id);
 }
 
 })();
