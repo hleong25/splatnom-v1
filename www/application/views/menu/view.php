@@ -211,7 +211,7 @@ foreach ($info['status'] as $info_status)
                 <?php endforeach; ?>
             </li>
             <li class="img_item">
-                <a class="button addimg" href="/images/upload/<?=$id?>-<?=$slug['menu']?>">Add More Images</a>
+                <a class="button addimg" href="/images/upload/menu/<?=$id?>-<?=$slug['menu']?>">Add More Images</a>
             </li>
             <li class="img_item empty"></li>
         </ul>

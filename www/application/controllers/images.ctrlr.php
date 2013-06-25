@@ -88,8 +88,38 @@ class ImagesController
         $this->set('img_file', $img_file);
     }
 
-    function onAction_upload($menu_id=null, $section_id=null, $item_id=null)
+    function onAction_upload($type)
     {
+        $type = trim(strtolower($type));
+
+        $func_name = '';
+
+        $upload_args = func_get_args();
+        array_shift($upload_args);
+
+        switch ($type)
+        {
+            case 'menu':
+                $func_name = 'upload_menu_images';
+                break;
+
+            case 'event':
+                $func_name = 'upload_event_images';
+                break;
+
+            default:
+                Util::logit("Unknown upload type '$type'", __FILE__, __LINE__);
+                $this->redirect('/home/main');
+                return;
+        }
+
+        call_user_func_array(array($this, $func_name), $upload_args);
+    }
+
+    function upload_menu_images($menu_id=null, $section_id=null, $item_id=null)
+    {
+        $this->override_body_page_name('upload.menu');
+
         $menu = new MenuModel();
         $info = $menu->getMenuInfo($menu_id);
 

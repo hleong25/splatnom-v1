@@ -132,6 +132,24 @@ class Template
         }
     }
 
+    function override_body_page_name($new_page)
+    {
+        if (empty($new_page))
+        {
+            return false;
+        }
+
+        $body = ROOT . DS . 'application' . DS . 'views' . DS . $this->m_base_name . DS . $new_page . '.php';
+
+        if (!file_exists($body))
+        {
+            return false;
+        }
+
+        $this->m_action = $new_page;
+        return true;
+    }
+
     function getBrowserVersion()
     {
         // NOTE: getEnv('browser_type') is set in the .htaccess file

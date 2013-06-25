@@ -25,6 +25,11 @@ class Controller
 		$this->m_template->set($name, $value);
 	}
 
+    function override_body_page_name($new_page)
+    {
+        return $this->m_template->override_body_page_name($new_page);
+    }
+
 	function __destruct()
     {
         if (!isset($this->m_template))
