@@ -1,4 +1,4 @@
-var js_images = (function() {
+var js_splatnom = (function() {
 
 init();
 

@@ -137,9 +137,9 @@ class ImagesController
             return;
         }
 
-        $this->addCss('images/images.upload');
+        $this->addCss('images/images.menu.upload');
         $this->addJqueryUi();
-        $this->addJs('images/images.upload');
+        $this->addJs('images/images.menu.upload');
 
         $this->set('id', $menu_id);
         $this->set('info', $info);
@@ -188,4 +188,22 @@ class ImagesController
             }
         }
     }
+
+    function upload_event_images($event_id=null)
+    {
+        $this->override_body_page_name('upload.event');
+
+        $user_id = Util::getUserId();
+        if (empty($user_id))
+        {
+            $this->redirect("/view/view/{$event_id}");
+            return;
+        }
+
+        $this->addCss('images/images.event.upload');
+        $this->addJqueryUi();
+        $this->addJs('images/images.event.upload');
+
+    }
+
 }
