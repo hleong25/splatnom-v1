@@ -57,7 +57,8 @@ if (empty($vendors))
 
     <p class="save">
         <input type="submit" name="Save"/>
-        <a href="/<?=$myurl?>">Refresh</a>
+        <a href="/<?=$myurl?>">Refresh</a><span> - </span>
+        <a href="/images/upload/event/<?=$event_id?>">Upload images</a>
     </p>
     <br/>
 

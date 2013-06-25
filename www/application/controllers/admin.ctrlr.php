@@ -318,6 +318,7 @@ class AdminController
             'admin/admin.pendingmenu.list',
             'admin/admin.updatecss',
             'admin/admin.user.profile',
+            'event/all',
             'event/edit',
             'event/new',
             'event/upcoming',

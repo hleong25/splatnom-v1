@@ -273,4 +273,13 @@ class EventController
 
         $this->set('upcoming_list', $list);
     }
+
+    function onAction_all()
+    {
+        $this->addCss('event/all');
+
+        $list = $this->Event->get_all();
+
+        $this->set('list', $list);
+    }
 }

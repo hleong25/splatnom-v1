@@ -538,4 +538,21 @@ EOQ;
         return $rows;
     }
 
+    function get_all()
+    {
+        $query =<<<EOQ
+            SELECT
+                ei.event_id, ei.name, ei.notes, ei.address, ei.dates, es.event_status AS status
+            FROM tblEvent e
+            INNER JOIN tblEventInfo_us ei ON e.id = ei.event_id
+            INNER JOIN vEventStatus es ON e.mode_id = es.id
+            ORDER BY e.ts DESC, e.mod_ts DESC, ei.name ASC
+EOQ;
+
+        $rst = $this->prepareAndExecute($query, null, __FILE__, __LINE__);
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rows;
+    }
+
 }

@@ -16,4 +16,5 @@
     <hr/>
     <a href="/event/new">Create event</a><br/>
     <a href="/event/upcoming">Upcoming event</a><br/>
+    <a href="/event/all">All event</a><br/>
 </div>
