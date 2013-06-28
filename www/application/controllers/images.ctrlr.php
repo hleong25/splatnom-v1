@@ -193,17 +193,44 @@ class ImagesController
     {
         $this->override_body_page_name('upload.event');
 
+        $event = new EventModel();
+        $info = $event->get_event($event_id);
+
         $user_id = Util::getUserId();
         if (empty($user_id))
         {
-            $this->redirect("/view/view/{$event_id}");
+            $this->redirect("/event/view/{$event_id}");
             return;
         }
 
         $this->addCss('images/images.event.upload');
         $this->addJqueryUi();
+        $this->addJs('jquery.tmpl.min', WEB_PATH_OTHER);
         $this->addJs('images/images.event.upload');
 
+        $this->set('event_id', $event_id);
+        $this->set('event_str', $info['name']);
+
+        if (!empty($_FILES))
+        {
+            $this->set('is_upload', true);
+
+            $path = OS_EVENT_PATH . DS . $event_id;
+            $imgs = Util::handle_upload_files($path);
+
+            if (empty($imgs))
+            {
+                $this->set('is_err', true);
+                return;
+            }
+
+            $insertImgs = $event->add_images($event_id, $imgs);
+
+            if ($insertImgs)
+            {
+                $this->set('new_imgs', $imgs);
+            }
+        }
     }
 
 }
