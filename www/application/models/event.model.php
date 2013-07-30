@@ -634,12 +634,22 @@ EOQ;
         $this->beginTransaction();
 
         // 1. remove taggits data
-        $query_in = implode(',', array_fill(0, count($taggits), '?'));
+        $query_in = '';
+        $filter_img_id = '';
+        if (!empty($taggits))
+        {
+            $query_in = implode(',', array_fill(0, count($taggits), '?'));
+
+            $filter_img_id =<<<EOQ
+                AND img_id NOT IN ({$query_in})
+EOQ;
+        }
+
         $query =<<<EOQ
             DELETE FROM tblTaggitsEventImage
             WHERE event_id = ?
             AND vendor_id = ?
-            AND img_id NOT IN ({$query_in})
+            $filter_img_id
 EOQ;
 
         $prepare = $this->prepare_log($query, __FILE__, __LINE__);

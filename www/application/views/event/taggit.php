@@ -30,6 +30,7 @@ extract($params, EXTR_SKIP);
     </div>
     <form id="taggits" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
     <button class="">Save!</button>
+        <input type="hidden" name="save_taggits" />
     <ul class="images">
     <?php
         foreach ($taggits as $img_id => $tag):
