@@ -178,6 +178,7 @@ EOHTML;
                 <p class="vendor_booth">
                     Section Group: <input class="section" type="text" name="vendor[]" value="<?=$section_group?>" placeholder="Group"/>
                     Section: <input class="section" type="text" name="vendor[]" value="<?=$section?>" placeholder="Section"/>
+                    <a target="_blank" href="/event/taggit/images/<?=$event_id?>/<?=$vendor_id?>">Tag images</a>
                 </p>
                 <p class="vendor_desc">Description:
                     <button class="vendor_desc_edit">Show WYSIWYG</button>

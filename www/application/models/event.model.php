@@ -206,8 +206,17 @@ EOQ;
         return $event_data;
     }
 
-    function get_vendors($event_id)
+    function get_vendors($event_id, $vendor_id=null)
     {
+        $filter_vendor_id = '';
+
+        if (!empty($vendor_id))
+        {
+            $filter_vendor_id =<<<EOQ
+                AND vendor.vendor_id = :vendor_id
+EOQ;
+        }
+
         $query =<<<EOQ
             SELECT
 	            vendor.vendor_id,
@@ -218,12 +227,18 @@ EOQ;
             FROM tblEventVendor vendor
             INNER JOIN tblEventVendorValues vendor_values ON vendor.vendor_id = vendor_values.vendor_id
             WHERE vendor.event_id = :event_id
+            $filter_vendor_id
             ORDER BY vendor.ordinal, vendor_values.key, vendor_values.keyindex
 EOQ;
 
         $params = array(
             ':event_id' => $event_id,
         );
+
+        if (!empty($vendor_id))
+        {
+            $params[':vendor_id'] = $vendor_id;
+        }
 
         $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
         if (!$rst) return false;
@@ -555,4 +570,116 @@ EOQ;
         return $rows;
     }
 
+    function get_event_image_taggits($event_id, $vendor_id=null)
+    {
+        $filter_vendor_id = '';
+
+        if (!empty($vendor_id))
+        {
+            $filter_vendor_id =<<<EOQ
+                AND taggits.vendor_id = :vendor_id
+EOQ;
+        }
+
+        $query =<<<EOQ
+            SELECT
+                imgs.id AS img_id,
+                imgs.file_img,
+                taggits.vendor_id
+            FROM tblEventImages imgs
+            LEFT JOIN tblTaggitsEventImage taggits ON imgs.id = taggits.img_id
+                AND imgs.event_id = taggits.event_id
+                $filter_vendor_id
+            WHERE imgs.event_id = :event_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+        );
+
+        if (!empty($vendor_id))
+        {
+            $params[':vendor_id'] = $vendor_id;
+        }
+
+        $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        $rows = $rst->fetchAll(PDO::FETCH_ASSOC);
+
+        $taggits = array();
+
+        foreach ($rows as $row)
+        {
+            $img_id = $row['img_id'];
+            $vendor_id = $row['vendor_id'];
+            $file_img = $row['file_img'];
+
+            $taggits[$img_id]['file_img'] = $file_img;
+
+            if (empty($taggits[$img_id]['vendor_id']))
+            {
+                $taggits[$img_id]['vendor_id'] = array();
+            }
+
+            if (!empty($vendor_id))
+            {
+                $taggits[$img_id]['vendor_id'][] = $vendor_id;
+            }
+        }
+
+        return $taggits;
+    }
+
+    function apply_taggits($event_id, $vendor_id, $taggits)
+    {
+        $this->beginTransaction();
+
+        // 1. remove taggits data
+        $query_in = implode(',', array_fill(0, count($taggits), '?'));
+        $query =<<<EOQ
+            DELETE FROM tblTaggitsEventImage
+            WHERE event_id = ?
+            AND vendor_id = ?
+            AND img_id NOT IN ({$query_in})
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rsts[] = $prepare->bindValue(1, $event_id);
+        $rsts[] = $prepare->bindValue(2, $vendor_id);
+        foreach ($taggits as $idx => $img_id)
+        {
+            $rsts[] = $prepare->bindValue($idx+3, $img_id);
+        }
+
+        $rsts[] = $prepare->execute();
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        // 2. insert the new taggits
+        $query =<<<EOQ
+            INSERT IGNORE INTO tblTaggitsEventImage
+            SET
+                event_id = :event_id,
+                vendor_id = :vendor_id,
+                img_id = :img_id
+EOQ;
+
+        $prepare = $this->prepare_log($query, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
+        $rsts[] = $prepare->bindValue(':event_id', $event_id);
+        $rsts[] = $prepare->bindValue(':vendor_id', $vendor_id);
+        foreach ($taggits as $img_id)
+        {
+            $rsts[] = $prepare->bindValue(':img_id', $img_id);
+            $rsts[] = $prepare->execute();
+        }
+
+        if (!$this->areDbResultsGood($rsts, __FILE__, __LINE__)) return false;
+        unset($rsts);
+
+        $this->commit();
+        return true;
+    }
 }

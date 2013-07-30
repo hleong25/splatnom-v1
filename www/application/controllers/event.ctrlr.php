@@ -282,4 +282,78 @@ class EventController
 
         $this->set('list', $list);
     }
+
+    function onAction_taggit($type=null, $event_id=null, $vendor_id=null)
+    {
+        if (empty($event_id) || ($event_id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        if (empty($vendor_id) || ($vendor_id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $event = $this->Event;
+
+        if (!empty($_POST))
+        {
+            // save it!
+
+            $save_data = array(
+                'taggits' => array(),
+            );
+
+            $taggits = array();
+            if (!empty($_POST['taggits']))
+                $taggits = $_POST['taggits'];
+
+            foreach ($taggits as $img_id => $checked)
+            {
+                $save_data['taggits'][] = $img_id;
+            }
+
+            $taggits_ok = $event->apply_taggits($event_id, $vendor_id, $save_data['taggits']);
+            if (!$taggits_ok)
+            {
+                // TODO: show the error
+                $this->set('err_msg', 'Failed to save taggits');
+            }
+        }
+
+        $this->addCss('event/taggit');
+
+        $this->set('event_id', $event_id);
+        $this->set('vendor_id', $vendor_id);
+
+        $event_info = $event->get_event($event_id);
+        if (empty($event_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $get_event_ok = $this->get_event_details($event_id, $event_info);
+        if (empty($get_event_ok))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $vendors = $event->get_vendors($event_id, $vendor_id);
+        if (empty($vendors) || empty($vendors[$vendor_id]))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $vendor = $vendors[$vendor_id];
+        $this->set('vendor_info', $vendor);
+
+        $taggits = $event->get_event_image_taggits($event_id, $vendor_id);
+        $this->set('taggits', $taggits);
+    }
 }
