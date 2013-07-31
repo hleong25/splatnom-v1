@@ -47,6 +47,8 @@ if (empty($vendors))
     );
 }
 
+$slug_event = Util::slugify($info['name']);
+
 ?>
 <div class="pg edit"><form id="edit_event" enctype="multipart/form-data" method="post" action="/<?=$myurl?>">
     <div class="reminder">Mission here is to just enter data for now. If thinking too much about db and metadata, make it a textarea.</div>
@@ -170,6 +172,9 @@ EOHTML;
             $section = @$vendor['section'];
             $description = @$vendor['description'];
             $is_detailed = !empty($vendor['is_detailed']) ? 'CHECKED' : '';
+
+            $slug_vendor = Util::slugify($name);
+            $link_taggit = "/event/taggit/images/{$event_id}-{$slug_event}/{$vendor_id}-{$slug_vendor}";
         ?>
             <div class="vendor_info">
                 <input type="hidden" name="vendor[]" value="@vendor@"/>
@@ -178,7 +183,7 @@ EOHTML;
                 <p class="vendor_booth">
                     Section Group: <input class="section" type="text" name="vendor[]" value="<?=$section_group?>" placeholder="Group"/>
                     Section: <input class="section" type="text" name="vendor[]" value="<?=$section?>" placeholder="Section"/>
-                    <a target="_blank" href="/event/taggit/images/<?=$event_id?>/<?=$vendor_id?>">Tag images</a>
+                    <a target="_blank" href="<?=$link_taggit?>">Tag images</a>
                 </p>
                 <p class="vendor_desc">Description:
                     <button class="vendor_desc_edit">Show WYSIWYG</button>

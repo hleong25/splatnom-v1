@@ -58,6 +58,8 @@ if (!empty($info['cover_img']['file_img']))
     $section = $vendor['section'];
     $description = $vendor['description'];
 
+    $taggits = $vendor['taggits'];
+
     if (!empty($section))
         $section = " ($section)";
 ?>
@@ -65,6 +67,18 @@ if (!empty($info['cover_img']['file_img']))
     <ul class="vendor">
         <li class="name">
             <span class="name"><?=$name?><?=$section?></span>
+        </li>
+        <li class="images">
+            <ul class="tagged_imgs">
+            <?php foreach ($taggits as $file_img):
+                $link_img_org = "/images/get/event/org/$event_id/$file_img";
+                $link_img_md  = "/images/get/event/md/$event_id/$file_img";
+            ?>
+                <li class="tagged">
+                    <a target="_blank" href="<?=$link_img_org?>"><img src="<?=$link_img_md?>"></a>
+                </li>
+            <?php endforeach; //foreach ($taggits as $taggit): ?>
+            </ul>
         </li>
         <li class="description">
             <?=$description?>

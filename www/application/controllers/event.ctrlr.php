@@ -232,6 +232,33 @@ class EventController
         $vendors = $event->get_vendors($event_id);
         $this->set('vendors', $vendors);
 
+        $taggits = $event->get_event_image_taggits($event_id);
+
+        // link the vendor to the tagged images
+        foreach ($vendors as &$vendor)
+        {
+            $vendor_id = $vendor['vendor_id'];
+
+            $vendor['taggits'] = array();
+
+            foreach ($taggits as $taggit)
+            {
+                $file_img = $taggit['file_img'];
+                $tagged_vendors = $taggit['vendor_id'];
+
+                foreach ($tagged_vendors as $tagged)
+                {
+                    if ($vendor_id == $tagged)
+                    {
+                        $vendor['taggits'][] = $file_img;
+                    }
+                }
+            }
+        }
+
+        // reset the vendors so the changes stick
+        $this->set('vendors', $vendors);
+
         $name = $event_info['name'];
         $this->set('meta_title', $name);
         $this->set('meta_desc', "Delicious food at {$name}... mmMmmmMmmm nom nom nom says Zoidberg! (\/)(',,,,')(\/)");
