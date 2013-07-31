@@ -145,7 +145,7 @@ EOQ;
         // 2. get the event images
         $query =<<<EOQ
             SELECT file_img, width, height
-            FROM tblEvent event
+            FROM tblEvent eventSELECT * FROM `tblEventVendor` WHERE 1
             LEFT JOIN tblEventImages imgs ON imgs.event_id = event.id
             WHERE event.id = :event_id
 EOQ;
@@ -354,8 +354,13 @@ EOQ;
 
         $saved_vendor_ids = array();
 
+        $ordinal = 0;
+
         foreach ($vendors as &$vendor)
         {
+            $vendor['ordinal'] = $ordinal;
+            $ordinal++;
+
             if (!$this->update_vendor_info($event_id, $vendor))
                 return false;
 
