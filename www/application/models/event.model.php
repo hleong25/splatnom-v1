@@ -264,7 +264,7 @@ EOQ;
             }
         }
 
-        usort($vendors, array('EventModel', 'sort_vendors_by_ordinal'));
+        //usort($vendors, array('EventModel', 'sort_vendors_by_ordinal'));
 
         return $vendors;
     }
