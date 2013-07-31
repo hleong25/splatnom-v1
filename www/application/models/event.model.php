@@ -145,7 +145,7 @@ EOQ;
         // 2. get the event images
         $query =<<<EOQ
             SELECT file_img, width, height
-            FROM tblEvent eventSELECT * FROM `tblEventVendor` WHERE 1
+            FROM tblEvent event
             LEFT JOIN tblEventImages imgs ON imgs.event_id = event.id
             WHERE event.id = :event_id
 EOQ;
@@ -264,7 +264,17 @@ EOQ;
             }
         }
 
+        usort($vendors, array('EventModel', 'sort_vendors_by_ordinal'));
+
         return $vendors;
+    }
+
+    static function sort_vendors_by_ordinal($a, $b)
+    {
+        if ($a['name'] == $b['name'])
+            return 0;
+
+        return ($a['name'] < $b['name']) ? -1 : 1;
     }
 
     function update_event_info($event_id, $info)
@@ -354,13 +364,8 @@ EOQ;
 
         $saved_vendor_ids = array();
 
-        $ordinal = 0;
-
         foreach ($vendors as &$vendor)
         {
-            $vendor['ordinal'] = $ordinal;
-            $ordinal++;
-
             if (!$this->update_vendor_info($event_id, $vendor))
                 return false;
 
