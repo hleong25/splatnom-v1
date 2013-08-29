@@ -383,4 +383,58 @@ class EventController
         $taggits = $event->get_event_image_taggits($event_id, $vendor_id);
         $this->set('taggits', $taggits);
     }
+
+    function onAction_update_cover($event_id=null)
+    {
+        if (empty($event_id) || ($event_id < 0))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $event = $this->Event;
+
+        if (!empty($_POST))
+        {
+            // save it!
+
+            $save_data = array(
+                'cover_img_id' => -1,
+            );
+
+            if (!empty($_POST['cover_img_id']))
+                $save_data['cover_img_id'] = $_POST['cover_img_id'];
+
+            if ($save_data['cover_img_id'] > 0)
+            {
+                $cover_img_ok = $event->update_cover_img($event_id, $save_data['cover_img_id']);
+                if (!$cover_img_ok)
+                {
+                    // TODO: show the error
+                    $this->set('err_msg', 'Failed to save cover image');
+                }
+            }
+        }
+
+        $this->addCss('event/update_cover');
+
+        $this->set('event_id', $event_id);
+
+        $event_info = $event->get_event($event_id);
+        if (empty($event_info))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $get_event_ok = $this->get_event_details($event_id, $event_info);
+        if (empty($get_event_ok))
+        {
+            $this->redirect('/home/main');
+            return;
+        }
+
+        $imgs = $event->get_event_image_taggits($event_id, /*no vendor = all images*/ '');
+        $this->set('imgs', $imgs);
+    }
 }

@@ -120,7 +120,7 @@ EOQ;
                 address,
                 latitude,
                 longitude,
-                '' AS cover_img
+                cover_img
             FROM tblEvent event
             LEFT JOIN tblEventInfo_us info ON event.id = info.event_id
             WHERE event.id = :event_id
@@ -148,10 +148,12 @@ EOQ;
             FROM tblEvent event
             LEFT JOIN tblEventImages imgs ON imgs.event_id = event.id
             WHERE event.id = :event_id
+            AND file_img = :cover_img
 EOQ;
 
         $params = array(
             ':event_id' => $event_id,
+            ':cover_img' => $event_data['cover_img'],
         );
 
         $rst = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
@@ -700,6 +702,25 @@ EOQ;
         unset($rsts);
 
         $this->commit();
+        return true;
+    }
+
+    function update_cover_img($event_id, $cover_img_id)
+    {
+        $query =<<<EOQ
+            UPDATE tblEventInfo_us SET
+                cover_img = (SELECT file_img FROM tblEventImages WHERE id = :cover_img_id)
+            WHERE event_id = :event_id
+EOQ;
+
+        $params = array(
+            ':event_id' => $event_id,
+            ':cover_img_id' => $cover_img_id,
+        );
+
+        $prepare = $this->prepareAndExecute($query, $params, __FILE__, __LINE__);
+        if (!$prepare) return false;
+
         return true;
     }
 }

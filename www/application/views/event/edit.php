@@ -131,7 +131,8 @@ EOHTML;
                 <button class="date_add">Add date</button>
             </div>
             <br/>
-            <p class="cover_img">Cover image:
+            <p class="cover_img">
+                <a href="/event/update_cover/<?=$event_id?>-<?=$slug_event?>">Cover image:</a>
                 <input type="hidden" name="info_cover_img" value="<?=$cover_img?>"/>
                 <a target="_blank" href="<?=$cover_img_full?>"><img src="<?=$cover_img_thmb?>" /></a>
             </p>
