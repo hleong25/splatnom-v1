@@ -49,7 +49,7 @@ EOQ;
 
         // these should be in a config file...
         $username = 'support@splatnom.com';
-        $password = 'alhambra1234';
+        $password = 'yellow25';
 
         $smtp_cfg = array(
             'host'      => $host,
